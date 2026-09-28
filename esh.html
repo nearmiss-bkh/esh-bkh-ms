@@ -1,0 +1,4970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ESH Near Miss Report</title>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: #172033;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(0,195,255,.20),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(138,92,246,.18),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(0,255,190,.10),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #07111f 0%,
+            #0b1730 45%,
+            #10172c 100%
+        );
+
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    padding: 18px 30px;
+
+    background:
+        rgba(7,17,31,.88);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.10);
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.25);
+}
+
+.header-inner {
+    max-width: 1500px;
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.header-title {
+    color: white;
+
+    font-size: 21px;
+
+    font-weight: 800;
+
+    letter-spacing: .4px;
+}
+
+.header-subtitle {
+    margin-top: 3px;
+
+    color:
+        rgba(255,255,255,.58);
+
+    font-size: 12px;
+}
+
+.online-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 14px;
+
+    color: #a7ffd9;
+
+    background:
+        rgba(0,255,170,.08);
+
+    border:
+        1px solid
+        rgba(0,255,170,.25);
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.online-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #00e69a;
+
+    box-shadow:
+        0 0 12px #00e69a;
+
+    animation:
+        onlinePulse 2s infinite;
+}
+
+@keyframes onlinePulse {
+
+    0%,100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: .55;
+        transform: scale(.75);
+    }
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container {
+    max-width: 1500px;
+
+    margin: auto;
+
+    padding:
+        32px 25px 70px;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+
+    padding: 34px 32px;
+
+    margin-bottom: 28px;
+
+    border-radius: 26px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,200,255,.14),
+            rgba(116,74,255,.14),
+            rgba(0,255,190,.08)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.25),
+        inset 0 1px 0
+        rgba(255,255,255,.08);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+.hero h1 {
+
+    margin: 0;
+
+    color: white;
+
+    font-size:
+        clamp(28px,4vw,44px);
+
+    font-weight: 850;
+
+    letter-spacing: -1px;
+}
+
+.hero p {
+
+    margin:
+        10px 0 0;
+
+    color:
+        rgba(255,255,255,.62);
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   SECTION TITLE
+===================================================== */
+
+.section-title {
+
+    color: white;
+
+    margin:
+        28px 0 15px;
+
+    font-size: 18px;
+
+    font-weight: 800;
+}
+
+
+/* =====================================================
+   KPI GRID
+===================================================== */
+
+.kpi-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7,minmax(145px,1fr));
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =====================================================
+   KPI CARD
+===================================================== */
+
+.kpi-card {
+
+    --kpi-color: #00d4ff;
+
+    --kpi-color-2: #0072ff;
+
+    position: relative;
+
+    min-height: 155px;
+
+    padding: 21px;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    color: white;
+
+    cursor: pointer;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.16),
+            rgba(255,255,255,.055)
+        ),
+        linear-gradient(
+            135deg,
+            color-mix(
+                in srgb,
+                var(--kpi-color) 20%,
+                transparent
+            ),
+            rgba(9,18,35,.88)
+        );
+
+    border:
+        1px solid
+        color-mix(
+            in srgb,
+            var(--kpi-color) 55%,
+            rgba(255,255,255,.12)
+        );
+
+    box-shadow:
+        0 12px 35px
+        color-mix(
+            in srgb,
+            var(--kpi-color) 15%,
+            transparent
+        ),
+        inset 0 1px 0
+        rgba(255,255,255,.20);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    transition:
+        transform .28s ease,
+        box-shadow .28s ease,
+        border-color .28s ease;
+}
+
+.kpi-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -1px;
+
+    border-radius: inherit;
+
+    padding: 1px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--kpi-color),
+            transparent 40%,
+            transparent 65%,
+            var(--kpi-color-2)
+        );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite: xor;
+
+    mask-composite: exclude;
+
+    opacity: .9;
+
+    pointer-events: none;
+}
+
+.kpi-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 140px;
+    height: 140px;
+
+    right: -45px;
+    top: -50px;
+
+    border-radius: 50%;
+
+    background:
+        var(--kpi-color);
+
+    opacity: .16;
+
+    filter: blur(28px);
+
+    pointer-events: none;
+
+    transition:
+        transform .3s ease,
+        opacity .3s ease;
+}
+
+.kpi-card:hover {
+
+    transform:
+        translateY(-7px);
+
+    border-color:
+        var(--kpi-color);
+
+    box-shadow:
+        0 20px 50px
+        color-mix(
+            in srgb,
+            var(--kpi-color) 28%,
+            transparent
+        ),
+        0 0 28px
+        color-mix(
+            in srgb,
+            var(--kpi-color) 22%,
+            transparent
+        ),
+        inset 0 1px 0
+        rgba(255,255,255,.25);
+}
+
+.kpi-card:hover::after {
+
+    transform:
+        scale(1.35);
+
+    opacity: .28;
+}
+
+.kpi-card:active {
+
+    transform:
+        translateY(-2px)
+        scale(.985);
+}
+
+
+/* KPI COLORS */
+
+.kpi-total {
+    --kpi-color:#00d4ff;
+    --kpi-color-2:#0077ff;
+}
+
+.kpi-new {
+    --kpi-color:#4facfe;
+    --kpi-color-2:#00f2fe;
+}
+
+.kpi-investigation {
+    --kpi-color:#a855f7;
+    --kpi-color-2:#6366f1;
+}
+
+.kpi-corrective {
+    --kpi-color:#ff9f43;
+    --kpi-color-2:#ff6b35;
+}
+
+.kpi-verification {
+    --kpi-color:#00e6a0;
+    --kpi-color-2:#00b894;
+}
+
+.kpi-closed {
+    --kpi-color:#94a3b8;
+    --kpi-color-2:#64748b;
+}
+
+.kpi-overdue {
+    --kpi-color:#ff5c7a;
+    --kpi-color-2:#ff1744;
+}
+
+
+/* KPI CONTENT */
+
+.kpi-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    margin-bottom: 17px;
+
+    font-size: 19px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.15),
+        0 0 18px
+        color-mix(
+            in srgb,
+            var(--kpi-color) 20%,
+            transparent
+        );
+}
+
+.kpi-number {
+
+    margin: 0;
+
+    font-size: 34px;
+
+    line-height: 1;
+
+    font-weight: 850;
+
+    letter-spacing: -1px;
+
+    text-shadow:
+        0 0 18px
+        color-mix(
+            in srgb,
+            var(--kpi-color) 30%,
+            transparent
+        );
+}
+
+.kpi-label {
+
+    margin-top: 9px;
+
+    color:
+        rgba(255,255,255,.68);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .7px;
+}
+
+.kpi-label::after {
+
+    content: " →";
+
+    opacity: .45;
+}
+
+.kpi-card:hover .kpi-label::after {
+    opacity: 1;
+}
+
+
+/* =====================================================
+   ANALYTICS
+===================================================== */
+
+.analytics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1.4fr 1fr 1fr;
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+.panel {
+
+    background:
+        rgba(255,255,255,.96);
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(0,0,0,.22);
+
+    border:
+        1px solid
+        rgba(255,255,255,.5);
+}
+
+.panel-title {
+
+    margin:
+        0 0 18px;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    color: #182238;
+}
+
+.chart {
+
+    width: 100%;
+
+    min-height: 220px;
+}
+
+.bar-row {
+    margin-bottom: 13px;
+}
+
+.bar-label {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+.bar {
+
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #edf1f7;
+}
+
+.bar-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00bfff,
+            #7057ff
+        );
+
+    transition:
+        width .6s ease;
+}
+
+
+/* =====================================================
+   ACTION CENTER
+===================================================== */
+
+.action-center {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 14px;
+
+    margin-bottom: 30px;
+}
+
+.alert-box {
+
+    padding: 18px;
+
+    border-radius: 17px;
+
+    border: 1px solid;
+
+    background: white;
+}
+
+.alert-box strong {
+
+    display: block;
+
+    font-size: 23px;
+
+    margin-bottom: 4px;
+}
+
+.alert-box span {
+
+    font-size: 12px;
+
+    color: #687386;
+}
+
+.alert-new {
+
+    border-color:#b8e8ff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f0fbff,
+            #ffffff
+        );
+}
+
+.alert-action {
+
+    border-color:#ffd9ad;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff7ec,
+            #ffffff
+        );
+}
+
+.alert-overdue {
+
+    border-color:#ffc2ce;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff1f4,
+            #ffffff
+        );
+}
+
+
+/* =====================================================
+   REPORT TOOLBAR
+===================================================== */
+
+.toolbar {
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:18px;
+}
+
+.search {
+
+    flex:1;
+
+    min-width:220px;
+
+    padding:13px 15px;
+
+    border:none;
+
+    border-radius:13px;
+
+    outline:none;
+
+    font-size:13px;
+
+    background:white;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.14);
+}
+
+select {
+
+    padding:13px 15px;
+
+    border:none;
+
+    border-radius:13px;
+
+    background:white;
+
+    font-size:13px;
+
+    outline:none;
+}
+
+
+/* =====================================================
+   ACTIVE FILTER
+===================================================== */
+
+.active-filter {
+
+    display:none;
+
+    margin-bottom:15px;
+
+    padding:10px 14px;
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,184,255,.20),
+            rgba(108,76,255,.20)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius:12px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.active-filter.show {
+    display:flex;
+}
+
+.reset-filter {
+
+    border:none;
+
+    padding:6px 10px;
+
+    border-radius:8px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:11px;
+
+    font-weight:700;
+}
+
+
+/* =====================================================
+   REPORT CARDS
+===================================================== */
+
+.reports-grid {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:16px;
+}
+
+.report-card {
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:20px;
+
+    background:white;
+
+    border:
+        1px solid #e4e9f2;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.13);
+
+    cursor:pointer;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.report-card:hover {
+
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        0 20px 42px
+        rgba(0,0,0,.18);
+}
+
+.report-number {
+
+    font-size:16px;
+
+    font-weight:850;
+
+    color:#17233b;
+}
+
+.report-meta {
+
+    margin-top:8px;
+
+    color:#69758a;
+
+    font-size:12px;
+
+    line-height:1.7;
+}
+
+.status {
+
+    display:inline-flex;
+
+    margin-top:12px;
+
+    padding:6px 10px;
+
+    border-radius:999px;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.status-new {
+    background:#e5f8ff;
+    color:#0077a8;
+}
+
+.status-investigation {
+    background:#eee8ff;
+    color:#6841c6;
+}
+
+.status-corrective {
+    background:#fff0dc;
+    color:#b86300;
+}
+
+.status-verification {
+    background:#e2fff4;
+    color:#008c62;
+}
+
+.status-closed {
+    background:#edf1f5;
+    color:#566274;
+}
+
+.status-overdue {
+    background:#ffe6eb;
+    color:#d31d43;
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal {
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:2000;
+
+    padding:25px;
+
+    background:
+        rgba(2,8,18,.78);
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+
+    overflow-y:auto;
+}
+
+.modal.active {
+    display:block;
+}
+
+.modal-content {
+
+    max-width:1100px;
+
+    margin:30px auto;
+
+    background:#f7f9fc;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 35px 100px
+        rgba(0,0,0,.45);
+}
+
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.modal-header {
+
+    padding:23px 27px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #08182c,
+            #102d52
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+}
+
+.modal-header h2 {
+
+    margin:0;
+
+    font-size:20px;
+}
+
+.modal-header-sub {
+
+    margin-top:5px;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size:11px;
+}
+
+.modal-status {
+
+    display:inline-flex;
+
+    margin-top:8px;
+
+    padding:6px 11px;
+
+    border-radius:999px;
+
+    font-size:10px;
+
+    font-weight:850;
+
+    text-transform:uppercase;
+
+    background:
+        rgba(255,255,255,.12);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+}
+
+.close {
+
+    width:38px;
+    height:38px;
+
+    flex:none;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:20px;
+
+    cursor:pointer;
+}
+
+.modal-body {
+    padding:25px;
+}
+
+
+/* =====================================================
+   OVERDUE CASE BANNER
+===================================================== */
+
+.case-overdue {
+
+    display:none;
+
+    margin-bottom:18px;
+
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #fff0f3,
+            #fff8f9
+        );
+
+    border:
+        1px solid #ffc3ce;
+
+    color:#c51e40;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+.case-overdue.show {
+    display:block;
+}
+
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+.case-summary {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:12px;
+
+    margin-bottom:20px;
+}
+
+.info-box {
+
+    padding:15px;
+
+    border-radius:15px;
+
+    background:white;
+
+    border:
+        1px solid #e4e9f2;
+}
+
+.info-label {
+
+    color:#7b8799;
+
+    font-size:10px;
+
+    text-transform:uppercase;
+
+    font-weight:800;
+}
+
+.info-value {
+
+    margin-top:5px;
+
+    color:#182238;
+
+    font-size:14px;
+
+    font-weight:750;
+
+    word-break:break-word;
+}
+
+
+/* =====================================================
+   CASE SECTIONS
+===================================================== */
+
+.case-section {
+
+    padding:21px;
+
+    margin-bottom:15px;
+
+    border-radius:18px;
+
+    background:white;
+
+    border:
+        1px solid #e4e9f2;
+}
+
+.case-section h3 {
+
+    margin:
+        0 0 15px;
+
+    font-size:15px;
+
+    color:#182238;
+}
+
+.section-investigation {
+    border-left:5px solid #8b5cf6;
+}
+
+.section-corrective {
+    border-left:5px solid #ff9f43;
+}
+
+.section-verification {
+    border-left:5px solid #00c98b;
+}
+
+.section-status {
+    border-left:5px solid #00aaff;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.field-group {
+
+    margin-bottom:16px;
+
+}
+
+.field-group:last-child {
+    margin-bottom:0;
+}
+
+.field-label {
+
+    display:block;
+
+    margin-bottom:7px;
+
+    color:#4b566b;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+
+    letter-spacing:.3px;
+}
+
+.field-required::after {
+
+    content:" *";
+
+    color:#e33d5b;
+}
+
+textarea,
+input[type="text"],
+input[type="date"] {
+
+    width:100%;
+
+    padding:12px 13px;
+
+    border:
+        1px solid #dce2eb;
+
+    border-radius:11px;
+
+    font-family:inherit;
+
+    font-size:13px;
+
+    outline:none;
+
+    background:#fbfcfe;
+}
+
+textarea {
+
+    min-height:100px;
+
+    resize:vertical;
+}
+
+textarea:focus,
+input:focus {
+
+    border-color:#5187ff;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(81,135,255,.12);
+}
+
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+
+.timeline {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:4px;
+
+    margin:
+        20px 0 10px;
+}
+
+.timeline-step {
+
+    position:relative;
+
+    text-align:center;
+
+    padding-top:5px;
+}
+
+.timeline-step:not(:last-child)::after {
+
+    content:"";
+
+    position:absolute;
+
+    height:3px;
+
+    background:#e5eaf1;
+
+    top:21px;
+
+    left:60%;
+
+    width:80%;
+
+    z-index:0;
+}
+
+.timeline-step.completed:not(:last-child)::after {
+
+    background:
+        linear-gradient(
+            90deg,
+            #00d6a0,
+            #00b894
+        );
+}
+
+.timeline-dot {
+
+    position:relative;
+
+    z-index:1;
+
+    width:34px;
+    height:34px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#e9edf3;
+
+    color:#8792a2;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    border:
+        3px solid #f7f9fc;
+}
+
+.timeline-step.completed .timeline-dot {
+
+    background:
+        linear-gradient(
+            135deg,
+            #00d6a0,
+            #00a878
+        );
+
+    color:white;
+
+    box-shadow:
+        0 0 16px
+        rgba(0,214,160,.35);
+}
+
+.timeline-step.current .timeline-dot {
+
+    background:
+        linear-gradient(
+            135deg,
+            #5c7cff,
+            #7a45ff
+        );
+
+    color:white;
+
+    box-shadow:
+        0 0 18px
+        rgba(92,124,255,.45);
+}
+
+.timeline-label {
+
+    margin-top:7px;
+
+    font-size:9px;
+
+    color:#788397;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.timeline-step.completed .timeline-label,
+.timeline-step.current .timeline-label {
+
+    color:#27344d;
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+.photo-box {
+
+    position:relative;
+
+    padding:8px;
+
+    border-radius:16px;
+
+    background:#101827;
+
+    text-align:center;
+}
+
+.photo-preview {
+
+    width:100%;
+
+    max-height:420px;
+
+    object-fit:contain;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+.photo-hint {
+
+    padding:8px;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   STATUS SELECT
+===================================================== */
+
+.status-select {
+
+    width:100%;
+
+    padding:13px;
+
+    border:
+        1px solid #dce2eb;
+
+    border-radius:11px;
+
+    background:#fbfcfe;
+
+    font-weight:700;
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.modal-actions {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:20px;
+}
+
+.btn {
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px 18px;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.btn-primary {
+
+    color:white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00aaff,
+            #635bff
+        );
+
+    box-shadow:
+        0 8px 22px
+        rgba(72,99,255,.25);
+}
+
+.btn-primary:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 30px
+        rgba(72,99,255,.38);
+}
+
+.btn-primary:disabled {
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+.btn-secondary {
+
+    color:#354158;
+
+    background:#e9edf4;
+}
+
+
+/* =====================================================
+   EMPTY STATE
+===================================================== */
+
+.empty-state {
+
+    grid-column:1/-1;
+
+    padding:45px 20px;
+
+    text-align:center;
+
+    background:white;
+
+    border-radius:20px;
+
+    color:#778296;
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.12);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width:1250px) {
+
+    .kpi-grid {
+
+        grid-template-columns:
+            repeat(4,1fr);
+    }
+
+    .analytics-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .analytics-grid
+    .panel:first-child {
+
+        grid-column:
+            1 / -1;
+    }
+}
+
+
+@media (max-width:850px) {
+
+    .kpi-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .reports-grid {
+
+        grid-template-columns:1fr;
+    }
+
+    .action-center {
+
+        grid-template-columns:1fr;
+    }
+
+    .case-summary {
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .analytics-grid {
+
+        grid-template-columns:1fr;
+    }
+
+    .timeline-label {
+
+        font-size:8px;
+    }
+}
+
+
+@media (max-width:550px) {
+
+    .header {
+
+        padding:15px;
+    }
+
+    .container {
+
+        padding:
+            20px 13px 50px;
+    }
+
+    .hero {
+
+        padding:
+            25px 20px;
+    }
+
+    .kpi-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:10px;
+    }
+
+    .kpi-card {
+
+        min-height:135px;
+
+        padding:16px;
+    }
+
+    .kpi-number {
+
+        font-size:28px;
+    }
+
+    .kpi-label {
+
+        font-size:10px;
+    }
+
+    .case-summary {
+
+        grid-template-columns:1fr;
+    }
+
+    .modal {
+
+        padding:8px;
+    }
+
+    .modal-body {
+
+        padding:15px;
+    }
+
+    .modal-header {
+
+        padding:18px;
+    }
+
+    .timeline {
+
+        gap:0;
+    }
+
+    .timeline-step:not(:last-child)::after {
+
+        width:70%;
+    }
+
+    .timeline-label {
+
+        font-size:7px;
+    }
+
+    .modal-actions {
+
+        flex-direction:column-reverse;
+    }
+
+    .modal-actions .btn {
+
+        width:100%;
+    }
+}
+
+
+@media (prefers-reduced-motion:reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:.01ms !important;
+
+        animation-iteration-count:1 !important;
+
+        transition-duration:.01ms !important;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <div>
+
+            <div class="header-title">
+                ESH NEAR MISS REPORT
+            </div>
+
+            <div class="header-subtitle">
+                Near Miss Management System
+            </div>
+
+        </div>
+
+        <div class="online-status">
+
+            <span class="online-dot"></span>
+
+            SYSTEM ONLINE
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="container">
+
+
+<section class="hero">
+
+    <h1>
+        Near Miss Command Center
+    </h1>
+
+    <p>
+        Monitor, investigate and close workplace
+        near miss reports efficiently.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     KPI
+===================================================== -->
+
+<div class="section-title">
+    Safety Performance Overview
+</div>
+
+
+<section class="kpi-grid">
+
+
+    <div
+        class="kpi-card kpi-total"
+        onclick="goToReports('all')">
+
+        <div class="kpi-icon">◉</div>
+
+        <div
+            class="kpi-number"
+            id="totalReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Total Reports
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-new"
+        onclick="goToReports('New')">
+
+        <div class="kpi-icon">✦</div>
+
+        <div
+            class="kpi-number"
+            id="newReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            New
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-investigation"
+        onclick="goToReports('Investigation')">
+
+        <div class="kpi-icon">◎</div>
+
+        <div
+            class="kpi-number"
+            id="investigationReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Investigation
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-corrective"
+        onclick="goToReports('Corrective Action')">
+
+        <div class="kpi-icon">⚙</div>
+
+        <div
+            class="kpi-number"
+            id="correctiveReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Corrective Action
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-verification"
+        onclick="goToReports('Verification')">
+
+        <div class="kpi-icon">✓</div>
+
+        <div
+            class="kpi-number"
+            id="verificationReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Verification
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-closed"
+        onclick="goToReports('Closed')">
+
+        <div class="kpi-icon">◆</div>
+
+        <div
+            class="kpi-number"
+            id="closedReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Closed
+        </div>
+
+    </div>
+
+
+    <div
+        class="kpi-card kpi-overdue"
+        onclick="goToReports('Overdue')">
+
+        <div class="kpi-icon">!</div>
+
+        <div
+            class="kpi-number"
+            id="overdueReports">
+            0
+        </div>
+
+        <div class="kpi-label">
+            Overdue
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     ANALYTICS
+===================================================== -->
+
+<div class="section-title">
+    Safety Analytics
+</div>
+
+
+<section class="analytics-grid">
+
+
+    <div class="panel">
+
+        <h3 class="panel-title">
+            7-Day Report Trend
+        </h3>
+
+        <div
+            class="chart"
+            id="trendChart">
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h3 class="panel-title">
+            Hazard Category
+        </h3>
+
+        <div id="categoryChart"></div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h3 class="panel-title">
+            Reports by Department
+        </h3>
+
+        <div id="departmentChart"></div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     ACTION CENTER
+===================================================== -->
+
+<div class="section-title">
+    Action Center
+</div>
+
+
+<section class="action-center">
+
+
+    <div class="alert-box alert-new">
+
+        <strong id="actionNew">
+            0
+        </strong>
+
+        <span>
+            New reports requiring review
+        </span>
+
+    </div>
+
+
+    <div class="alert-box alert-action">
+
+        <strong id="actionCorrective">
+            0
+        </strong>
+
+        <span>
+            Corrective actions pending
+        </span>
+
+    </div>
+
+
+    <div class="alert-box alert-overdue">
+
+        <strong id="actionOverdue">
+            0
+        </strong>
+
+        <span>
+            Overdue cases
+        </span>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     REPORTS
+===================================================== -->
+
+<div
+    class="section-title"
+    id="reportsTitle">
+
+    Near Miss Reports
+
+</div>
+
+
+<div class="toolbar">
+
+
+    <input
+        id="searchInput"
+        class="search"
+        type="text"
+        placeholder="Search report number, location, department..."
+    >
+
+
+    <select id="statusFilter">
+
+        <option value="all">
+            All Status
+        </option>
+
+        <option value="New">
+            New
+        </option>
+
+        <option value="Investigation">
+            Investigation
+        </option>
+
+        <option value="Corrective Action">
+            Corrective Action
+        </option>
+
+        <option value="Verification">
+            Verification
+        </option>
+
+        <option value="Closed">
+            Closed
+        </option>
+
+    </select>
+
+
+    <select id="categoryFilter">
+
+        <option value="all">
+            All Categories
+        </option>
+
+        <option value="Near Miss">
+            Near Miss
+        </option>
+
+        <option value="Unsafe Act">
+            Unsafe Act
+        </option>
+
+        <option value="Unsafe Condition">
+            Unsafe Condition
+        </option>
+
+    </select>
+
+
+</div>
+
+
+<div
+    id="activeFilter"
+    class="active-filter">
+
+    <span id="activeFilterText"></span>
+
+    <button
+        class="reset-filter"
+        onclick="resetFilters()">
+
+        Reset
+
+    </button>
+
+</div>
+
+
+<section
+    class="reports-grid"
+    id="reportsGrid">
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     CASE MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="caseModal">
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Case File
+                </h2>
+
+                <div
+                    class="modal-header-sub"
+                    id="modalSubtitle">
+                    ESH Near Miss Investigation
+                </div>
+
+                <div
+                    class="modal-status"
+                    id="modalStatusBadge">
+                    NEW
+                </div>
+
+            </div>
+
+
+            <button
+                class="close"
+                onclick="closeModal()">
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <div class="modal-body">
+
+
+            <!-- OVERDUE -->
+
+            <div
+                id="caseOverdue"
+                class="case-overdue">
+
+                ⚠ OVERDUE ACTION —
+                This case has passed its corrective-action due date.
+
+            </div>
+
+
+            <!-- SUMMARY -->
+
+            <div class="case-summary">
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Report Number
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="caseNumber">
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Location
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="caseLocation">
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Department
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="caseDepartment">
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <div class="info-label">
+                        Category
+                    </div>
+
+                    <div
+                        class="info-value"
+                        id="caseCategory">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- TIMELINE -->
+
+            <div class="case-section">
+
+                <h3>
+                    Investigation Progress
+                </h3>
+
+
+                <div
+                    class="timeline"
+                    id="timeline">
+
+
+                    <div
+                        class="timeline-step"
+                        data-stage="New">
+
+                        <div class="timeline-dot">
+                            1
+                        </div>
+
+                        <div class="timeline-label">
+                            New
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timeline-step"
+                        data-stage="Investigation">
+
+                        <div class="timeline-dot">
+                            2
+                        </div>
+
+                        <div class="timeline-label">
+                            Investigation
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timeline-step"
+                        data-stage="Corrective Action">
+
+                        <div class="timeline-dot">
+                            3
+                        </div>
+
+                        <div class="timeline-label">
+                            Corrective Action
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timeline-step"
+                        data-stage="Verification">
+
+                        <div class="timeline-dot">
+                            4
+                        </div>
+
+                        <div class="timeline-label">
+                            Verification
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="timeline-step"
+                        data-stage="Closed">
+
+                        <div class="timeline-dot">
+                            5
+                        </div>
+
+                        <div class="timeline-label">
+                            Closed
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- INCIDENT -->
+
+            <div class="case-section">
+
+                <h3>
+                    Incident Information
+                </h3>
+
+                <div id="incidentInfo"></div>
+
+            </div>
+
+
+            <!-- NARRATIVE -->
+
+            <div class="case-section">
+
+                <h3>
+                    What Happened
+                </h3>
+
+                <div
+                    id="caseNarrative"
+                    style="
+                    line-height:1.7;
+                    color:#4b566b;
+                    ">
+                </div>
+
+            </div>
+
+
+            <!-- PHOTO -->
+
+            <div class="case-section">
+
+                <h3>
+                    Photo Evidence
+                </h3>
+
+                <div id="photoEvidence">
+                    No photo available.
+                </div>
+
+            </div>
+
+
+            <!-- INVESTIGATION -->
+
+            <div
+                class="case-section
+                section-investigation">
+
+                <h3>
+                    ESH Investigation
+                </h3>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Investigation Findings
+
+                    </label>
+
+                    <textarea
+                        id="investigationFindings"
+                        placeholder="Enter investigation findings...">
+                    </textarea>
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Root Cause
+
+                    </label>
+
+                    <textarea
+                        id="rootCause"
+                        placeholder="Enter root cause...">
+                    </textarea>
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label class="field-label">
+
+                        ESH Investigator
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="eshInvestigator"
+                        placeholder="Investigator name"
+                    >
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label class="field-label">
+
+                        ESH Remarks
+
+                    </label>
+
+                    <textarea
+                        id="eshRemarks"
+                        placeholder="Enter ESH remarks...">
+                    </textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- CORRECTIVE -->
+
+            <div
+                class="case-section
+                section-corrective">
+
+                <h3>
+                    Corrective Action
+                </h3>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Corrective Action
+
+                    </label>
+
+                    <textarea
+                        id="correctiveAction"
+                        placeholder="Describe corrective action...">
+                    </textarea>
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Person Responsible
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="personResponsible"
+                        placeholder="Person responsible"
+                    >
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Due Date
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dueDate"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- VERIFICATION -->
+
+            <div
+                class="case-section
+                section-verification">
+
+                <h3>
+                    ESH Verification
+                </h3>
+
+
+                <div class="field-group">
+
+                    <label
+                        class="field-label field-required">
+
+                        Verification Remarks
+
+                    </label>
+
+                    <textarea
+                        id="verificationRemarks"
+                        placeholder="Confirm that the corrective action was checked and effective...">
+                    </textarea>
+
+                </div>
+
+
+                <div class="field-group">
+
+                    <label class="field-label">
+
+                        Closed Date
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="closedDate"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div
+                class="case-section
+                section-status">
+
+                <h3>
+                    Case Status
+                </h3>
+
+
+                <select
+                    id="caseStatus"
+                    class="status-select">
+
+                    <option value="New">
+                        New
+                    </option>
+
+                    <option value="Investigation">
+                        Investigation
+                    </option>
+
+                    <option value="Corrective Action">
+                        Corrective Action
+                    </option>
+
+                    <option value="Verification">
+                        Verification
+                    </option>
+
+                    <option value="Closed">
+                        Closed
+                    </option>
+
+                </select>
+
+
+                <div
+                    style="
+                    margin-top:10px;
+                    color:#7b8799;
+                    font-size:11px;
+                    line-height:1.6;
+                    ">
+
+                    Closed status requires verification remarks.
+                    The closed date will be recorded automatically.
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="modal-actions">
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="closeModal()">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    id="saveButton"
+                    class="btn btn-primary"
+                    onclick="saveReport()">
+
+                    Save Report
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   GOOGLE APPS SCRIPT
+===================================================== */
+
+const GOOGLE_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+let reports = [];
+
+let selectedReport = null;
+
+let showOverdueOnly = false;
+
+
+/* =====================================================
+   LOAD REPORTS
+===================================================== */
+
+async function loadReports() {
+
+    try {
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL +
+                "?test=reports"
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error ||
+                "Unable to load reports."
+            );
+
+        }
+
+
+        reports =
+            result.reports || [];
+
+
+        updateDashboard();
+
+        renderReports();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "reportsGrid"
+        ).innerHTML = `
+
+            <div class="empty-state">
+
+                ❌ Unable to load reports.
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+    const total =
+        reports.length;
+
+    const newCount =
+        countStatus("New");
+
+    const investigation =
+        countStatus("Investigation");
+
+    const corrective =
+        countStatus(
+            "Corrective Action"
+        );
+
+    const verification =
+        countStatus(
+            "Verification"
+        );
+
+    const closed =
+        countStatus("Closed");
+
+    const overdue =
+        calculateOverdue();
+
+
+    document.getElementById(
+        "totalReports"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "newReports"
+    ).textContent =
+        newCount;
+
+
+    document.getElementById(
+        "investigationReports"
+    ).textContent =
+        investigation;
+
+
+    document.getElementById(
+        "correctiveReports"
+    ).textContent =
+        corrective;
+
+
+    document.getElementById(
+        "verificationReports"
+    ).textContent =
+        verification;
+
+
+    document.getElementById(
+        "closedReports"
+    ).textContent =
+        closed;
+
+
+    document.getElementById(
+        "overdueReports"
+    ).textContent =
+        overdue;
+
+
+    document.getElementById(
+        "actionNew"
+    ).textContent =
+        newCount;
+
+
+    document.getElementById(
+        "actionCorrective"
+    ).textContent =
+        corrective;
+
+
+    document.getElementById(
+        "actionOverdue"
+    ).textContent =
+        overdue;
+
+
+    renderAnalytics();
+
+}
+
+
+/* =====================================================
+   STATUS COUNT
+===================================================== */
+
+function countStatus(status) {
+
+    return reports.filter(
+        report =>
+            normalizeStatus(
+                report.status
+            ) ===
+            normalizeStatus(
+                status
+            )
+    ).length;
+
+}
+
+
+/* =====================================================
+   OVERDUE
+===================================================== */
+
+function isReportOverdue(report) {
+
+    if (
+        normalizeStatus(
+            report.status
+        ) === "closed"
+    ) {
+
+        return false;
+
+    }
+
+
+    if (!report.dueDate) {
+
+        return false;
+
+    }
+
+
+    const today =
+        new Date();
+
+    today.setHours(
+        0,0,0,0
+    );
+
+
+    const due =
+        parseDate(
+            report.dueDate
+        );
+
+    due.setHours(
+        0,0,0,0
+    );
+
+
+    if (
+        isNaN(
+            due.getTime()
+        )
+    ) {
+
+        return false;
+
+    }
+
+
+    return due < today;
+
+}
+
+
+function calculateOverdue() {
+
+    return reports.filter(
+        report =>
+            isReportOverdue(
+                report
+            )
+    ).length;
+
+}
+
+
+/* =====================================================
+   KPI → REPORTS
+===================================================== */
+
+function goToReports(filter) {
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "all";
+
+
+    if (
+        filter === "Overdue"
+    ) {
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "all";
+
+        showOverdueOnly = true;
+
+    } else {
+
+        document.getElementById(
+            "statusFilter"
+        ).value = filter;
+
+        showOverdueOnly = false;
+
+    }
+
+
+    renderReports();
+
+    updateActiveFilter();
+
+
+    setTimeout(
+        function() {
+
+            document.getElementById(
+                "reportsTitle"
+            ).scrollIntoView({
+
+                behavior:"smooth",
+
+                block:"start"
+
+            });
+
+        },
+        50
+    );
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetFilters() {
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "all";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "all";
+
+
+    showOverdueOnly = false;
+
+
+    renderReports();
+
+    updateActiveFilter();
+
+}
+
+
+/* =====================================================
+   ACTIVE FILTER
+===================================================== */
+
+function updateActiveFilter() {
+
+    const box =
+        document.getElementById(
+            "activeFilter"
+        );
+
+    const text =
+        document.getElementById(
+            "activeFilterText"
+        );
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+    const category =
+        document.getElementById(
+            "categoryFilter"
+        ).value;
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value;
+
+
+    let message = "";
+
+
+    if (showOverdueOnly) {
+
+        message =
+            "🔴 Showing overdue reports";
+
+    }
+
+    else if (
+        status !== "all"
+    ) {
+
+        message =
+            "Showing " +
+            status +
+            " reports";
+
+    }
+
+    else if (
+        category !== "all"
+    ) {
+
+        message =
+            "Showing " +
+            category +
+            " reports";
+
+    }
+
+    else if (search) {
+
+        message =
+            "Search: " +
+            search;
+
+    }
+
+
+    if (message) {
+
+        text.textContent =
+            "Active filter: " +
+            message;
+
+        box.classList.add(
+            "show"
+        );
+
+    } else {
+
+        box.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   RENDER REPORTS
+===================================================== */
+
+function renderReports() {
+
+    const grid =
+        document.getElementById(
+            "reportsGrid"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const category =
+        document.getElementById(
+            "categoryFilter"
+        ).value;
+
+
+    const filtered =
+        reports.filter(
+            report => {
+
+
+                const searchable = [
+
+                    report.reportNumber,
+                    report.location,
+                    report.department,
+                    report.reporterName,
+                    report.whatHappened
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+
+                const searchMatch =
+                    !search ||
+                    searchable.includes(
+                        search
+                    );
+
+
+                const statusMatch =
+                    status === "all" ||
+                    normalizeStatus(
+                        report.status
+                    ) ===
+                    normalizeStatus(
+                        status
+                    );
+
+
+                const categoryMatch =
+                    category === "all" ||
+                    report.hazardCategory ===
+                    category;
+
+
+                const overdueMatch =
+                    !showOverdueOnly ||
+                    isReportOverdue(
+                        report
+                    );
+
+
+                return (
+                    searchMatch &&
+                    statusMatch &&
+                    categoryMatch &&
+                    overdueMatch
+                );
+
+            }
+        );
+
+
+    if (!filtered.length) {
+
+        grid.innerHTML = `
+
+            <div class="empty-state">
+
+                No reports found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        filtered
+        .map(
+            report =>
+                createReportCard(
+                    report
+                )
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   REPORT CARD
+===================================================== */
+
+function createReportCard(report) {
+
+    const overdue =
+        isReportOverdue(
+            report
+        );
+
+
+    let statusClass =
+        getStatusClass(
+            report.status
+        );
+
+
+    if (overdue) {
+
+        statusClass =
+            "status-overdue";
+
+    }
+
+
+    return `
+
+        <div
+            class="report-card"
+            onclick="openReport(
+                ${Number(report.rowNumber)}
+            )">
+
+            <div class="report-number">
+
+                ${escapeHtml(
+                    report.reportNumber
+                )}
+
+            </div>
+
+
+            <div class="report-meta">
+
+                📍
+                ${escapeHtml(
+                    report.location || "-"
+                )}
+
+                <br>
+
+                🏭
+                ${escapeHtml(
+                    report.department || "-"
+                )}
+
+                <br>
+
+                ⚠
+                ${escapeHtml(
+                    report.hazardCategory || "-"
+                )}
+
+                ${
+                    overdue
+                    ? `
+                        <br>
+
+                        <strong
+                            style="
+                            color:#d31d43;
+                            ">
+
+                            ⚠ OVERDUE
+
+                        </strong>
+                    `
+                    : ""
+                }
+
+            </div>
+
+
+            <span
+                class="status ${statusClass}">
+
+                ${
+                    overdue
+                    ? "Overdue"
+                    : escapeHtml(
+                        report.status ||
+                        "New"
+                    )
+                }
+
+            </span>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   OPEN REPORT
+===================================================== */
+
+function openReport(rowNumber) {
+
+    selectedReport =
+        reports.find(
+            report =>
+                Number(
+                    report.rowNumber
+                ) ===
+                Number(
+                    rowNumber
+                )
+        );
+
+
+    if (!selectedReport) {
+        return;
+    }
+
+
+    const r =
+        selectedReport;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Case File — " +
+        (r.reportNumber || "");
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        "ESH Near Miss Investigation";
+
+
+    document.getElementById(
+        "modalStatusBadge"
+    ).textContent =
+        String(
+            r.status || "New"
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "caseNumber"
+    ).textContent =
+        r.reportNumber || "-";
+
+
+    document.getElementById(
+        "caseLocation"
+    ).textContent =
+        r.location || "-";
+
+
+    document.getElementById(
+        "caseDepartment"
+    ).textContent =
+        r.department || "-";
+
+
+    document.getElementById(
+        "caseCategory"
+    ).textContent =
+        r.hazardCategory || "-";
+
+
+    document.getElementById(
+        "incidentInfo"
+    ).innerHTML = `
+
+        <div
+            style="
+            color:#4b566b;
+            line-height:1.8;
+            ">
+
+            <strong>
+                Date & Time:
+            </strong>
+
+            ${escapeHtml(
+                r.dateTime || "-"
+            )}
+
+            <br>
+
+            <strong>
+                Reporter:
+            </strong>
+
+            ${escapeHtml(
+                r.reporterName || "-"
+            )}
+
+            <br>
+
+            <strong>
+                Submitted:
+            </strong>
+
+            ${escapeHtml(
+                r.submittedAt || "-"
+            )}
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "caseNarrative"
+    ).textContent =
+        r.whatHappened ||
+        "No narrative provided.";
+
+
+    loadPhoto(
+        r.photoLink
+    );
+
+
+    document.getElementById(
+        "investigationFindings"
+    ).value =
+        r.investigationFindings || "";
+
+
+    document.getElementById(
+        "rootCause"
+    ).value =
+        r.rootCause || "";
+
+
+    document.getElementById(
+        "correctiveAction"
+    ).value =
+        r.correctiveAction || "";
+
+
+    document.getElementById(
+        "personResponsible"
+    ).value =
+        r.personResponsible || "";
+
+
+    document.getElementById(
+        "dueDate"
+    ).value =
+        formatDateInput(
+            r.dueDate
+        );
+
+
+    document.getElementById(
+        "verificationRemarks"
+    ).value =
+        r.verificationRemarks || "";
+
+
+    document.getElementById(
+        "eshInvestigator"
+    ).value =
+        r.eshInvestigator || "";
+
+
+    document.getElementById(
+        "eshRemarks"
+    ).value =
+        r.eshRemarks || "";
+
+
+    document.getElementById(
+        "closedDate"
+    ).value =
+        formatDateInput(
+            r.closedDate
+        );
+
+
+    document.getElementById(
+        "caseStatus"
+    ).value =
+        r.status || "New";
+
+
+    updateTimeline(
+        r.status
+    );
+
+
+    updateCaseOverdue(
+        r
+    );
+
+
+    document.getElementById(
+        "caseModal"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+/* =====================================================
+   CASE OVERDUE
+===================================================== */
+
+function updateCaseOverdue(report) {
+
+    const box =
+        document.getElementById(
+            "caseOverdue"
+        );
+
+
+    if (
+        isReportOverdue(
+            report
+        )
+    ) {
+
+        box.classList.add(
+            "show"
+        );
+
+    } else {
+
+        box.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+function loadPhoto(link) {
+
+    const container =
+        document.getElementById(
+            "photoEvidence"
+        );
+
+
+    if (
+        !link ||
+        link === "No photo"
+    ) {
+
+        container.innerHTML = `
+
+            <div
+                style="
+                padding:25px;
+                text-align:center;
+                color:#8994a6;
+                background:#f5f7fa;
+                border-radius:12px;
+                ">
+
+                No photo evidence attached.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const safeLink =
+        escapeAttribute(
+            link
+        );
+
+
+    container.innerHTML = `
+
+        <div class="photo-box">
+
+            <img
+                src="${safeLink}"
+                class="photo-preview"
+                onclick="
+                    window.open(
+                        '${safeLink}',
+                        '_blank'
+                    )
+                "
+                onerror="
+                    this.parentElement.innerHTML =
+                    '<div class=&quot;photo-hint&quot;>Unable to display photo. Open the original link from Google Drive.</div>';
+                "
+            >
+
+            <div class="photo-hint">
+
+                Click photo to open full evidence
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+
+function updateTimeline(status) {
+
+    const order = [
+
+        "New",
+        "Investigation",
+        "Corrective Action",
+        "Verification",
+        "Closed"
+
+    ];
+
+
+    const normalized =
+        normalizeStatus(
+            status
+        );
+
+
+    let current =
+        order.findIndex(
+            stage =>
+                normalizeStatus(
+                    stage
+                ) === normalized
+        );
+
+
+    if (current < 0) {
+
+        current = 0;
+
+    }
+
+
+    document.querySelectorAll(
+        ".timeline-step"
+    ).forEach(
+        (step,index) => {
+
+
+            step.classList.remove(
+                "completed",
+                "current"
+            );
+
+
+            if (
+                index <
+                current
+            ) {
+
+                step.classList.add(
+                    "completed"
+                );
+
+            }
+
+            else if (
+                index ===
+                current
+            ) {
+
+                step.classList.add(
+                    "current"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SAVE REPORT
+===================================================== */
+
+async function saveReport() {
+
+    if (!selectedReport) {
+
+        return;
+
+    }
+
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    const status =
+        document.getElementById(
+            "caseStatus"
+        ).value;
+
+
+    const investigationFindings =
+        document.getElementById(
+            "investigationFindings"
+        ).value.trim();
+
+
+    const rootCause =
+        document.getElementById(
+            "rootCause"
+        ).value.trim();
+
+
+    const correctiveAction =
+        document.getElementById(
+            "correctiveAction"
+        ).value.trim();
+
+
+    const personResponsible =
+        document.getElementById(
+            "personResponsible"
+        ).value.trim();
+
+
+    const dueDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
+
+
+    const verificationRemarks =
+        document.getElementById(
+            "verificationRemarks"
+        ).value.trim();
+
+
+    const eshInvestigator =
+        document.getElementById(
+            "eshInvestigator"
+        ).value.trim();
+
+
+    const eshRemarks =
+        document.getElementById(
+            "eshRemarks"
+        ).value.trim();
+
+
+    let closedDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
+
+
+    /* =================================================
+       VALIDATION
+    ================================================= */
+
+
+    if (
+        status !== "New" &&
+        !investigationFindings
+    ) {
+
+        alert(
+            "Please enter Investigation Findings before moving the case forward."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        (
+            status === "Corrective Action" ||
+            status === "Verification" ||
+            status === "Closed"
+        ) &&
+        !rootCause
+    ) {
+
+        alert(
+            "Please enter the Root Cause before moving the case forward."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        (
+            status === "Corrective Action" ||
+            status === "Verification" ||
+            status === "Closed"
+        ) &&
+        !correctiveAction
+    ) {
+
+        alert(
+            "Please enter the Corrective Action."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        (
+            status === "Corrective Action" ||
+            status === "Verification" ||
+            status === "Closed"
+        ) &&
+        !personResponsible
+    ) {
+
+        alert(
+            "Please enter the Person Responsible."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        (
+            status === "Corrective Action" ||
+            status === "Verification" ||
+            status === "Closed"
+        ) &&
+        !dueDate
+    ) {
+
+        alert(
+            "Please select a Corrective Action Due Date."
+        );
+
+        return;
+
+    }
+
+
+    /* =================================================
+       CLOSED VALIDATION
+    ================================================= */
+
+    if (
+        status === "Closed" &&
+        !verificationRemarks
+    ) {
+
+        alert(
+            "A case cannot be Closed until Verification Remarks are entered."
+        );
+
+        return;
+
+    }
+
+
+    /* =================================================
+       AUTO CLOSED DATE
+    ================================================= */
+
+    if (
+        status === "Closed" &&
+        !closedDate
+    ) {
+
+        const now =
+            new Date();
+
+        closedDate =
+            now.getFullYear() +
+            "-" +
+            String(
+                now.getMonth() + 1
+            ).padStart(2,"0") +
+            "-" +
+            String(
+                now.getDate()
+            ).padStart(2,"0");
+
+    }
+
+
+    /* =================================================
+       REOPEN
+    ================================================= */
+
+    if (
+        status !== "Closed"
+    ) {
+
+        closedDate = "";
+
+    }
+
+
+    const data = {
+
+        action:
+            "updateReport",
+
+        rowNumber:
+            selectedReport.rowNumber,
+
+        status:
+            status,
+
+        investigationFindings:
+            investigationFindings,
+
+        rootCause:
+            rootCause,
+
+        correctiveAction:
+            correctiveAction,
+
+        personResponsible:
+            personResponsible,
+
+        dueDate:
+            dueDate,
+
+        verificationRemarks:
+            verificationRemarks,
+
+        eshInvestigator:
+            eshInvestigator,
+
+        eshRemarks:
+            eshRemarks,
+
+        closedDate:
+            closedDate
+
+    };
+
+
+    try {
+
+        saveButton.disabled = true;
+
+        saveButton.textContent =
+            "Saving...";
+
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL,
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            data
+                        )
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.error ||
+                "Update failed."
+            );
+
+        }
+
+
+        saveButton.textContent =
+            "Saved ✓";
+
+
+        await loadReports();
+
+
+        alert(
+            "✅ Report updated successfully."
+        );
+
+
+        closeModal();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "❌ Unable to update report.\n\n" +
+            error.message
+        );
+
+
+        saveButton.disabled = false;
+
+        saveButton.textContent =
+            "Save Report";
+
+    }
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal() {
+
+    document.getElementById(
+        "caseModal"
+    ).classList.remove(
+        "active"
+    );
+
+
+    selectedReport = null;
+
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    saveButton.disabled = false;
+
+    saveButton.textContent =
+        "Save Report";
+
+}
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   ANALYTICS
+===================================================== */
+
+function renderAnalytics() {
+
+    renderTrend();
+
+    renderCategory();
+
+    renderDepartment();
+
+}
+
+
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+function renderCategory() {
+
+    const container =
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    const categories = {};
+
+
+    reports.forEach(
+        report => {
+
+            const category =
+                report.hazardCategory ||
+                "Unknown";
+
+
+            categories[category] =
+                (
+                    categories[category] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    const total =
+        reports.length || 1;
+
+
+    if (
+        !Object.keys(
+            categories
+        ).length
+    ) {
+
+        container.innerHTML =
+            `<div style="color:#8994a6;font-size:12px;">
+                No data available.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        Object.entries(
+            categories
+        )
+        .sort(
+            (a,b) =>
+                b[1] - a[1]
+        )
+        .map(
+            ([name,count]) => `
+
+                <div class="bar-row">
+
+                    <div class="bar-label">
+
+                        <span>
+                            ${escapeHtml(name)}
+                        </span>
+
+                        <span>
+                            ${count}
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            style="
+                            width:${
+                                (
+                                    count /
+                                    total
+                                ) * 100
+                            }%;
+                            ">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   DEPARTMENT
+===================================================== */
+
+function renderDepartment() {
+
+    const container =
+        document.getElementById(
+            "departmentChart"
+        );
+
+
+    const departments = {};
+
+
+    reports.forEach(
+        report => {
+
+            const department =
+                report.department ||
+                "Unknown";
+
+
+            departments[department] =
+                (
+                    departments[department] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    const total =
+        reports.length || 1;
+
+
+    if (
+        !Object.keys(
+            departments
+        ).length
+    ) {
+
+        container.innerHTML =
+            `<div style="color:#8994a6;font-size:12px;">
+                No data available.
+            </div>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        Object.entries(
+            departments
+        )
+        .sort(
+            (a,b) =>
+                b[1] - a[1]
+        )
+        .slice(0,8)
+        .map(
+            ([name,count]) => `
+
+                <div class="bar-row">
+
+                    <div class="bar-label">
+
+                        <span>
+                            ${escapeHtml(name)}
+                        </span>
+
+                        <span>
+                            ${count}
+                        </span>
+
+                    </div>
+
+                    <div class="bar">
+
+                        <div
+                            class="bar-fill"
+                            style="
+                            width:${
+                                (
+                                    count /
+                                    total
+                                ) * 100
+                            }%;
+                            ">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   TREND
+===================================================== */
+
+function renderTrend() {
+
+    const container =
+        document.getElementById(
+            "trendChart"
+        );
+
+
+    const days = [];
+
+    const counts = [];
+
+
+    for (
+        let i = 6;
+        i >= 0;
+        i--
+    ) {
+
+        const date =
+            new Date();
+
+
+        date.setDate(
+            date.getDate() -
+            i
+        );
+
+
+        date.setHours(
+            0,0,0,0
+        );
+
+
+        const next =
+            new Date(
+                date
+            );
+
+
+        next.setDate(
+            next.getDate() +
+            1
+        );
+
+
+        const count =
+            reports.filter(
+                report => {
+
+                    const d =
+                        parseDate(
+                            report.dateTime
+                        );
+
+
+                    return (
+                        d >= date &&
+                        d < next
+                    );
+
+                }
+            ).length;
+
+
+        days.push(
+            date.toLocaleDateString(
+                "en-MY",
+                {
+                    day:"numeric",
+                    month:"short"
+                }
+            )
+        );
+
+
+        counts.push(
+            count
+        );
+
+    }
+
+
+    const max =
+        Math.max(
+            ...counts,
+            1
+        );
+
+
+    container.innerHTML = `
+
+        <div
+            style="
+            display:flex;
+            align-items:flex-end;
+            height:180px;
+            gap:10px;
+            padding:10px 5px;
+            ">
+
+            ${counts.map(
+                (count,index) => `
+
+                    <div
+                        style="
+                        flex:1;
+                        height:100%;
+                        display:flex;
+                        flex-direction:column;
+                        justify-content:flex-end;
+                        align-items:center;
+                        gap:7px;
+                        ">
+
+                        <strong
+                            style="
+                            font-size:11px;
+                            color:#43506a;
+                            ">
+
+                            ${count}
+
+                        </strong>
+
+
+                        <div
+                            style="
+                            width:100%;
+                            max-width:42px;
+                            height:${
+                                Math.max(
+                                    8,
+                                    (
+                                        count /
+                                        max
+                                    ) * 125
+                                )
+                            }px;
+                            border-radius:
+                                10px
+                                10px
+                                4px
+                                4px;
+                            background:
+                                linear-gradient(
+                                    180deg,
+                                    #00c6ff,
+                                    #635bff
+                                );
+                            box-shadow:
+                                0 5px 15px
+                                rgba(
+                                    76,
+                                    91,
+                                    255,
+                                    .20
+                                );
+                            ">
+                        </div>
+
+
+                        <span
+                            style="
+                            font-size:9px;
+                            color:#7d8798;
+                            ">
+
+                            ${days[index]}
+
+                        </span>
+
+                    </div>
+
+                `
+            ).join("")}
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   FILTER EVENTS
+===================================================== */
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    function() {
+
+        showOverdueOnly = false;
+
+        renderReports();
+
+        updateActiveFilter();
+
+    }
+);
+
+
+document.getElementById(
+    "statusFilter"
+).addEventListener(
+    "change",
+    function() {
+
+        showOverdueOnly = false;
+
+        renderReports();
+
+        updateActiveFilter();
+
+    }
+);
+
+
+document.getElementById(
+    "categoryFilter"
+).addEventListener(
+    "change",
+    function() {
+
+        showOverdueOnly = false;
+
+        renderReports();
+
+        updateActiveFilter();
+
+    }
+);
+
+
+document.getElementById(
+    "caseStatus"
+).addEventListener(
+    "change",
+    function() {
+
+        updateTimeline(
+            this.value
+        );
+
+
+        if (
+            selectedReport
+        ) {
+
+            const temporaryReport = {
+
+                ...selectedReport,
+
+                status:
+                    this.value,
+
+                dueDate:
+                    document.getElementById(
+                        "dueDate"
+                    ).value
+
+            };
+
+
+            updateCaseOverdue(
+                temporaryReport
+            );
+
+        }
+
+
+        document.getElementById(
+            "modalStatusBadge"
+        ).textContent =
+            this.value.toUpperCase();
+
+    }
+);
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function normalizeStatus(value) {
+
+    return String(
+        value || ""
+    )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+function getStatusClass(status) {
+
+    switch (
+        normalizeStatus(
+            status
+        )
+    ) {
+
+        case "new":
+            return "status-new";
+
+        case "investigation":
+            return "status-investigation";
+
+        case "corrective action":
+            return "status-corrective";
+
+        case "verification":
+            return "status-verification";
+
+        case "closed":
+            return "status-closed";
+
+        default:
+            return "status-new";
+
+    }
+
+}
+
+
+function parseDate(value) {
+
+    if (!value) {
+
+        return new Date(
+            "invalid"
+        );
+
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    return isNaN(
+        date.getTime()
+    )
+        ? new Date(
+            String(value)
+        )
+        : date;
+
+}
+
+
+function formatDateInput(value) {
+
+    if (!value) {
+
+        return "";
+
+    }
+
+
+    const date =
+        parseDate(
+            value
+        );
+
+
+    if (
+        isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    return (
+        date.getFullYear() +
+        "-" +
+        String(
+            date.getMonth() + 1
+        ).padStart(2,"0") +
+        "-" +
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadReports();
+
+
+/* =====================================================
+   AUTO REFRESH
+===================================================== */
+
+setInterval(
+    loadReports,
+    30000
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESH Login</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>ESH Login</h1>
+
+    <p class="subtitle">
+        Near Miss Management System
+    </p>
+
+
+    <form id="loginForm">
+
+        <label for="username">
+            Username
+        </label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+
+        <button
+            type="submit"
+            class="submit-button"
+        >
+            LOGIN
+        </button>
+
+    </form>
+
+
+    <div
+        id="loginError"
+        class="success-message"
+    >
+    </div>
+
+</div>
+
+
+<script>
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginError =
+    document.getElementById("loginError");
+
+
+loginForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const username =
+            document.getElementById(
+                "username"
+            ).value;
+
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
+
+
+        // ESH LOGIN DETAILS
+
+        if (
+            username === "ESHadminbkh" &&
+            password === "ESHbkh@2026"
+        ) {
+
+            sessionStorage.setItem(
+                "eshLoggedIn",
+                "true"
+            );
+
+
+            window.location.href =
+                "esh.html";
+
+        } else {
+
+            loginError.style.display =
+                "block";
+
+            loginError.style.background =
+                "#fee2e2";
+
+            loginError.style.color =
+                "#991b1b";
+
+            loginError.innerHTML =
+                "❌ Invalid username or password.";
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>
