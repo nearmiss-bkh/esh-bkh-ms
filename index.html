@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Near Miss Reporting System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Near Miss Report</h1>
+
+        <p class="subtitle">
+            ESH Near Miss Reporting System
+        </p>
+
+
+        <form id="nearMissForm">
+
+
+            <!-- DATE & TIME -->
+
+            <label for="dateTime">
+                Date & Time
+            </label>
+
+            <input
+                type="datetime-local"
+                id="dateTime"
+                name="dateTime"
+                required
+            >
+
+
+            <!-- LOCATION -->
+
+            <label for="location">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="location"
+                name="location"
+                placeholder="Enter location"
+                required
+            >
+
+
+            <!-- DEPARTMENT -->
+
+            <label for="department">
+                Department
+            </label>
+
+            <select
+                id="department"
+                name="department"
+                required
+            >
+
+                <option value="">
+                    Select Department
+                </option>
+
+                <option value="Production">
+                    Production
+                </option>
+
+                <option value="Warehouse">
+                    Warehouse
+                </option>
+
+                <option value="Maintenance">
+                    Maintenance
+                </option>
+
+                <option value="Quality">
+                    Quality
+                </option>
+
+                <option value="Engineering">
+                    Engineering
+                </option>
+
+                <option value="ESH">
+                    ESH
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+
+            <!-- HAZARD CATEGORY -->
+
+            <label for="hazardCategory">
+                Hazard Category
+            </label>
+
+            <select
+                id="hazardCategory"
+                name="hazardCategory"
+                required
+            >
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option value="Near Miss">
+                    Near Miss
+                </option>
+
+                <option value="Unsafe Act">
+                    Unsafe Act
+                </option>
+
+                <option value="Unsafe Condition">
+                    Unsafe Condition
+                </option>
+
+            </select>
+
+
+            <!-- WHAT HAPPENED -->
+
+            <label for="whatHappened">
+                What happened?
+            </label>
+
+            <textarea
+                id="whatHappened"
+                name="whatHappened"
+                rows="5"
+                placeholder="Describe what happened..."
+                required
+            ></textarea>
+
+
+            <!-- REPORTER NAME -->
+
+            <label for="reporterName">
+                Reporter Name
+            </label>
+
+            <input
+                type="text"
+                id="reporterName"
+                name="reporterName"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <!-- PHOTO -->
+
+            <label for="photo">
+                Photo
+            </label>
+
+            <input
+                type="file"
+                id="photo"
+                name="photo"
+                accept="image/*"
+            >
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-button"
+            >
+                SUBMIT NEAR MISS
+            </button>
+
+
+        </form>
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div
+            id="successMessage"
+            class="success-message"
+        >
+            Report submitted successfully!
+        </div>
+
+
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
