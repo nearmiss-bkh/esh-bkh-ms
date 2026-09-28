@@ -1,110 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<title>ESH Secure Access | Near Miss System</title>
 
-    <title>ESH Login</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 180, 255, 0.15), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(0, 255, 170, 0.10), transparent 30%),
+        linear-gradient(135deg, #020817, #071426 55%, #031c25);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Background grid */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 45px 45px;
+    pointer-events: none;
+}
+
+/* Glow */
+.glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: rgba(0, 200, 255, 0.08);
+    filter: blur(70px);
+    top: -100px;
+    left: -100px;
+}
+
+.glow2 {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(0, 255, 170, 0.07);
+    filter: blur(70px);
+    bottom: -100px;
+    right: -100px;
+}
+
+/* Main */
+.container {
+    width: 100%;
+    max-width: 460px;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Logo area */
+.logo-area {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.shield {
+    width: 78px;
+    height: 88px;
+    margin: 0 auto 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shield::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #00d9ff, #0077ff);
+    clip-path: polygon(
+        50% 0%,
+        90% 14%,
+        90% 55%,
+        75% 78%,
+        50% 100%,
+        25% 78%,
+        10% 55%,
+        10% 14%
+    );
+    filter: drop-shadow(0 0 20px rgba(0,210,255,0.45));
+}
+
+.shield span {
+    position: relative;
+    z-index: 2;
+    font-size: 32px;
+    font-weight: 900;
+    color: white;
+}
+
+.company {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #9fb4c8;
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    color: #7f9aae;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+/* Login card */
+.card {
+    background: rgba(8, 22, 38, 0.82);
+    border: 1px solid rgba(92, 190, 220, 0.20);
+    border-radius: 22px;
+    padding: 34px 30px;
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    backdrop-filter: blur(18px);
+}
+
+.access {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 25px;
+    color: #7fffd4;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00e6a0;
+    box-shadow: 0 0 12px #00e6a0;
+}
+
+/* Labels */
+label {
+    display: block;
+    color: #a9bbca;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.8px;
+}
+
+/* Inputs */
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(150,190,210,0.18);
+    background: rgba(255,255,255,0.045);
+    color: white;
+    outline: none;
+    font-size: 14px;
+    transition: 0.25s;
+}
+
+input:focus {
+    border-color: #00cfff;
+    box-shadow: 0 0 0 3px rgba(0,207,255,0.08);
+    background: rgba(255,255,255,0.065);
+}
+
+input::placeholder {
+    color: #536b7d;
+}
+
+/* Password button */
+.password-wrap input {
+    padding-right: 55px;
+}
+
+.show-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #7690a3;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Login button */
+.login-btn {
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #00cfff, #007cff);
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,150,255,0.22);
+    transition: 0.25s;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0,170,255,0.30);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Error */
+.error {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,60,80,0.08);
+    border: 1px solid rgba(255,80,100,0.20);
+    color: #ff8290;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 22px;
+    color: #50687a;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.footer strong {
+    color: #6f899b;
+}
+
+/* Security line */
+.security {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    color: #526b7c;
+    font-size: 10px;
+}
+
+@media (max-width: 480px) {
+
+    .container {
+        padding: 16px;
+    }
+
+    .card {
+        padding: 28px 22px;
+        border-radius: 18px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+}
+</style>
 </head>
 
 <body>
 
+<div class="glow"></div>
+<div class="glow2"></div>
+
 <div class="container">
 
-    <h1>ESH Login</h1>
+    <div class="logo-area">
 
-    <p class="subtitle">
-        Near Miss Management System
-    </p>
+        <div class="shield">
+            <span>✓</span>
+        </div>
 
+        <div class="company">
+            BIDOR KWONG HENG
+        </div>
 
-    <form id="loginForm">
+        <div class="title">
+            ESH NEAR MISS
+        </div>
 
-        <label for="username">
-            Username
-        </label>
+        <div class="subtitle">
+            Environment • Safety • Health Management System
+        </div>
 
-        <input
-            type="text"
-            id="username"
-            placeholder="Enter username"
-            required
-        >
+    </div>
 
+    <div class="card">
 
-        <label for="password">
-            Password
-        </label>
+        <div class="access">
+            <div class="status-dot"></div>
+            SECURE ESH ACCESS
+        </div>
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Enter password"
-            required
-        >
+        <form id="loginForm">
 
+            <div class="input-group">
+                <label for="username">USERNAME</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter ESH username"
+                    autocomplete="username"
+                    required
+                >
+            </div>
 
-        <button
-            type="submit"
-            class="submit-button"
-        >
-            LOGIN
-        </button>
+            <div class="input-group password-wrap">
+                <label for="password">PASSWORD</label>
 
-    </form>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    autocomplete="current-password"
+                    required
+                >
 
+                <button
+                    type="button"
+                    class="show-password"
+                    onclick="togglePassword()"
+                >
+                    SHOW
+                </button>
+            </div>
 
-    <div
-        id="loginError"
-        class="success-message"
-    >
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                SIGN IN TO ESH
+            </button>
+
+            <div
+                id="errorMessage"
+                class="error"
+            >
+                Invalid username or password.
+            </div>
+
+        </form>
+
+        <div class="security">
+            🔒 ESH MANAGEMENT ACCESS<br>
+            Authorized personnel only
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <strong>NEAR MISS MANAGEMENT SYSTEM</strong><br>
+        Bidor Kwong Heng • ESH Department
     </div>
 
 </div>
 
-
 <script>
 
-const loginForm =
-    document.getElementById("loginForm");
+const USERNAME = "ESHadminbkh";
+const PASSWORD = "ESHbkh@2026";
 
-const loginError =
-    document.getElementById("loginError");
+function togglePassword() {
 
+    const password =
+        document.getElementById("password");
 
-loginForm.addEventListener(
-    "submit",
-    function(event) {
+    const button =
+        document.querySelector(".show-password");
+
+    if (password.type === "password") {
+
+        password.type = "text";
+        button.textContent = "HIDE";
+
+    } else {
+
+        password.type = "password";
+        button.textContent = "SHOW";
+
+    }
+}
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", function(event) {
 
         event.preventDefault();
 
-
         const username =
-            document.getElementById(
-                "username"
-            ).value;
+            document
+                .getElementById("username")
+                .value
+                .trim();
 
         const password =
-            document.getElementById(
-                "password"
-            ).value;
+            document
+                .getElementById("password")
+                .value;
 
-
-        // ESH LOGIN DETAILS
+        const error =
+            document.getElementById("errorMessage");
 
         if (
-            username === "ESHadminbkh" &&
-            password === "ESHbkh@2026"
+            username === USERNAME &&
+            password === PASSWORD
         ) {
 
             sessionStorage.setItem(
@@ -112,31 +453,22 @@ loginForm.addEventListener(
                 "true"
             );
 
-
             window.location.href =
                 "esh.html";
 
         } else {
 
-            loginError.style.display =
-                "block";
+            error.style.display = "block";
 
-            loginError.style.background =
-                "#fee2e2";
-
-            loginError.style.color =
-                "#991b1b";
-
-            loginError.innerHTML =
-                "❌ Invalid username or password.";
+            setTimeout(function() {
+                error.style.display = "none";
+            }, 3000);
 
         }
 
-    }
-);
+    });
 
 </script>
 
 </body>
-
 </html>
