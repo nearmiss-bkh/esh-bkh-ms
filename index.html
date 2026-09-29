@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -176,7 +177,9 @@
         >
 
 
+        <!-- ========================================= -->
         <!-- PHOTOS -->
+        <!-- ========================================= -->
 
         <label for="photo">
             Photos
@@ -212,7 +215,64 @@
         </div>
 
 
+        <!-- ========================================= -->
+        <!-- VIDEO -->
+        <!-- ========================================= -->
+
+        <label
+            for="video"
+            style="margin-top:20px;"
+        >
+            Video
+        </label>
+
+        <input
+            type="file"
+            id="video"
+            name="video"
+            accept="video/*"
+        >
+
+        <div
+            id="videoInfo"
+            style="
+                margin-top:8px;
+                font-size:14px;
+                color:#666;
+            "
+        >
+            No video selected
+        </div>
+
+        <div
+            style="
+                margin-top:5px;
+                font-size:12px;
+                color:#888;
+            "
+        >
+            Video is optional. Recommended maximum size: 50 MB.
+        </div>
+
+
+        <!-- VIDEO PREVIEW -->
+
+        <video
+            id="videoPreview"
+            controls
+            style="
+                display:none;
+                width:100%;
+                max-height:300px;
+                margin-top:15px;
+                border-radius:10px;
+            "
+        ></video>
+
+
+        <!-- ========================================= -->
         <!-- SUBMIT BUTTON -->
+        <!-- ========================================= -->
 
         <button
             type="submit"
@@ -232,6 +292,130 @@
     ></div>
 
 </div>
+
+
+<!-- ============================================= -->
+<!-- PHOTO COUNT -->
+<!-- ============================================= -->
+
+<script>
+
+const photoInput =
+    document.getElementById("photo");
+
+const photoCount =
+    document.getElementById("photoCount");
+
+
+photoInput.addEventListener(
+    "change",
+    function () {
+
+        const files =
+            this.files;
+
+        if (!files.length) {
+
+            photoCount.textContent =
+                "No photos selected";
+
+            return;
+        }
+
+
+        if (files.length > 10) {
+
+            alert(
+                "Maximum 10 photos allowed."
+            );
+
+            this.value = "";
+
+            photoCount.textContent =
+                "No photos selected";
+
+            return;
+        }
+
+
+        photoCount.textContent =
+            files.length +
+            " photo" +
+            (files.length > 1 ? "s" : "") +
+            " selected";
+
+    }
+);
+
+</script>
+
+
+<!-- ============================================= -->
+<!-- VIDEO SELECTION + PREVIEW -->
+<!-- ============================================= -->
+
+<script>
+
+const videoInput =
+    document.getElementById("video");
+
+const videoInfo =
+    document.getElementById("videoInfo");
+
+const videoPreview =
+    document.getElementById("videoPreview");
+
+
+videoInput.addEventListener(
+    "change",
+    function () {
+
+        const file =
+            this.files[0];
+
+
+        if (!file) {
+
+            videoInfo.textContent =
+                "No video selected";
+
+            videoPreview.style.display =
+                "none";
+
+            videoPreview.removeAttribute(
+                "src"
+            );
+
+            return;
+        }
+
+
+        const sizeMB =
+            file.size /
+            (1024 * 1024);
+
+
+        videoInfo.textContent =
+            file.name +
+            " (" +
+            sizeMB.toFixed(1) +
+            " MB)";
+
+
+        const videoURL =
+            URL.createObjectURL(file);
+
+
+        videoPreview.src =
+            videoURL;
+
+        videoPreview.style.display =
+            "block";
+
+    }
+);
+
+</script>
 
 
 <!-- ============================================= -->
