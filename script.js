@@ -1,15 +1,25 @@
-```javascript
+
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
-// EMPLOYEE SUBMISSION
-// AUTO TIME + MULTIPLE PHOTO VERSION
+// FIXED SUBMISSION VERSION
+// MULTIPLE PHOTOS
 // =====================================================
 
-const form = document.getElementById("nearMissForm");
-const successMessage = document.getElementById("successMessage");
-const dateTime = document.getElementById("dateTime");
-const photoInput = document.getElementById("photo");
-const photoCount = document.getElementById("photoCount");
+
+const form =
+    document.getElementById("nearMissForm");
+
+const successMessage =
+    document.getElementById("successMessage");
+
+const dateTime =
+    document.getElementById("dateTime");
+
+const photoInput =
+    document.getElementById("photo");
+
+const photoCount =
+    document.getElementById("photoCount");
 
 
 // =====================================================
@@ -25,117 +35,130 @@ const GOOGLE_SCRIPT_URL =
 // =====================================================
 
 const MAX_PHOTOS = 10;
-const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
+
+const MAX_PHOTO_SIZE =
+    10 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
+
 const MAX_HEIGHT = 1200;
 
 const JPEG_QUALITY = 0.75;
 
 
 // =====================================================
-// AUTO DATE & TIME — MALAYSIA
+// PHOTO COUNTER
 // =====================================================
 
-function setDateTime() {
+if (photoInput) {
 
-    const now = new Date();
+    photoInput.addEventListener(
+        "change",
+        function () {
 
-    const malaysiaTime =
-        new Intl.DateTimeFormat(
-            "en-CA",
-            {
-                timeZone: "Asia/Kuala_Lumpur",
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false
-            }
-        ).formatToParts(now);
+            const count =
+                photoInput.files.length;
 
 
-    let year = "";
-    let month = "";
-    let day = "";
-    let hour = "";
-    let minute = "";
+            if (count === 0) {
 
+                photoCount.textContent =
+                    "No photos selected";
 
-    malaysiaTime.forEach(
-        function (part) {
+            } else {
 
-            if (part.type === "year") {
-                year = part.value;
-            }
+                photoCount.textContent =
+                    "📷 " +
+                    count +
+                    " photo(s) selected";
 
-            if (part.type === "month") {
-                month = part.value;
-            }
-
-            if (part.type === "day") {
-                day = part.value;
-            }
-
-            if (part.type === "hour") {
-                hour = part.value;
-            }
-
-            if (part.type === "minute") {
-                minute = part.value;
             }
 
         }
     );
 
+}
+
+
+// =====================================================
+// SET DATE & TIME
+// =====================================================
+
+function setDateTime() {
+
+    if (!dateTime) {
+        return;
+    }
+
+
+    const now =
+        new Date();
+
+
+    const malaysiaTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone:
+                        "Asia/Kuala_Lumpur"
+                }
+            )
+        );
+
+
+    const year =
+        malaysiaTime.getFullYear();
+
+
+    const month =
+        String(
+            malaysiaTime.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            malaysiaTime.getDate()
+        ).padStart(2, "0");
+
+
+    const hour =
+        String(
+            malaysiaTime.getHours()
+        ).padStart(2, "0");
+
+
+    const minute =
+        String(
+            malaysiaTime.getMinutes()
+        ).padStart(2, "0");
+
 
     dateTime.value =
-        `${year}-${month}-${day}T${hour}:${minute}`;
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        "T" +
+        hour +
+        ":" +
+        minute;
 
 }
 
 
-// Set immediately when page opens
+// Set time immediately
 
 setDateTime();
 
 
-// Update automatically every minute
+// Update time every minute
 
 setInterval(
     setDateTime,
     60000
-);
-
-
-// =====================================================
-// PHOTO SELECTION COUNTER
-// =====================================================
-
-photoInput.addEventListener(
-    "change",
-    function () {
-
-        const count =
-            photoInput.files.length;
-
-
-        if (count === 0) {
-
-            photoCount.textContent =
-                "No photos selected";
-
-        } else {
-
-            photoCount.textContent =
-                "📷 " +
-                count +
-                " photo(s) selected";
-
-        }
-
-    }
 );
 
 
@@ -145,15 +168,19 @@ photoInput.addEventListener(
 
 function generateReportNumber() {
 
-    const now = new Date();
+    const now =
+        new Date();
+
 
     const year =
         now.getFullYear();
+
 
     const month =
         String(
             now.getMonth() + 1
         ).padStart(2, "0");
+
 
     const day =
         String(
@@ -179,8 +206,12 @@ function generateReportNumber() {
 
 
     return (
-        `NM-${year}${month}${day}-` +
-        `${String(counter).padStart(4, "0")}`
+        "NM-" +
+        year +
+        month +
+        day +
+        "-" +
+        String(counter).padStart(4, "0")
     );
 
 }
@@ -193,7 +224,7 @@ function generateReportNumber() {
 function compressPhoto(file) {
 
     return new Promise(
-        (resolve, reject) => {
+        function (resolve, reject) {
 
             const reader =
                 new FileReader();
@@ -211,6 +242,7 @@ function compressPhoto(file) {
 
                             let width =
                                 img.width;
+
 
                             let height =
                                 img.height;
@@ -238,6 +270,7 @@ function compressPhoto(file) {
                                         ratio
                                     );
 
+
                                 height =
                                     Math.round(
                                         height *
@@ -255,6 +288,7 @@ function compressPhoto(file) {
 
                             canvas.width =
                                 width;
+
 
                             canvas.height =
                                 height;
@@ -355,8 +389,20 @@ form.addEventListener(
     "submit",
     async function (event) {
 
+        // VERY IMPORTANT
         event.preventDefault();
 
+        event.stopPropagation();
+
+
+        console.log(
+            "SUBMIT BUTTON CLICKED"
+        );
+
+
+        // ==============================================
+        // BUTTON
+        // ==============================================
 
         const submitButton =
             form.querySelector(
@@ -366,6 +412,7 @@ form.addEventListener(
 
         submitButton.disabled =
             true;
+
 
         submitButton.textContent =
             "SUBMITTING...";
@@ -390,25 +437,31 @@ form.addEventListener(
 
 
             // ==========================================
-            // GET PHOTOS
+            // PHOTOS
             // ==========================================
 
             let photos = [];
+
 
             const selectedFiles =
                 photoInput.files;
 
 
+            console.log(
+                "Photos selected:",
+                selectedFiles.length
+            );
+
+
             if (
-                selectedFiles &&
                 selectedFiles.length >
                 MAX_PHOTOS
             ) {
 
                 throw new Error(
-                    "You can upload a maximum of " +
+                    "Maximum " +
                     MAX_PHOTOS +
-                    " photos."
+                    " photos allowed."
                 );
 
             }
@@ -418,63 +471,56 @@ form.addEventListener(
             // PROCESS PHOTOS
             // ==========================================
 
-            if (
-                selectedFiles &&
-                selectedFiles.length > 0
+            for (
+                let i = 0;
+                i < selectedFiles.length;
+                i++
             ) {
 
-                for (
-                    let i = 0;
-                    i < selectedFiles.length;
-                    i++
+                const photo =
+                    selectedFiles[i];
+
+
+                if (
+                    photo.size >
+                    MAX_PHOTO_SIZE
                 ) {
 
-                    const photo =
-                        selectedFiles[i];
-
-
-                    if (
-                        photo.size >
-                        MAX_PHOTO_SIZE
-                    ) {
-
-                        throw new Error(
-                            "Photo " +
-                            (i + 1) +
-                            " is larger than 10 MB."
-                        );
-
-                    }
-
-
-                    successMessage.innerHTML =
-                        "<strong>📷 Processing photo " +
+                    throw new Error(
+                        "Photo " +
                         (i + 1) +
-                        " of " +
-                        selectedFiles.length +
-                        "...</strong>";
-
-
-                    const compressed =
-                        await compressPhoto(
-                            photo
-                        );
-
-
-                    photos.push({
-
-                        photoData:
-                            compressed.data,
-
-                        photoName:
-                            compressed.name,
-
-                        photoType:
-                            compressed.type
-
-                    });
+                        " is larger than 10 MB."
+                    );
 
                 }
+
+
+                successMessage.innerHTML =
+                    "<strong>📷 Processing photo " +
+                    (i + 1) +
+                    " of " +
+                    selectedFiles.length +
+                    "...</strong>";
+
+
+                const compressed =
+                    await compressPhoto(
+                        photo
+                    );
+
+
+                photos.push({
+
+                    photoData:
+                        compressed.data,
+
+                    photoName:
+                        compressed.name,
+
+                    photoType:
+                        compressed.type
+
+                });
 
             }
 
@@ -488,39 +534,48 @@ form.addEventListener(
                 reportNumber:
                     reportNumber,
 
+
                 dateTime:
                     dateTime.value,
+
 
                 location:
                     document.getElementById(
                         "location"
                     ).value,
 
+
                 department:
                     document.getElementById(
                         "department"
                     ).value,
+
 
                 hazardCategory:
                     document.getElementById(
                         "hazardCategory"
                     ).value,
 
+
                 whatHappened:
                     document.getElementById(
                         "whatHappened"
                     ).value,
+
 
                 reporterName:
                     document.getElementById(
                         "reporterName"
                     ).value,
 
+
                 photos:
                     photos,
 
+
                 status:
                     "New",
+
 
                 submittedAt:
                     new Date().toISOString()
@@ -528,15 +583,18 @@ form.addEventListener(
             };
 
 
+            console.log(
+                "Sending report:",
+                report
+            );
+
+
             // ==========================================
             // UPLOAD
             // ==========================================
 
             successMessage.innerHTML =
-                "<strong>☁️ Uploading report...</strong>" +
-                "<br><br>" +
-                photos.length +
-                " photo(s) attached.";
+                "<strong>☁️ Sending report...</strong>";
 
 
             const response =
@@ -547,12 +605,14 @@ form.addEventListener(
                         method:
                             "POST",
 
+
                         headers: {
 
                             "Content-Type":
                                 "text/plain;charset=utf-8"
 
                         },
+
 
                         body:
                             JSON.stringify(
@@ -563,29 +623,57 @@ form.addEventListener(
                 );
 
 
-            // ==========================================
-            // RESPONSE
-            // ==========================================
-
-            const result =
-                await response.json();
-
-
             console.log(
-                "Google Apps Script response:",
-                result
+                "Server response status:",
+                response.status
             );
 
 
             // ==========================================
-            // CHECK RESULT
+            // READ SERVER RESPONSE
             // ==========================================
 
-            if (!result.success) {
+            const responseText =
+                await response.text();
+
+
+            console.log(
+                "Server response:",
+                responseText
+            );
+
+
+            let result;
+
+
+            try {
+
+                result =
+                    JSON.parse(
+                        responseText
+                    );
+
+            } catch (jsonError) {
+
+                throw new Error(
+                    "Server did not return a valid response."
+                );
+
+            }
+
+
+            // ==========================================
+            // CHECK SUCCESS
+            // ==========================================
+
+            if (
+                !result ||
+                result.success !== true
+            ) {
 
                 throw new Error(
                     result.error ||
-                    "Google submission failed."
+                    "Report was not accepted by the server."
                 );
 
             }
@@ -608,23 +696,34 @@ form.addEventListener(
 
 
             // ==========================================
-            // RESET FORM
+            // ONLY CLEAR AFTER SUCCESS
             // ==========================================
 
             form.reset();
 
+
             setDateTime();
+
 
             photoCount.textContent =
                 "No photos selected";
 
 
+            console.log(
+                "FORM RESET AFTER SUCCESS"
+            );
+
         }
+
+
+        // ==============================================
+        // ERROR
+        // ==============================================
 
         catch (error) {
 
             console.error(
-                "Submission error:",
+                "SUBMISSION ERROR:",
                 error
             );
 
@@ -634,13 +733,30 @@ form.addEventListener(
                 "<br><br>" +
                 error.message;
 
+
+            /*
+             * IMPORTANT:
+             *
+             * We DO NOT use form.reset()
+             * here.
+             *
+             * Therefore your information
+             * remains in the form if
+             * submission fails.
+             */
+
         }
 
+
+        // ==============================================
+        // ENABLE BUTTON
+        // ==============================================
 
         finally {
 
             submitButton.disabled =
                 false;
+
 
             submitButton.textContent =
                 "SUBMIT NEAR MISS";
@@ -649,3 +765,4 @@ form.addEventListener(
 
     }
 );
+```
