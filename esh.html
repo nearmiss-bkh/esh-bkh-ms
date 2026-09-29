@@ -1502,13 +1502,15 @@ input:focus {
     background:#101827;
 
     text-align:center;
+
+    overflow:hidden;
 }
 
 .photo-preview {
 
     width:100%;
 
-    max-height:420px;
+    max-height:520px;
 
     object-fit:contain;
 
@@ -1517,6 +1519,8 @@ input:focus {
     cursor:pointer;
 
     display:block;
+
+    background:#101827;
 }
 
 .photo-hint {
@@ -1527,6 +1531,97 @@ input:focus {
         rgba(255,255,255,.55);
 
     font-size:10px;
+}
+
+.photo-loading {
+
+    min-height:220px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    color:
+        rgba(255,255,255,.65);
+
+    font-size:12px;
+}
+
+.photo-spinner {
+
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    border:
+        3px solid
+        rgba(255,255,255,.15);
+
+    border-top-color:#00c6ff;
+
+    animation:
+        photoSpin .8s linear infinite;
+}
+
+@keyframes photoSpin {
+
+    to {
+        transform:rotate(360deg);
+    }
+
+}
+
+.photo-fallback {
+
+    padding:30px;
+
+    color:white;
+
+    font-size:12px;
+
+    line-height:1.8;
+
+    text-align:center;
+}
+
+.photo-fallback-icon {
+
+    font-size:32px;
+
+    margin-bottom:10px;
+}
+
+.photo-open-button {
+
+    display:inline-block;
+
+    margin-top:8px;
+
+    padding:10px 15px;
+
+    border-radius:9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00aaff,
+            #635bff
+        );
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    font-size:11px;
 }
 
 
@@ -1801,8 +1896,8 @@ input:focus {
 
         width:100%;
     }
-}
 
+}
 
 @media (prefers-reduced-motion:reduce) {
 
@@ -1816,6 +1911,7 @@ input:focus {
 
         transition-duration:.01ms !important;
     }
+
 }
 
 </style>
@@ -2799,6 +2895,7 @@ if (
     );
 }
 
+
 function logoutESH() {
 
     sessionStorage.removeItem(
@@ -3619,6 +3716,10 @@ function openReport(rowNumber) {
         "No narrative provided.";
 
 
+    /* ================================================
+       PHOTO
+    ================================================ */
+
     loadPhoto(
         r.photoLink
     );
@@ -3741,8 +3842,8 @@ function updateCaseOverdue(report) {
 
 
 /* =====================================================
-   PHOTO
-   GOOGLE DRIVE PHOTO DISPLAY FIX
+   PHOTO DISPLAY
+   ROBUST GOOGLE DRIVE HANDLER
 ===================================================== */
 
 function loadPhoto(link) {
@@ -3753,9 +3854,9 @@ function loadPhoto(link) {
         );
 
 
-    /* ================================================
+    /* =================================================
        NO PHOTO
-    ================================================ */
+    ================================================= */
 
     if (
         !link ||
@@ -3785,99 +3886,312 @@ function loadPhoto(link) {
     }
 
 
-    /* ================================================
-       CONVERT VALUE TO STRING
-    ================================================ */
-
     const originalLink =
         String(link).trim();
 
 
-    /* ================================================
+    /* =================================================
        EXTRACT GOOGLE DRIVE FILE ID
-       
-       Supports:
-       
+
+       Supported:
+
        /file/d/FILE_ID/view
-       
+
        /open?id=FILE_ID
-       
+
        /uc?id=FILE_ID
-       
-       ================================================ */
 
-    let fileId = "";
+       /thumbnail?id=FILE_ID
 
+       /d/FILE_ID
 
-    const fileMatch =
-        originalLink.match(
-            /\/file\/d\/([a-zA-Z0-9_-]+)/
+       raw FILE_ID
+    ================================================= */
+
+    const fileId =
+        extractDriveFileId(
+            originalLink
         );
 
 
-    if (fileMatch) {
+    /* =================================================
+       IF NO FILE ID
 
-        fileId =
-            fileMatch[1];
-
-    }
-
+       Try the supplied URL directly.
+    ================================================= */
 
     if (!fileId) {
 
-        const idMatch =
-            originalLink.match(
-                /[?&]id=([a-zA-Z0-9_-]+)/
-            );
+        loadDirectImage(
+            container,
+            originalLink
+        );
 
-
-        if (idMatch) {
-
-            fileId =
-                idMatch[1];
-
-        }
+        return;
 
     }
 
 
-    /* ================================================
-       IF FILE ID FOUND
-    ================================================ */
+    /* =================================================
+       GOOGLE DRIVE URLS
+    ================================================= */
 
-    if (fileId) {
+    const sources = [
 
-        const imageUrl =
-            "https://drive.google.com/thumbnail?id=" +
-            encodeURIComponent(fileId) +
-            "&sz=w1200";
+        /*
+         * Primary Drive thumbnail.
+         */
+        "https://drive.google.com/thumbnail?id=" +
+        encodeURIComponent(fileId) +
+        "&sz=w1600",
+
+        /*
+         * Drive image view.
+         */
+        "https://drive.google.com/uc?export=view&id=" +
+        encodeURIComponent(fileId),
+
+        /*
+         * Drive download endpoint.
+         */
+        "https://drive.google.com/uc?export=download&id=" +
+        encodeURIComponent(fileId),
+
+        /*
+         * Googleusercontent image endpoint.
+         */
+        "https://lh3.googleusercontent.com/d/" +
+        encodeURIComponent(fileId) +
+        "=w1600",
+
+        /*
+         * Drive user content endpoint.
+         */
+        "https://drive.usercontent.google.com/download?id=" +
+        encodeURIComponent(fileId) +
+        "&export=view&confirm=t"
+
+    ];
 
 
-        const originalUrl =
-            "https://drive.google.com/file/d/" +
-            encodeURIComponent(fileId) +
-            "/view";
+    const originalUrl =
+        "https://drive.google.com/file/d/" +
+        encodeURIComponent(fileId) +
+        "/view";
 
 
-        container.innerHTML = `
+    /* =================================================
+       BUILD PHOTO BOX
+    ================================================= */
 
-            <div class="photo-box">
+    container.innerHTML = `
 
-                <img
-                    src="${escapeAttribute(imageUrl)}"
-                    class="photo-preview"
-                    alt="Near Miss Photo Evidence"
-                    loading="lazy"
-                    onclick="window.open(
-                        '${escapeAttribute(originalUrl)}',
-                        '_blank'
-                    )"
-                    onerror="photoLoadError(this, '${escapeAttribute(originalUrl)}')"
-                >
+        <div class="photo-box">
 
-                <div class="photo-hint">
+            <div
+                id="photoLoading"
+                class="photo-loading">
 
-                    Click photo to open full evidence
+                <div class="photo-spinner"></div>
+
+                <div>
+                    Loading photo evidence...
+                </div>
+
+            </div>
+
+            <img
+                id="nearMissPhoto"
+                class="photo-preview"
+                alt="Near Miss Photo Evidence"
+                referrerpolicy="no-referrer"
+                style="display:none;"
+            >
+
+            <div
+                id="photoHint"
+                class="photo-hint"
+                style="display:none;">
+
+                Click photo to open full evidence
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    const image =
+        document.getElementById(
+            "nearMissPhoto"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "photoLoading"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "photoHint"
+        );
+
+
+    let currentIndex = 0;
+
+
+    /* =================================================
+       TRY NEXT PHOTO SOURCE
+    ================================================= */
+
+    function tryNextPhotoSource() {
+
+        if (
+            currentIndex >=
+            sources.length
+        ) {
+
+            showDrivePreviewFallback();
+
+            return;
+
+        }
+
+
+        image.src =
+            sources[
+                currentIndex
+            ];
+
+        currentIndex++;
+
+    }
+
+
+    /* =================================================
+       SUCCESS
+    ================================================= */
+
+    image.onload =
+        function() {
+
+            loading.style.display =
+                "none";
+
+            image.style.display =
+                "block";
+
+            hint.style.display =
+                "block";
+
+        };
+
+
+    /* =================================================
+       FAILED SOURCE
+    ================================================= */
+
+    image.onerror =
+        function() {
+
+            tryNextPhotoSource();
+
+        };
+
+
+    /* =================================================
+       CLICK PHOTO
+    ================================================= */
+
+    image.onclick =
+        function() {
+
+            window.open(
+                originalUrl,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        };
+
+
+    /* =================================================
+       GOOGLE DRIVE PREVIEW FALLBACK
+       
+       If all direct image endpoints fail,
+       embed Google's own preview inside the modal.
+    ================================================= */
+
+    function showDrivePreviewFallback() {
+
+        loading.style.display =
+            "none";
+
+
+        image.style.display =
+            "none";
+
+
+        hint.style.display =
+            "none";
+
+
+        const photoBox =
+            container.querySelector(
+                ".photo-box"
+            );
+
+
+        if (!photoBox) {
+            return;
+        }
+
+
+        photoBox.innerHTML = `
+
+            <div
+                style="
+                padding:10px;
+                ">
+
+                <iframe
+                    src="https://drive.google.com/file/d/${encodeURIComponent(fileId)}/preview"
+                    style="
+                    width:100%;
+                    height:520px;
+                    border:none;
+                    border-radius:12px;
+                    background:#101827;
+                    "
+                    allow="autoplay"
+                    loading="lazy">
+                </iframe>
+
+                <div
+                    class="photo-hint">
+
+                    Google Drive Preview
+
+                    <br>
+
+                    <a
+                        href="${escapeAttribute(originalUrl)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="
+                        display:inline-block;
+                        margin-top:6px;
+                        color:#60a5fa;
+                        text-decoration:none;
+                        font-weight:700;
+                        ">
+
+                        Open Original Photo
+
+                    </a>
 
                 </div>
 
@@ -3885,57 +4199,245 @@ function loadPhoto(link) {
 
         `;
 
-        return;
+    }
+
+
+    /* =================================================
+       START
+    ================================================= */
+
+    tryNextPhotoSource();
+
+}
+
+
+/* =====================================================
+   EXTRACT DRIVE FILE ID
+===================================================== */
+
+function extractDriveFileId(value) {
+
+    const text =
+        String(
+            value || ""
+        ).trim();
+
+
+    if (!text) {
+
+        return "";
 
     }
 
 
-    /* ================================================
-       FALLBACK
-       IF THE LINK IS NOT A NORMAL DRIVE LINK
-    ================================================ */
+    /* -----------------------------------------------
+       /file/d/FILE_ID
+    ----------------------------------------------- */
 
-    const safeOriginalLink =
-        escapeAttribute(
-            originalLink
+    let match =
+        text.match(
+            /\/file\/d\/([a-zA-Z0-9_-]+)/
         );
 
+
+    if (match) {
+
+        return match[1];
+
+    }
+
+
+    /* -----------------------------------------------
+       /d/FILE_ID
+    ----------------------------------------------- */
+
+    match =
+        text.match(
+            /\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+    if (match) {
+
+        return match[1];
+
+    }
+
+
+    /* -----------------------------------------------
+       ?id=FILE_ID
+    ----------------------------------------------- */
+
+    match =
+        text.match(
+            /[?&]id=([a-zA-Z0-9_-]+)/
+        );
+
+
+    if (match) {
+
+        return match[1];
+
+    }
+
+
+    /* -----------------------------------------------
+       Raw Google Drive ID
+
+       Drive IDs are normally long strings.
+    ----------------------------------------------- */
+
+    if (
+        /^[a-zA-Z0-9_-]{20,}$/.test(
+            text
+        )
+    ) {
+
+        return text;
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   DIRECT IMAGE FALLBACK
+===================================================== */
+
+function loadDirectImage(
+    container,
+    originalLink
+) {
 
     container.innerHTML = `
 
         <div class="photo-box">
 
             <div
-                style="
-                padding:25px;
-                color:white;
-                font-size:12px;
-                line-height:1.7;
-                ">
+                id="directPhotoLoading"
+                class="photo-loading">
 
-                Unable to identify the Google Drive
-                photo file.
+                <div class="photo-spinner"></div>
 
-                <br><br>
+                <div>
+                    Loading photo evidence...
+                </div>
 
-                <a
-                    href="${safeOriginalLink}"
-                    target="_blank"
-                    style="
-                    color:#60a5fa;
-                    text-decoration:none;
-                    font-weight:700;
-                    ">
+            </div>
 
-                    Open Original Photo
+            <img
+                id="directPhoto"
+                class="photo-preview"
+                alt="Near Miss Photo Evidence"
+                referrerpolicy="no-referrer"
+                style="display:none;"
+            >
 
-                </a>
+            <div
+                id="directPhotoHint"
+                class="photo-hint"
+                style="display:none;">
+
+                Click photo to open full evidence
 
             </div>
 
         </div>
 
     `;
+
+
+    const image =
+        document.getElementById(
+            "directPhoto"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "directPhotoLoading"
+        );
+
+
+    const hint =
+        document.getElementById(
+            "directPhotoHint"
+        );
+
+
+    image.onload =
+        function() {
+
+            loading.style.display =
+                "none";
+
+            image.style.display =
+                "block";
+
+            hint.style.display =
+                "block";
+
+        };
+
+
+    image.onerror =
+        function() {
+
+            container.innerHTML = `
+
+                <div class="photo-box">
+
+                    <div class="photo-fallback">
+
+                        <div
+                            class="photo-fallback-icon">
+
+                            📷
+
+                        </div>
+
+                        <strong>
+                            Unable to display photo automatically.
+                        </strong>
+
+                        <br><br>
+
+                        <a
+                            href="${escapeAttribute(originalLink)}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="photo-open-button">
+
+                            Open Original Photo
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        };
+
+
+    image.onclick =
+        function() {
+
+            window.open(
+                originalLink,
+                "_blank",
+                "noopener,noreferrer"
+            );
+
+        };
+
+
+    image.src =
+        originalLink;
 
 }
 
@@ -3956,32 +4458,34 @@ function photoLoadError(
 
 
     if (!box) {
+
         return;
+
     }
 
 
     box.innerHTML = `
 
-        <div
-            style="
-            padding:25px;
-            color:white;
-            font-size:12px;
-            line-height:1.7;
-            ">
+        <div class="photo-fallback">
 
-            Unable to display the photo automatically.
+            <div
+                class="photo-fallback-icon">
+
+                📷
+
+            </div>
+
+            <strong>
+                Unable to display the photo automatically.
+            </strong>
 
             <br><br>
 
             <a
                 href="${escapeAttribute(originalUrl)}"
                 target="_blank"
-                style="
-                color:#60a5fa;
-                text-decoration:none;
-                font-weight:700;
-                ">
+                rel="noopener noreferrer"
+                class="photo-open-button">
 
                 Open Original Photo
 
@@ -4155,7 +4659,6 @@ async function saveReport() {
     /* =================================================
        VALIDATION
     ================================================= */
-
 
     if (
         status !== "New" &&
