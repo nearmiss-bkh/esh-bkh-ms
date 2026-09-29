@@ -2,7 +2,7 @@
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
 // EMPLOYEE SUBMISSION
-// MULTIPLE PHOTO VERSION
+// AUTO TIME + MULTIPLE PHOTO VERSION
 // =====================================================
 
 const form = document.getElementById("nearMissForm");
@@ -25,14 +25,88 @@ const GOOGLE_SCRIPT_URL =
 // =====================================================
 
 const MAX_PHOTOS = 10;
-
-const MAX_PHOTO_SIZE =
-    10 * 1024 * 1024;
+const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 1200;
 
 const JPEG_QUALITY = 0.75;
+
+
+// =====================================================
+// AUTO DATE & TIME — MALAYSIA
+// =====================================================
+
+function setDateTime() {
+
+    const now = new Date();
+
+    const malaysiaTime =
+        new Intl.DateTimeFormat(
+            "en-CA",
+            {
+                timeZone: "Asia/Kuala_Lumpur",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            }
+        ).formatToParts(now);
+
+
+    let year = "";
+    let month = "";
+    let day = "";
+    let hour = "";
+    let minute = "";
+
+
+    malaysiaTime.forEach(
+        function (part) {
+
+            if (part.type === "year") {
+                year = part.value;
+            }
+
+            if (part.type === "month") {
+                month = part.value;
+            }
+
+            if (part.type === "day") {
+                day = part.value;
+            }
+
+            if (part.type === "hour") {
+                hour = part.value;
+            }
+
+            if (part.type === "minute") {
+                minute = part.value;
+            }
+
+        }
+    );
+
+
+    dateTime.value =
+        `${year}-${month}-${day}T${hour}:${minute}`;
+
+}
+
+
+// Set immediately when page opens
+
+setDateTime();
+
+
+// Update automatically every minute
+
+setInterval(
+    setDateTime,
+    60000
+);
 
 
 // =====================================================
@@ -55,6 +129,7 @@ photoInput.addEventListener(
         } else {
 
             photoCount.textContent =
+                "📷 " +
                 count +
                 " photo(s) selected";
 
@@ -62,26 +137,6 @@ photoInput.addEventListener(
 
     }
 );
-
-
-// =====================================================
-// DATE & TIME
-// =====================================================
-
-function setDateTime() {
-
-    const now = new Date();
-
-    now.setMinutes(
-        now.getMinutes() -
-        now.getTimezoneOffset()
-    );
-
-    dateTime.value =
-        now.toISOString().slice(0, 16);
-}
-
-setDateTime();
 
 
 // =====================================================
@@ -180,13 +235,13 @@ function compressPhoto(file) {
                                 width =
                                     Math.round(
                                         width *
-                                            ratio
+                                        ratio
                                     );
 
                                 height =
                                     Math.round(
                                         height *
-                                            ratio
+                                        ratio
                                     );
 
                             }
@@ -303,10 +358,6 @@ form.addEventListener(
         event.preventDefault();
 
 
-        // ==============================================
-        // SUBMIT BUTTON
-        // ==============================================
-
         const submitButton =
             form.querySelector(
                 ".submit-button"
@@ -315,7 +366,6 @@ form.addEventListener(
 
         submitButton.disabled =
             true;
-
 
         submitButton.textContent =
             "SUBMITTING...";
@@ -332,7 +382,7 @@ form.addEventListener(
         try {
 
             // ==========================================
-            // GENERATE REPORT NUMBER
+            // REPORT NUMBER
             // ==========================================
 
             const reportNumber =
@@ -340,19 +390,14 @@ form.addEventListener(
 
 
             // ==========================================
-            // GET SELECTED PHOTOS
+            // GET PHOTOS
             // ==========================================
 
             let photos = [];
 
-
             const selectedFiles =
                 photoInput.files;
 
-
-            // ==========================================
-            // CHECK PHOTO COUNT
-            // ==========================================
 
             if (
                 selectedFiles &&
@@ -388,8 +433,6 @@ form.addEventListener(
                         selectedFiles[i];
 
 
-                    // Check original photo size
-
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -404,8 +447,6 @@ form.addEventListener(
                     }
 
 
-                    // Show progress
-
                     successMessage.innerHTML =
                         "<strong>📷 Processing photo " +
                         (i + 1) +
@@ -414,15 +455,11 @@ form.addEventListener(
                         "...</strong>";
 
 
-                    // Compress photo
-
                     const compressed =
                         await compressPhoto(
                             photo
                         );
 
-
-                    // Add to photos array
 
                     photos.push({
 
@@ -451,50 +488,39 @@ form.addEventListener(
                 reportNumber:
                     reportNumber,
 
-
                 dateTime:
-                    document.getElementById(
-                        "dateTime"
-                    ).value,
-
+                    dateTime.value,
 
                 location:
                     document.getElementById(
                         "location"
                     ).value,
 
-
                 department:
                     document.getElementById(
                         "department"
                     ).value,
-
 
                 hazardCategory:
                     document.getElementById(
                         "hazardCategory"
                     ).value,
 
-
                 whatHappened:
                     document.getElementById(
                         "whatHappened"
                     ).value,
-
 
                 reporterName:
                     document.getElementById(
                         "reporterName"
                     ).value,
 
-
                 photos:
                     photos,
 
-
                 status:
                     "New",
-
 
                 submittedAt:
                     new Date().toISOString()
@@ -503,7 +529,7 @@ form.addEventListener(
 
 
             // ==========================================
-            // UPLOAD REPORT
+            // UPLOAD
             // ==========================================
 
             successMessage.innerHTML =
@@ -521,14 +547,12 @@ form.addEventListener(
                         method:
                             "POST",
 
-
                         headers: {
 
                             "Content-Type":
                                 "text/plain;charset=utf-8"
 
                         },
-
 
                         body:
                             JSON.stringify(
@@ -540,7 +564,7 @@ form.addEventListener(
 
 
             // ==========================================
-            // READ RESPONSE
+            // RESPONSE
             // ==========================================
 
             const result =
@@ -568,7 +592,7 @@ form.addEventListener(
 
 
             // ==========================================
-            // SUCCESS MESSAGE
+            // SUCCESS
             // ==========================================
 
             successMessage.innerHTML =
@@ -584,25 +608,18 @@ form.addEventListener(
 
 
             // ==========================================
-            // RESET FORM ONLY AFTER SUCCESS
+            // RESET FORM
             // ==========================================
 
             form.reset();
 
-
             setDateTime();
-
 
             photoCount.textContent =
                 "No photos selected";
 
 
         }
-
-
-        // ==============================================
-        // ERROR
-        // ==============================================
 
         catch (error) {
 
@@ -617,22 +634,13 @@ form.addEventListener(
                 "<br><br>" +
                 error.message;
 
-
-            // IMPORTANT:
-            // Form is NOT reset if there is an error.
-
         }
 
-
-        // ==============================================
-        // ENABLE BUTTON AGAIN
-        // ==============================================
 
         finally {
 
             submitButton.disabled =
                 false;
-
 
             submitButton.textContent =
                 "SUBMIT NEAR MISS";
