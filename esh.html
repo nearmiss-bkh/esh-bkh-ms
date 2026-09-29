@@ -1,6337 +1,2627 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ESH Management System</title>
 
 <style>
+:root{
+    --bg:#020b17;
+    --bg2:#061426;
+    --panel:#0a1b30;
+    --panel2:#0d223b;
+    --panel3:#102b49;
+    --border:rgba(121,177,225,.16);
 
-/* =========================================================
-   ESH MANAGEMENT SYSTEM
-   CORPORATE PROFESSIONAL DASHBOARD
-========================================================= */
+    --blue:#1687ff;
+    --blue2:#0068e5;
+    --cyan:#00d5ff;
+    --green:#00d49a;
+    --orange:#ffad32;
+    --red:#ff4f70;
+    --purple:#9b7aff;
 
-:root {
+    --text:#f4f8ff;
+    --soft:#b9c9dc;
+    --muted:#8194ab;
 
-    --navy-950:#06111f;
-    --navy-900:#081a2e;
-    --navy-800:#0d2947;
-    --navy-700:#12395e;
-
-    --blue:#1677ff;
-    --cyan:#00b8f0;
-    --green:#00b887;
-    --orange:#f59e0b;
-    --red:#ef476f;
-    --purple:#7657d9;
-
-    --text:#172033;
-    --text-dark:#0e1728;
-    --muted:#6f7d91;
-    --light:#f5f7fa;
-
-    --border:#e3e8ef;
-    --white:#ffffff;
-
-    --shadow:
-        0 8px 28px rgba(13,31,55,.07);
-
-    --shadow-lg:
-        0 18px 55px rgba(7,23,43,.15);
+    --shadow:0 15px 40px rgba(0,0,0,.28);
+    --shadow2:0 25px 70px rgba(0,0,0,.42);
 }
 
+*{box-sizing:border-box}
 
-/* =========================================================
-   GLOBAL
-========================================================= */
+html{scroll-behavior:smooth}
 
-* {
-    box-sizing:border-box;
-}
-
-html {
-    scroll-behavior:smooth;
-}
-
-body {
-
+body{
     margin:0;
-
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    color:var(--text);
-
-    background:
-        linear-gradient(
-            180deg,
-            #edf2f7 0%,
-            #f8fafc 45%,
-            #eef2f6 100%
-        );
-
     min-height:100vh;
-}
-
-button,
-input,
-select,
-textarea {
-    font-family:inherit;
-}
-
-button {
-    cursor:pointer;
-}
-
-.hidden {
-    display:none !important;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header {
-
-    position:sticky;
-
-    top:0;
-
-    z-index:1000;
-
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    color:var(--text);
     background:
-        linear-gradient(
-            115deg,
-            var(--navy-950),
-            var(--navy-900) 60%,
-            #0c3154
-        );
-
-    border-bottom:
-        1px solid rgba(255,255,255,.09);
-
-    box-shadow:
-        0 7px 28px rgba(0,0,0,.20);
+        radial-gradient(circle at 10% 0%,rgba(0,168,255,.10),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(0,220,255,.07),transparent 25%),
+        linear-gradient(180deg,#020914 0%,#061426 50%,#030b16 100%);
 }
 
-.header-inner {
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
+/* HEADER */
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(3,13,27,.92);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(125,190,240,.12);
+    box-shadow:0 8px 35px rgba(0,0,0,.35);
+}
+
+.header-inner{
     max-width:1550px;
-
-    min-height:76px;
-
+    min-height:78px;
     margin:auto;
-
-    padding:
-        0 28px;
-
+    padding:0 28px;
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     gap:20px;
 }
 
-.header-brand {
+.header-brand{display:flex;align-items:center;gap:13px}
 
+.header-logo{
+    width:44px;
+    height:44px;
     display:flex;
-
     align-items:center;
-
-    gap:13px;
-}
-
-.header-logo {
-
-    width:43px;
-
-    height:43px;
-
-    display:flex;
-
-    align-items:center;
-
     justify-content:center;
-
-    border-radius:12px;
-
+    border-radius:13px;
     color:white;
-
     font-size:21px;
-
     font-weight:900;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00c9ff,
-            #2474ff
-        );
-
-    box-shadow:
-        0 8px 24px rgba(0,150,255,.30);
+    background:linear-gradient(135deg,#00d5ff,#176cff);
+    box-shadow:0 0 30px rgba(0,183,255,.25);
 }
 
-.header-title {
-
-    color:white;
-
+.header-title{
+    color:#fff;
     font-size:17px;
-
-    font-weight:850;
-
-    letter-spacing:.2px;
+    font-weight:900;
 }
 
-.header-subtitle {
-
+.header-subtitle{
     margin-top:3px;
-
-    color:
-        rgba(255,255,255,.48);
-
-    font-size:10px;
-
-    letter-spacing:.5px;
+    color:#66809c;
+    font-size:9px;
+    letter-spacing:1px;
+    font-weight:800;
 }
 
-.header-right {
-
+.header-right{
     display:flex;
-
     align-items:center;
-
-    gap:10px;
+    gap:9px;
 }
 
-.system-status {
+.system-status,.user-badge,.logout-btn{
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:9px;
+    background:rgba(255,255,255,.055);
+}
 
+.system-status{
     display:flex;
-
     align-items:center;
-
-    gap:8px;
-
-    padding:
-        8px 12px;
-
-    border:
-        1px solid rgba(0,230,160,.22);
-
-    border-radius:999px;
-
-    color:#9dffe0;
-
-    background:
-        rgba(0,230,160,.07);
-
-    font-size:10px;
-
-    font-weight:850;
-
-    letter-spacing:.5px;
+    gap:7px;
+    padding:8px 12px;
+    color:#8fffe0;
+    font-size:9px;
+    font-weight:900;
 }
 
-.status-dot {
-
+.status-dot{
     width:7px;
-
     height:7px;
-
     border-radius:50%;
-
     background:#00e39a;
-
-    box-shadow:
-        0 0 12px #00e39a;
-
-    animation:
-        pulse 2s infinite;
+    box-shadow:0 0 14px #00e39a;
+    animation:pulse 2s infinite;
 }
 
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity:1;
-    }
-
-    50% {
-        opacity:.45;
-    }
+@keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:.4}
 }
 
-.user-badge {
-
-    padding:
-        8px 11px;
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    border-radius:9px;
-
-    color:
-        rgba(255,255,255,.75);
-
-    background:
-        rgba(255,255,255,.06);
-
-    font-size:10px;
-
+.user-badge{
+    padding:8px 11px;
+    color:#a9bad0;
+    font-size:9px;
     font-weight:800;
 }
 
-.logout-btn {
-
-    border:
-        1px solid rgba(255,255,255,.13);
-
-    background:
-        rgba(255,255,255,.07);
-
+.logout-btn{
+    padding:9px 14px;
     color:white;
-
-    padding:
-        9px 14px;
-
-    border-radius:9px;
-
-    font-size:11px;
-
+    font-size:10px;
     font-weight:800;
-
     transition:.2s;
 }
 
-.logout-btn:hover {
-
-    background:
-        rgba(255,255,255,.14);
-
+.logout-btn:hover{
+    background:rgba(255,79,112,.14);
+    border-color:rgba(255,79,112,.35);
     transform:translateY(-1px);
 }
 
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-.container {
-
+/* MAIN */
+.container{
     max-width:1550px;
-
     margin:auto;
-
-    padding:
-        28px 28px 70px;
+    padding:28px 28px 70px;
 }
 
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero {
-
+/* HERO */
+.hero{
     position:relative;
-
     overflow:hidden;
-
     margin-bottom:25px;
-
-    padding:
-        34px 36px;
-
+    padding:36px;
+    border:1px solid rgba(72,177,255,.17);
     border-radius:22px;
-
     color:white;
-
     background:
-        linear-gradient(
-            120deg,
-            #061629,
-            #0a2847 58%,
-            #0d365c
-        );
-
-    box-shadow:
-        var(--shadow-lg);
+        radial-gradient(circle at 85% 20%,rgba(0,210,255,.18),transparent 25%),
+        radial-gradient(circle at 70% 100%,rgba(78,90,255,.15),transparent 35%),
+        linear-gradient(120deg,#041121,#08233e 58%,#0b3154);
+    box-shadow:var(--shadow2);
 }
 
-.hero::before {
-
+.hero:before{
     content:"";
-
     position:absolute;
-
-    width:390px;
-
-    height:390px;
-
-    right:-130px;
-
-    top:-220px;
-
+    width:420px;
+    height:420px;
+    right:-180px;
+    top:-250px;
     border-radius:50%;
-
-    background:
-        rgba(0,198,255,.14);
-
-    filter:blur(4px);
+    border:1px solid rgba(0,213,255,.18);
+    box-shadow:0 0 80px rgba(0,183,255,.12);
 }
 
-.hero::after {
-
+.hero:after{
     content:"";
-
     position:absolute;
-
-    width:260px;
-
-    height:260px;
-
-    right:250px;
-
-    bottom:-210px;
-
+    width:180px;
+    height:180px;
+    right:180px;
+    bottom:-140px;
     border-radius:50%;
-
-    background:
-        rgba(71,98,238,.16);
+    background:rgba(65,90,255,.10);
 }
 
-.hero-content {
+.hero-content{position:relative;z-index:2}
 
-    position:relative;
-
-    z-index:2;
-}
-
-.hero-eyebrow {
-
+.hero-eyebrow{
     display:flex;
-
     align-items:center;
-
     gap:8px;
-
-    margin-bottom:10px;
-
-    color:#70dfff;
-
-    font-size:10px;
-
+    margin-bottom:11px;
+    color:#6ee6ff;
+    font-size:9px;
     font-weight:900;
-
-    letter-spacing:1.2px;
-
+    letter-spacing:1.4px;
     text-transform:uppercase;
 }
 
-.hero-eyebrow span {
-
-    width:6px;
-
-    height:6px;
-
+.hero-eyebrow span{
+    width:7px;
+    height:7px;
     border-radius:50%;
-
-    background:#00d99a;
+    background:#00df9c;
+    box-shadow:0 0 12px #00df9c;
 }
 
-.hero h1 {
-
+.hero h1{
     margin:0;
-
-    font-size:
-        clamp(28px,4vw,43px);
-
+    font-size:clamp(29px,4vw,45px);
     line-height:1.05;
-
-    font-weight:900;
-
-    letter-spacing:-1.2px;
+    font-weight:950;
+    letter-spacing:-1.5px;
 }
 
-.hero p {
-
-    max-width:720px;
-
-    margin:
-        13px 0 0;
-
-    color:
-        rgba(255,255,255,.61);
-
-    font-size:13px;
-
+.hero p{
+    max-width:730px;
+    margin:13px 0 0;
+    color:#8da6bf;
+    font-size:12px;
     line-height:1.7;
 }
 
-.hero-actions {
-
+.hero-actions{
     display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
+    gap:9px;
     margin-top:22px;
 }
 
-.hero-btn {
-
-    border:0;
-
-    padding:
-        10px 16px;
-
+.hero-btn{
+    padding:10px 16px;
+    border:1px solid rgba(255,255,255,.12);
     border-radius:9px;
-
-    color:white;
-
-    background:
-        rgba(255,255,255,.10);
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    font-size:11px;
-
-    font-weight:800;
-
+    color:#dcecff;
+    background:rgba(255,255,255,.06);
+    font-size:10px;
+    font-weight:850;
     transition:.2s;
 }
 
-.hero-btn.primary {
-
-    background:
-        linear-gradient(
-            135deg,
-            #1687ff,
-            #0067df
-        );
-
-    border-color:transparent;
+.hero-btn.primary{
+    color:#fff;
+    border:0;
+    background:linear-gradient(135deg,#168cff,#005fd8);
+    box-shadow:0 8px 25px rgba(0,113,235,.25);
 }
 
-.hero-btn:hover {
-
+.hero-btn:hover{
     transform:translateY(-2px);
-
-    background:
-        rgba(255,255,255,.17);
+    background:rgba(255,255,255,.12);
 }
 
-.hero-btn.primary:hover {
-
-    background:
-        linear-gradient(
-            135deg,
-            #2994ff,
-            #0870eb
-        );
+.hero-btn.primary:hover{
+    background:linear-gradient(135deg,#31a0ff,#0870ed);
 }
 
-
-/* =========================================================
-   SECTION HEADER
-========================================================= */
-
-.section-header {
-
+/* SECTIONS */
+.section-header{
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
-    margin:
-        27px 0 13px;
+    margin:27px 0 13px;
 }
 
-.section-heading {
-
+.section-heading{
     display:flex;
-
     align-items:center;
-
     gap:9px;
-
-    color:#18243a;
-
-    font-size:13px;
-
+    color:#e9f3ff;
+    font-size:12px;
     font-weight:900;
-
     text-transform:uppercase;
-
-    letter-spacing:.75px;
+    letter-spacing:.8px;
 }
 
-.section-heading::before {
-
+.section-heading:before{
     content:"";
-
     width:4px;
-
     height:16px;
-
     border-radius:5px;
-
-    background:
-        linear-gradient(
-            180deg,
-            var(--blue),
-            var(--cyan)
-        );
+    background:linear-gradient(180deg,var(--cyan),var(--blue));
+    box-shadow:0 0 12px rgba(0,200,255,.35);
 }
 
-.section-caption {
-
-    color:#8995a6;
-
-    font-size:10px;
-
+.section-caption{
+    color:#60758d;
+    font-size:9px;
     font-weight:700;
 }
 
-
-/* =========================================================
-   KPI
-========================================================= */
-
-.kpi-grid {
-
+/* KPI */
+.kpi-grid{
     display:grid;
-
-    grid-template-columns:
-        repeat(7,minmax(125px,1fr));
-
+    grid-template-columns:repeat(7,minmax(125px,1fr));
     gap:12px;
 }
 
-.kpi-card {
-
+.kpi-card{
     position:relative;
-
-    min-height:145px;
-
-    padding:17px;
-
+    min-height:148px;
     overflow:hidden;
-
-    border:
-        1px solid var(--border);
-
+    padding:17px;
+    border:1px solid var(--border);
     border-radius:16px;
-
-    background:white;
-
-    box-shadow:
-        var(--shadow);
-
-    cursor:pointer;
-
-    transition:
-        transform .2s,
-        box-shadow .2s,
-        border-color .2s;
-}
-
-.kpi-card::after {
-
-    content:"";
-
-    position:absolute;
-
-    right:-28px;
-
-    bottom:-35px;
-
-    width:105px;
-
-    height:105px;
-
-    border-radius:50%;
-
     background:
-        rgba(22,119,255,.045);
+        linear-gradient(145deg,rgba(13,38,65,.96),rgba(7,24,43,.96));
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    transition:.22s;
 }
 
-.kpi-card:hover {
-
-    transform:translateY(-4px);
-
-    box-shadow:
-        0 14px 35px rgba(12,34,60,.12);
-
-    border-color:
-        #cdd9e8;
+.kpi-card:before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    opacity:.75;
 }
 
-.kpi-top {
+.kpi-card:after{
+    content:"";
+    position:absolute;
+    right:-40px;
+    bottom:-45px;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:rgba(0,170,255,.055);
+}
 
+.kpi-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(75,180,255,.34);
+    box-shadow:0 18px 45px rgba(0,0,0,.38);
+}
+
+.kpi-top{
     display:flex;
-
-    align-items:center;
-
     justify-content:space-between;
 }
 
-.kpi-icon {
-
+.kpi-icon{
     width:35px;
-
     height:35px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     border-radius:10px;
-
-    font-size:16px;
-
+    font-size:15px;
     font-weight:900;
 }
 
-.kpi-icon.blue {
+.kpi-icon.blue{color:#58b4ff;background:rgba(22,135,255,.13)}
+.kpi-icon.orange{color:#ffbe55;background:rgba(255,173,50,.13)}
+.kpi-icon.purple{color:#b09aff;background:rgba(155,122,255,.13)}
+.kpi-icon.green{color:#4df0bf;background:rgba(0,212,154,.13)}
+.kpi-icon.red{color:#ff718d;background:rgba(255,79,112,.13)}
 
-    color:#176cff;
-
-    background:#eaf2ff;
-}
-
-.kpi-icon.orange {
-
-    color:#df8500;
-
-    background:#fff4df;
-}
-
-.kpi-icon.purple {
-
-    color:#7351d3;
-
-    background:#f0ebff;
-}
-
-.kpi-icon.green {
-
-    color:#009c70;
-
-    background:#e4faf3;
-}
-
-.kpi-icon.red {
-
-    color:#e22d59;
-
-    background:#ffe9ef;
-}
-
-.kpi-label {
-
+.kpi-label{
     margin-top:17px;
-
-    color:#778397;
-
-    font-size:10px;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
-    letter-spacing:.45px;
-}
-
-.kpi-value {
-
-    margin-top:3px;
-
-    color:#132039;
-
-    font-size:29px;
-
-    line-height:1;
-
-    font-weight:900;
-
-    letter-spacing:-1px;
-}
-
-.kpi-small {
-
-    margin-top:8px;
-
-    color:#a1aaba;
-
+    color:#7890a9;
     font-size:9px;
+    font-weight:850;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
 
+.kpi-value{
+    margin-top:4px;
+    color:#f6fbff;
+    font-size:29px;
+    line-height:1;
+    font-weight:950;
+}
+
+.kpi-small{
+    margin-top:8px;
+    color:#58708a;
+    font-size:8px;
     font-weight:700;
 }
 
-
-/* =========================================================
-   ANALYTICS
-========================================================= */
-
-.analytics-grid {
-
+/* ANALYTICS */
+.analytics-grid{
     display:grid;
-
-    grid-template-columns:
-        1.35fr
-        1fr
-        1fr;
-
+    grid-template-columns:1.35fr 1fr 1fr;
     gap:15px;
 }
 
-.analytics-card {
-
+.analytics-card{
     min-height:315px;
-
     padding:20px;
-
-    border:
-        1px solid var(--border);
-
+    border:1px solid var(--border);
     border-radius:17px;
-
-    background:white;
-
-    box-shadow:
-        var(--shadow);
+    background:linear-gradient(145deg,#0b1f35,#08182b);
+    box-shadow:var(--shadow);
 }
 
-.card-header {
-
+.card-header{
     display:flex;
-
-    align-items:flex-start;
-
     justify-content:space-between;
-
-    gap:15px;
-
     margin-bottom:18px;
 }
 
-.card-title {
-
-    color:#1a263a;
-
-    font-size:13px;
-
+.card-title{
+    color:#e9f3ff;
+    font-size:12px;
     font-weight:900;
 }
 
-.card-subtitle {
-
+.card-subtitle{
     margin-top:4px;
-
-    color:#8b97a8;
-
-    font-size:9px;
+    color:#60758d;
+    font-size:8px;
 }
 
-.chart-area {
-
+.chart-area{
     min-height:230px;
-
     display:flex;
-
     align-items:flex-end;
-
     justify-content:space-around;
-
     gap:9px;
-
-    padding:
-        15px 4px 4px;
-
-    border-bottom:
-        1px solid #e7ebf1;
+    padding:15px 4px 4px;
+    border-bottom:1px solid rgba(123,166,204,.12);
 }
 
-.trend-bar-wrap {
-
+.trend-bar-wrap{
     height:210px;
-
     flex:1;
-
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:flex-end;
-
     gap:8px;
 }
 
-.trend-bar {
-
+.trend-bar{
     width:100%;
-
     max-width:32px;
-
     min-height:5px;
-
-    border-radius:
-        6px 6px 2px 2px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #21a0ff,
-            #126be9
-        );
-
-    transition:
-        height .5s ease;
-
-    box-shadow:
-        0 5px 15px rgba(22,119,255,.18);
+    border-radius:6px 6px 2px 2px;
+    background:linear-gradient(180deg,#00d5ff,#126be9);
+    box-shadow:0 0 18px rgba(0,160,255,.20);
+    transition:.5s;
 }
 
-.trend-value {
-
-    color:#536174;
-
-    font-size:9px;
-
+.trend-value{
+    color:#a9c0d8;
+    font-size:8px;
     font-weight:900;
 }
 
-.trend-label {
-
-    color:#98a3b3;
-
-    font-size:8px;
-
+.trend-label{
+    color:#60758d;
+    font-size:7px;
     font-weight:700;
 }
 
-
-/* =========================================================
-   CATEGORY / DEPARTMENT CHARTS
-========================================================= */
-
-.chart-list {
-
+.chart-list{
     display:flex;
-
     flex-direction:column;
-
     gap:15px;
-
     margin-top:15px;
 }
 
-.chart-row {
-
+.chart-row{
     display:grid;
-
-    grid-template-columns:
-        105px 1fr 32px;
-
+    grid-template-columns:105px 1fr 30px;
     align-items:center;
-
     gap:10px;
 }
 
-.chart-row-label {
-
+.chart-row-label{
     overflow:hidden;
-
-    color:#526075;
-
-    font-size:9px;
-
+    color:#91a7bd;
+    font-size:8px;
     font-weight:800;
-
     text-overflow:ellipsis;
-
     white-space:nowrap;
 }
 
-.chart-track {
-
-    height:8px;
-
+.chart-track{
+    height:7px;
     overflow:hidden;
-
     border-radius:99px;
-
-    background:#edf1f5;
+    background:#142c45;
 }
 
-.chart-fill {
-
+.chart-fill{
     height:100%;
-
     min-width:2px;
-
     border-radius:99px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #1687ff,
-            #00b9e8
-        );
-
-    transition:
-        width .5s ease;
+    background:linear-gradient(90deg,#1687ff,#00d5ff);
+    box-shadow:0 0 12px rgba(0,180,255,.18);
+    transition:.5s;
 }
 
-.chart-number {
-
-    color:#24334a;
-
-    font-size:9px;
-
+.chart-number{
+    color:#c9daeb;
+    font-size:8px;
     font-weight:900;
-
     text-align:right;
 }
 
-
-/* =========================================================
-   ACTION CENTER
-========================================================= */
-
-.action-grid {
-
+/* ACTION */
+.action-grid{
     display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
+    grid-template-columns:repeat(3,1fr);
     gap:14px;
 }
 
-.action-card {
-
+.action-card{
     position:relative;
-
     overflow:hidden;
-
-    min-height:118px;
-
+    min-height:120px;
     padding:18px;
-
-    border:
-        1px solid var(--border);
-
+    border:1px solid var(--border);
     border-radius:16px;
-
-    background:white;
-
-    box-shadow:
-        var(--shadow);
-
+    background:linear-gradient(145deg,#0c223b,#08182b);
+    box-shadow:var(--shadow);
     cursor:pointer;
-
     transition:.2s;
 }
 
-.action-card:hover {
-
-    transform:translateY(-3px);
-
-    box-shadow:
-        0 14px 35px rgba(12,34,60,.11);
+.action-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(100,180,235,.28);
 }
 
-.action-card::before {
-
+.action-card:before{
     content:"";
-
     position:absolute;
-
     left:0;
-
     top:0;
-
     bottom:0;
-
     width:4px;
-
     background:var(--blue);
 }
 
-.action-card.corrective::before {
+.action-card.corrective:before{background:var(--orange)}
+.action-card.overdue:before{background:var(--red)}
 
-    background:var(--orange);
-}
-
-.action-card.overdue::before {
-
-    background:var(--red);
-}
-
-.action-top {
-
+.action-top{
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 }
 
-.action-title {
-
-    color:#354258;
-
-    font-size:10px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    letter-spacing:.4px;
-}
-
-.action-icon {
-
-    width:32px;
-
-    height:32px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:9px;
-
-    font-size:15px;
-}
-
-.action-card.new .action-icon {
-
-    color:#176cff;
-
-    background:#eaf2ff;
-}
-
-.action-card.corrective .action-icon {
-
-    color:#d77d00;
-
-    background:#fff2d8;
-}
-
-.action-card.overdue .action-icon {
-
-    color:#dc315c;
-
-    background:#ffe9ef;
-}
-
-.action-count {
-
-    margin-top:13px;
-
-    color:#111d31;
-
-    font-size:27px;
-
-    font-weight:900;
-}
-
-.action-description {
-
-    margin-top:2px;
-
-    color:#8a96a7;
-
+.action-title{
+    color:#91a9c0;
     font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.5px;
 }
 
-
-/* =========================================================
-   REPORT SECTION
-========================================================= */
-
-.report-toolbar {
-
+.action-icon{
+    width:32px;
+    height:32px;
     display:flex;
-
     align-items:center;
-
-    gap:9px;
-
-    flex-wrap:wrap;
-
-    padding:14px;
-
-    margin-bottom:15px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:15px;
-
-    background:white;
-
-    box-shadow:
-        var(--shadow);
+    justify-content:center;
+    border-radius:9px;
+    font-size:14px;
 }
 
-.search-box {
+.action-card.new .action-icon{color:#55b4ff;background:rgba(22,135,255,.13)}
+.action-card.corrective .action-icon{color:#ffc05c;background:rgba(255,173,50,.13)}
+.action-card.overdue .action-icon{color:#ff718d;background:rgba(255,79,112,.13)}
 
+.action-count{
+    margin-top:13px;
+    color:#f4f9ff;
+    font-size:27px;
+    font-weight:950;
+}
+
+.action-description{
+    margin-top:2px;
+    color:#5e758d;
+    font-size:8px;
+}
+
+/* REPORT TOOLBAR */
+.report-toolbar{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:rgba(10,29,49,.92);
+    box-shadow:var(--shadow);
+}
+
+.search-box{
     position:relative;
-
     flex:1;
-
     min-width:230px;
 }
 
-.search-box span {
-
+.search-box span{
     position:absolute;
-
     left:13px;
-
     top:50%;
-
     transform:translateY(-50%);
-
-    color:#98a3b2;
-
-    font-size:13px;
+    color:#5e7892;
 }
 
-.search-box input {
-
-    width:100%;
-
+.search-box input,
+.filter-select,
+.filter-btn{
     height:39px;
-
-    padding:
-        0 13px 0 35px;
-
-    border:
-        1px solid #dfe5ec;
-
+    border:1px solid rgba(119,166,207,.16);
     border-radius:9px;
-
     outline:none;
-
-    color:#263449;
-
-    background:#fafbfd;
-
-    font-size:11px;
-
-    transition:.2s;
-}
-
-.search-box input:focus {
-
-    border-color:
-        #86b9ff;
-
-    background:white;
-
-    box-shadow:
-        0 0 0 3px rgba(22,119,255,.08);
-}
-
-.filter-select {
-
-    height:39px;
-
-    padding:
-        0 30px 0 11px;
-
-    border:
-        1px solid #dfe5ec;
-
-    border-radius:9px;
-
-    outline:none;
-
-    color:#344258;
-
-    background:#fafbfd;
-
-    font-size:10px;
-
-    font-weight:700;
-
-    cursor:pointer;
-}
-
-.filter-select:focus {
-
-    border-color:#86b9ff;
-}
-
-.filter-btn {
-
-    height:39px;
-
-    padding:
-        0 13px;
-
-    border:
-        1px solid #dfe5ec;
-
-    border-radius:9px;
-
-    color:#59677b;
-
-    background:#fafbfd;
-
-    font-size:10px;
-
-    font-weight:800;
-}
-
-.filter-btn:hover {
-
-    background:#f0f4f8;
-}
-
-.active-filter {
-
-    display:flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    padding:
-        7px 10px;
-
-    border-radius:8px;
-
-    color:#176cff;
-
-    background:#eaf2ff;
-
+    color:#cbdced;
+    background:#07192c;
     font-size:9px;
-
-    font-weight:800;
+    font-weight:750;
 }
 
+.search-box input{
+    width:100%;
+    padding:0 13px 0 35px;
+}
 
-/* =========================================================
-   REPORT GRID
-========================================================= */
+.search-box input::placeholder{color:#526b84}
 
-.reports-grid {
+.search-box input:focus,
+.filter-select:focus{
+    border-color:rgba(0,190,255,.5);
+    box-shadow:0 0 0 3px rgba(0,180,255,.07);
+}
 
+.filter-select{
+    padding:0 30px 0 11px;
+}
+
+.filter-btn{
+    padding:0 13px;
+}
+
+.filter-btn:hover{
+    background:#102c48;
+}
+
+.active-filter{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:7px 10px;
+    border-radius:8px;
+    color:#55c4ff;
+    background:rgba(22,135,255,.12);
+    font-size:8px;
+    font-weight:850;
+}
+
+/* REPORT CARDS */
+.reports-grid{
     display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
+    grid-template-columns:repeat(3,1fr);
     gap:14px;
 }
 
-.report-card {
-
+.report-card{
     position:relative;
-
     overflow:hidden;
-
     padding:18px;
-
-    border:
-        1px solid var(--border);
-
+    border:1px solid var(--border);
     border-radius:16px;
-
-    background:white;
-
-    box-shadow:
-        var(--shadow);
-
+    background:linear-gradient(145deg,#0b2138,#07182a);
+    box-shadow:var(--shadow);
     cursor:pointer;
-
-    transition:
-        transform .2s,
-        box-shadow .2s,
-        border-color .2s;
-}
-
-.report-card:hover {
-
-    transform:translateY(-4px);
-
-    border-color:#ccd8e7;
-
-    box-shadow:
-        0 16px 38px rgba(11,33,58,.12);
-}
-
-.report-card::before {
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    bottom:0;
-
-    width:4px;
-
-    background:#1677ff;
-}
-
-.report-card.status-new::before {
-    background:#1687ff;
-}
-
-.report-card.status-investigation::before {
-    background:#7657d9;
-}
-
-.report-card.status-corrective::before {
-    background:#f59e0b;
-}
-
-.report-card.status-verification::before {
-    background:#00b887;
-}
-
-.report-card.status-closed::before {
-    background:#7d8795;
-}
-
-.report-card.status-overdue::before {
-    background:#ef476f;
-}
-
-.report-top {
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:space-between;
-
-    gap:10px;
-}
-
-.report-number {
-
-    color:#15233a;
-
-    font-size:13px;
-
-    font-weight:900;
-}
-
-.report-date {
-
-    margin-top:3px;
-
-    color:#9aa5b5;
-
-    font-size:9px;
-}
-
-.status-badge {
-
-    display:inline-flex;
-
-    align-items:center;
-
-    gap:5px;
-
-    padding:
-        5px 8px;
-
-    border-radius:999px;
-
-    font-size:8px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    letter-spacing:.35px;
-
-    white-space:nowrap;
-}
-
-.status-badge::before {
-
-    content:"";
-
-    width:5px;
-
-    height:5px;
-
-    border-radius:50%;
-
-    background:currentColor;
-}
-
-.status-new {
-
-    color:#146eea;
-
-    background:#eaf2ff;
-}
-
-.status-investigation {
-
-    color:#7250cf;
-
-    background:#f0ebff;
-}
-
-.status-corrective {
-
-    color:#c87500;
-
-    background:#fff2d8;
-}
-
-.status-verification {
-
-    color:#00996d;
-
-    background:#e4faf3;
-}
-
-.status-closed {
-
-    color:#657182;
-
-    background:#eef1f4;
-}
-
-.status-overdue {
-
-    color:#db2e59;
-
-    background:#ffe8ef;
-}
-
-.report-title {
-
-    margin-top:16px;
-
-    color:#25334a;
-
-    font-size:11px;
-
-    font-weight:850;
-}
-
-.report-description {
-
-    margin-top:6px;
-
-    min-height:32px;
-
-    color:#788598;
-
-    font-size:9px;
-
-    line-height:1.55;
-}
-
-.report-meta {
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:8px;
-
-    margin-top:15px;
-
-    padding-top:13px;
-
-    border-top:
-        1px solid #edf0f4;
-}
-
-.meta-label {
-
-    color:#a0aab8;
-
-    font-size:7px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    letter-spacing:.45px;
-}
-
-.meta-value {
-
-    margin-top:3px;
-
-    color:#48566a;
-
-    overflow:hidden;
-
-    font-size:9px;
-
-    font-weight:750;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-}
-
-.report-footer {
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    margin-top:15px;
-}
-
-.report-open {
-
-    color:#1677ff;
-
-    font-size:9px;
-
-    font-weight:900;
-}
-
-.overdue-label {
-
-    color:#e0325b;
-
-    font-size:8px;
-
-    font-weight:900;
-}
-
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.empty-state {
-
-    grid-column:1/-1;
-
-    padding:55px 20px;
-
-    border:
-        1px dashed #ccd5e1;
-
-    border-radius:15px;
-
-    color:#8a96a7;
-
-    background:white;
-
-    text-align:center;
-}
-
-.empty-icon {
-
-    margin-bottom:10px;
-
-    font-size:30px;
-
-    opacity:.5;
-}
-
-.empty-title {
-
-    color:#4c5b70;
-
-    font-size:12px;
-
-    font-weight:900;
-}
-
-.empty-text {
-
-    margin-top:5px;
-
-    font-size:9px;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modal {
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:3000;
-
-    display:none;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(3,12,23,.72);
-
-    backdrop-filter:
-        blur(7px);
-}
-
-.modal.show {
-
-    display:flex;
-}
-
-.modal-content {
-
-    width:
-        min(1180px,100%);
-
-    max-height:
-        94vh;
-
-    overflow:hidden;
-
-    border-radius:20px;
-
-    background:#f5f7fa;
-
-    box-shadow:
-        0 35px 90px rgba(0,0,0,.35);
-
-    animation:
-        modalIn .22s ease;
-}
-
-@keyframes modalIn {
-
-    from {
-        opacity:0;
-        transform:
-            translateY(12px)
-            scale(.985);
-    }
-
-    to {
-        opacity:1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-.modal-header {
-
-    position:relative;
-
-    padding:
-        21px 25px;
-
-    color:white;
-
-    background:
-        linear-gradient(
-            115deg,
-            #07172a,
-            #0d2d4d
-        );
-}
-
-.modal-header-top {
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:space-between;
-
-    gap:15px;
-}
-
-.modal-title {
-
-    color:white;
-
-    font-size:18px;
-
-    font-weight:900;
-}
-
-.modal-subtitle {
-
-    margin-top:4px;
-
-    color:
-        rgba(255,255,255,.52);
-
-    font-size:9px;
-}
-
-.modal-header-right {
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-}
-
-.modal-close {
-
-    width:34px;
-
-    height:34px;
-
-    border:
-        1px solid rgba(255,255,255,.12);
-
-    border-radius:9px;
-
-    color:white;
-
-    background:
-        rgba(255,255,255,.07);
-
-    font-size:17px;
-
-    cursor:pointer;
-}
-
-.modal-close:hover {
-
-    background:
-        rgba(255,255,255,.15);
-}
-
-.modal-body {
-
-    max-height:
-        calc(94vh - 78px);
-
-    overflow:auto;
-
-    padding:20px;
-}
-
-.modal-grid {
-
-    display:grid;
-
-    grid-template-columns:
-        1.15fr .85fr;
-
-    gap:15px;
-}
-
-.modal-section {
-
-    margin-bottom:15px;
-
-    padding:17px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:14px;
-
-    background:white;
-
-    box-shadow:
-        0 4px 18px rgba(10,30,55,.04);
-}
-
-.modal-section-title {
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-    margin-bottom:14px;
-
-    color:#1a2940;
-
-    font-size:10px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    letter-spacing:.65px;
-}
-
-.modal-section-title::before {
-
-    content:"";
-
-    width:4px;
-
-    height:13px;
-
-    border-radius:4px;
-
-    background:#1677ff;
-}
-
-.summary-grid {
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:9px;
-}
-
-.summary-item {
-
-    padding:10px;
-
-    border-radius:9px;
-
-    background:#f7f9fb;
-}
-
-.summary-label {
-
-    color:#9aa5b5;
-
-    font-size:7px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-}
-
-.summary-value {
-
-    margin-top:4px;
-
-    color:#35435a;
-
-    font-size:9px;
-
-    font-weight:800;
-}
-
-
-/* =========================================================
-   TIMELINE
-========================================================= */
-
-.timeline {
-
-    display:flex;
-
-    align-items:flex-start;
-
-    margin:
-        5px 0 0;
-}
-
-.timeline-step {
-
-    position:relative;
-
-    flex:1;
-
-    text-align:center;
-}
-
-.timeline-step:not(:last-child)::after {
-
-    content:"";
-
-    position:absolute;
-
-    top:12px;
-
-    left:50%;
-
-    width:100%;
-
-    height:2px;
-
-    background:#dfe5eb;
-
-    z-index:0;
-}
-
-.timeline-dot {
-
-    position:relative;
-
-    z-index:2;
-
-    width:25px;
-
-    height:25px;
-
-    margin:auto;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border:
-        2px solid #dce3eb;
-
-    border-radius:50%;
-
-    color:#98a4b3;
-
-    background:white;
-
-    font-size:9px;
-
-    font-weight:900;
-}
-
-.timeline-step.active .timeline-dot {
-
-    border-color:#1677ff;
-
-    color:white;
-
-    background:#1677ff;
-
-    box-shadow:
-        0 0 0 4px rgba(22,119,255,.10);
-}
-
-.timeline-step.completed .timeline-dot {
-
-    border-color:#00b887;
-
-    color:white;
-
-    background:#00b887;
-}
-
-.timeline-label {
-
-    margin-top:7px;
-
-    color:#8793a4;
-
-    font-size:7px;
-
-    font-weight:850;
-
-    text-transform:uppercase;
-
-    letter-spacing:.25px;
-}
-
-.timeline-step.active .timeline-label {
-
-    color:#1677ff;
-}
-
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.form-grid {
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:12px;
-}
-
-.form-group {
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:5px;
-}
-
-.form-group.full {
-
-    grid-column:1/-1;
-}
-
-.form-label {
-
-    color:#536176;
-
-    font-size:8px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    letter-spacing:.4px;
-}
-
-.form-control {
-
-    width:100%;
-
-    min-height:39px;
-
-    padding:
-        9px 11px;
-
-    border:
-        1px solid #dfe5ec;
-
-    border-radius:8px;
-
-    outline:none;
-
-    color:#2b394e;
-
-    background:#fbfcfd;
-
-    font-size:10px;
-
-    resize:vertical;
-
     transition:.2s;
 }
 
-textarea.form-control {
-
-    min-height:85px;
+.report-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(80,180,245,.30);
+    box-shadow:0 18px 45px rgba(0,0,0,.4);
 }
 
-.form-control:focus {
-
-    border-color:#83b8ff;
-
-    background:white;
-
-    box-shadow:
-        0 0 0 3px rgba(22,119,255,.07);
+.report-card:before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:4px;
+    background:#1687ff;
 }
 
+.report-card.status-investigation:before{background:#9b7aff}
+.report-card.status-corrective:before{background:#ffad32}
+.report-card.status-verification:before{background:#00d49a}
+.report-card.status-closed:before{background:#718096}
+.report-card.status-overdue:before{background:#ff4f70}
 
-/* =========================================================
-   PHOTO
-========================================================= */
-
-.photo-container {
-
-    min-height:180px;
-
+.report-top{
     display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-    border:
-        1px dashed #ccd6e2;
-
-    border-radius:11px;
-
-    background:#f6f8fa;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
 }
 
-.photo-container img {
-
-    display:block;
-
-    max-width:100%;
-
-    max-height:420px;
-
-    object-fit:contain;
-
-    border-radius:8px;
-}
-
-.photo-placeholder {
-
-    color:#9ba6b5;
-
-    font-size:10px;
-
-    font-weight:700;
-
-    text-align:center;
-}
-
-.photo-link {
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    margin-top:9px;
-
-    padding:
-        8px 11px;
-
-    border-radius:8px;
-
-    color:#176cff;
-
-    background:#eaf2ff;
-
-    font-size:8px;
-
+.report-number{
+    color:#edf6ff;
+    font-size:12px;
     font-weight:900;
-
-    text-decoration:none;
 }
 
+.report-date{
+    margin-top:3px;
+    color:#607891;
+    font-size:8px;
+}
 
-/* =========================================================
-   OVERDUE
-========================================================= */
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 8px;
+    border-radius:999px;
+    font-size:7px;
+    font-weight:900;
+    text-transform:uppercase;
+    white-space:nowrap;
+}
 
-.overdue-banner {
+.status-badge:before{
+    content:"";
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:currentColor;
+}
 
-    display:none;
+.status-new{color:#58b4ff;background:rgba(22,135,255,.13)}
+.status-investigation{color:#b09aff;background:rgba(155,122,255,.13)}
+.status-corrective{color:#ffc05c;background:rgba(255,173,50,.13)}
+.status-verification{color:#50edbd;background:rgba(0,212,154,.13)}
+.status-closed{color:#8b9bad;background:rgba(110,125,145,.13)}
+.status-overdue{color:#ff718d;background:rgba(255,79,112,.13)}
 
-    margin-bottom:14px;
-
-    padding:
-        11px 13px;
-
-    border:
-        1px solid #ffcbd8;
-
-    border-radius:9px;
-
-    color:#bd274b;
-
-    background:#fff0f4;
-
-    font-size:9px;
-
+.report-title{
+    margin-top:16px;
+    color:#b9cee1;
+    font-size:10px;
     font-weight:850;
 }
 
-.overdue-banner.show {
-
-    display:block;
+.report-description{
+    margin-top:6px;
+    min-height:32px;
+    color:#70869d;
+    font-size:8px;
+    line-height:1.55;
 }
 
-
-/* =========================================================
-   MODAL FOOTER
-========================================================= */
-
-.modal-footer {
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:flex-end;
-
-    gap:9px;
-
-    margin-top:3px;
-
-    padding-top:15px;
-
-    border-top:
-        1px solid #e7ebf0;
+.report-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:15px;
+    padding-top:13px;
+    border-top:1px solid rgba(123,166,204,.10);
 }
 
-.btn {
-
-    min-height:38px;
-
-    padding:
-        0 16px;
-
-    border-radius:9px;
-
-    font-size:10px;
-
+.meta-label{
+    color:#536b83;
+    font-size:7px;
     font-weight:900;
-
-    border:0;
+    text-transform:uppercase;
 }
 
-.btn-secondary {
-
-    color:#536176;
-
-    background:#edf1f5;
+.meta-value{
+    margin-top:3px;
+    overflow:hidden;
+    color:#9eb3c8;
+    font-size:8px;
+    font-weight:750;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
-.btn-secondary:hover {
-
-    background:#e2e7ed;
+.report-footer{
+    display:flex;
+    justify-content:space-between;
+    margin-top:15px;
 }
 
-.btn-primary {
-
-    color:white;
-
-    background:
-        linear-gradient(
-            135deg,
-            #1687ff,
-            #0069e5
-        );
-
-    box-shadow:
-        0 6px 16px rgba(22,119,255,.20);
+.report-open{
+    color:#4bb4ff;
+    font-size:8px;
+    font-weight:900;
 }
 
-.btn-primary:hover {
-
-    transform:translateY(-1px);
-
-    box-shadow:
-        0 8px 20px rgba(22,119,255,.28);
+.overdue-label{
+    color:#ff6685;
+    font-size:7px;
+    font-weight:900;
 }
 
-
-/* =========================================================
-   TOAST / LOADING
-========================================================= */
-
-.loading {
-
+/* EMPTY / LOADING */
+.empty-state{
     grid-column:1/-1;
-
-    padding:45px;
-
-    color:#8490a0;
-
-    font-size:10px;
-
-    font-weight:700;
-
+    padding:55px 20px;
+    border:1px dashed rgba(115,157,198,.20);
+    border-radius:15px;
+    color:#60778f;
+    background:#081a2d;
     text-align:center;
 }
 
-.spinner {
+.empty-icon{
+    margin-bottom:10px;
+    font-size:28px;
+    opacity:.55;
+}
 
+.empty-title{
+    color:#9bb1c7;
+    font-size:11px;
+    font-weight:900;
+}
+
+.empty-text{
+    margin-top:5px;
+    font-size:8px;
+}
+
+.loading{
+    grid-column:1/-1;
+    padding:45px;
+    color:#688099;
+    font-size:9px;
+    font-weight:700;
+    text-align:center;
+}
+
+.spinner{
     width:28px;
-
     height:28px;
-
-    margin:
-        0 auto 12px;
-
-    border:
-        3px solid #e3e9f0;
-
-    border-top-color:#1677ff;
-
+    margin:0 auto 12px;
+    border:3px solid #16314b;
+    border-top-color:#00c9ff;
     border-radius:50%;
-
-    animation:
-        spin .8s linear infinite;
+    animation:spin .8s linear infinite;
 }
 
-@keyframes spin {
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    to {
-        transform:rotate(360deg);
-    }
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(1,7,15,.78);
+    backdrop-filter:blur(9px);
 }
 
+.modal.show{display:flex}
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:1250px) {
-
-    .kpi-grid {
-
-        grid-template-columns:
-            repeat(4,1fr);
-    }
-
-    .analytics-grid {
-
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .analytics-card:first-child {
-
-        grid-column:1/-1;
-    }
-
-    .reports-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
+.modal-content{
+    width:min(1180px,100%);
+    max-height:94vh;
+    overflow:hidden;
+    border:1px solid rgba(100,180,240,.18);
+    border-radius:20px;
+    background:#061426;
+    box-shadow:0 35px 100px rgba(0,0,0,.65);
+    animation:modalIn .22s ease;
 }
 
-@media(max-width:900px) {
-
-    .header-inner {
-
-        padding:
-            0 18px;
-    }
-
-    .system-status {
-
-        display:none;
-    }
-
-    .container {
-
-        padding:
-            20px 18px 50px;
-    }
-
-    .hero {
-
-        padding:27px;
-    }
-
-    .kpi-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
-    .action-grid {
-
-        grid-template-columns:1fr;
-    }
-
-    .modal-grid {
-
-        grid-template-columns:1fr;
-    }
-
-    .summary-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-    }
-
+@keyframes modalIn{
+    from{opacity:0;transform:translateY(12px) scale(.985)}
+    to{opacity:1;transform:none}
 }
 
-@media(max-width:650px) {
-
-    .header-title {
-
-        font-size:14px;
-    }
-
-    .header-subtitle {
-
-        display:none;
-    }
-
-    .user-badge {
-
-        display:none;
-    }
-
-    .logout-btn {
-
-        padding:
-            8px 10px;
-    }
-
-    .container {
-
-        padding:
-            15px 12px 40px;
-    }
-
-    .hero {
-
-        padding:23px 20px;
-
-        border-radius:17px;
-    }
-
-    .hero h1 {
-
-        font-size:28px;
-    }
-
-    .hero p {
-
-        font-size:11px;
-    }
-
-    .kpi-grid {
-
-        grid-template-columns:
-            repeat(2,1fr);
-
-        gap:9px;
-    }
-
-    .kpi-card {
-
-        min-height:125px;
-
-        padding:13px;
-    }
-
-    .kpi-value {
-
-        font-size:25px;
-    }
-
-    .analytics-grid {
-
-        grid-template-columns:1fr;
-    }
-
-    .analytics-card:first-child {
-
-        grid-column:auto;
-    }
-
-    .reports-grid {
-
-        grid-template-columns:1fr;
-    }
-
-    .report-toolbar {
-
-        align-items:stretch;
-
-        flex-direction:column;
-    }
-
-    .search-box {
-
-        width:100%;
-    }
-
-    .filter-select,
-    .filter-btn {
-
-        width:100%;
-    }
-
-    .form-grid {
-
-        grid-template-columns:1fr;
-    }
-
-    .form-group.full {
-
-        grid-column:auto;
-    }
-
-    .summary-grid {
-
-        grid-template-columns:1fr 1fr;
-    }
-
-    .timeline-label {
-
-        font-size:6px;
-    }
-
-    .modal {
-
-        padding:8px;
-    }
-
-    .modal-content {
-
-        max-height:96vh;
-
-        border-radius:15px;
-    }
-
-    .modal-body {
-
-        padding:12px;
-    }
-
+.modal-header{
+    padding:21px 25px;
+    color:white;
+    background:
+        radial-gradient(circle at 80% 20%,rgba(0,200,255,.14),transparent 30%),
+        linear-gradient(115deg,#041121,#0c2b49);
+    border-bottom:1px solid rgba(120,180,220,.12);
 }
 
+.modal-header-top{
+    display:flex;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.modal-title{
+    color:white;
+    font-size:18px;
+    font-weight:950;
+}
+
+.modal-subtitle{
+    margin-top:4px;
+    color:#607d98;
+    font-size:8px;
+}
+
+.modal-header-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.modal-close{
+    width:34px;
+    height:34px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:9px;
+    color:white;
+    background:rgba(255,255,255,.06);
+    font-size:17px;
+}
+
+.modal-close:hover{background:rgba(255,79,112,.14)}
+
+.modal-body{
+    max-height:calc(94vh - 78px);
+    overflow:auto;
+    padding:20px;
+    background:#061426;
+}
+
+.modal-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:15px;
+}
+
+.modal-section{
+    margin-bottom:15px;
+    padding:17px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    background:linear-gradient(145deg,#0a1e33,#08182b);
+    box-shadow:0 5px 20px rgba(0,0,0,.18);
+}
+
+.modal-section-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:14px;
+    color:#dcecff;
+    font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.65px;
+}
+
+.modal-section-title:before{
+    content:"";
+    width:4px;
+    height:13px;
+    border-radius:4px;
+    background:linear-gradient(180deg,#00d5ff,#1687ff);
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:9px;
+}
+
+.summary-item{
+    padding:10px;
+    border:1px solid rgba(110,160,200,.08);
+    border-radius:9px;
+    background:#07182a;
+}
+
+.summary-label{
+    color:#526b84;
+    font-size:7px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.summary-value{
+    margin-top:4px;
+    color:#a9c1d8;
+    font-size:8px;
+    font-weight:800;
+}
+
+/* TIMELINE */
+.timeline{
+    display:flex;
+    align-items:flex-start;
+    margin:5px 0;
+}
+
+.timeline-step{
+    position:relative;
+    flex:1;
+    text-align:center;
+}
+
+.timeline-step:not(:last-child):after{
+    content:"";
+    position:absolute;
+    top:12px;
+    left:50%;
+    width:100%;
+    height:2px;
+    background:#18334e;
+    z-index:0;
+}
+
+.timeline-dot{
+    position:relative;
+    z-index:2;
+    width:25px;
+    height:25px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid #25425d;
+    border-radius:50%;
+    color:#58718a;
+    background:#081a2d;
+    font-size:8px;
+    font-weight:900;
+}
+
+.timeline-step.active .timeline-dot{
+    border-color:#1687ff;
+    color:white;
+    background:#1687ff;
+    box-shadow:0 0 0 4px rgba(22,135,255,.12),0 0 20px rgba(22,135,255,.25);
+}
+
+.timeline-step.completed .timeline-dot{
+    border-color:#00c995;
+    color:white;
+    background:#00a97d;
+}
+
+.timeline-label{
+    margin-top:7px;
+    color:#60778f;
+    font-size:6px;
+    font-weight:850;
+    text-transform:uppercase;
+}
+
+.timeline-step.active .timeline-label{color:#53baff}
+
+/* FORM */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.form-group.full{grid-column:1/-1}
+
+.form-label{
+    color:#7189a1;
+    font-size:7px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.form-control{
+    width:100%;
+    min-height:39px;
+    padding:9px 11px;
+    border:1px solid rgba(115,166,208,.15);
+    border-radius:8px;
+    outline:none;
+    color:#c8daec;
+    background:#061629;
+    font-size:9px;
+    resize:vertical;
+}
+
+textarea.form-control{min-height:85px}
+
+.form-control::placeholder{color:#4d667f}
+
+.form-control:focus{
+    border-color:rgba(0,195,255,.5);
+    box-shadow:0 0 0 3px rgba(0,180,255,.07);
+}
+
+/* PHOTO */
+.photo-container{
+    min-height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border:1px dashed rgba(115,165,205,.20);
+    border-radius:11px;
+    background:#061426;
+}
+
+.photo-container img{
+    display:block;
+    max-width:100%;
+    max-height:420px;
+    object-fit:contain;
+    border-radius:8px;
+}
+
+.photo-placeholder{
+    color:#59738c;
+    font-size:9px;
+    font-weight:700;
+    text-align:center;
+}
+
+.photo-link{
+    display:inline-flex;
+    margin-top:9px;
+    padding:8px 11px;
+    border-radius:8px;
+    color:#58c3ff;
+    background:rgba(22,135,255,.12);
+    font-size:8px;
+    font-weight:900;
+    text-decoration:none;
+}
+
+/* OVERDUE */
+.overdue-banner{
+    display:none;
+    margin-bottom:14px;
+    padding:11px 13px;
+    border:1px solid rgba(255,79,112,.25);
+    border-radius:9px;
+    color:#ff718d;
+    background:rgba(255,79,112,.08);
+    font-size:9px;
+    font-weight:850;
+}
+
+.overdue-banner.show{display:block}
+
+/* FOOTER */
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:9px;
+    margin-top:3px;
+    padding-top:15px;
+    border-top:1px solid rgba(120,165,205,.10);
+}
+
+.btn{
+    min-height:38px;
+    padding:0 16px;
+    border-radius:9px;
+    font-size:9px;
+    font-weight:900;
+    border:0;
+}
+
+.btn-secondary{
+    color:#8ba0b5;
+    background:#10263d;
+}
+
+.btn-secondary:hover{background:#17334f}
+
+.btn-primary{
+    color:white;
+    background:linear-gradient(135deg,#1687ff,#0069e5);
+    box-shadow:0 6px 20px rgba(22,119,255,.22);
+}
+
+.btn-primary:hover{transform:translateY(-1px)}
+
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:#04101d}
+::-webkit-scrollbar-thumb{
+    background:#163651;
+    border-radius:99px;
+}
+::-webkit-scrollbar-thumb:hover{background:#205174}
+
+/* RESPONSIVE */
+@media(max-width:1250px){
+    .kpi-grid{grid-template-columns:repeat(4,1fr)}
+    .analytics-grid{grid-template-columns:1fr 1fr}
+    .analytics-card:first-child{grid-column:1/-1}
+    .reports-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:900px){
+    .header-inner{padding:0 18px}
+    .system-status{display:none}
+    .container{padding:20px 18px 50px}
+    .hero{padding:27px}
+    .kpi-grid{grid-template-columns:repeat(2,1fr)}
+    .action-grid{grid-template-columns:1fr}
+    .modal-grid{grid-template-columns:1fr}
+    .summary-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:650px){
+    .header-title{font-size:13px}
+    .header-subtitle,.user-badge{display:none}
+    .container{padding:15px 12px 40px}
+    .hero{padding:23px 20px;border-radius:17px}
+    .hero h1{font-size:28px}
+    .hero p{font-size:10px}
+    .kpi-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+    .kpi-card{min-height:125px;padding:13px}
+    .kpi-value{font-size:25px}
+    .analytics-grid{grid-template-columns:1fr}
+    .analytics-card:first-child{grid-column:auto}
+    .reports-grid{grid-template-columns:1fr}
+    .report-toolbar{align-items:stretch;flex-direction:column}
+    .search-box,.filter-select,.filter-btn{width:100%}
+    .form-grid{grid-template-columns:1fr}
+    .form-group.full{grid-column:auto}
+    .summary-grid{grid-template-columns:1fr 1fr}
+    .modal{padding:8px}
+    .modal-content{max-height:96vh;border-radius:15px}
+    .modal-body{padding:12px}
+}
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
 <header class="header">
+<div class="header-inner">
 
-    <div class="header-inner">
-
-        <div class="header-brand">
-
-            <div class="header-logo">
-                E
-            </div>
-
-            <div>
-
-                <div class="header-title">
-                    Environmental, Safety & Health
-                </div>
-
-                <div class="header-subtitle">
-                    ESH MANAGEMENT SYSTEM
-                </div>
-
-            </div>
-
+    <div class="header-brand">
+        <div class="header-logo">E</div>
+        <div>
+            <div class="header-title">Environmental, Safety & Health</div>
+            <div class="header-subtitle">ESH MANAGEMENT SYSTEM</div>
         </div>
-
-
-        <div class="header-right">
-
-            <div class="system-status">
-
-                <span class="status-dot"></span>
-
-                SYSTEM ONLINE
-
-            </div>
-
-            <div class="user-badge">
-                ESH ADMIN
-            </div>
-
-            <button
-                class="logout-btn"
-                onclick="logoutESH()"
-            >
-                Logout
-            </button>
-
-        </div>
-
     </div>
 
+    <div class="header-right">
+        <div class="system-status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+
+        <div class="user-badge">ESH ADMIN</div>
+
+        <button class="logout-btn" onclick="logoutESH()">
+            Logout
+        </button>
+    </div>
+
+</div>
 </header>
-
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
 
 <main class="container">
 
+<section class="hero">
+<div class="hero-content">
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <div class="hero-eyebrow">
-
-                <span></span>
-
-                Safety Intelligence Dashboard
-
-            </div>
-
-            <h1>
-                ESH Management System
-            </h1>
-
-            <p>
-                Transform proactive hazard reporting into
-                actionable safety intelligence, effective
-                corrective action and rapid case closure.
-            </p>
-
-            <div class="hero-actions">
-
-                <button
-                    class="hero-btn primary"
-                    onclick="goToReports()"
-                >
-                    View All Reports
-                </button>
-
-                <button
-                    class="hero-btn"
-                    onclick="loadReports()"
-                >
-                    ↻ Refresh Data
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         KPI
-    ================================================== -->
-
-    <div class="section-header">
-
-        <div class="section-heading">
-            Safety Overview
-        </div>
-
-        <div class="section-caption">
-            Live system monitoring
-        </div>
-
+    <div class="hero-eyebrow">
+        <span></span>
+        Safety Intelligence Dashboard
     </div>
 
-
-    <section class="kpi-grid">
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports()"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon blue">
-                    ▦
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Total Reports
-            </div>
-
-            <div
-                class="kpi-value"
-                id="totalReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                All submitted cases
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports('New')"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon blue">
-                    +
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                New
-            </div>
-
-            <div
-                class="kpi-value"
-                id="newReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Requires review
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports('Investigation')"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon purple">
-                    !
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Investigation
-            </div>
-
-            <div
-                class="kpi-value"
-                id="investigationReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Under investigation
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports('Corrective Action')"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon orange">
-                    ✓
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Corrective Action
-            </div>
-
-            <div
-                class="kpi-value"
-                id="correctiveReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Action required
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports('Verification')"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon green">
-                    ✓
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Verification
-            </div>
-
-            <div
-                class="kpi-value"
-                id="verificationReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Awaiting verification
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToReports('Closed')"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon green">
-                    ✓
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Closed
-            </div>
-
-            <div
-                class="kpi-value"
-                id="closedReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Completed cases
-            </div>
-
-        </div>
-
-
-        <div
-            class="kpi-card"
-            onclick="goToOverdue()"
-        >
-
-            <div class="kpi-top">
-
-                <div class="kpi-icon red">
-                    !
-                </div>
-
-            </div>
-
-            <div class="kpi-label">
-                Overdue
-            </div>
-
-            <div
-                class="kpi-value"
-                id="overdueReports"
-            >
-                0
-            </div>
-
-            <div class="kpi-small">
-                Requires immediate action
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         ANALYTICS
-    ================================================== -->
-
-    <div class="section-header">
-
-        <div class="section-heading">
-            Safety Analytics
-        </div>
-
-        <div class="section-caption">
-            Report activity and distribution
-        </div>
-
+    <h1>ESH Management System</h1>
+
+    <p>
+        Transform proactive hazard reporting into actionable
+        safety intelligence, effective corrective action and
+        rapid case closure.
+    </p>
+
+    <div class="hero-actions">
+        <button class="hero-btn primary" onclick="goToReports()">
+            View All Reports
+        </button>
+
+        <button class="hero-btn" onclick="loadReports()">
+            ↻ Refresh Data
+        </button>
     </div>
 
+</div>
+</section>
 
-    <section class="analytics-grid">
+<div class="section-header">
+    <div class="section-heading">Safety Overview</div>
+    <div class="section-caption">Live system monitoring</div>
+</div>
 
+<section class="kpi-grid">
 
-        <div class="analytics-card">
+<div class="kpi-card" onclick="goToReports()">
+    <div class="kpi-top"><div class="kpi-icon blue">▦</div></div>
+    <div class="kpi-label">Total Reports</div>
+    <div class="kpi-value" id="totalReports">0</div>
+    <div class="kpi-small">All submitted cases</div>
+</div>
 
-            <div class="card-header">
+<div class="kpi-card" onclick="goToReports('New')">
+    <div class="kpi-top"><div class="kpi-icon blue">+</div></div>
+    <div class="kpi-label">New</div>
+    <div class="kpi-value" id="newReports">0</div>
+    <div class="kpi-small">Requires review</div>
+</div>
 
-                <div>
+<div class="kpi-card" onclick="goToReports('Investigation')">
+    <div class="kpi-top"><div class="kpi-icon purple">!</div></div>
+    <div class="kpi-label">Investigation</div>
+    <div class="kpi-value" id="investigationReports">0</div>
+    <div class="kpi-small">Under investigation</div>
+</div>
 
-                    <div class="card-title">
-                        7-Day Report Trend
-                    </div>
+<div class="kpi-card" onclick="goToReports('Corrective Action')">
+    <div class="kpi-top"><div class="kpi-icon orange">✓</div></div>
+    <div class="kpi-label">Corrective Action</div>
+    <div class="kpi-value" id="correctiveReports">0</div>
+    <div class="kpi-small">Action required</div>
+</div>
 
-                    <div class="card-subtitle">
-                        Number of reports submitted
-                    </div>
+<div class="kpi-card" onclick="goToReports('Verification')">
+    <div class="kpi-top"><div class="kpi-icon green">✓</div></div>
+    <div class="kpi-label">Verification</div>
+    <div class="kpi-value" id="verificationReports">0</div>
+    <div class="kpi-small">Awaiting verification</div>
+</div>
 
-                </div>
+<div class="kpi-card" onclick="goToReports('Closed')">
+    <div class="kpi-top"><div class="kpi-icon green">✓</div></div>
+    <div class="kpi-label">Closed</div>
+    <div class="kpi-value" id="closedReports">0</div>
+    <div class="kpi-small">Completed cases</div>
+</div>
 
-            </div>
+<div class="kpi-card" onclick="goToOverdue()">
+    <div class="kpi-top"><div class="kpi-icon red">!</div></div>
+    <div class="kpi-label">Overdue</div>
+    <div class="kpi-value" id="overdueReports">0</div>
+    <div class="kpi-small">Requires immediate action</div>
+</div>
 
-            <div
-                id="trendChart"
-                class="chart-area"
-            ></div>
+</section>
 
+<div class="section-header">
+    <div class="section-heading">Safety Analytics</div>
+    <div class="section-caption">Report activity and distribution</div>
+</div>
+
+<section class="analytics-grid">
+
+<div class="analytics-card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">7-Day Report Trend</div>
+            <div class="card-subtitle">Number of reports submitted</div>
         </div>
+    </div>
+    <div id="trendChart" class="chart-area"></div>
+</div>
 
-
-        <div class="analytics-card">
-
-            <div class="card-header">
-
-                <div>
-
-                    <div class="card-title">
-                        Hazard Category
-                    </div>
-
-                    <div class="card-subtitle">
-                        Distribution by category
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div
-                id="categoryChart"
-                class="chart-list"
-            ></div>
-
+<div class="analytics-card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">Hazard Category</div>
+            <div class="card-subtitle">Distribution by category</div>
         </div>
+    </div>
+    <div id="categoryChart" class="chart-list"></div>
+</div>
 
-
-        <div class="analytics-card">
-
-            <div class="card-header">
-
-                <div>
-
-                    <div class="card-title">
-                        Department
-                    </div>
-
-                    <div class="card-subtitle">
-                        Reports by department
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div
-                id="departmentChart"
-                class="chart-list"
-            ></div>
-
+<div class="analytics-card">
+    <div class="card-header">
+        <div>
+            <div class="card-title">Department</div>
+            <div class="card-subtitle">Reports by department</div>
         </div>
+    </div>
+    <div id="departmentChart" class="chart-list"></div>
+</div>
 
+</section>
 
-    </section>
+<div class="section-header">
+    <div class="section-heading">Action Center</div>
+    <div class="section-caption">Cases requiring attention</div>
+</div>
 
+<section class="action-grid">
 
+<div class="action-card new" onclick="goToReports('New')">
+    <div class="action-top">
+        <div class="action-title">New Reports</div>
+        <div class="action-icon">+</div>
+    </div>
+    <div class="action-count" id="actionNew">0</div>
+    <div class="action-description">Reports requiring ESH review</div>
+</div>
 
-    <!-- =================================================
-         ACTION CENTER
-    ================================================== -->
+<div class="action-card corrective" onclick="goToReports('Corrective Action')">
+    <div class="action-top">
+        <div class="action-title">Corrective Action</div>
+        <div class="action-icon">✓</div>
+    </div>
+    <div class="action-count" id="actionCorrective">0</div>
+    <div class="action-description">Actions currently pending</div>
+</div>
 
-    <div class="section-header">
+<div class="action-card overdue" onclick="goToOverdue()">
+    <div class="action-top">
+        <div class="action-title">Overdue Cases</div>
+        <div class="action-icon">!</div>
+    </div>
+    <div class="action-count" id="actionOverdue">0</div>
+    <div class="action-description">Cases requiring immediate attention</div>
+</div>
 
-        <div class="section-heading">
-            Action Center
-        </div>
+</section>
 
-        <div class="section-caption">
-            Cases requiring attention
-        </div>
+<div class="section-header">
+    <div class="section-heading">
+        <span id="reportsTitle">Safety Reports</span>
+    </div>
+    <div class="section-caption">Case management</div>
+</div>
 
+<section>
+
+<div class="report-toolbar">
+
+    <div class="search-box">
+        <span>⌕</span>
+        <input id="searchInput" type="text"
+               placeholder="Search report number, location, department...">
     </div>
 
-
-    <section class="action-grid">
-
-
-        <div
-            class="action-card new"
-            onclick="goToReports('New')"
-        >
-
-            <div class="action-top">
-
-                <div class="action-title">
-                    New Reports
-                </div>
-
-                <div class="action-icon">
-                    +
-                </div>
-
-            </div>
-
-            <div
-                class="action-count"
-                id="actionNew"
-            >
-                0
-            </div>
-
-            <div class="action-description">
-                Reports requiring ESH review
-            </div>
-
-        </div>
-
-
-        <div
-            class="action-card corrective"
-            onclick="goToReports('Corrective Action')"
-        >
-
-            <div class="action-top">
-
-                <div class="action-title">
-                    Corrective Action
-                </div>
-
-                <div class="action-icon">
-                    ✓
-                </div>
-
-            </div>
-
-            <div
-                class="action-count"
-                id="actionCorrective"
-            >
-                0
-            </div>
-
-            <div class="action-description">
-                Actions currently pending
-            </div>
-
-        </div>
-
-
-        <div
-            class="action-card overdue"
-            onclick="goToOverdue()"
-        >
-
-            <div class="action-top">
-
-                <div class="action-title">
-                    Overdue Cases
-                </div>
-
-                <div class="action-icon">
-                    !
-                </div>
-
-            </div>
-
-            <div
-                class="action-count"
-                id="actionOverdue"
-            >
-                0
-            </div>
-
-            <div class="action-description">
-                Cases requiring immediate attention
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- =================================================
-         REPORTS
-    ================================================== -->
-
-    <div class="section-header">
-
-        <div class="section-heading">
-
-            <span id="reportsTitle">
-                Safety Reports
-            </span>
-
-        </div>
-
-        <div class="section-caption">
-            Case management
-        </div>
-
-    </div>
-
-
-    <section>
-
-
-        <div class="report-toolbar">
-
-
-            <div class="search-box">
-
-                <span>⌕</span>
-
-                <input
-                    id="searchInput"
-                    type="text"
-                    placeholder="Search report number, location, department..."
-                >
-
-            </div>
-
-
-            <select
-                id="statusFilter"
-                class="filter-select"
-            >
-
-                <option value="">
-                    All Status
-                </option>
-
-                <option value="New">
-                    New
-                </option>
-
-                <option value="Investigation">
-                    Investigation
-                </option>
-
-                <option value="Corrective Action">
-                    Corrective Action
-                </option>
-
-                <option value="Verification">
-                    Verification
-                </option>
-
-                <option value="Closed">
-                    Closed
-                </option>
-
-            </select>
-
-
-            <select
-                id="categoryFilter"
-                class="filter-select"
-            >
-
-                <option value="">
-                    All Categories
-                </option>
-
-            </select>
-
-
-            <button
-                class="filter-btn"
-                onclick="resetFilters()"
-            >
-                Reset
-            </button>
-
-
-            <div
-                id="activeFilter"
-                class="active-filter hidden"
-            >
-
-                <span>●</span>
-
-                <span id="activeFilterText">
-                    Filter active
-                </span>
-
-            </div>
-
-
-        </div>
-
-
-        <div
-            id="reportsGrid"
-            class="reports-grid"
-        >
-
-            <div class="loading">
-
-                <div class="spinner"></div>
-
-                Loading ESH reports...
-
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-</main>
-
-
-
-<!-- =====================================================
-     CASE MODAL
-===================================================== -->
-
-<div
-    id="caseModal"
-    class="modal"
->
-
-    <div class="modal-content">
-
-
-        <!-- MODAL HEADER -->
-
-        <div class="modal-header">
-
-            <div class="modal-header-top">
-
-                <div>
-
-                    <div
-                        id="modalTitle"
-                        class="modal-title"
-                    >
-                        Report
-                    </div>
-
-                    <div
-                        id="modalSubtitle"
-                        class="modal-subtitle"
-                    >
-                        ESH Case File
-                    </div>
-
-                </div>
-
-
-                <div class="modal-header-right">
-
-                    <div
-                        id="modalStatusBadge"
-                        class="status-badge status-new"
-                    >
-                        New
-                    </div>
-
-                    <button
-                        class="modal-close"
-                        onclick="closeModal()"
-                    >
-                        ×
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- MODAL BODY -->
-
-        <div class="modal-body">
-
-
-            <div
-                id="caseOverdue"
-                class="overdue-banner"
-            >
-                ⚠ This case is overdue and requires immediate ESH attention.
-            </div>
-
-
-            <div class="modal-grid">
-
-
-                <!-- LEFT COLUMN -->
-
-                <div>
-
-
-                    <!-- SUMMARY -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Case Summary
-                        </div>
-
-
-                        <div class="summary-grid">
-
-
-                            <div class="summary-item">
-
-                                <div class="summary-label">
-                                    Report Number
-                                </div>
-
-                                <div
-                                    id="caseNumber"
-                                    class="summary-value"
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-
-                            <div class="summary-item">
-
-                                <div class="summary-label">
-                                    Location
-                                </div>
-
-                                <div
-                                    id="caseLocation"
-                                    class="summary-value"
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-
-                            <div class="summary-item">
-
-                                <div class="summary-label">
-                                    Department
-                                </div>
-
-                                <div
-                                    id="caseDepartment"
-                                    class="summary-value"
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-
-                            <div class="summary-item">
-
-                                <div class="summary-label">
-                                    Category
-                                </div>
-
-                                <div
-                                    id="caseCategory"
-                                    class="summary-value"
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- TIMELINE -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Case Progress
-                        </div>
-
-
-                        <div id="timeline" class="timeline">
-
-                            <div class="timeline-step active">
-
-                                <div class="timeline-dot">
-                                    1
-                                </div>
-
-                                <div class="timeline-label">
-                                    New
-                                </div>
-
-                            </div>
-
-
-                            <div class="timeline-step">
-
-                                <div class="timeline-dot">
-                                    2
-                                </div>
-
-                                <div class="timeline-label">
-                                    Investigation
-                                </div>
-
-                            </div>
-
-
-                            <div class="timeline-step">
-
-                                <div class="timeline-dot">
-                                    3
-                                </div>
-
-                                <div class="timeline-label">
-                                    Corrective Action
-                                </div>
-
-                            </div>
-
-
-                            <div class="timeline-step">
-
-                                <div class="timeline-dot">
-                                    4
-                                </div>
-
-                                <div class="timeline-label">
-                                    Verification
-                                </div>
-
-                            </div>
-
-
-                            <div class="timeline-step">
-
-                                <div class="timeline-dot">
-                                    5
-                                </div>
-
-                                <div class="timeline-label">
-                                    Closed
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- INCIDENT -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Incident Information
-                        </div>
-
-                        <div
-                            id="incidentInfo"
-                            style="
-                                color:#536176;
-                                font-size:10px;
-                                line-height:1.7;
-                            "
-                        >
-                            -
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- NARRATIVE -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Reporter Narrative
-                        </div>
-
-                        <div
-                            id="caseNarrative"
-                            style="
-                                color:#536176;
-                                font-size:10px;
-                                line-height:1.7;
-                                white-space:pre-wrap;
-                            "
-                        >
-                            -
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- PHOTO -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Photo Evidence
-                        </div>
-
-                        <div
-                            id="photoEvidence"
-                            class="photo-container"
-                        >
-
-                            <div class="photo-placeholder">
-                                No photo evidence available
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- RIGHT COLUMN -->
-
-                <div>
-
-
-                    <!-- INVESTIGATION -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            ESH Investigation
-                        </div>
-
-
-                        <div class="form-grid">
-
-
-                            <div class="form-group full">
-
-                                <label class="form-label">
-                                    Investigation Findings
-                                </label>
-
-                                <textarea
-                                    id="investigationFindings"
-                                    class="form-control"
-                                    placeholder="Enter investigation findings..."
-                                ></textarea>
-
-                            </div>
-
-
-                            <div class="form-group full">
-
-                                <label class="form-label">
-                                    Root Cause
-                                </label>
-
-                                <textarea
-                                    id="rootCause"
-                                    class="form-control"
-                                    placeholder="Identify the root cause..."
-                                ></textarea>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    ESH Investigator
-                                </label>
-
-                                <input
-                                    id="eshInvestigator"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Investigator name"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    ESH Remarks
-                                </label>
-
-                                <input
-                                    id="eshRemarks"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="ESH remarks"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- CORRECTIVE ACTION -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            Corrective Action
-                        </div>
-
-
-                        <div class="form-grid">
-
-
-                            <div class="form-group full">
-
-                                <label class="form-label">
-                                    Corrective Action
-                                </label>
-
-                                <textarea
-                                    id="correctiveAction"
-                                    class="form-control"
-                                    placeholder="Describe required corrective action..."
-                                ></textarea>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    Person Responsible
-                                </label>
-
-                                <input
-                                    id="personResponsible"
-                                    class="form-control"
-                                    type="text"
-                                    placeholder="Responsible person"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    Due Date
-                                </label>
-
-                                <input
-                                    id="dueDate"
-                                    class="form-control"
-                                    type="date"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- VERIFICATION -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-section-title">
-                            ESH Verification
-                        </div>
-
-
-                        <div class="form-grid">
-
-
-                            <div class="form-group full">
-
-                                <label class="form-label">
-                                    Verification Remarks
-                                </label>
-
-                                <textarea
-                                    id="verificationRemarks"
-                                    class="form-control"
-                                    placeholder="Enter verification remarks..."
-                                ></textarea>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    Closed Date
-                                </label>
-
-                                <input
-                                    id="closedDate"
-                                    class="form-control"
-                                    type="date"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label class="form-label">
-                                    Case Status
-                                </label>
-
-                                <select
-                                    id="caseStatus"
-                                    class="form-control"
-                                >
-
-                                    <option value="New">
-                                        New
-                                    </option>
-
-                                    <option value="Investigation">
-                                        Investigation
-                                    </option>
-
-                                    <option value="Corrective Action">
-                                        Corrective Action
-                                    </option>
-
-                                    <option value="Verification">
-                                        Verification
-                                    </option>
-
-                                    <option value="Closed">
-                                        Closed
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- FOOTER -->
-
-                    <div class="modal-section">
-
-                        <div class="modal-footer">
-
-                            <button
-                                class="btn btn-secondary"
-                                onclick="closeModal()"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                id="saveButton"
-                                class="btn btn-primary"
-                                onclick="saveReport()"
-                            >
-                                Save Changes
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
+    <select id="statusFilter" class="filter-select">
+        <option value="">All Status</option>
+        <option value="New">New</option>
+        <option value="Investigation">Investigation</option>
+        <option value="Corrective Action">Corrective Action</option>
+        <option value="Verification">Verification</option>
+        <option value="Closed">Closed</option>
+    </select>
+
+    <select id="categoryFilter" class="filter-select">
+        <option value="">All Categories</option>
+    </select>
+
+    <button class="filter-btn" onclick="resetFilters()">Reset</button>
+
+    <div id="activeFilter" class="active-filter hidden">
+        <span>●</span>
+        <span id="activeFilterText">Filter active</span>
     </div>
 
 </div>
 
+<div id="reportsGrid" class="reports-grid">
+    <div class="loading">
+        <div class="spinner"></div>
+        Loading ESH reports...
+    </div>
+</div>
 
+</section>
+
+</main>
+
+<!-- CASE MODAL -->
+<div id="caseModal" class="modal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+<div class="modal-header-top">
+
+<div>
+    <div id="modalTitle" class="modal-title">Report</div>
+    <div id="modalSubtitle" class="modal-subtitle">ESH Case File</div>
+</div>
+
+<div class="modal-header-right">
+    <div id="modalStatusBadge" class="status-badge status-new">New</div>
+    <button class="modal-close" onclick="closeModal()">×</button>
+</div>
+
+</div>
+</div>
+
+<div class="modal-body">
+
+<div id="caseOverdue" class="overdue-banner">
+    ⚠ This case is overdue and requires immediate ESH attention.
+</div>
+
+<div class="modal-grid">
+
+<div>
+
+<div class="modal-section">
+<div class="modal-section-title">Case Summary</div>
+
+<div class="summary-grid">
+
+<div class="summary-item">
+<div class="summary-label">Report Number</div>
+<div id="caseNumber" class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Location</div>
+<div id="caseLocation" class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Department</div>
+<div id="caseDepartment" class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Category</div>
+<div id="caseCategory" class="summary-value">-</div>
+</div>
+
+</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">Case Progress</div>
+
+<div id="timeline" class="timeline">
+
+<div class="timeline-step active">
+<div class="timeline-dot">1</div>
+<div class="timeline-label">New</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">2</div>
+<div class="timeline-label">Investigation</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">3</div>
+<div class="timeline-label">Corrective Action</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">4</div>
+<div class="timeline-label">Verification</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">5</div>
+<div class="timeline-label">Closed</div>
+</div>
+
+</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">Incident Information</div>
+<div id="incidentInfo" style="color:#91a8be;font-size:9px;line-height:1.7">-</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">Reporter Narrative</div>
+<div id="caseNarrative"
+     style="color:#91a8be;font-size:9px;line-height:1.7;white-space:pre-wrap">-</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">Photo Evidence</div>
+<div id="photoEvidence" class="photo-container">
+<div class="photo-placeholder">No photo evidence available</div>
+</div>
+</div>
+
+</div>
+
+<div>
+
+<div class="modal-section">
+<div class="modal-section-title">ESH Investigation</div>
+
+<div class="form-grid">
+
+<div class="form-group full">
+<label class="form-label">Investigation Findings</label>
+<textarea id="investigationFindings" class="form-control"
+placeholder="Enter investigation findings..."></textarea>
+</div>
+
+<div class="form-group full">
+<label class="form-label">Root Cause</label>
+<textarea id="rootCause" class="form-control"
+placeholder="Identify the root cause..."></textarea>
+</div>
+
+<div class="form-group">
+<label class="form-label">ESH Investigator</label>
+<input id="eshInvestigator" class="form-control" type="text"
+placeholder="Investigator name">
+</div>
+
+<div class="form-group">
+<label class="form-label">ESH Remarks</label>
+<input id="eshRemarks" class="form-control" type="text"
+placeholder="ESH remarks">
+</div>
+
+</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">Corrective Action</div>
+
+<div class="form-grid">
+
+<div class="form-group full">
+<label class="form-label">Corrective Action</label>
+<textarea id="correctiveAction" class="form-control"
+placeholder="Describe required corrective action..."></textarea>
+</div>
+
+<div class="form-group">
+<label class="form-label">Person Responsible</label>
+<input id="personResponsible" class="form-control" type="text"
+placeholder="Responsible person">
+</div>
+
+<div class="form-group">
+<label class="form-label">Due Date</label>
+<input id="dueDate" class="form-control" type="date">
+</div>
+
+</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-section-title">ESH Verification</div>
+
+<div class="form-grid">
+
+<div class="form-group full">
+<label class="form-label">Verification Remarks</label>
+<textarea id="verificationRemarks" class="form-control"
+placeholder="Enter verification remarks..."></textarea>
+</div>
+
+<div class="form-group">
+<label class="form-label">Closed Date</label>
+<input id="closedDate" class="form-control" type="date">
+</div>
+
+<div class="form-group">
+<label class="form-label">Case Status</label>
+
+<select id="caseStatus" class="form-control">
+<option value="New">New</option>
+<option value="Investigation">Investigation</option>
+<option value="Corrective Action">Corrective Action</option>
+<option value="Verification">Verification</option>
+<option value="Closed">Closed</option>
+</select>
+
+</div>
+
+</div>
+</div>
+
+<div class="modal-section">
+<div class="modal-footer">
+<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+<button id="saveButton" class="btn btn-primary" onclick="saveReport()">
+Save Changes
+</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
 
 <script>
 
-/* =========================================================
-   LOGIN PROTECTION
-========================================================= */
-
-if (
-    sessionStorage.getItem("eshLoggedIn")
-    !==
-    "true"
-) {
-
-    window.location.replace(
-        "esh-login.html"
-    );
-
+/* LOGIN */
+if(sessionStorage.getItem("eshLoggedIn")!=="true"){
+    window.location.replace("esh-login.html");
 }
 
-
-function logoutESH() {
-
-    sessionStorage.removeItem(
-        "eshLoggedIn"
-    );
-
-    window.location.replace(
-        "esh-login.html"
-    );
-
+function logoutESH(){
+    sessionStorage.removeItem("eshLoggedIn");
+    window.location.replace("esh-login.html");
 }
 
-
-/* =========================================================
-   GOOGLE APPS SCRIPT
-========================================================= */
-
+/* GOOGLE APPS SCRIPT */
 const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
+"https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
+let reports=[];
+let selectedReport=null;
+let showOverdueOnly=false;
 
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
+/* LOAD */
+async function loadReports(){
 
-let reports = [];
+    const grid=document.getElementById("reportsGrid");
 
-let selectedReport = null;
-
-let showOverdueOnly = false;
-
-
-/* =========================================================
-   LOAD REPORTS
-========================================================= */
-
-async function loadReports() {
-
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
-
-    if (
-        reports.length === 0
-    ) {
-
-        grid.innerHTML = `
-            <div class="loading">
-                <div class="spinner"></div>
-                Loading ESH reports...
-            </div>
-        `;
-
+    if(reports.length===0){
+        grid.innerHTML=`
+        <div class="loading">
+            <div class="spinner"></div>
+            Loading ESH reports...
+        </div>`;
     }
 
+    try{
 
-    try {
+        const response=await fetch(GOOGLE_SCRIPT_URL+"?test=reports");
 
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL +
-                "?test=reports"
-            );
+        if(!response.ok) throw new Error("Network response failed");
 
+        const data=await response.json();
 
-        if (!response.ok) {
-
-            throw new Error(
-                "Network response failed"
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if (
-            Array.isArray(data)
-        ) {
-
-            reports = data;
-
-        }
-
-        else if (
-            Array.isArray(data.reports)
-        ) {
-
-            reports = data.reports;
-
-        }
-
-        else {
-
-            reports = [];
-
-        }
-
+        if(Array.isArray(data)) reports=data;
+        else if(Array.isArray(data.reports)) reports=data.reports;
+        else reports=[];
 
         updateDashboard();
-
         renderReports();
 
+    }catch(error){
 
-    }
+        console.error(error);
 
-    catch (error) {
-
-        console.error(
-            "Load reports error:",
-            error
-        );
-
-
-        grid.innerHTML = `
-            <div class="empty-state">
-
-                <div class="empty-icon">
-                    ⚠
-                </div>
-
-                <div class="empty-title">
-                    Unable to load reports
-                </div>
-
-                <div class="empty-text">
-                    Please check your connection
-                    and Google Apps Script deployment.
-                </div>
-
+        grid.innerHTML=`
+        <div class="empty-state">
+            <div class="empty-icon">⚠</div>
+            <div class="empty-title">Unable to load reports</div>
+            <div class="empty-text">
+                Please check your connection and Google Apps Script deployment.
             </div>
-        `;
+        </div>`;
 
     }
-
 }
 
+/* DASHBOARD */
+function updateDashboard(){
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+    const total=reports.length;
+    const n=countStatus("New");
+    const i=countStatus("Investigation");
+    const c=countStatus("Corrective Action");
+    const v=countStatus("Verification");
+    const closed=countStatus("Closed");
+    const overdue=calculateOverdue();
 
-function updateDashboard() {
+    document.getElementById("totalReports").textContent=total;
+    document.getElementById("newReports").textContent=n;
+    document.getElementById("investigationReports").textContent=i;
+    document.getElementById("correctiveReports").textContent=c;
+    document.getElementById("verificationReports").textContent=v;
+    document.getElementById("closedReports").textContent=closed;
+    document.getElementById("overdueReports").textContent=overdue;
 
-    const total =
-        reports.length;
-
-
-    const newCount =
-        countStatus("New");
-
-
-    const investigation =
-        countStatus("Investigation");
-
-
-    const corrective =
-        countStatus(
-            "Corrective Action"
-        );
-
-
-    const verification =
-        countStatus(
-            "Verification"
-        );
-
-
-    const closed =
-        countStatus("Closed");
-
-
-    const overdue =
-        calculateOverdue();
-
-
-    document.getElementById(
-        "totalReports"
-    ).textContent =
-        total;
-
-
-    document.getElementById(
-        "newReports"
-    ).textContent =
-        newCount;
-
-
-    document.getElementById(
-        "investigationReports"
-    ).textContent =
-        investigation;
-
-
-    document.getElementById(
-        "correctiveReports"
-    ).textContent =
-        corrective;
-
-
-    document.getElementById(
-        "verificationReports"
-    ).textContent =
-        verification;
-
-
-    document.getElementById(
-        "closedReports"
-    ).textContent =
-        closed;
-
-
-    document.getElementById(
-        "overdueReports"
-    ).textContent =
-        overdue;
-
-
-    document.getElementById(
-        "actionNew"
-    ).textContent =
-        newCount;
-
-
-    document.getElementById(
-        "actionCorrective"
-    ).textContent =
-        corrective;
-
-
-    document.getElementById(
-        "actionOverdue"
-    ).textContent =
-        overdue;
-
+    document.getElementById("actionNew").textContent=n;
+    document.getElementById("actionCorrective").textContent=c;
+    document.getElementById("actionOverdue").textContent=overdue;
 
     renderAnalytics();
-
 }
 
-
-/* =========================================================
-   COUNT STATUS
-========================================================= */
-
-function countStatus(status) {
-
-    return reports.filter(
-        report =>
-            normalizeStatus(
-                report.status
-            ) ===
-            normalizeStatus(status)
+function countStatus(status){
+    return reports.filter(r=>
+        normalizeStatus(r.status)===normalizeStatus(status)
     ).length;
-
 }
 
+/* OVERDUE */
+function isReportOverdue(report){
 
-/* =========================================================
-   OVERDUE
-========================================================= */
+    if(normalizeStatus(report.status)==="closed") return false;
+    if(!report.dueDate) return false;
 
-function isReportOverdue(report) {
+    const due=parseDate(report.dueDate);
+    if(!due) return false;
 
-    if (
-        normalizeStatus(
-            report.status
-        ) ===
-        "closed"
-    ) {
+    const today=new Date();
+    today.setHours(0,0,0,0);
+    due.setHours(0,0,0,0);
 
-        return false;
-
-    }
-
-
-    if (
-        !report.dueDate
-    ) {
-
-        return false;
-
-    }
-
-
-    const due =
-        parseDate(
-            report.dueDate
-        );
-
-
-    if (!due) {
-
-        return false;
-
-    }
-
-
-    const today =
-        new Date();
-
-
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    due.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    return due < today;
-
+    return due<today;
 }
 
-
-function calculateOverdue() {
-
-    return reports.filter(
-        isReportOverdue
-    ).length;
-
+function calculateOverdue(){
+    return reports.filter(isReportOverdue).length;
 }
 
+/* NAVIGATION */
+function goToReports(filter=""){
 
-/* =========================================================
-   REPORT NAVIGATION
-========================================================= */
+    showOverdueOnly=false;
 
-function goToReports(
-    filter = ""
-) {
-
-    showOverdueOnly = false;
-
-
-    document.getElementById(
-        "statusFilter"
-    ).value = filter;
-
-
-    document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
+    document.getElementById("statusFilter").value=filter;
+    document.getElementById("categoryFilter").value="";
 
     updateActiveFilter();
-
     renderReports();
 
-
-    const reportsGrid =
-        document.getElementById(
-            "reportsGrid"
-        );
-
-
-    reportsGrid.scrollIntoView({
+    document.getElementById("reportsGrid").scrollIntoView({
         behavior:"smooth",
         block:"start"
     });
-
 }
 
+function goToOverdue(){
 
-function goToOverdue() {
+    showOverdueOnly=true;
 
-    showOverdueOnly = true;
-
-
-    document.getElementById(
-        "statusFilter"
-    ).value = "";
-
-
-    document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
+    document.getElementById("statusFilter").value="";
+    document.getElementById("categoryFilter").value="";
 
     updateActiveFilter();
-
     renderReports();
 
-
-    document.getElementById(
-        "reportsGrid"
-    ).scrollIntoView({
+    document.getElementById("reportsGrid").scrollIntoView({
         behavior:"smooth",
         block:"start"
     });
-
 }
 
+function resetFilters(){
 
-function resetFilters() {
+    showOverdueOnly=false;
 
-    showOverdueOnly = false;
-
-
-    document.getElementById(
-        "searchInput"
-    ).value = "";
-
-
-    document.getElementById(
-        "statusFilter"
-    ).value = "";
-
-
-    document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
+    document.getElementById("searchInput").value="";
+    document.getElementById("statusFilter").value="";
+    document.getElementById("categoryFilter").value="";
 
     updateActiveFilter();
-
     renderReports();
-
 }
 
+/* FILTER */
+function updateActiveFilter(){
 
-/* =========================================================
-   ACTIVE FILTER
-========================================================= */
+    const status=document.getElementById("statusFilter").value;
+    const category=document.getElementById("categoryFilter").value;
+    const search=document.getElementById("searchInput").value.trim();
 
-function updateActiveFilter() {
+    const active=document.getElementById("activeFilter");
+    const textEl=document.getElementById("activeFilterText");
 
-    const status =
-        document.getElementById(
-            "statusFilter"
-        ).value;
+    let text="";
 
+    if(showOverdueOnly) text="Showing overdue cases";
+    else if(status) text="Status: "+status;
+    else if(category) text="Category: "+category;
+    else if(search) text="Search: "+search;
 
-    const category =
-        document.getElementById(
-            "categoryFilter"
-        ).value;
-
-
-    const search =
-        document.getElementById(
-            "searchInput"
-        ).value.trim();
-
-
-    const active =
-        document.getElementById(
-            "activeFilter"
-        );
-
-
-    const activeText =
-        document.getElementById(
-            "activeFilterText"
-        );
-
-
-    let text = "";
-
-
-    if (
-        showOverdueOnly
-    ) {
-
-        text =
-            "Showing overdue cases";
-
+    if(text){
+        active.classList.remove("hidden");
+        textEl.textContent=text;
+    }else{
+        active.classList.add("hidden");
     }
-
-    else if (
-        status
-    ) {
-
-        text =
-            "Status: " +
-            status;
-
-    }
-
-    else if (
-        category
-    ) {
-
-        text =
-            "Category: " +
-            category;
-
-    }
-
-    else if (
-        search
-    ) {
-
-        text =
-            "Search: " +
-            search;
-
-    }
-
-
-    if (text) {
-
-        active.classList.remove(
-            "hidden"
-        );
-
-        activeText.textContent =
-            text;
-
-    }
-
-    else {
-
-        active.classList.add(
-            "hidden"
-        );
-
-    }
-
 }
 
+/* REPORTS */
+function renderReports(){
 
-/* =========================================================
-   RENDER REPORTS
-========================================================= */
+    const grid=document.getElementById("reportsGrid");
 
-function renderReports() {
+    const search=document.getElementById("searchInput")
+        .value.trim().toLowerCase();
 
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
+    const status=document.getElementById("statusFilter").value;
+    const category=document.getElementById("categoryFilter").value;
 
+    const filtered=reports.filter(report=>{
 
-    const search =
-        document.getElementById(
-            "searchInput"
-        ).value
-        .trim()
-        .toLowerCase();
+        const searchable=[
+            report.reportNumber,
+            report.location,
+            report.department,
+            report.category,
+            report.narrative,
+            report.incidentInfo
+        ].filter(Boolean).join(" ").toLowerCase();
 
+        if(search&&!searchable.includes(search)) return false;
 
-    const status =
-        document.getElementById(
-            "statusFilter"
-        ).value;
+        if(status&&normalizeStatus(report.status)!==normalizeStatus(status))
+            return false;
 
+        if(category&&String(report.category||"")!==category)
+            return false;
 
-    const category =
-        document.getElementById(
-            "categoryFilter"
-        ).value;
+        if(showOverdueOnly&&!isReportOverdue(report))
+            return false;
 
-
-    let filtered =
-        reports.filter(
-            report => {
-
-                const searchable =
-                    [
-                        report.reportNumber,
-                        report.location,
-                        report.department,
-                        report.category,
-                        report.narrative,
-                        report.incidentInfo
-                    ]
-                    .filter(Boolean)
-                    .join(" ")
-                    .toLowerCase();
-
-
-                if (
-                    search &&
-                    !searchable.includes(
-                        search
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    status &&
-                    normalizeStatus(
-                        report.status
-                    ) !==
-                    normalizeStatus(
-                        status
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    category &&
-                    String(
-                        report.category || ""
-                    )
-                    !==
-                    category
-                ) {
-
-                    return false;
-
-                }
-
-
-                if (
-                    showOverdueOnly &&
-                    !isReportOverdue(
-                        report
-                    )
-                ) {
-
-                    return false;
-
-                }
-
-
-                return true;
-
-            }
-        );
-
+        return true;
+    });
 
     updateActiveFilter();
 
+    if(filtered.length===0){
 
-    if (
-        filtered.length === 0
-    ) {
-
-        grid.innerHTML = `
-
-            <div class="empty-state">
-
-                <div class="empty-icon">
-                    🔎
-                </div>
-
-                <div class="empty-title">
-                    No reports found
-                </div>
-
-                <div class="empty-text">
-                    Try changing your search
-                    or filter criteria.
-                </div>
-
+        grid.innerHTML=`
+        <div class="empty-state">
+            <div class="empty-icon">🔎</div>
+            <div class="empty-title">No reports found</div>
+            <div class="empty-text">
+                Try changing your search or filter criteria.
             </div>
-
-        `;
+        </div>`;
 
         return;
-
     }
 
-
-    grid.innerHTML =
-        filtered
-            .map(
-                createReportCard
-            )
-            .join("");
-
+    grid.innerHTML=filtered.map(createReportCard).join("");
 }
 
+/* CARD */
+function createReportCard(report){
 
-/* =========================================================
-   REPORT CARD
-========================================================= */
+    const rowNumber=report.rowNumber;
+    const status=report.status||"New";
+    const overdue=isReportOverdue(report);
 
-function createReportCard(
-    report
-) {
+    let statusClass=getStatusClass(status);
+    if(overdue) statusClass="status-overdue";
 
-    const rowNumber =
-        report.rowNumber;
+    const number=escapeHtml(
+        report.reportNumber||("REPORT-"+rowNumber)
+    );
 
+    const location=escapeHtml(report.location||"-");
+    const department=escapeHtml(report.department||"-");
+    const category=escapeHtml(report.category||"-");
 
-    const status =
-        report.status ||
-        "New";
+    const narrative=escapeHtml(
+        report.narrative||
+        report.incidentInfo||
+        "No description available."
+    );
 
+    const date=escapeHtml(
+        formatDisplayDate(report.timestamp||report.date)
+    );
 
-    const normalized =
-        normalizeStatus(
-            status
-        );
+    return`
+    <div class="report-card ${statusClass}"
+         onclick="openReport(${Number(rowNumber)})">
 
-
-    const overdue =
-        isReportOverdue(
-            report
-        );
-
-
-    let statusClass =
-        getStatusClass(
-            status
-        );
-
-
-    if (overdue) {
-
-        statusClass =
-            "status-overdue";
-
-    }
-
-
-    const number =
-        escapeHtml(
-            report.reportNumber ||
-            ("REPORT-" + rowNumber)
-        );
-
-
-    const location =
-        escapeHtml(
-            report.location ||
-            "-"
-        );
-
-
-    const department =
-        escapeHtml(
-            report.department ||
-            "-"
-        );
-
-
-    const category =
-        escapeHtml(
-            report.category ||
-            "-"
-        );
-
-
-    const narrative =
-        escapeHtml(
-            report.narrative ||
-            report.incidentInfo ||
-            "No description available."
-        );
-
-
-    const date =
-        escapeHtml(
-            formatDisplayDate(
-                report.timestamp ||
-                report.date
-            )
-        );
-
-
-    return `
-
-        <div
-            class="report-card ${statusClass}"
-            onclick="openReport(${Number(rowNumber)})"
-        >
-
-            <div class="report-top">
-
-                <div>
-
-                    <div class="report-number">
-                        ${number}
-                    </div>
-
-                    <div class="report-date">
-                        ${date}
-                    </div>
-
-                </div>
-
-                <div class="status-badge ${statusClass}">
-                    ${escapeHtml(status)}
-                </div>
-
+        <div class="report-top">
+            <div>
+                <div class="report-number">${number}</div>
+                <div class="report-date">${date}</div>
             </div>
 
+            <div class="status-badge ${statusClass}">
+                ${escapeHtml(status)}
+            </div>
+        </div>
 
-            <div class="report-title">
+        <div class="report-title">${category}</div>
 
-                ${category}
+        <div class="report-description">
+            ${narrative.substring(0,180)}
+            ${narrative.length>180?"...":""}
+        </div>
 
+        <div class="report-meta">
+
+            <div>
+                <div class="meta-label">Location</div>
+                <div class="meta-value">${location}</div>
             </div>
 
-
-            <div class="report-description">
-
-                ${narrative.substring(0,180)}
-
-                ${
-                    narrative.length > 180
-                    ? "..."
-                    : ""
-                }
-
+            <div>
+                <div class="meta-label">Department</div>
+                <div class="meta-value">${department}</div>
             </div>
-
-
-            <div class="report-meta">
-
-
-                <div>
-
-                    <div class="meta-label">
-                        Location
-                    </div>
-
-                    <div class="meta-value">
-                        ${location}
-                    </div>
-
-                </div>
-
-
-                <div>
-
-                    <div class="meta-label">
-                        Department
-                    </div>
-
-                    <div class="meta-value">
-                        ${department}
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="report-footer">
-
-                <span class="report-open">
-                    Open Case →
-                </span>
-
-                ${
-                    overdue
-                    ?
-                    `<span class="overdue-label">
-                        ⚠ OVERDUE
-                    </span>`
-                    :
-                    ""
-                }
-
-            </div>
-
 
         </div>
 
-    `;
+        <div class="report-footer">
+            <span class="report-open">Open Case →</span>
+            ${overdue?'<span class="overdue-label">⚠ OVERDUE</span>':""}
+        </div>
 
+    </div>`;
 }
 
+/* OPEN */
+function openReport(rowNumber){
 
-/* =========================================================
-   OPEN REPORT
-========================================================= */
+    selectedReport=reports.find(
+        r=>Number(r.rowNumber)===Number(rowNumber)
+    );
 
-function openReport(
-    rowNumber
-) {
-
-    selectedReport =
-        reports.find(
-            report =>
-                Number(
-                    report.rowNumber
-                ) ===
-                Number(rowNumber)
-        );
-
-
-    if (!selectedReport) {
-
-        alert(
-            "Report not found."
-        );
-
+    if(!selectedReport){
+        alert("Report not found.");
         return;
-
     }
 
+    const r=selectedReport;
 
-    const r =
-        selectedReport;
+    document.getElementById("modalTitle").textContent=
+        r.reportNumber||"ESH Report";
 
+    document.getElementById("modalSubtitle").textContent=
+        "ESH Case File • Row "+r.rowNumber;
 
-    document.getElementById(
-        "modalTitle"
-    ).textContent =
-        r.reportNumber ||
-        "ESH Report";
+    document.getElementById("caseNumber").textContent=
+        r.reportNumber||"-";
 
+    document.getElementById("caseLocation").textContent=
+        r.location||"-";
 
-    document.getElementById(
-        "modalSubtitle"
-    ).textContent =
-        "ESH Case File • Row " +
-        r.rowNumber;
+    document.getElementById("caseDepartment").textContent=
+        r.department||"-";
 
+    document.getElementById("caseCategory").textContent=
+        r.category||"-";
 
-    document.getElementById(
-        "caseNumber"
-    ).textContent =
-        r.reportNumber ||
-        "-";
+    document.getElementById("incidentInfo").textContent=
+        r.incidentInfo||"-";
 
+    document.getElementById("caseNarrative").textContent=
+        r.narrative||"-";
 
-    document.getElementById(
-        "caseLocation"
-    ).textContent =
-        r.location ||
-        "-";
+    document.getElementById("investigationFindings").value=
+        r.investigationFindings||"";
 
+    document.getElementById("rootCause").value=
+        r.rootCause||"";
 
-    document.getElementById(
-        "caseDepartment"
-    ).textContent =
-        r.department ||
-        "-";
+    document.getElementById("eshInvestigator").value=
+        r.eshInvestigator||"";
 
+    document.getElementById("eshRemarks").value=
+        r.eshRemarks||"";
 
-    document.getElementById(
-        "caseCategory"
-    ).textContent =
-        r.category ||
-        "-";
+    document.getElementById("correctiveAction").value=
+        r.correctiveAction||"";
 
+    document.getElementById("personResponsible").value=
+        r.personResponsible||"";
 
-    document.getElementById(
-        "incidentInfo"
-    ).textContent =
-        r.incidentInfo ||
-        "-";
+    document.getElementById("dueDate").value=
+        formatDateInput(r.dueDate);
 
+    document.getElementById("verificationRemarks").value=
+        r.verificationRemarks||"";
 
-    document.getElementById(
-        "caseNarrative"
-    ).textContent =
-        r.narrative ||
-        "-";
+    document.getElementById("closedDate").value=
+        formatDateInput(r.closedDate);
 
+    document.getElementById("caseStatus").value=
+        r.status||"New";
 
-    document.getElementById(
-        "investigationFindings"
-    ).value =
-        r.investigationFindings ||
-        "";
+    loadPhoto(r.photoLink);
+    updateTimeline(r.status);
+    updateCaseOverdue(r);
+    updateModalStatus(r.status);
 
-
-    document.getElementById(
-        "rootCause"
-    ).value =
-        r.rootCause ||
-        "";
-
-
-    document.getElementById(
-        "eshInvestigator"
-    ).value =
-        r.eshInvestigator ||
-        "";
-
-
-    document.getElementById(
-        "eshRemarks"
-    ).value =
-        r.eshRemarks ||
-        "";
-
-
-    document.getElementById(
-        "correctiveAction"
-    ).value =
-        r.correctiveAction ||
-        "";
-
-
-    document.getElementById(
-        "personResponsible"
-    ).value =
-        r.personResponsible ||
-        "";
-
-
-    document.getElementById(
-        "dueDate"
-    ).value =
-        formatDateInput(
-            r.dueDate
-        );
-
-
-    document.getElementById(
-        "verificationRemarks"
-    ).value =
-        r.verificationRemarks ||
-        "";
-
-
-    document.getElementById(
-        "closedDate"
-    ).value =
-        formatDateInput(
-            r.closedDate
-        );
-
-
-    document.getElementById(
-        "caseStatus"
-    ).value =
-        r.status ||
-        "New";
-
-
-    loadPhoto(
-        r.photoLink
-    );
-
-
-    updateTimeline(
-        r.status
-    );
-
-
-    updateCaseOverdue(
-        r
-    );
-
-
-    updateModalStatus(
-        r.status
-    );
-
-
-    document.getElementById(
-        "caseModal"
-    ).classList.add(
-        "show"
-    );
-
+    document.getElementById("caseModal").classList.add("show");
 }
 
+/* PHOTO */
+function extractDriveFileId(url){
 
-/* =========================================================
-   DRIVE FILE ID
-========================================================= */
+    if(!url)return null;
 
-function extractDriveFileId(
-    url
-) {
-
-    if (!url) {
-
-        return null;
-
-    }
-
-
-    const patterns = [
-
+    const patterns=[
         /\/d\/([a-zA-Z0-9_-]+)/,
-
         /id=([a-zA-Z0-9_-]+)/,
-
         /\/file\/d\/([a-zA-Z0-9_-]+)/
-
     ];
 
-
-    for (
-        const pattern of patterns
-    ) {
-
-        const match =
-            String(url)
-            .match(pattern);
-
-
-        if (
-            match &&
-            match[1]
-        ) {
-
-            return match[1];
-
-        }
-
+    for(const pattern of patterns){
+        const match=String(url).match(pattern);
+        if(match&&match[1])return match[1];
     }
-
 
     return null;
-
 }
 
+function loadPhoto(photoLink){
 
-/* =========================================================
-   PHOTO
-========================================================= */
+    const container=document.getElementById("photoEvidence");
+    container.innerHTML="";
 
-function loadPhoto(
-    photoLink
-) {
+    if(!photoLink){
+        container.innerHTML=
+        `<div class="photo-placeholder">
+            No photo evidence available
+        </div>`;
+        return;
+    }
 
-    const container =
-        document.getElementById(
-            "photoEvidence"
-        );
+    const fileId=extractDriveFileId(photoLink);
 
-
-    container.innerHTML = "";
-
-
-    if (!photoLink) {
-
-        container.innerHTML = `
-
+    if(!fileId){
+        container.innerHTML=`
+        <div>
             <div class="photo-placeholder">
-                No photo evidence available
+                Photo link available
             </div>
-
-        `;
-
+            <a class="photo-link"
+               href="${escapeAttribute(photoLink)}"
+               target="_blank">
+               Open Photo
+            </a>
+        </div>`;
         return;
-
     }
 
-
-    const fileId =
-        extractDriveFileId(
-            photoLink
-        );
-
-
-    if (!fileId) {
-
-        container.innerHTML = `
-
-            <div>
-
-                <div class="photo-placeholder">
-                    Photo link available
-                </div>
-
-                <a
-                    class="photo-link"
-                    href="${escapeAttribute(photoLink)}"
-                    target="_blank"
-                >
-                    Open Photo
-                </a>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const urls = [
-
+    const urls=[
         `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`,
-
         `https://drive.google.com/uc?export=view&id=${fileId}`,
-
         `https://drive.google.com/uc?export=download&id=${fileId}`,
-
         `https://lh3.googleusercontent.com/d/${fileId}=w1600`,
-
         `https://drive.usercontent.google.com/download?id=${fileId}&export=view&confirm=t`
-
     ];
 
+    let index=0;
 
-    let index = 0;
+    const img=document.createElement("img");
+    img.alt="Photo Evidence";
 
+    function tryNext(){
 
-    const img =
-        document.createElement(
-            "img"
-        );
+        if(index>=urls.length){
 
-
-    img.alt =
-        "Photo Evidence";
-
-
-    function tryNext() {
-
-        if (
-            index >= urls.length
-        ) {
-
-            container.innerHTML = `
-
-                <div>
-
-                    <div class="photo-placeholder">
-                        Photo preview unavailable
-                    </div>
-
-                    <a
-                        class="photo-link"
-                        href="${escapeAttribute(photoLink)}"
-                        target="_blank"
-                    >
-                        Open Original Photo
-                    </a>
-
+            container.innerHTML=`
+            <div>
+                <div class="photo-placeholder">
+                    Photo preview unavailable
                 </div>
-
-            `;
+                <a class="photo-link"
+                   href="${escapeAttribute(photoLink)}"
+                   target="_blank">
+                   Open Original Photo
+                </a>
+            </div>`;
 
             return;
-
         }
 
-
-        img.src =
-            urls[index];
-
-
-        index++;
-
+        img.src=urls[index++];
     }
 
-
-    img.onload = function() {
-
-        container.innerHTML = "";
-
-        container.appendChild(
-            img
-        );
-
+    img.onload=function(){
+        container.innerHTML="";
+        container.appendChild(img);
     };
 
-
-    img.onerror =
-        tryNext;
-
+    img.onerror=tryNext;
 
     tryNext();
-
 }
 
+/* MODAL STATUS */
+function updateModalStatus(status){
 
-/* =========================================================
-   MODAL STATUS
-========================================================= */
+    const badge=document.getElementById("modalStatusBadge");
 
-function updateModalStatus(
-    status
-) {
-
-    const badge =
-        document.getElementById(
-            "modalStatusBadge"
-        );
-
-
-    const className =
-        getStatusClass(
-            status
-        );
-
-
-    badge.className =
-        "status-badge " +
-        className;
-
-
-    badge.textContent =
-        status ||
-        "New";
-
+    badge.className="status-badge "+getStatusClass(status);
+    badge.textContent=status||"New";
 }
 
+function updateCaseOverdue(report){
 
-/* =========================================================
-   OVERDUE MODAL
-========================================================= */
+    const banner=document.getElementById("caseOverdue");
 
-function updateCaseOverdue(
-    report
-) {
-
-    const banner =
-        document.getElementById(
-            "caseOverdue"
-        );
-
-
-    if (
-        isReportOverdue(
-            report
-        )
-    ) {
-
-        banner.classList.add(
-            "show"
-        );
-
-    }
-
-    else {
-
-        banner.classList.remove(
-            "show"
-        );
-
-    }
-
+    if(isReportOverdue(report))
+        banner.classList.add("show");
+    else
+        banner.classList.remove("show");
 }
 
+/* TIMELINE */
+function updateTimeline(status){
 
-/* =========================================================
-   TIMELINE
-========================================================= */
-
-function updateTimeline(
-    status
-) {
-
-    const timeline =
-        document.getElementById(
-            "timeline"
-        );
-
-
-    const steps =
-        timeline.querySelectorAll(
-            ".timeline-step"
-        );
-
-
-    const order = [
-
-        "new",
-
-        "investigation",
-
-        "corrective action",
-
-        "verification",
-
-        "closed"
-
-    ];
-
-
-    const current =
-        order.indexOf(
-            normalizeStatus(
-                status
-            )
-        );
-
-
-    steps.forEach(
-        (
-            step,
-            index
-        ) => {
-
-            step.classList.remove(
-                "active",
-                "completed"
-            );
-
-
-            if (
-                index < current
-            ) {
-
-                step.classList.add(
-                    "completed"
-                );
-
-            }
-
-
-            if (
-                index === current
-            ) {
-
-                step.classList.add(
-                    "active"
-                );
-
-            }
-
-        }
+    const steps=document.querySelectorAll(
+        "#timeline .timeline-step"
     );
 
+    const order=[
+        "new",
+        "investigation",
+        "corrective action",
+        "verification",
+        "closed"
+    ];
+
+    const current=order.indexOf(
+        normalizeStatus(status)
+    );
+
+    steps.forEach((step,index)=>{
+
+        step.classList.remove("active","completed");
+
+        if(index<current)
+            step.classList.add("completed");
+
+        if(index===current)
+            step.classList.add("active");
+    });
 }
 
+/* SAVE */
+async function saveReport(){
 
-/* =========================================================
-   SAVE REPORT
-========================================================= */
+    if(!selectedReport)return;
 
-async function saveReport() {
+    const status=document.getElementById("caseStatus").value;
 
-    if (!selectedReport) {
+    const investigationFindings=
+        document.getElementById("investigationFindings").value.trim();
 
+    const rootCause=
+        document.getElementById("rootCause").value.trim();
+
+    const correctiveAction=
+        document.getElementById("correctiveAction").value.trim();
+
+    const personResponsible=
+        document.getElementById("personResponsible").value.trim();
+
+    const dueDate=
+        document.getElementById("dueDate").value;
+
+    const verificationRemarks=
+        document.getElementById("verificationRemarks").value.trim();
+
+    let closedDate=
+        document.getElementById("closedDate").value;
+
+    const eshInvestigator=
+        document.getElementById("eshInvestigator").value.trim();
+
+    const eshRemarks=
+        document.getElementById("eshRemarks").value.trim();
+
+    if(status==="Investigation"&&!investigationFindings){
+        alert("Please enter Investigation Findings.");
         return;
-
     }
 
-
-    const status =
-        document.getElementById(
-            "caseStatus"
-        ).value;
-
-
-    const investigationFindings =
-        document.getElementById(
-            "investigationFindings"
-        ).value.trim();
-
-
-    const rootCause =
-        document.getElementById(
-            "rootCause"
-        ).value.trim();
-
-
-    const correctiveAction =
-        document.getElementById(
-            "correctiveAction"
-        ).value.trim();
-
-
-    const personResponsible =
-        document.getElementById(
-            "personResponsible"
-        ).value.trim();
-
-
-    const dueDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
-
-
-    const verificationRemarks =
-        document.getElementById(
-            "verificationRemarks"
-        ).value.trim();
-
-
-    let closedDate =
-        document.getElementById(
-            "closedDate"
-        ).value;
-
-
-    const eshInvestigator =
-        document.getElementById(
-            "eshInvestigator"
-        ).value.trim();
-
-
-    const eshRemarks =
-        document.getElementById(
-            "eshRemarks"
-        ).value.trim();
-
-
-    /* -----------------------------------------
-       VALIDATION
-    ----------------------------------------- */
-
-    if (
-        status ===
-        "Investigation"
-        &&
-        !investigationFindings
-    ) {
-
-        alert(
-            "Please enter Investigation Findings."
-        );
-
+    if(status==="Corrective Action"&&!correctiveAction){
+        alert("Please enter Corrective Action.");
         return;
-
     }
 
-
-    if (
-        status ===
-        "Corrective Action"
-        &&
-        !correctiveAction
-    ) {
-
-        alert(
-            "Please enter Corrective Action."
-        );
-
+    if(status==="Closed"&&!verificationRemarks){
+        alert("Please enter Verification Remarks before closing the case.");
         return;
-
     }
 
-
-    if (
-        status ===
-        "Closed"
-        &&
-        !verificationRemarks
-    ) {
-
-        alert(
-            "Please enter Verification Remarks before closing the case."
-        );
-
-        return;
-
+    if(status==="Closed"&&!closedDate){
+        closedDate=new Date().toISOString().split("T")[0];
     }
 
+    if(status!=="Closed")closedDate="";
 
-    if (
-        status ===
-        "Closed"
-        &&
-        !closedDate
-    ) {
-
-        const today =
-            new Date();
-
-
-        closedDate =
-            today
-                .toISOString()
-                .split("T")[0];
-
-    }
-
-
-    if (
-        status !==
-        "Closed"
-    ) {
-
-        closedDate = "";
-
-    }
-
-
-    const data = {
-
-        action:
-            "updateReport",
-
-        rowNumber:
-            selectedReport.rowNumber,
-
-        status:
-            status,
-
-        investigationFindings:
-            investigationFindings,
-
-        rootCause:
-            rootCause,
-
-        correctiveAction:
-            correctiveAction,
-
-        personResponsible:
-            personResponsible,
-
-        dueDate:
-            dueDate,
-
-        verificationRemarks:
-            verificationRemarks,
-
-        eshInvestigator:
-            eshInvestigator,
-
-        eshRemarks:
-            eshRemarks,
-
-        closedDate:
-            closedDate
-
+    const data={
+        action:"updateReport",
+        rowNumber:selectedReport.rowNumber,
+        status,
+        investigationFindings,
+        rootCause,
+        correctiveAction,
+        personResponsible,
+        dueDate,
+        verificationRemarks,
+        eshInvestigator,
+        eshRemarks,
+        closedDate
     };
 
+    const saveButton=document.getElementById("saveButton");
+    const originalText=saveButton.textContent;
 
-    const saveButton =
-        document.getElementById(
-            "saveButton"
+    saveButton.disabled=true;
+    saveButton.textContent="Saving...";
+
+    try{
+
+        const response=await fetch(
+            GOOGLE_SCRIPT_URL,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"text/plain;charset=utf-8"
+                },
+                body:JSON.stringify(data)
+            }
         );
 
-
-    const originalText =
-        saveButton.textContent;
-
-
-    saveButton.disabled =
-        true;
-
-
-    saveButton.textContent =
-        "Saving...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL,
-                {
-
-                    method:"POST",
-
-                    headers:{
-
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            data
-                        )
-
-                }
-            );
-
-
-        const result =
-            await response.text();
-
-
-        console.log(
-            "Save result:",
-            result
-        );
-
+        const result=await response.text();
+        console.log("Save result:",result);
 
         await loadReports();
 
-
-        alert(
-            "Report updated successfully."
-        );
-
-
+        alert("Report updated successfully.");
         closeModal();
 
+    }catch(error){
 
+        console.error("Save error:",error);
+        alert("Unable to save report. Please try again.");
+
+    }finally{
+
+        saveButton.disabled=false;
+        saveButton.textContent=originalText;
     }
-
-    catch(error) {
-
-        console.error(
-            "Save error:",
-            error
-        );
-
-
-        alert(
-            "Unable to save report. Please try again."
-        );
-
-    }
-
-    finally {
-
-        saveButton.disabled =
-            false;
-
-        saveButton.textContent =
-            originalText;
-
-    }
-
 }
 
+/* CLOSE */
+function closeModal(){
 
-/* =========================================================
-   CLOSE MODAL
-========================================================= */
+    document.getElementById("caseModal")
+        .classList.remove("show");
 
-function closeModal() {
-
-    document.getElementById(
-        "caseModal"
-    ).classList.remove(
-        "show"
-    );
-
-
-    selectedReport =
-        null;
-
+    selectedReport=null;
 }
 
+document.addEventListener("keydown",event=>{
+    if(event.key==="Escape")closeModal();
+});
 
-/* =========================================================
-   ESCAPE KEY
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key ===
-            "Escape"
-        ) {
-
-            closeModal();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   CLICK OUTSIDE MODAL
-========================================================= */
-
-document.getElementById(
-    "caseModal"
-).addEventListener(
+document.getElementById("caseModal").addEventListener(
     "click",
-    function(event) {
-
-        if (
-            event.target ===
-            this
-        ) {
-
-            closeModal();
-
-        }
-
+    function(event){
+        if(event.target===this)closeModal();
     }
 );
 
-
-/* =========================================================
-   ANALYTICS
-========================================================= */
-
-function renderAnalytics() {
+/* ANALYTICS */
+function renderAnalytics(){
 
     renderCategory();
-
     renderDepartment();
-
     renderTrend();
-
     populateCategoryFilter();
-
 }
 
+function renderCategory(){
 
-/* =========================================================
-   CATEGORY
-========================================================= */
+    const container=document.getElementById("categoryChart");
+    const counts={};
 
-function renderCategory() {
+    reports.forEach(report=>{
+        const category=report.category||"Uncategorized";
+        counts[category]=(counts[category]||0)+1;
+    });
 
-    const container =
-        document.getElementById(
-            "categoryChart"
-        );
+    const entries=Object.entries(counts)
+        .sort((a,b)=>b[1]-a[1]);
 
-
-    const counts = {};
-
-
-    reports.forEach(
-        report => {
-
-            const category =
-                report.category ||
-                "Uncategorized";
-
-
-            counts[category] =
-                (
-                    counts[category]
-                    ||
-                    0
-                )
-                + 1;
-
-        }
-    );
-
-
-    const entries =
-        Object.entries(
-            counts
-        )
-        .sort(
-            (
-                a,
-                b
-            ) =>
-                b[1] - a[1]
-        );
-
-
-    if (
-        entries.length === 0
-    ) {
-
-        container.innerHTML = `
-            <div class="empty-text">
-                No category data
-            </div>
-        `;
-
+    if(!entries.length){
+        container.innerHTML='<div class="empty-text">No category data</div>';
         return;
-
     }
 
+    const max=Math.max(...entries.map(x=>x[1]));
 
-    const max =
-        Math.max(
-            ...entries.map(
-                entry =>
-                    entry[1]
-            )
-        );
+    container.innerHTML=entries.slice(0,8).map(entry=>{
 
+        const width=(entry[1]/max)*100;
 
-    container.innerHTML =
-        entries
-            .slice(0,8)
-            .map(
-                entry => {
+        return`
+        <div class="chart-row">
+            <div class="chart-row-label">${escapeHtml(entry[0])}</div>
+            <div class="chart-track">
+                <div class="chart-fill" style="width:${width}%"></div>
+            </div>
+            <div class="chart-number">${entry[1]}</div>
+        </div>`;
 
-                    const label =
-                        escapeHtml(
-                            entry[0]
-                        );
-
-
-                    const count =
-                        entry[1];
-
-
-                    const width =
-                        (
-                            count /
-                            max
-                        ) *
-                        100;
-
-
-                    return `
-
-                        <div class="chart-row">
-
-                            <div class="chart-row-label">
-                                ${label}
-                            </div>
-
-                            <div class="chart-track">
-
-                                <div
-                                    class="chart-fill"
-                                    style="width:${width}%"
-                                ></div>
-
-                            </div>
-
-                            <div class="chart-number">
-                                ${count}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
+    }).join("");
 }
 
+function renderDepartment(){
 
-/* =========================================================
-   DEPARTMENT
-========================================================= */
+    const container=document.getElementById("departmentChart");
+    const counts={};
 
-function renderDepartment() {
+    reports.forEach(report=>{
+        const department=report.department||"Unassigned";
+        counts[department]=(counts[department]||0)+1;
+    });
 
-    const container =
-        document.getElementById(
-            "departmentChart"
-        );
+    const entries=Object.entries(counts)
+        .sort((a,b)=>b[1]-a[1]);
 
-
-    const counts = {};
-
-
-    reports.forEach(
-        report => {
-
-            const department =
-                report.department ||
-                "Unassigned";
-
-
-            counts[department] =
-                (
-                    counts[department]
-                    ||
-                    0
-                )
-                + 1;
-
-        }
-    );
-
-
-    const entries =
-        Object.entries(
-            counts
-        )
-        .sort(
-            (
-                a,
-                b
-            ) =>
-                b[1] - a[1]
-        );
-
-
-    if (
-        entries.length === 0
-    ) {
-
-        container.innerHTML = `
-            <div class="empty-text">
-                No department data
-            </div>
-        `;
-
+    if(!entries.length){
+        container.innerHTML='<div class="empty-text">No department data</div>';
         return;
-
     }
 
+    const max=Math.max(...entries.map(x=>x[1]));
 
-    const max =
-        Math.max(
-            ...entries.map(
-                entry =>
-                    entry[1]
-            )
-        );
+    container.innerHTML=entries.slice(0,8).map(entry=>{
 
+        const width=(entry[1]/max)*100;
 
-    container.innerHTML =
-        entries
-            .slice(0,8)
-            .map(
-                entry => {
+        return`
+        <div class="chart-row">
+            <div class="chart-row-label">${escapeHtml(entry[0])}</div>
+            <div class="chart-track">
+                <div class="chart-fill" style="width:${width}%"></div>
+            </div>
+            <div class="chart-number">${entry[1]}</div>
+        </div>`;
 
-                    const label =
-                        escapeHtml(
-                            entry[0]
-                        );
-
-
-                    const count =
-                        entry[1];
-
-
-                    const width =
-                        (
-                            count /
-                            max
-                        ) *
-                        100;
-
-
-                    return `
-
-                        <div class="chart-row">
-
-                            <div class="chart-row-label">
-                                ${label}
-                            </div>
-
-                            <div class="chart-track">
-
-                                <div
-                                    class="chart-fill"
-                                    style="width:${width}%"
-                                ></div>
-
-                            </div>
-
-                            <div class="chart-number">
-                                ${count}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
+    }).join("");
 }
 
+function renderTrend(){
 
-/* =========================================================
-   7 DAY TREND
-========================================================= */
+    const container=document.getElementById("trendChart");
 
-function renderTrend() {
+    const today=new Date();
+    today.setHours(0,0,0,0);
 
-    const container =
-        document.getElementById(
-            "trendChart"
-        );
+    const days=[];
 
+    for(let i=6;i>=0;i--){
 
-    const today =
-        new Date();
-
-
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    const days = [];
-
-
-    for (
-        let i = 6;
-        i >= 0;
-        i--
-    ) {
-
-        const date =
-            new Date(today);
-
-
-        date.setDate(
-            today.getDate() - i
-        );
-
-
+        const date=new Date(today);
+        date.setDate(today.getDate()-i);
         days.push(date);
-
     }
 
+    const counts=days.map(day=>{
 
-    const counts =
-        days.map(
-            day => {
+        return reports.filter(report=>{
 
-                return reports.filter(
-                    report => {
+            const raw=
+                report.timestamp||
+                report.date||
+                report.createdDate;
 
-                        const raw =
-                            report.timestamp ||
-                            report.date ||
-                            report.createdDate;
+            const date=parseDate(raw);
 
+            if(!date)return false;
 
-                        const date =
-                            parseDate(raw);
+            date.setHours(0,0,0,0);
 
+            return date.getTime()===day.getTime();
 
-                        if (!date) {
+        }).length;
 
-                            return false;
+    });
 
-                        }
+    const max=Math.max(1,...counts);
 
+    container.innerHTML=days.map((day,index)=>{
 
-                        date.setHours(
-                            0,
-                            0,
-                            0,
-                            0
-                        );
+        const count=counts[index];
 
-
-                        return (
-                            date.getTime()
-                            ===
-                            day.getTime()
-                        );
-
-                    }
-                ).length;
-
-            }
+        const height=Math.max(
+            5,
+            (count/max)*175
         );
 
-
-    const max =
-        Math.max(
-            1,
-            ...counts
+        const label=day.toLocaleDateString(
+            "en-MY",
+            {day:"2-digit",month:"short"}
         );
 
+        return`
+        <div class="trend-bar-wrap">
+            <div class="trend-value">${count}</div>
+            <div class="trend-bar" style="height:${height}px"></div>
+            <div class="trend-label">${label}</div>
+        </div>`;
 
-    container.innerHTML =
-        days
-            .map(
-                (
-                    day,
-                    index
-                ) => {
-
-                    const count =
-                        counts[index];
-
-
-                    const height =
-                        Math.max(
-                            5,
-                            (
-                                count /
-                                max
-                            ) * 175
-                        );
-
-
-                    const label =
-                        day.toLocaleDateString(
-                            "en-MY",
-                            {
-                                day:"2-digit",
-                                month:"short"
-                            }
-                        );
-
-
-                    return `
-
-                        <div class="trend-bar-wrap">
-
-                            <div class="trend-value">
-                                ${count}
-                            </div>
-
-                            <div
-                                class="trend-bar"
-                                style="height:${height}px"
-                            ></div>
-
-                            <div class="trend-label">
-                                ${label}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
+    }).join("");
 }
 
+/* CATEGORY FILTER */
+function populateCategoryFilter(){
 
-/* =========================================================
-   CATEGORY FILTER
-========================================================= */
+    const select=document.getElementById("categoryFilter");
+    const current=select.value;
 
-function populateCategoryFilter() {
-
-    const select =
-        document.getElementById(
-            "categoryFilter"
-        );
-
-
-    const current =
-        select.value;
-
-
-    const categories =
-        [
-            ...new Set(
-                reports
-                    .map(
-                        report =>
-                            report.category
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort();
-
-
-    select.innerHTML = `
-
-        <option value="">
-            All Categories
-        </option>
-
-    `;
-
-
-    categories.forEach(
-        category => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                category;
-
-
-            option.textContent =
-                category;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    if (
-        categories.includes(
-            current
+    const categories=[
+        ...new Set(
+            reports
+            .map(r=>r.category)
+            .filter(Boolean)
         )
-    ) {
+    ].sort();
 
-        select.value =
-            current;
+    select.innerHTML=
+        '<option value="">All Categories</option>';
 
-    }
+    categories.forEach(category=>{
 
+        const option=document.createElement("option");
+
+        option.value=category;
+        option.textContent=category;
+
+        select.appendChild(option);
+    });
+
+    if(categories.includes(current))
+        select.value=current;
 }
 
+/* EVENTS */
+document.getElementById("searchInput")
+.addEventListener("input",()=>{
+    showOverdueOnly=false;
+    renderReports();
+});
 
-/* =========================================================
-   EVENT LISTENERS
-========================================================= */
+document.getElementById("statusFilter")
+.addEventListener("change",()=>{
+    showOverdueOnly=false;
+    renderReports();
+});
 
-document.getElementById(
-    "searchInput"
-).addEventListener(
-    "input",
-    function() {
+document.getElementById("categoryFilter")
+.addEventListener("change",()=>{
+    showOverdueOnly=false;
+    renderReports();
+});
 
-        showOverdueOnly =
-            false;
+document.getElementById("caseStatus")
+.addEventListener("change",function(){
 
-        renderReports();
+    const status=this.value;
 
-    }
-);
+    updateTimeline(status);
 
+    if(selectedReport){
 
-document.getElementById(
-    "statusFilter"
-).addEventListener(
-    "change",
-    function() {
-
-        showOverdueOnly =
-            false;
-
-        renderReports();
-
-    }
-);
-
-
-document.getElementById(
-    "categoryFilter"
-).addEventListener(
-    "change",
-    function() {
-
-        showOverdueOnly =
-            false;
-
-        renderReports();
-
-    }
-);
-
-
-document.getElementById(
-    "caseStatus"
-).addEventListener(
-    "change",
-    function() {
-
-        const status =
-            this.value;
-
-
-        updateTimeline(
+        const temporaryReport={
+            ...selectedReport,
             status
-        );
+        };
 
-
-        if (
-            selectedReport
-        ) {
-
-            const temporaryReport = {
-
-                ...selectedReport,
-
-                status:
-                    status
-
-            };
-
-
-            updateCaseOverdue(
-                temporaryReport
-            );
-
-        }
-
-
-        updateModalStatus(
-            status
-        );
-
+        updateCaseOverdue(temporaryReport);
     }
-);
 
+    updateModalStatus(status);
+});
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function normalizeStatus(
-    status
-) {
-
-    return String(
-        status ||
-        ""
-    )
-    .trim()
-    .toLowerCase();
-
+/* HELPERS */
+function normalizeStatus(status){
+    return String(status||"")
+        .trim()
+        .toLowerCase();
 }
 
+function getStatusClass(status){
 
-function getStatusClass(
-    status
-) {
-
-    switch (
-        normalizeStatus(
-            status
-        )
-    ) {
+    switch(normalizeStatus(status)){
 
         case "new":
             return "status-new";
@@ -6350,134 +2640,46 @@ function getStatusClass(
 
         default:
             return "status-new";
-
     }
-
 }
 
+function parseDate(value){
 
-function parseDate(
-    value
-) {
+    if(!value)return null;
 
-    if (!value) {
+    if(value instanceof Date)
+        return new Date(value.getTime());
 
+    const date=new Date(value);
+
+    if(isNaN(date.getTime()))
         return null;
-
-    }
-
-
-    if (
-        value instanceof Date
-    ) {
-
-        return new Date(
-            value.getTime()
-        );
-
-    }
-
-
-    const date =
-        new Date(value);
-
-
-    if (
-        isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return null;
-
-    }
-
 
     return date;
-
 }
 
+function formatDateInput(value){
 
-function formatDateInput(
-    value
-) {
+    if(!value)return "";
 
-    if (!value) {
+    const date=parseDate(value);
 
-        return "";
+    if(!date)return "";
 
-    }
-
-
-    const date =
-        parseDate(value);
-
-
-    if (!date) {
-
-        return "";
-
-    }
-
-
-    const year =
-        date.getFullYear();
-
-
-    const month =
-        String(
-            date.getMonth() + 1
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            date.getDate()
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
+    return(
+        date.getFullYear()+"-"+
+        String(date.getMonth()+1).padStart(2,"0")+"-"+
+        String(date.getDate()).padStart(2,"0")
     );
-
 }
 
+function formatDisplayDate(value){
 
-function formatDisplayDate(
-    value
-) {
+    if(!value)return "-";
 
-    if (!value) {
+    const date=parseDate(value);
 
-        return "-";
-
-    }
-
-
-    const date =
-        parseDate(value);
-
-
-    if (!date) {
-
-        return String(
-            value
-        );
-
-    }
-
+    if(!date)return String(value);
 
     return date.toLocaleDateString(
         "en-MY",
@@ -6487,72 +2689,29 @@ function formatDisplayDate(
             year:"numeric"
         }
     );
-
 }
 
+function escapeHtml(value){
 
-function escapeHtml(
-    value
-) {
-
-    return String(
-        value ??
-        ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
+    return String(value??"")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
 
-
-function escapeAttribute(
-    value
-) {
-
-    return escapeHtml(
-        value
-    );
-
+function escapeAttribute(value){
+    return escapeHtml(value);
 }
 
-
-/* =========================================================
-   START SYSTEM
-========================================================= */
-
+/* START */
 loadReports();
 
-
-/* =========================================================
-   AUTO REFRESH
-========================================================= */
-
-setInterval(
-    loadReports,
-    30000
-);
+/* AUTO REFRESH */
+setInterval(loadReports,30000);
 
 </script>
 
-
 </body>
-
 </html>
