@@ -1,8 +1,7 @@
 // =====================================================
-// SCRIPT.JS LOADING TEST
+// NEAR MISS REPORTING SYSTEM
+// MULTIPLE PHOTOS
 // =====================================================
-
-alert("SCRIPT.JS IS WORKING");
 
 
 // =====================================================
@@ -50,31 +49,19 @@ const JPEG_QUALITY = 0.75;
 
 
 // =====================================================
-// CHECK FORM
+// CHECK ELEMENTS
 // =====================================================
 
-if (!form) {
-
-    alert(
-        "ERROR: nearMissForm NOT FOUND"
-    );
-
-} else {
-
-    console.log(
-        "nearMissForm found"
-    );
-
-}
-
-
-// =====================================================
-// CHECK GOOGLE SCRIPT URL
-// =====================================================
+console.log("Near Miss script.js loaded");
 
 console.log(
-    "Google Apps Script URL:",
-    GOOGLE_SCRIPT_URL
+    "Form:",
+    form
+);
+
+console.log(
+    "Photo input:",
+    photoInput
 );
 
 
@@ -88,10 +75,8 @@ function setDateTime() {
         return;
     }
 
-
     const now =
         new Date();
-
 
     const malaysiaTime =
         new Date(
@@ -104,46 +89,28 @@ function setDateTime() {
             )
         );
 
-
     const year =
         malaysiaTime.getFullYear();
-
 
     const month =
         String(
             malaysiaTime.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     const day =
         String(
             malaysiaTime.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     const hour =
         String(
             malaysiaTime.getHours()
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     const minute =
         String(
             malaysiaTime.getMinutes()
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     dateTime.value =
         year +
@@ -155,12 +122,15 @@ function setDateTime() {
         hour +
         ":" +
         minute;
-
 }
 
 
+// Run immediately
+
 setDateTime();
 
+
+// Update every minute
 
 setInterval(
     setDateTime,
@@ -180,7 +150,6 @@ if (photoInput) {
 
             const count =
                 photoInput.files.length;
-
 
             if (count === 0) {
 
@@ -218,7 +187,6 @@ function generateReportNumber() {
     const now =
         new Date();
 
-
     const malaysiaTime =
         new Date(
             now.toLocaleString(
@@ -230,10 +198,8 @@ function generateReportNumber() {
             )
         );
 
-
     const year =
         malaysiaTime.getFullYear();
-
 
     const month =
         String(
@@ -243,7 +209,6 @@ function generateReportNumber() {
             "0"
         );
 
-
     const day =
         String(
             malaysiaTime.getDate()
@@ -252,7 +217,6 @@ function generateReportNumber() {
             "0"
         );
 
-
     let counter =
         Number(
             localStorage.getItem(
@@ -260,15 +224,12 @@ function generateReportNumber() {
             )
         ) || 0;
 
-
     counter++;
-
 
     localStorage.setItem(
         "nearMissCounter",
         counter
     );
-
 
     return (
         "NM-" +
@@ -281,7 +242,6 @@ function generateReportNumber() {
             "0"
         )
     );
-
 }
 
 
@@ -297,20 +257,17 @@ function compressPhoto(file) {
             const reader =
                 new FileReader();
 
-
             reader.onload =
                 function (event) {
 
                     const img =
                         new Image();
 
-
                     img.onload =
                         function () {
 
                             let width =
                                 img.width;
-
 
                             let height =
                                 img.height;
@@ -331,20 +288,17 @@ function compressPhoto(file) {
                                             height
                                     );
 
-
                                 width =
                                     Math.round(
                                         width *
                                         ratio
                                     );
 
-
                                 height =
                                     Math.round(
                                         height *
                                         ratio
                                     );
-
                             }
 
 
@@ -356,7 +310,6 @@ function compressPhoto(file) {
 
                             canvas.width =
                                 width;
-
 
                             canvas.height =
                                 height;
@@ -445,12 +398,11 @@ function compressPhoto(file) {
 
         }
     );
-
 }
 
 
 // =====================================================
-// FORM SUBMIT
+// SUBMIT FORM
 // =====================================================
 
 if (form) {
@@ -459,7 +411,8 @@ if (form) {
         "submit",
         async function (event) {
 
-            // STOP NORMAL FORM SUBMISSION
+            // IMPORTANT:
+            // Stop normal HTML form submission.
 
             event.preventDefault();
 
@@ -467,11 +420,6 @@ if (form) {
 
 
             console.log(
-                "SUBMIT EVENT DETECTED"
-            );
-
-
-            alert(
                 "SUBMIT EVENT DETECTED"
             );
 
@@ -524,7 +472,7 @@ if (form) {
 
 
                 console.log(
-                    "Photos:",
+                    "Photos selected:",
                     selectedFiles.length
                 );
 
@@ -649,13 +597,13 @@ if (form) {
 
 
                 console.log(
-                    "REPORT:",
+                    "Sending report:",
                     report
                 );
 
 
                 // =========================================
-                // SEND
+                // SEND TO GOOGLE APPS SCRIPT
                 // =========================================
 
                 successMessage.innerHTML =
@@ -687,13 +635,13 @@ if (form) {
 
 
                 console.log(
-                    "HTTP STATUS:",
+                    "Server response status:",
                     response.status
                 );
 
 
                 // =========================================
-                // RESPONSE
+                // READ SERVER RESPONSE
                 // =========================================
 
                 const responseText =
@@ -701,7 +649,7 @@ if (form) {
 
 
                 console.log(
-                    "SERVER RESPONSE:",
+                    "Server response:",
                     responseText
                 );
 
@@ -716,17 +664,17 @@ if (form) {
                             responseText
                         );
 
-                } catch (error) {
+                } catch (jsonError) {
 
                     throw new Error(
-                        "Server returned invalid response."
+                        "Server did not return a valid response."
                     );
 
                 }
 
 
                 // =========================================
-                // SUCCESS CHECK
+                // CHECK RESULT
                 // =========================================
 
                 if (
@@ -736,7 +684,7 @@ if (form) {
 
                     throw new Error(
                         result.error ||
-                        "Report was not accepted."
+                        "Report was not accepted by the server."
                     );
 
                 }
@@ -755,19 +703,32 @@ if (form) {
                     "<br><br>" +
                     "📷 Photos uploaded: <strong>" +
                     photos.length +
-                    "</strong>";
+                    "</strong>" +
+                    "<br><br>" +
+                    "Your report has been recorded.";
 
 
                 console.log(
                     "REPORT SUBMITTED SUCCESSFULLY"
                 );
 
+
+                // =================================================
+                // IMPORTANT
+                // =================================================
+                //
+                // NO form.reset()
+                //
+                // The form will stay filled after submission.
+                //
+                // =================================================
+
             }
 
 
-            // =========================================
+            // =============================================
             // ERROR
-            // =========================================
+            // =============================================
 
             catch (error) {
 
@@ -785,15 +746,14 @@ if (form) {
             }
 
 
-            // =========================================
-            // ENABLE BUTTON
-            // =========================================
+            // =============================================
+            // ENABLE BUTTON AGAIN
+            // =============================================
 
             finally {
 
                 submitButton.disabled =
                     false;
-
 
                 submitButton.textContent =
                     "SUBMIT NEAR MISS";
@@ -803,5 +763,10 @@ if (form) {
         }
     );
 
+} else {
+
+    console.error(
+        "ERROR: nearMissForm was not found."
+    );
+
 }
-```
