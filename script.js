@@ -1,5 +1,7 @@
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
+// PHOTO + VIDEO VERSION
+// VIDEO LIMIT: 20 MB
 // =====================================================
 
 
@@ -46,8 +48,10 @@ const MAX_PHOTOS = 10;
 const MAX_PHOTO_SIZE =
     10 * 1024 * 1024;
 
+// VIDEO LIMIT = 20 MB
+
 const MAX_VIDEO_SIZE =
-    50 * 1024 * 1024;
+    20 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
 
@@ -61,7 +65,23 @@ const JPEG_QUALITY = 0.75;
 // =====================================================
 
 console.log(
-    "NEAR MISS script.js loaded successfully"
+    "================================="
+);
+
+console.log(
+    "NEAR MISS script.js loaded"
+);
+
+console.log(
+    "PHOTO + VIDEO VERSION"
+);
+
+console.log(
+    "VIDEO LIMIT: 20 MB"
+);
+
+console.log(
+    "================================="
 );
 
 
@@ -69,7 +89,10 @@ console.log(
 // PHOTO COUNTER
 // =====================================================
 
-if (photoInput) {
+if (
+    photoInput &&
+    photoCount
+) {
 
     photoInput.addEventListener(
         "change",
@@ -89,7 +112,10 @@ if (photoInput) {
             }
 
 
-            if (count > MAX_PHOTOS) {
+            if (
+                count >
+                MAX_PHOTOS
+            ) {
 
                 photoCount.textContent =
                     "❌ Maximum 10 photos allowed";
@@ -114,7 +140,10 @@ if (photoInput) {
 // VIDEO INFORMATION
 // =====================================================
 
-if (videoInput) {
+if (
+    videoInput &&
+    videoInfo
+) {
 
     videoInput.addEventListener(
         "change",
@@ -139,13 +168,25 @@ if (videoInput) {
                 (1024 * 1024);
 
 
+            console.log(
+                "Video selected:",
+                file.name,
+                sizeMB.toFixed(2) +
+                " MB"
+            );
+
+
+            // ---------------------------------------------
+            // CHECK VIDEO SIZE
+            // ---------------------------------------------
+
             if (
                 file.size >
                 MAX_VIDEO_SIZE
             ) {
 
                 videoInfo.textContent =
-                    "❌ Video is larger than 50 MB";
+                    "❌ Video must be 20 MB or smaller";
 
                 videoInput.value = "";
 
@@ -250,7 +291,10 @@ function generateReportNumber() {
 function compressPhoto(file) {
 
     return new Promise(
-        function (resolve, reject) {
+        function (
+            resolve,
+            reject
+        ) {
 
             const reader =
                 new FileReader();
@@ -272,6 +316,10 @@ function compressPhoto(file) {
                             let height =
                                 img.height;
 
+
+                            // ---------------------------------
+                            // RESIZE IMAGE
+                            // ---------------------------------
 
                             if (
                                 width >
@@ -305,6 +353,10 @@ function compressPhoto(file) {
                             }
 
 
+                            // ---------------------------------
+                            // CREATE CANVAS
+                            // ---------------------------------
+
                             const canvas =
                                 document.createElement(
                                     "canvas"
@@ -334,6 +386,10 @@ function compressPhoto(file) {
                             );
 
 
+                            // ---------------------------------
+                            // COMPRESS JPEG
+                            // ---------------------------------
+
                             const compressed =
                                 canvas.toDataURL(
                                     "image/jpeg",
@@ -344,9 +400,8 @@ function compressPhoto(file) {
                             resolve({
 
                                 data:
-                                    compressed.split(
-                                        ","
-                                    )[1],
+                                    compressed
+                                        .split(",")[1],
 
                                 type:
                                     "image/jpeg",
@@ -398,7 +453,9 @@ function compressPhoto(file) {
                 };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
@@ -413,7 +470,10 @@ function compressPhoto(file) {
 function readVideo(file) {
 
     return new Promise(
-        function (resolve, reject) {
+        function (
+            resolve,
+            reject
+        ) {
 
             const reader =
                 new FileReader();
@@ -427,6 +487,19 @@ function readVideo(file) {
                         const base64 =
                             event.target.result
                                 .split(",")[1];
+
+
+                        if (!base64) {
+
+                            reject(
+                                new Error(
+                                    "Video data could not be read."
+                                )
+                            );
+
+                            return;
+
+                        }
 
 
                         resolve({
@@ -480,7 +553,9 @@ function readVideo(file) {
                 };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
@@ -495,18 +570,23 @@ function readVideo(file) {
 if (!form) {
 
     console.error(
-        "ERROR: nearMissForm was not found."
+        "❌ ERROR: nearMissForm was not found."
     );
 
 } else {
+
+    console.log(
+        "✅ nearMissForm found."
+    );
+
 
     form.addEventListener(
         "submit",
         async function (event) {
 
-            // =============================================
-            // STOP NORMAL FORM SUBMISSION
-            // =============================================
+            // ---------------------------------------------
+            // STOP NORMAL HTML SUBMISSION
+            // ---------------------------------------------
 
             event.preventDefault();
 
@@ -514,13 +594,21 @@ if (!form) {
 
 
             console.log(
+                "================================="
+            );
+
+            console.log(
                 "SUBMIT EVENT DETECTED"
             );
 
+            console.log(
+                "================================="
+            );
 
-            // =============================================
-            // BUTTON
-            // =============================================
+
+            // ---------------------------------------------
+            // SUBMIT BUTTON
+            // ---------------------------------------------
 
             const submitButton =
                 form.querySelector(
@@ -528,30 +616,59 @@ if (!form) {
                 );
 
 
-            submitButton.disabled =
-                true;
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "SUBMITTING...";
+
+            }
 
 
-            submitButton.textContent =
-                "SUBMITTING...";
+            // ---------------------------------------------
+            // SHOW STATUS
+            // ---------------------------------------------
 
+            if (successMessage) {
 
-            successMessage.style.display =
-                "block";
+                successMessage.style.display =
+                    "block";
 
+                successMessage.innerHTML =
+                    "<strong>⏳ Preparing report...</strong>";
 
-            successMessage.innerHTML =
-                "<strong>⏳ Preparing report...</strong>";
+            }
 
 
             try {
 
                 // =========================================
-                // REPORT NUMBER
+                // GENERATE REPORT NUMBER
                 // =========================================
 
                 const reportNumber =
                     generateReportNumber();
+
+
+                console.log(
+                    "Report Number:",
+                    reportNumber
+                );
+
+
+                // =========================================
+                // CHECK PHOTO INPUT
+                // =========================================
+
+                if (!photoInput) {
+
+                    throw new Error(
+                        "Photo input (#photo) was not found."
+                    );
+
+                }
 
 
                 // =========================================
@@ -597,6 +714,12 @@ if (!form) {
                         selectedFiles[i];
 
 
+                    console.log(
+                        "Processing photo:",
+                        photo.name
+                    );
+
+
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -611,12 +734,16 @@ if (!form) {
                     }
 
 
-                    successMessage.innerHTML =
-                        "<strong>📷 Processing photo " +
-                        (i + 1) +
-                        " of " +
-                        selectedFiles.length +
-                        "...</strong>";
+                    if (successMessage) {
+
+                        successMessage.innerHTML =
+                            "<strong>📷 Processing photo " +
+                            (i + 1) +
+                            " of " +
+                            selectedFiles.length +
+                            "...</strong>";
+
+                    }
 
 
                     const compressed =
@@ -641,6 +768,12 @@ if (!form) {
                 }
 
 
+                console.log(
+                    "Photos processed:",
+                    photos.length
+                );
+
+
                 // =========================================
                 // GET VIDEO
                 // =========================================
@@ -657,11 +790,27 @@ if (!form) {
                         videoInput.files[0];
 
 
+                    const videoSizeMB =
+                        selectedVideo.size /
+                        (1024 * 1024);
+
+
                     console.log(
                         "Video selected:",
                         selectedVideo.name
                     );
 
+
+                    console.log(
+                        "Video size:",
+                        videoSizeMB.toFixed(2) +
+                        " MB"
+                    );
+
+
+                    // -------------------------------------
+                    // CHECK VIDEO SIZE
+                    // -------------------------------------
 
                     if (
                         selectedVideo.size >
@@ -669,20 +818,125 @@ if (!form) {
                     ) {
 
                         throw new Error(
-                            "Video is larger than 50 MB."
+                            "Video is larger than 20 MB."
                         );
 
                     }
 
 
-                    successMessage.innerHTML =
-                        "<strong>🎥 Processing video...</strong>";
+                    // -------------------------------------
+                    // PROCESS VIDEO
+                    // -------------------------------------
+
+                    if (successMessage) {
+
+                        successMessage.innerHTML =
+                            "<strong>🎥 Processing video (" +
+                            videoSizeMB.toFixed(1) +
+                            " MB)...</strong>" +
+                            "<br><br>" +
+                            "Please wait. Do not close this page.";
+
+                    }
 
 
                     video =
                         await readVideo(
                             selectedVideo
                         );
+
+
+                    console.log(
+                        "Video processed successfully."
+                    );
+
+                }
+
+
+                // =========================================
+                // GET FORM ELEMENTS
+                // =========================================
+
+                const locationElement =
+                    document.getElementById(
+                        "location"
+                    );
+
+                const departmentElement =
+                    document.getElementById(
+                        "department"
+                    );
+
+                const hazardCategoryElement =
+                    document.getElementById(
+                        "hazardCategory"
+                    );
+
+                const whatHappenedElement =
+                    document.getElementById(
+                        "whatHappened"
+                    );
+
+                const reporterNameElement =
+                    document.getElementById(
+                        "reporterName"
+                    );
+
+
+                // =========================================
+                // CHECK REQUIRED ELEMENTS
+                // =========================================
+
+                if (!dateTime) {
+
+                    throw new Error(
+                        "Date/time field (#dateTime) was not found."
+                    );
+
+                }
+
+
+                if (!locationElement) {
+
+                    throw new Error(
+                        "Location field (#location) was not found."
+                    );
+
+                }
+
+
+                if (!departmentElement) {
+
+                    throw new Error(
+                        "Department field (#department) was not found."
+                    );
+
+                }
+
+
+                if (!hazardCategoryElement) {
+
+                    throw new Error(
+                        "Hazard category field (#hazardCategory) was not found."
+                    );
+
+                }
+
+
+                if (!whatHappenedElement) {
+
+                    throw new Error(
+                        "What happened field (#whatHappened) was not found."
+                    );
+
+                }
+
+
+                if (!reporterNameElement) {
+
+                    throw new Error(
+                        "Reporter name field (#reporterName) was not found."
+                    );
 
                 }
 
@@ -700,29 +954,19 @@ if (!form) {
                         dateTime.value,
 
                     location:
-                        document.getElementById(
-                            "location"
-                        ).value,
+                        locationElement.value,
 
                     department:
-                        document.getElementById(
-                            "department"
-                        ).value,
+                        departmentElement.value,
 
                     hazardCategory:
-                        document.getElementById(
-                            "hazardCategory"
-                        ).value,
+                        hazardCategoryElement.value,
 
                     whatHappened:
-                        document.getElementById(
-                            "whatHappened"
-                        ).value,
+                        whatHappenedElement.value,
 
                     reporterName:
-                        document.getElementById(
-                            "reporterName"
-                        ).value,
+                        reporterNameElement.value,
 
                     photos:
                         photos,
@@ -740,8 +984,27 @@ if (!form) {
 
 
                 console.log(
-                    "REPORT READY:",
-                    report
+                    "================================="
+                );
+
+                console.log(
+                    "REPORT READY"
+                );
+
+                console.log(
+                    "Photos:",
+                    photos.length
+                );
+
+                console.log(
+                    "Video:",
+                    video
+                        ? "YES"
+                        : "NO"
+                );
+
+                console.log(
+                    "================================="
                 );
 
 
@@ -749,8 +1012,19 @@ if (!form) {
                 // SEND TO GOOGLE APPS SCRIPT
                 // =========================================
 
-                successMessage.innerHTML =
-                    "<strong>☁️ Sending report...</strong>";
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>☁️ Sending report...</strong>" +
+                        "<br><br>" +
+                        "Please wait...";
+
+                }
+
+
+                console.log(
+                    "Sending report to Google Apps Script..."
+                );
 
 
                 const response =
@@ -784,7 +1058,7 @@ if (!form) {
 
 
                 // =========================================
-                // READ RESPONSE
+                // READ SERVER RESPONSE
                 // =========================================
 
                 const responseText =
@@ -792,10 +1066,34 @@ if (!form) {
 
 
                 console.log(
-                    "SERVER RESPONSE:",
+                    "================================="
+                );
+
+                console.log(
+                    "SERVER RESPONSE:"
+                );
+
+                console.log(
                     responseText
                 );
 
+                console.log(
+                    "================================="
+                );
+
+
+                if (!responseText) {
+
+                    throw new Error(
+                        "Server returned an empty response."
+                    );
+
+                }
+
+
+                // =========================================
+                // PARSE JSON
+                // =========================================
 
                 let result;
 
@@ -807,17 +1105,30 @@ if (!form) {
                             responseText
                         );
 
-                } catch (error) {
+                }
+
+                catch (jsonError) {
+
+                    console.error(
+                        "JSON PARSE ERROR:",
+                        jsonError
+                    );
 
                     throw new Error(
-                        "Server did not return valid JSON."
+                        "Server did not return valid JSON. Check the Google Apps Script deployment."
                     );
 
                 }
 
 
+                console.log(
+                    "PARSED RESULT:",
+                    result
+                );
+
+
                 // =========================================
-                // CHECK SUCCESS
+                // CHECK SERVER SUCCESS
                 // =========================================
 
                 if (
@@ -826,8 +1137,10 @@ if (!form) {
                 ) {
 
                     throw new Error(
-                        result.error ||
-                        "Report was not accepted by the server."
+                        result &&
+                        result.error
+                            ? result.error
+                            : "Report was not accepted by the server."
                     );
 
                 }
@@ -837,60 +1150,111 @@ if (!form) {
                 // SUCCESS
                 // =========================================
 
-                successMessage.innerHTML =
-                    "<strong>✅ Report submitted successfully!</strong>" +
-                    "<br><br>" +
-                    "Report No: <strong>" +
-                    reportNumber +
-                    "</strong>" +
-                    "<br><br>" +
-                    "📷 Photos uploaded: <strong>" +
-                    photos.length +
-                    "</strong>" +
-                    "<br><br>" +
-                    "🎥 Video uploaded: <strong>" +
-                    (video ? "Yes" : "No") +
-                    "</strong>" +
-                    "<br><br>" +
-                    "Your report has been recorded.";
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>✅ Report submitted successfully!</strong>" +
+                        "<br><br>" +
+
+                        "Report No: " +
+                        "<strong>" +
+                        reportNumber +
+                        "</strong>" +
+
+                        "<br><br>" +
+
+                        "📷 Photos uploaded: " +
+                        "<strong>" +
+                        photos.length +
+                        "</strong>" +
+
+                        "<br><br>" +
+
+                        "🎥 Video uploaded: " +
+                        "<strong>" +
+                        (
+                            video
+                                ? "Yes"
+                                : "No"
+                        ) +
+                        "</strong>" +
+
+                        "<br><br>" +
+
+                        "Your report has been recorded.";
+
+                }
 
 
                 console.log(
-                    "REPORT SUBMITTED SUCCESSFULLY"
+                    "================================="
                 );
 
+                console.log(
+                    "✅ REPORT SUBMITTED SUCCESSFULLY"
+                );
 
-                // =========================================
-                // DO NOT RESET FORM
-                // =========================================
+                console.log(
+                    "================================="
+                );
 
             }
 
+
+            // =============================================
+            // ERROR
+            // =============================================
 
             catch (error) {
 
                 console.error(
-                    "SUBMISSION ERROR:",
+                    "================================="
+                );
+
+                console.error(
+                    "❌ SUBMISSION ERROR"
+                );
+
+                console.error(
                     error
                 );
 
+                console.error(
+                    "================================="
+                );
 
-                successMessage.innerHTML =
-                    "<strong>❌ Unable to submit report.</strong>" +
-                    "<br><br>" +
-                    error.message;
+
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>❌ Unable to submit report.</strong>" +
+                        "<br><br>" +
+                        "<span style='color:#b00020;'>" +
+                        error.message +
+                        "</span>" +
+                        "<br><br>" +
+                        "Please try again.";
+
+                }
 
             }
 
 
+            // =============================================
+            // ENABLE BUTTON
+            // =============================================
+
             finally {
 
-                submitButton.disabled =
-                    false;
+                if (submitButton) {
 
+                    submitButton.disabled =
+                        false;
 
-                submitButton.textContent =
-                    "SUBMIT NEAR MISS";
+                    submitButton.textContent =
+                        "SUBMIT NEAR MISS";
+
+                }
 
             }
 
