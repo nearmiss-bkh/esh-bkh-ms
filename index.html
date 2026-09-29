@@ -23,13 +23,8 @@
 
 <body>
 
-
     <div class="container">
 
-
-        <!-- =========================================
-             HEADER
-        ========================================== -->
 
         <h1>
             Near Miss Report
@@ -39,10 +34,6 @@
             ESH Near Miss Reporting System
         </p>
 
-
-        <!-- =========================================
-             REPORT FORM
-        ========================================== -->
 
         <form id="nearMissForm">
 
@@ -185,9 +176,7 @@
             >
 
 
-            <!-- =========================================
-                 MULTIPLE PHOTOS
-            ========================================== -->
+            <!-- PHOTOS -->
 
             <label for="photo">
                 Photos
@@ -206,18 +195,16 @@
             <div
                 id="photoCount"
                 style="
-                    margin-top: 8px;
-                    font-size: 14px;
-                    color: #666;
+                    margin-top:8px;
+                    font-size:14px;
+                    color:#666;
                 "
             >
                 No photos selected
             </div>
 
 
-            <!-- =========================================
-                 SUBMIT BUTTON
-            ========================================== -->
+            <!-- SUBMIT -->
 
             <button
                 type="submit"
@@ -230,9 +217,7 @@
         </form>
 
 
-        <!-- =========================================
-             SUCCESS / ERROR MESSAGE
-        ========================================== -->
+        <!-- MESSAGE -->
 
         <div
             id="successMessage"
@@ -245,9 +230,104 @@
     </div>
 
 
-    <!-- =============================================
+    <!-- =========================================
+         AUTO MALAYSIA DATE & TIME
+    ========================================== -->
+
+    <script>
+
+        function updateDateTime() {
+
+            const dateTime =
+                document.getElementById(
+                    "dateTime"
+                );
+
+
+            const now =
+                new Date();
+
+
+            /*
+             * Malaysia = UTC +8
+             */
+
+            const malaysiaTime =
+                new Date(
+                    now.toLocaleString(
+                        "en-US",
+                        {
+                            timeZone:
+                                "Asia/Kuala_Lumpur"
+                        }
+                    )
+                );
+
+
+            const year =
+                malaysiaTime.getFullYear();
+
+
+            const month =
+                String(
+                    malaysiaTime.getMonth() + 1
+                ).padStart(2, "0");
+
+
+            const day =
+                String(
+                    malaysiaTime.getDate()
+                ).padStart(2, "0");
+
+
+            const hour =
+                String(
+                    malaysiaTime.getHours()
+                ).padStart(2, "0");
+
+
+            const minute =
+                String(
+                    malaysiaTime.getMinutes()
+                ).padStart(2, "0");
+
+
+            dateTime.value =
+                year +
+                "-" +
+                month +
+                "-" +
+                day +
+                "T" +
+                hour +
+                ":" +
+                minute;
+
+        }
+
+
+        /*
+         * Run immediately
+         */
+
+        updateDateTime();
+
+
+        /*
+         * Update every 10 seconds
+         */
+
+        setInterval(
+            updateDateTime,
+            10000
+        );
+
+    </script>
+
+
+    <!-- =========================================
          PHOTO COUNTER
-    ============================================== -->
+    ========================================== -->
 
     <script>
 
@@ -278,24 +358,21 @@
                 count +
                 " photo(s) selected";
 
-
-            console.log(
-                "Photos selected:",
-                count
-            );
-
         }
 
     </script>
 
 
-    <!-- =============================================
-         MAIN JAVASCRIPT
-    ============================================== -->
+    <!-- =========================================
+         MAIN SCRIPT
+    ========================================== -->
 
-    <script src="script.js"></script>
+    <script
+        src="script.js"
+    ></script>
 
 
 </body>
 
 </html>
+```
