@@ -1135,19 +1135,52 @@ textarea.form-control{min-height:85px}
 /* PHOTO */
 .photo-container{
     min-height:180px;
+    display:block;
+    overflow:auto;
+    border:1px dashed rgba(115,165,205,.20);
+    border-radius:11px;
+    padding:12px;
+    background:#061426;
+}
+
+.photo-gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+    width:100%;
+}
+
+.photo-card{
+    min-width:0;
+    padding:10px;
+    border:1px solid rgba(115,165,205,.12);
+    border-radius:10px;
+    background:#081a2d;
+}
+
+.photo-card-title{
+    margin-bottom:8px;
+    color:#b9cee1;
+    font-size:8px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.photo-image-wrapper{
+    min-height:160px;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    border:1px dashed rgba(115,165,205,.20);
-    border-radius:11px;
+    border-radius:8px;
     background:#061426;
 }
 
-.photo-container img{
+.photo-container img,.photo-evidence-image{
     display:block;
+    width:100%;
     max-width:100%;
-    max-height:420px;
+    height:240px;
     object-fit:contain;
     border-radius:8px;
 }
@@ -2117,7 +2150,7 @@ function openReport(rowNumber){
     document.getElementById("caseStatus").value=
         r.status||"New";
 
-    loadPhoto(r.photoLink);
+    loadPhotos(r.photo || r.photoLink || "");
     updateTimeline(r.status);
     updateCaseOverdue(r);
     updateModalStatus(r.status);
@@ -2128,51 +2161,122 @@ function openReport(rowNumber){
 /* PHOTO */
 function extractDriveFileId(url){
 
-    if(!url)return null;
+    if(!url) return null;
+
+    const value=String(url).trim();
 
     const patterns=[
         /\/d\/([a-zA-Z0-9_-]+)/,
-        /id=([a-zA-Z0-9_-]+)/,
+        /[?&]id=([a-zA-Z0-9_-]+)/,
         /\/file\/d\/([a-zA-Z0-9_-]+)/
     ];
 
     for(const pattern of patterns){
-        const match=String(url).match(pattern);
-        if(match&&match[1])return match[1];
+        const match=value.match(pattern);
+        if(match&&match[1]) return match[1];
     }
 
     return null;
 }
 
-function loadPhoto(photoLink){
+function getPhotoList(photoData){
+
+    if(!photoData) return [];
+
+    if(Array.isArray(photoData)){
+        return photoData
+            .map(item=>typeof item === "string" ? item : (item.url || item.photoUrl || item.photoData || ""))
+            .filter(Boolean);
+    }
+
+    const text=String(photoData).trim();
+    if(!text) return [];
+
+    /* Support JSON array if the backend ever returns one */
+    if(text.startsWith("[") && text.endsWith("]")){
+        try{
+            const parsed=JSON.parse(text);
+            if(Array.isArray(parsed)){
+                return parsed
+                    .map(item=>typeof item === "string" ? item : (item.url || item.photoUrl || ""))
+                    .filter(Boolean);
+            }
+        }catch(e){
+            console.warn("Photo JSON parse failed",e);
+        }
+    }
+
+    return text
+        .split(/\r?\n|,(?=https?:\/\/)|;(?=https?:\/\/)/)
+        .map(item=>item.trim())
+        .filter(Boolean);
+}
+
+function loadPhotos(photoData){
 
     const container=document.getElementById("photoEvidence");
+
+    if(!container) return;
+
     container.innerHTML="";
 
-    if(!photoLink){
-        container.innerHTML=
-        `<div class="photo-placeholder">
+    const photoList=getPhotoList(photoData);
+
+    if(photoList.length===0){
+        container.innerHTML=`
+        <div class="photo-placeholder">
             No photo evidence available
         </div>`;
         return;
     }
 
+    const gallery=document.createElement("div");
+    gallery.className="photo-gallery";
+    container.appendChild(gallery);
+
+    photoList.forEach((photo,index)=>{
+        createPhotoCard(photo,index+1,gallery);
+    });
+}
+
+function createPhotoCard(photoLink,photoNumber,gallery){
+
+    const card=document.createElement("div");
+    card.className="photo-card";
+
+    const title=document.createElement("div");
+    title.className="photo-card-title";
+    title.textContent="Photo "+photoNumber;
+    card.appendChild(title);
+
     const fileId=extractDriveFileId(photoLink);
 
     if(!fileId){
-        container.innerHTML=`
-        <div>
-            <div class="photo-placeholder">
-                Photo link available
-            </div>
-            <a class="photo-link"
-               href="${escapeAttribute(photoLink)}"
-               target="_blank">
-               Open Photo
-            </a>
-        </div>`;
+
+        const placeholder=document.createElement("div");
+        placeholder.className="photo-placeholder";
+        placeholder.textContent="Photo preview unavailable";
+        card.appendChild(placeholder);
+
+        const link=document.createElement("a");
+        link.className="photo-link";
+        link.href=photoLink;
+        link.target="_blank";
+        link.rel="noopener noreferrer";
+        link.textContent="Open Photo ↗";
+        card.appendChild(link);
+
+        gallery.appendChild(card);
         return;
     }
+
+    const imageWrapper=document.createElement("div");
+    imageWrapper.className="photo-image-wrapper";
+
+    const img=document.createElement("img");
+    img.className="photo-evidence-image";
+    img.alt="Photo Evidence "+photoNumber;
+    img.loading="lazy";
 
     const urls=[
         `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`,
@@ -2182,41 +2286,52 @@ function loadPhoto(photoLink){
         `https://drive.usercontent.google.com/download?id=${fileId}&export=view&confirm=t`
     ];
 
-    let index=0;
+    let imageIndex=0;
 
-    const img=document.createElement("img");
-    img.alt="Photo Evidence";
+    function tryNextImage(){
 
-    function tryNext(){
+        if(imageIndex>=urls.length){
 
-        if(index>=urls.length){
+            imageWrapper.innerHTML="";
 
-            container.innerHTML=`
-            <div>
-                <div class="photo-placeholder">
-                    Photo preview unavailable
-                </div>
-                <a class="photo-link"
-                   href="${escapeAttribute(photoLink)}"
-                   target="_blank">
-                   Open Original Photo
-                </a>
-            </div>`;
-
+            const placeholder=document.createElement("div");
+            placeholder.className="photo-placeholder";
+            placeholder.textContent="Photo preview unavailable";
+            imageWrapper.appendChild(placeholder);
             return;
         }
 
-        img.src=urls[index++];
+        img.src=urls[imageIndex++];
     }
 
     img.onload=function(){
-        container.innerHTML="";
-        container.appendChild(img);
+        imageWrapper.innerHTML="";
+        imageWrapper.appendChild(img);
     };
 
-    img.onerror=tryNext;
+    img.onerror=function(){
+        tryNextImage();
+    };
 
-    tryNext();
+    imageWrapper.appendChild(img);
+    card.appendChild(imageWrapper);
+
+    const link=document.createElement("a");
+    link.className="photo-link";
+    link.href=photoLink;
+    link.target="_blank";
+    link.rel="noopener noreferrer";
+    link.textContent="Open Full Photo ↗";
+    card.appendChild(link);
+
+    gallery.appendChild(card);
+
+    tryNextImage();
+}
+
+/* BACKWARD COMPATIBILITY */
+function loadPhoto(photoLink){
+    loadPhotos(photoLink);
 }
 
 /* MODAL STATUS */
