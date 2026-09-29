@@ -1,6 +1,12 @@
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
 // EMPLOYEE SUBMISSION
+// MULTIPLE PHOTO VERSION
+// =====================================================
+
+
+// =====================================================
+// FORM ELEMENTS
 // =====================================================
 
 const form =
@@ -28,15 +34,25 @@ const GOOGLE_SCRIPT_URL =
 // PHOTO SETTINGS
 // =====================================================
 
+// Maximum size for EACH original photo
 const MAX_PHOTO_SIZE =
     10 * 1024 * 1024; // 10 MB
 
+
+// Maximum number of photos
+const MAX_PHOTOS =
+    10;
+
+
+// Resize settings
 const MAX_WIDTH =
     1200;
 
 const MAX_HEIGHT =
     1200;
 
+
+// JPEG compression quality
 const JPEG_QUALITY =
     0.75;
 
@@ -140,7 +156,10 @@ function compressPhoto(file) {
                                 img.height;
 
 
-                            // Resize if necessary
+                            // ---------------------------------
+                            // RESIZE IF NECESSARY
+                            // ---------------------------------
+
                             if (
                                 width > MAX_WIDTH ||
                                 height > MAX_HEIGHT
@@ -166,7 +185,10 @@ function compressPhoto(file) {
                             }
 
 
-                            // Create canvas
+                            // ---------------------------------
+                            // CREATE CANVAS
+                            // ---------------------------------
+
                             const canvas =
                                 document.createElement(
                                     "canvas"
@@ -195,7 +217,10 @@ function compressPhoto(file) {
                             );
 
 
-                            // Convert to JPEG
+                            // ---------------------------------
+                            // CONVERT TO JPEG
+                            // ---------------------------------
+
                             const compressed =
                                 canvas.toDataURL(
                                     "image/jpeg",
@@ -214,6 +239,10 @@ function compressPhoto(file) {
                                 name:
                                     "NearMiss_" +
                                     Date.now() +
+                                    "_" +
+                                    Math.random()
+                                        .toString(36)
+                                        .substring(2, 8) +
                                     ".jpg"
 
                             });
@@ -294,22 +323,15 @@ form.addEventListener(
             generateReportNumber();
 
 
-        // -------------------------------------------------
-        // PHOTO VARIABLES
-        // -------------------------------------------------
+        // =================================================
+        // MULTIPLE PHOTO PROCESSING
+        // =================================================
 
-        let photoData =
-            "";
-
-        let photoName =
-            "";
-
-        let photoType =
-            "";
+        let photos = [];
 
 
         // -------------------------------------------------
-        // CHECK PHOTO
+        // CHECK PHOTOS
         // -------------------------------------------------
 
         if (
@@ -317,73 +339,128 @@ form.addEventListener(
             photoInput.files.length > 0
         ) {
 
-            const photo =
-                photoInput.files[0];
 
+            // ---------------------------------------------
+            // CHECK MAXIMUM NUMBER OF PHOTOS
+            // ---------------------------------------------
 
-            // Check maximum size
             if (
-                photo.size >
-                MAX_PHOTO_SIZE
+                photoInput.files.length >
+                MAX_PHOTOS
             ) {
 
                 successMessage.innerHTML = `
                     <strong>
-                        ❌ Photo is too large.
+                        ❌ Too many photos.
                     </strong>
 
                     <br><br>
 
-                    Maximum photo size is
-                    <strong>10 MB</strong>.
+                    You can upload a maximum of
+                    <strong>${MAX_PHOTOS} photos</strong>.
                 `;
 
                 return;
             }
 
 
-            // Show processing message
-            successMessage.innerHTML = `
-                <strong>
-                    📷 Processing photo...
-                </strong>
-            `;
+            // ---------------------------------------------
+            // PROCESS EACH PHOTO
+            // ---------------------------------------------
+
+            for (
+                let i = 0;
+                i < photoInput.files.length;
+                i++
+            ) {
+
+                const photo =
+                    photoInput.files[i];
 
 
-            try {
+                // -----------------------------------------
+                // CHECK FILE SIZE
+                // -----------------------------------------
 
-                const compressed =
-                    await compressPhoto(
-                        photo
-                    );
+                if (
+                    photo.size >
+                    MAX_PHOTO_SIZE
+                ) {
+
+                    successMessage.innerHTML = `
+                        <strong>
+                            ❌ Photo ${i + 1} is too large.
+                        </strong>
+
+                        <br><br>
+
+                        Maximum photo size is
+                        <strong>10 MB per photo</strong>.
+
+                        <br><br>
+
+                        File:
+                        <strong>
+                            ${photo.name}
+                        </strong>
+                    `;
+
+                    return;
+                }
 
 
-                photoData =
-                    compressed.data;
-
-
-                photoName =
-                    compressed.name;
-
-
-                photoType =
-                    compressed.type;
-
-
-            } catch (error) {
+                // -----------------------------------------
+                // SHOW PROCESSING MESSAGE
+                // -----------------------------------------
 
                 successMessage.innerHTML = `
                     <strong>
-                        ❌ Photo processing failed.
+                        📷 Processing photo ${i + 1}
+                        of ${photoInput.files.length}...
                     </strong>
-
-                    <br><br>
-
-                    ${error.message}
                 `;
 
-                return;
+
+                try {
+
+                    const compressed =
+                        await compressPhoto(
+                            photo
+                        );
+
+
+                    photos.push({
+
+                        photoData:
+                            compressed.data,
+
+                        photoName:
+                            compressed.name,
+
+                        photoType:
+                            compressed.type
+
+                    });
+
+
+                } catch (error) {
+
+                    successMessage.innerHTML = `
+                        <strong>
+                            ❌ Photo ${i + 1}
+                            processing failed.
+                        </strong>
+
+                        <br><br>
+
+                        ${error.message}
+                    `;
+
+                    return;
+                }
+
             }
+
         }
 
 
@@ -393,50 +470,65 @@ form.addEventListener(
 
         const report = {
 
+            // ---------------------------------------------
+            // REPORT INFORMATION
+            // ---------------------------------------------
+
             reportNumber:
                 reportNumber,
+
 
             dateTime:
                 document.getElementById(
                     "dateTime"
                 ).value,
 
+
             location:
                 document.getElementById(
                     "location"
                 ).value,
+
 
             department:
                 document.getElementById(
                     "department"
                 ).value,
 
+
             hazardCategory:
                 document.getElementById(
                     "hazardCategory"
                 ).value,
+
 
             whatHappened:
                 document.getElementById(
                     "whatHappened"
                 ).value,
 
+
             reporterName:
                 document.getElementById(
                     "reporterName"
                 ).value,
 
-            photoData:
-                photoData,
 
-            photoName:
-                photoName,
+            // ---------------------------------------------
+            // MULTIPLE PHOTOS
+            // ---------------------------------------------
 
-            photoType:
-                photoType,
+            photos:
+                photos,
+
+
+            // ---------------------------------------------
+            // STATUS
+            // ---------------------------------------------
 
             status:
                 "New",
+
 
             submittedAt:
                 new Date().toISOString()
@@ -452,6 +544,12 @@ form.addEventListener(
             <strong>
                 ☁️ Uploading report...
             </strong>
+
+            <br><br>
+
+            ${photos.length}
+            photo${photos.length === 1 ? "" : "s"}
+            attached.
         `;
 
 
@@ -461,8 +559,10 @@ form.addEventListener(
                 await fetch(
                     GOOGLE_SCRIPT_URL,
                     {
+
                         method:
                             "POST",
+
 
                         headers:
                             {
@@ -470,16 +570,28 @@ form.addEventListener(
                                     "text/plain;charset=utf-8"
                             },
 
+
                         body:
                             JSON.stringify(
                                 report
                             )
+
                     }
                 );
 
 
+            // -------------------------------------------------
+            // READ RESPONSE
+            // -------------------------------------------------
+
             const result =
                 await response.json();
+
+
+            console.log(
+                "Google Apps Script response:",
+                result
+            );
 
 
             // -------------------------------------------------
@@ -513,14 +625,27 @@ form.addEventListener(
                 <strong>
                     ${reportNumber}
                 </strong>
+
+                <br><br>
+
+                📷 Photos uploaded:
+                <strong>
+                    ${photos.length}
+                </strong>
             `;
 
 
-            // Reset form
+            // -------------------------------------------------
+            // RESET FORM
+            // -------------------------------------------------
+
             form.reset();
 
 
-            // Put date/time back
+            // -------------------------------------------------
+            // PUT DATE/TIME BACK
+            // -------------------------------------------------
+
             setDateTime();
 
 
