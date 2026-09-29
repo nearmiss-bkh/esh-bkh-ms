@@ -1372,6 +1372,7 @@ input:focus {
     text-align:center;
 
     padding-top:5px;
+
 }
 
 .timeline-step:not(:last-child)::after {
@@ -1514,6 +1515,8 @@ input:focus {
     border-radius:10px;
 
     cursor:pointer;
+
+    display:block;
 }
 
 .photo-hint {
@@ -2305,8 +2308,6 @@ input:focus {
         <div class="modal-body">
 
 
-            <!-- OVERDUE -->
-
             <div
                 id="caseOverdue"
                 class="case-overdue">
@@ -2316,8 +2317,6 @@ input:focus {
 
             </div>
 
-
-            <!-- SUMMARY -->
 
             <div class="case-summary">
 
@@ -2380,8 +2379,6 @@ input:focus {
 
             </div>
 
-
-            <!-- TIMELINE -->
 
             <div class="case-section">
 
@@ -2475,8 +2472,6 @@ input:focus {
             </div>
 
 
-            <!-- INCIDENT -->
-
             <div class="case-section">
 
                 <h3>
@@ -2487,8 +2482,6 @@ input:focus {
 
             </div>
 
-
-            <!-- NARRATIVE -->
 
             <div class="case-section">
 
@@ -2507,8 +2500,6 @@ input:focus {
             </div>
 
 
-            <!-- PHOTO -->
-
             <div class="case-section">
 
                 <h3>
@@ -2521,8 +2512,6 @@ input:focus {
 
             </div>
 
-
-            <!-- INVESTIGATION -->
 
             <div
                 class="case-section
@@ -2603,8 +2592,6 @@ input:focus {
             </div>
 
 
-            <!-- CORRECTIVE -->
-
             <div
                 class="case-section
                 section-corrective">
@@ -2669,8 +2656,6 @@ input:focus {
             </div>
 
 
-            <!-- VERIFICATION -->
-
             <div
                 class="case-section
                 section-verification">
@@ -2715,8 +2700,6 @@ input:focus {
 
             </div>
 
-
-            <!-- STATUS -->
 
             <div
                 class="case-section
@@ -2769,8 +2752,6 @@ input:focus {
 
             </div>
 
-
-            <!-- BUTTONS -->
 
             <div class="modal-actions">
 
@@ -3761,6 +3742,7 @@ function updateCaseOverdue(report) {
 
 /* =====================================================
    PHOTO
+   GOOGLE DRIVE PHOTO DISPLAY FIX
 ===================================================== */
 
 function loadPhoto(link) {
@@ -3771,9 +3753,14 @@ function loadPhoto(link) {
         );
 
 
+    /* ================================================
+       NO PHOTO
+    ================================================ */
+
     if (
         !link ||
-        link === "No photo"
+        String(link).trim() === "" ||
+        String(link).trim().toLowerCase() === "no photo"
     ) {
 
         container.innerHTML = `
@@ -3798,9 +3785,119 @@ function loadPhoto(link) {
     }
 
 
-    const safeLink =
+    /* ================================================
+       CONVERT VALUE TO STRING
+    ================================================ */
+
+    const originalLink =
+        String(link).trim();
+
+
+    /* ================================================
+       EXTRACT GOOGLE DRIVE FILE ID
+       
+       Supports:
+       
+       /file/d/FILE_ID/view
+       
+       /open?id=FILE_ID
+       
+       /uc?id=FILE_ID
+       
+       ================================================ */
+
+    let fileId = "";
+
+
+    const fileMatch =
+        originalLink.match(
+            /\/file\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+    if (fileMatch) {
+
+        fileId =
+            fileMatch[1];
+
+    }
+
+
+    if (!fileId) {
+
+        const idMatch =
+            originalLink.match(
+                /[?&]id=([a-zA-Z0-9_-]+)/
+            );
+
+
+        if (idMatch) {
+
+            fileId =
+                idMatch[1];
+
+        }
+
+    }
+
+
+    /* ================================================
+       IF FILE ID FOUND
+    ================================================ */
+
+    if (fileId) {
+
+        const imageUrl =
+            "https://drive.google.com/thumbnail?id=" +
+            encodeURIComponent(fileId) +
+            "&sz=w1200";
+
+
+        const originalUrl =
+            "https://drive.google.com/file/d/" +
+            encodeURIComponent(fileId) +
+            "/view";
+
+
+        container.innerHTML = `
+
+            <div class="photo-box">
+
+                <img
+                    src="${escapeAttribute(imageUrl)}"
+                    class="photo-preview"
+                    alt="Near Miss Photo Evidence"
+                    loading="lazy"
+                    onclick="window.open(
+                        '${escapeAttribute(originalUrl)}',
+                        '_blank'
+                    )"
+                    onerror="photoLoadError(this, '${escapeAttribute(originalUrl)}')"
+                >
+
+                <div class="photo-hint">
+
+                    Click photo to open full evidence
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* ================================================
+       FALLBACK
+       IF THE LINK IS NOT A NORMAL DRIVE LINK
+    ================================================ */
+
+    const safeOriginalLink =
         escapeAttribute(
-            link
+            originalLink
         );
 
 
@@ -3808,26 +3905,87 @@ function loadPhoto(link) {
 
         <div class="photo-box">
 
-            <img
-                src="${safeLink}"
-                class="photo-preview"
-                onclick="
-                    window.open(
-                        '${safeLink}',
-                        '_blank'
-                    )
-                "
-                onerror="
-                    this.parentElement.innerHTML =
-                    '<div class=&quot;photo-hint&quot;>Unable to display photo. Open the original link from Google Drive.</div>';
-                "
-            >
+            <div
+                style="
+                padding:25px;
+                color:white;
+                font-size:12px;
+                line-height:1.7;
+                ">
 
-            <div class="photo-hint">
+                Unable to identify the Google Drive
+                photo file.
 
-                Click photo to open full evidence
+                <br><br>
+
+                <a
+                    href="${safeOriginalLink}"
+                    target="_blank"
+                    style="
+                    color:#60a5fa;
+                    text-decoration:none;
+                    font-weight:700;
+                    ">
+
+                    Open Original Photo
+
+                </a>
 
             </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   PHOTO LOAD ERROR
+===================================================== */
+
+function photoLoadError(
+    image,
+    originalUrl
+) {
+
+    const box =
+        image.closest(
+            ".photo-box"
+        );
+
+
+    if (!box) {
+        return;
+    }
+
+
+    box.innerHTML = `
+
+        <div
+            style="
+            padding:25px;
+            color:white;
+            font-size:12px;
+            line-height:1.7;
+            ">
+
+            Unable to display the photo automatically.
+
+            <br><br>
+
+            <a
+                href="${escapeAttribute(originalUrl)}"
+                target="_blank"
+                style="
+                color:#60a5fa;
+                text-decoration:none;
+                font-weight:700;
+                ">
+
+                Open Original Photo
+
+            </a>
 
         </div>
 
