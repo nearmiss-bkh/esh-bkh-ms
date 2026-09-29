@@ -1,9 +1,9 @@
+```javascript
 // =====================================================
-// NEAR MISS REPORTING SYSTEM
-// EMPLOYEE SUBMISSION
-// MULTIPLE PHOTOS
-// FORM WILL NOT AUTO-CLEAR
+// SCRIPT.JS LOADING TEST
 // =====================================================
+
+alert("SCRIPT.JS IS WORKING");
 
 
 // =====================================================
@@ -51,6 +51,35 @@ const JPEG_QUALITY = 0.75;
 
 
 // =====================================================
+// CHECK FORM
+// =====================================================
+
+if (!form) {
+
+    alert(
+        "ERROR: nearMissForm NOT FOUND"
+    );
+
+} else {
+
+    console.log(
+        "nearMissForm found"
+    );
+
+}
+
+
+// =====================================================
+// CHECK GOOGLE SCRIPT URL
+// =====================================================
+
+console.log(
+    "Google Apps Script URL:",
+    GOOGLE_SCRIPT_URL
+);
+
+
+// =====================================================
 // AUTO MALAYSIA DATE & TIME
 // =====================================================
 
@@ -84,25 +113,37 @@ function setDateTime() {
     const month =
         String(
             malaysiaTime.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const day =
         String(
             malaysiaTime.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const hour =
         String(
             malaysiaTime.getHours()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const minute =
         String(
             malaysiaTime.getMinutes()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     dateTime.value =
@@ -119,12 +160,8 @@ function setDateTime() {
 }
 
 
-// Set time immediately
-
 setDateTime();
 
-
-// Update every minute
 
 setInterval(
     setDateTime,
@@ -151,6 +188,13 @@ if (photoInput) {
                 photoCount.textContent =
                     "No photos selected";
 
+            } else if (
+                count > MAX_PHOTOS
+            ) {
+
+                photoCount.textContent =
+                    "❌ Maximum 10 photos allowed";
+
             } else {
 
                 photoCount.textContent =
@@ -167,7 +211,7 @@ if (photoInput) {
 
 
 // =====================================================
-// REPORT NUMBER
+// GENERATE REPORT NUMBER
 // =====================================================
 
 function generateReportNumber() {
@@ -195,13 +239,19 @@ function generateReportNumber() {
     const month =
         String(
             malaysiaTime.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const day =
         String(
             malaysiaTime.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     let counter =
@@ -227,7 +277,10 @@ function generateReportNumber() {
         month +
         day +
         "-" +
-        String(counter).padStart(4, "0")
+        String(counter).padStart(
+            4,
+            "0"
+        )
     );
 
 }
@@ -398,394 +451,358 @@ function compressPhoto(file) {
 
 
 // =====================================================
-// SUBMIT FORM
+// FORM SUBMIT
 // =====================================================
 
-form.addEventListener(
-    "submit",
-    async function (event) {
+if (form) {
 
-        // STOP NORMAL HTML FORM SUBMISSION
+    form.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            // STOP NORMAL FORM SUBMISSION
 
-        event.stopPropagation();
+            event.preventDefault();
 
-
-        console.log(
-            "NEAR MISS FORM SUBMITTED"
-        );
-
-
-        // =================================================
-        // SUBMIT BUTTON
-        // =================================================
-
-        const submitButton =
-            form.querySelector(
-                ".submit-button"
-            );
-
-
-        submitButton.disabled =
-            true;
-
-
-        submitButton.textContent =
-            "SUBMITTING...";
-
-
-        successMessage.style.display =
-            "block";
-
-
-        successMessage.innerHTML =
-            "<strong>⏳ Preparing report...</strong>";
-
-
-        try {
-
-            // =============================================
-            // GENERATE REPORT NUMBER
-            // =============================================
-
-            const reportNumber =
-                generateReportNumber();
-
-
-            // =============================================
-            // GET PHOTOS
-            // =============================================
-
-            let photos = [];
-
-
-            const selectedFiles =
-                photoInput.files;
+            event.stopPropagation();
 
 
             console.log(
-                "Number of photos:",
-                selectedFiles.length
+                "SUBMIT EVENT DETECTED"
+            );
+
+
+            alert(
+                "SUBMIT EVENT DETECTED"
             );
 
 
             // =============================================
-            // MAX PHOTO CHECK
+            // BUTTON
             // =============================================
 
-            if (
-                selectedFiles.length >
-                MAX_PHOTOS
-            ) {
-
-                throw new Error(
-                    "Maximum " +
-                    MAX_PHOTOS +
-                    " photos allowed."
+            const submitButton =
+                form.querySelector(
+                    ".submit-button"
                 );
 
-            }
+
+            submitButton.disabled =
+                true;
 
 
-            // =============================================
-            // PROCESS PHOTOS
-            // =============================================
-
-            for (
-                let i = 0;
-                i < selectedFiles.length;
-                i++
-            ) {
-
-                const photo =
-                    selectedFiles[i];
+            submitButton.textContent =
+                "SUBMITTING...";
 
 
-                // Check size
+            successMessage.style.display =
+                "block";
+
+
+            successMessage.innerHTML =
+                "<strong>⏳ Preparing report...</strong>";
+
+
+            try {
+
+                // =========================================
+                // REPORT NUMBER
+                // =========================================
+
+                const reportNumber =
+                    generateReportNumber();
+
+
+                // =========================================
+                // PHOTOS
+                // =========================================
+
+                let photos = [];
+
+
+                const selectedFiles =
+                    photoInput.files;
+
+
+                console.log(
+                    "Photos:",
+                    selectedFiles.length
+                );
+
 
                 if (
-                    photo.size >
-                    MAX_PHOTO_SIZE
+                    selectedFiles.length >
+                    MAX_PHOTOS
                 ) {
 
                     throw new Error(
-                        "Photo " +
-                        (i + 1) +
-                        " is larger than 10 MB."
+                        "Maximum 10 photos allowed."
                     );
 
                 }
 
 
-                // Show progress
+                // =========================================
+                // PROCESS PHOTOS
+                // =========================================
 
-                successMessage.innerHTML =
-                    "<strong>📷 Processing photo " +
-                    (i + 1) +
-                    " of " +
-                    selectedFiles.length +
-                    "...</strong>";
+                for (
+                    let i = 0;
+                    i < selectedFiles.length;
+                    i++
+                ) {
 
-
-                // Compress
-
-                const compressed =
-                    await compressPhoto(
-                        photo
-                    );
+                    const photo =
+                        selectedFiles[i];
 
 
-                // Add photo
+                    if (
+                        photo.size >
+                        MAX_PHOTO_SIZE
+                    ) {
 
-                photos.push({
-
-                    photoData:
-                        compressed.data,
-
-                    photoName:
-                        compressed.name,
-
-                    photoType:
-                        compressed.type
-
-                });
-
-            }
-
-
-            // =============================================
-            // CREATE REPORT
-            // =============================================
-
-            const report = {
-
-                reportNumber:
-                    reportNumber,
-
-
-                dateTime:
-                    dateTime.value,
-
-
-                location:
-                    document.getElementById(
-                        "location"
-                    ).value,
-
-
-                department:
-                    document.getElementById(
-                        "department"
-                    ).value,
-
-
-                hazardCategory:
-                    document.getElementById(
-                        "hazardCategory"
-                    ).value,
-
-
-                whatHappened:
-                    document.getElementById(
-                        "whatHappened"
-                    ).value,
-
-
-                reporterName:
-                    document.getElementById(
-                        "reporterName"
-                    ).value,
-
-
-                photos:
-                    photos,
-
-
-                status:
-                    "New",
-
-
-                submittedAt:
-                    new Date().toISOString()
-
-            };
-
-
-            console.log(
-                "REPORT DATA:",
-                report
-            );
-
-
-            // =============================================
-            // SEND TO GOOGLE APPS SCRIPT
-            // =============================================
-
-            successMessage.innerHTML =
-                "<strong>☁️ Sending report...</strong>";
-
-
-            const response =
-                await fetch(
-                    GOOGLE_SCRIPT_URL,
-                    {
-
-                        method:
-                            "POST",
-
-
-                        headers: {
-
-                            "Content-Type":
-                                "text/plain;charset=utf-8"
-
-                        },
-
-
-                        body:
-                            JSON.stringify(
-                                report
-                            )
+                        throw new Error(
+                            "Photo " +
+                            (i + 1) +
+                            " is larger than 10 MB."
+                        );
 
                     }
+
+
+                    successMessage.innerHTML =
+                        "<strong>📷 Processing photo " +
+                        (i + 1) +
+                        " of " +
+                        selectedFiles.length +
+                        "...</strong>";
+
+
+                    const compressed =
+                        await compressPhoto(
+                            photo
+                        );
+
+
+                    photos.push({
+
+                        photoData:
+                            compressed.data,
+
+                        photoName:
+                            compressed.name,
+
+                        photoType:
+                            compressed.type
+
+                    });
+
+                }
+
+
+                // =========================================
+                // CREATE REPORT
+                // =========================================
+
+                const report = {
+
+                    reportNumber:
+                        reportNumber,
+
+                    dateTime:
+                        dateTime.value,
+
+                    location:
+                        document.getElementById(
+                            "location"
+                        ).value,
+
+                    department:
+                        document.getElementById(
+                            "department"
+                        ).value,
+
+                    hazardCategory:
+                        document.getElementById(
+                            "hazardCategory"
+                        ).value,
+
+                    whatHappened:
+                        document.getElementById(
+                            "whatHappened"
+                        ).value,
+
+                    reporterName:
+                        document.getElementById(
+                            "reporterName"
+                        ).value,
+
+                    photos:
+                        photos,
+
+                    status:
+                        "New",
+
+                    submittedAt:
+                        new Date().toISOString()
+
+                };
+
+
+                console.log(
+                    "REPORT:",
+                    report
                 );
 
 
-            console.log(
-                "Response status:",
-                response.status
-            );
+                // =========================================
+                // SEND
+                // =========================================
+
+                successMessage.innerHTML =
+                    "<strong>☁️ Sending report...</strong>";
 
 
-            // =============================================
-            // GET RESPONSE
-            // =============================================
+                const response =
+                    await fetch(
+                        GOOGLE_SCRIPT_URL,
+                        {
 
-            const responseText =
-                await response.text();
+                            method:
+                                "POST",
 
+                            headers: {
 
-            console.log(
-                "Google Apps Script response:",
-                responseText
-            );
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
 
+                            },
 
-            let result;
+                            body:
+                                JSON.stringify(
+                                    report
+                                )
 
-
-            try {
-
-                result =
-                    JSON.parse(
-                        responseText
+                        }
                     );
 
-            }
 
-            catch (jsonError) {
+                console.log(
+                    "HTTP STATUS:",
+                    response.status
+                );
 
-                throw new Error(
-                    "Google Apps Script did not return a valid response."
+
+                // =========================================
+                // RESPONSE
+                // =========================================
+
+                const responseText =
+                    await response.text();
+
+
+                console.log(
+                    "SERVER RESPONSE:",
+                    responseText
+                );
+
+
+                let result;
+
+
+                try {
+
+                    result =
+                        JSON.parse(
+                            responseText
+                        );
+
+                } catch (error) {
+
+                    throw new Error(
+                        "Server returned invalid response."
+                    );
+
+                }
+
+
+                // =========================================
+                // SUCCESS CHECK
+                // =========================================
+
+                if (
+                    !result ||
+                    result.success !== true
+                ) {
+
+                    throw new Error(
+                        result.error ||
+                        "Report was not accepted."
+                    );
+
+                }
+
+
+                // =========================================
+                // SUCCESS
+                // =========================================
+
+                successMessage.innerHTML =
+                    "<strong>✅ Report submitted successfully!</strong>" +
+                    "<br><br>" +
+                    "Report No: <strong>" +
+                    reportNumber +
+                    "</strong>" +
+                    "<br><br>" +
+                    "📷 Photos uploaded: <strong>" +
+                    photos.length +
+                    "</strong>";
+
+
+                console.log(
+                    "REPORT SUBMITTED SUCCESSFULLY"
                 );
 
             }
 
 
-            // =============================================
-            // CHECK SUCCESS
-            // =============================================
+            // =========================================
+            // ERROR
+            // =========================================
 
-            if (
-                !result ||
-                result.success !== true
-            ) {
+            catch (error) {
 
-                throw new Error(
-                    result.error ||
-                    "Report was not accepted."
+                console.error(
+                    "SUBMISSION ERROR:",
+                    error
                 );
+
+
+                successMessage.innerHTML =
+                    "<strong>❌ Unable to submit report.</strong>" +
+                    "<br><br>" +
+                    error.message;
 
             }
 
 
-            // =============================================
-            // SUCCESS
-            // =============================================
+            // =========================================
+            // ENABLE BUTTON
+            // =========================================
 
-            successMessage.innerHTML =
-                "<strong>✅ Report submitted successfully!</strong>" +
-                "<br><br>" +
-                "Report No: <strong>" +
-                reportNumber +
-                "</strong>" +
-                "<br><br>" +
-                "📷 Photos uploaded: <strong>" +
-                photos.length +
-                "</strong>" +
-                "<br><br>" +
-                "Your report has been recorded.";
+            finally {
+
+                submitButton.disabled =
+                    false;
 
 
-            // =================================================
-            // IMPORTANT
-            // =================================================
-            //
-            // DO NOT CLEAR THE FORM.
-            //
-            // We intentionally leave all information
-            // on screen until the system is confirmed
-            // working correctly.
-            //
-            // =================================================
+                submitButton.textContent =
+                    "SUBMIT NEAR MISS";
 
-
-            console.log(
-                "REPORT SUBMITTED SUCCESSFULLY"
-            );
+            }
 
         }
+    );
 
-
-        // =================================================
-        // ERROR
-        // =================================================
-
-        catch (error) {
-
-            console.error(
-                "SUBMISSION ERROR:",
-                error
-            );
-
-
-            successMessage.innerHTML =
-                "<strong>❌ Unable to submit report.</strong>" +
-                "<br><br>" +
-                error.message;
-
-
-            // DO NOT CLEAR FORM
-
-        }
-
-
-        // =================================================
-        // ENABLE BUTTON AGAIN
-        // =================================================
-
-        finally {
-
-            submitButton.disabled =
-                false;
-
-
-            submitButton.textContent =
-                "SUBMIT NEAR MISS";
-
-        }
-
-    }
-);
+}
 ```
