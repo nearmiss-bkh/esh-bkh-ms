@@ -176,10 +176,12 @@
         >
 
 
+        <!-- ========================================= -->
         <!-- PHOTOS -->
+        <!-- ========================================= -->
 
         <label for="photo">
-            Photos
+            📷 Photos
         </label>
 
         <input
@@ -212,7 +214,74 @@
         </div>
 
 
-        <!-- SUBMIT BUTTON -->
+        <!-- ========================================= -->
+        <!-- VIDEO -->
+        <!-- ========================================= -->
+
+        <label
+            for="video"
+            style="margin-top:20px;"
+        >
+            🎥 Video Evidence
+        </label>
+
+        <input
+            type="file"
+            id="video"
+            name="video"
+            accept="video/mp4,video/quicktime,video/webm"
+        >
+
+        <div
+            id="videoInfo"
+            style="
+                margin-top:8px;
+                font-size:14px;
+                color:#666;
+            "
+        >
+            No video selected
+        </div>
+
+        <div
+            style="
+                margin-top:5px;
+                font-size:12px;
+                color:#888;
+            "
+        >
+            Maximum 1 video
+        </div>
+
+
+        <!-- VIDEO PREVIEW -->
+
+        <div
+            id="videoPreview"
+            style="
+                display:none;
+                margin-top:15px;
+            "
+        >
+
+            <video
+                id="videoPlayer"
+                controls
+                playsinline
+                style="
+                    width:100%;
+                    max-height:300px;
+                    border-radius:10px;
+                    background:#000;
+                "
+            ></video>
+
+        </div>
+
+
+        <!-- ========================================= -->
+        <!-- SUBMIT -->
+        <!-- ========================================= -->
 
         <button
             type="submit"
@@ -306,6 +375,123 @@ setInterval(
     updateDateTime,
     10000
 );
+
+
+/* ============================================= */
+/* PHOTO COUNT */
+/* ============================================= */
+
+const photoInput =
+    document.getElementById("photo");
+
+const photoCount =
+    document.getElementById("photoCount");
+
+
+if(photoInput){
+
+    photoInput.addEventListener(
+        "change",
+        function(){
+
+            const count =
+                this.files.length;
+
+
+            if(count === 0){
+
+                photoCount.textContent =
+                    "No photos selected";
+
+            }else{
+
+                photoCount.textContent =
+                    count +
+                    " photo" +
+                    (count > 1 ? "s" : "") +
+                    " selected";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ============================================= */
+/* VIDEO PREVIEW */
+/* ============================================= */
+
+const videoInput =
+    document.getElementById("video");
+
+const videoInfo =
+    document.getElementById("videoInfo");
+
+const videoPreview =
+    document.getElementById("videoPreview");
+
+const videoPlayer =
+    document.getElementById("videoPlayer");
+
+
+if(videoInput){
+
+    videoInput.addEventListener(
+        "change",
+        function(){
+
+            const file =
+                this.files[0];
+
+
+            if(!file){
+
+                videoInfo.textContent =
+                    "No video selected";
+
+                videoPreview.style.display =
+                    "none";
+
+                videoPlayer.removeAttribute(
+                    "src"
+                );
+
+                return;
+
+            }
+
+
+            const sizeMB =
+                file.size /
+                (1024 * 1024);
+
+
+            videoInfo.textContent =
+                file.name +
+                " (" +
+                sizeMB.toFixed(1) +
+                " MB)";
+
+
+            const videoURL =
+                URL.createObjectURL(
+                    file
+                );
+
+
+            videoPlayer.src =
+                videoURL;
+
+
+            videoPreview.style.display =
+                "block";
+
+        }
+    );
+
+}
 
 </script>
 
