@@ -1,52 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ESH MANAGEMENT SYSTEM | BIDOR KWONG HENG</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>ESH Management System</title>
+
 
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
 }
 
-:root{
-    --bg:#06111f;
-    --bg2:#0a1727;
-    --panel:#0e1d31;
-    --panel2:#13263d;
-    --line:#243b55;
-    --text:#f4f8fc;
-    --muted:#9aacbf;
 
-    --cyan:#20d9ff;
-    --blue:#3388ff;
-    --green:#21d789;
-    --yellow:#ffc857;
-    --orange:#ff9f43;
-    --red:#ff5364;
-    --purple:#a879ff;
+html{
+    scroll-behavior:smooth;
 }
 
-html,
+
 body{
-    width:100%;
-    min-height:100%;
-    background:var(--bg);
-    color:var(--text);
     font-family:
         Inter,
-        "Segoe UI",
         Arial,
+        Helvetica,
         sans-serif;
+
+    background:#07111f;
+    color:#e8f0f8;
+
+    min-height:100vh;
 }
 
-body{
-    overflow-x:hidden;
-}
 
 /* =========================================================
    LOGIN GUARD
@@ -55,46 +52,40 @@ body{
 #loginGuard{
     position:fixed;
     inset:0;
+
+    background:#07111f;
+
     z-index:99999;
-    background:#06111f;
+
     display:flex;
     align-items:center;
     justify-content:center;
 }
+
 
 #loginGuard.hidden{
     display:none;
 }
 
-.loader{
+
+.login-loading{
     text-align:center;
+    color:#9db0c4;
 }
 
-.loader-logo{
-    width:82px;
-    height:82px;
-    margin:auto;
-    border-radius:22px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(
-        135deg,
-        var(--cyan),
-        var(--blue)
-    );
-    color:#06111f;
-    font-size:32px;
-    font-weight:1000;
-    box-shadow:
-        0 0 40px rgba(32,217,255,.25);
+
+.login-loading-title{
+    font-size:18px;
+    font-weight:700;
+    color:#ffffff;
+    margin-bottom:8px;
 }
 
-.loader-text{
-    margin-top:18px;
-    color:var(--muted);
-    font-size:15px;
+
+.login-loading-text{
+    font-size:13px;
 }
+
 
 /* =========================================================
    APP
@@ -105,1493 +96,1942 @@ body{
     display:flex;
 }
 
+
 /* =========================================================
    SIDEBAR
 ========================================================= */
 
 .sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:290px;
-    z-index:1000;
 
-    padding:28px 20px;
+    width:250px;
 
     background:
         linear-gradient(
             180deg,
-            #0b1a2d 0%,
-            #06111f 100%
+            #0b1929 0%,
+            #07111f 100%
         );
 
-    border-right:1px solid var(--line);
+    border-right:
+        1px solid
+        rgba(255,255,255,.07);
 
-    display:flex;
-    flex-direction:column;
+    position:fixed;
+
+    left:0;
+    top:0;
+    bottom:0;
+
+    z-index:100;
+
+    padding:24px 16px;
+
+    overflow-y:auto;
 }
 
-/*
-    IMPORTANT:
-    Only ESH MANAGEMENT SYSTEM,
-    BIDOR KWONG HENG,
-    SYSTEM ONLINE,
-    navigation and admin remain here.
-
-    NO NEAR MISS BUTTON.
-*/
 
 .brand{
-    padding:3px 8px 25px;
-    border-bottom:1px solid var(--line);
+    padding:
+        8px 12px
+        24px 12px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+
+    margin-bottom:20px;
 }
 
-.brand-title{
-    font-size:19px;
-    font-weight:1000;
-    line-height:1.15;
-    letter-spacing:.3px;
+
+.brand-small{
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    color:#6f879e;
+
+    font-weight:700;
+
+    margin-bottom:6px;
 }
 
-.brand-company{
-    margin-top:7px;
-    color:var(--cyan);
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:1.4px;
+
+.brand-name{
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    line-height:1.25;
 }
 
-.system-status{
-    margin-top:20px;
-    padding:13px 14px;
-    border-radius:11px;
 
-    display:flex;
-    align-items:center;
-    gap:10px;
+.brand-sub{
+    font-size:11px;
 
-    background:rgba(33,215,137,.07);
-    border:1px solid rgba(33,215,137,.20);
+    color:#7990a7;
+
+    margin-top:5px;
 }
 
-.system-dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:
-        0 0 12px var(--green);
-}
-
-.system-status span{
-    color:#b7f3d4;
-    font-size:12px;
-    font-weight:900;
-}
 
 .nav{
-    margin-top:25px;
+    display:flex;
+
+    flex-direction:column;
+
+    gap:5px;
 }
 
-.nav-label{
-    padding:0 12px 10px;
-    color:#71859b;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1.7px;
-}
 
 .nav button{
+
     width:100%;
-    border:1px solid transparent;
+
+    border:none;
+
     background:transparent;
-    color:#aabacc;
 
-    padding:15px 14px;
-    margin-bottom:6px;
+    color:#8ea3b8;
 
-    border-radius:11px;
+    padding:
+        12px
+        13px;
+
+    border-radius:9px;
 
     text-align:left;
 
-    font-size:14px;
-    font-weight:800;
-
     cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:600;
+
     transition:.2s;
 }
 
-.nav button:hover{
-    color:#fff;
-    background:rgba(255,255,255,.045);
-}
 
-.nav button.active{
-    color:#fff;
+.nav button:hover{
 
     background:
-        linear-gradient(
-            90deg,
-            rgba(32,217,255,.13),
-            rgba(51,136,255,.07)
-        );
+        rgba(255,255,255,.05);
 
-    border-color:
-        rgba(32,217,255,.16);
+    color:#ffffff;
 }
 
-.nav-icon{
-    display:inline-block;
-    width:27px;
-    color:var(--cyan);
+
+.nav button.active{
+
+    background:
+        rgba(48,123,255,.13);
+
+    color:#67a5ff;
+
+    border:
+        1px solid
+        rgba(65,137,255,.18);
 }
 
-.sidebar-bottom{
-    margin-top:auto;
+
+.sidebar-footer{
+
+    margin-top:30px;
+
+    padding:
+        16px 12px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.06);
 }
 
-.admin-card{
-    padding:17px;
-    border-radius:13px;
-    background:rgba(255,255,255,.025);
-    border:1px solid var(--line);
-}
 
-.admin-label{
-    color:#71869b;
+.sidebar-footer-text{
+
     font-size:10px;
-    font-weight:900;
-    letter-spacing:1px;
+
+    color:#60758a;
+
+    line-height:1.6;
 }
 
-.admin-name{
-    margin-top:7px;
-    font-size:17px;
-    font-weight:900;
-}
 
-.logout{
+.logout-btn{
+
     width:100%;
-    margin-top:13px;
 
-    padding:12px;
+    margin-top:12px;
 
-    border-radius:9px;
-    border:1px solid rgba(255,83,100,.25);
+    padding:10px;
 
-    background:rgba(255,83,100,.06);
+    border:
+        1px solid
+        rgba(255,255,255,.08);
 
-    color:#ff9da8;
+    background:
+        rgba(255,255,255,.03);
 
-    font-weight:800;
+    color:#91a5b9;
+
+    border-radius:8px;
 
     cursor:pointer;
+
+    font-size:12px;
 }
 
-.logout:hover{
-    background:rgba(255,83,100,.13);
+
+.logout-btn:hover{
+
+    background:
+        rgba(255,255,255,.06);
+
+    color:#ffffff;
 }
+
 
 /* =========================================================
    MAIN
 ========================================================= */
 
 .main{
-    width:calc(100% - 290px);
-    margin-left:290px;
+
+    margin-left:250px;
+
+    width:
+        calc(100% - 250px);
+
     min-height:100vh;
 }
 
+
 /* =========================================================
-   TOP HEADER
+   TOPBAR
 ========================================================= */
 
 .topbar{
-    position:sticky;
-    top:0;
-    z-index:900;
 
-    min-height:104px;
-
-    padding:20px 40px;
+    height:68px;
 
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 
-    background:rgba(6,17,31,.94);
-    backdrop-filter:blur(18px);
+    padding:
+        0 32px;
 
-    border-bottom:1px solid var(--line);
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+
+    background:
+        rgba(7,17,31,.88);
+
+    backdrop-filter:
+        blur(12px);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:50;
 }
 
-.header-kicker{
-    color:var(--cyan);
+
+.topbar-title{
+
     font-size:12px;
-    font-weight:1000;
-    letter-spacing:2.4px;
-}
 
-.header-title{
-    margin-top:5px;
-    font-size:29px;
-    font-weight:1000;
-    letter-spacing:.2px;
-}
+    letter-spacing:1.5px;
 
-.header-company{
-    margin-top:4px;
-    color:#aebfd0;
-    font-size:13px;
+    color:#71869b;
+
     font-weight:700;
 }
 
-.online{
+
+.topbar-right{
+
     display:flex;
+
     align-items:center;
-    gap:9px;
 
-    padding:11px 15px;
-
-    border-radius:10px;
-
-    background:rgba(33,215,137,.07);
-    border:1px solid rgba(33,215,137,.2);
-
-    color:#b9f4d7;
-
-    font-size:12px;
-    font-weight:900;
+    gap:10px;
 }
 
-.online-dot{
-    width:9px;
-    height:9px;
+
+.status-dot{
+
+    width:8px;
+
+    height:8px;
+
     border-radius:50%;
-    background:var(--green);
+
+    background:#39d98a;
+
     box-shadow:
-        0 0 10px var(--green);
+        0 0 10px
+        rgba(57,217,138,.6);
 }
+
+
+.status-text{
+
+    font-size:11px;
+
+    color:#7e96ab;
+}
+
 
 /* =========================================================
    CONTENT
 ========================================================= */
 
 .content{
-    padding:35px 40px 55px;
+
+    padding:
+        32px;
+
+    max-width:1600px;
+
+    margin:auto;
 }
+
 
 /* =========================================================
    HERO
 ========================================================= */
 
 .hero{
-    min-height:315px;
-
-    position:relative;
-    overflow:hidden;
-
-    padding:58px 60px;
-
-    border-radius:24px;
-
-    border:1px solid rgba(32,217,255,.17);
 
     background:
-        radial-gradient(
-            circle at 90% 25%,
-            rgba(32,217,255,.14),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 72% 100%,
-            rgba(51,136,255,.14),
-            transparent 38%
-        ),
         linear-gradient(
             135deg,
-            #0d2239,
-            #0a1727 62%,
-            #10233a
+            #10263e 0%,
+            #0b1829 60%,
+            #091422 100%
         );
 
-    box-shadow:
-        0 20px 50px rgba(0,0,0,.27);
-}
+    border:
+        1px solid
+        rgba(255,255,255,.07);
 
-.hero::before{
-    content:"";
+    border-radius:18px;
 
-    position:absolute;
+    padding:30px;
 
-    width:320px;
-    height:320px;
+    margin-bottom:28px;
 
-    right:-110px;
-    top:-110px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(32,217,255,.12);
-}
-
-.hero::after{
-    content:"";
-
-    position:absolute;
-
-    width:480px;
-    height:480px;
-
-    right:-190px;
-    top:-190px;
-
-    border-radius:50%;
-
-    border:1px solid rgba(32,217,255,.06);
-}
-
-.hero-content{
     position:relative;
-    z-index:2;
+
+    overflow:hidden;
 }
 
-.hero-kicker{
-    color:var(--cyan);
 
-    font-size:18px;
-    font-weight:1000;
+.hero:after{
 
-    letter-spacing:3px;
+    content:"";
 
-    margin-bottom:18px;
+    position:absolute;
+
+    width:300px;
+
+    height:300px;
+
+    border-radius:50%;
+
+    right:-100px;
+
+    top:-140px;
+
+    background:
+        rgba(42,116,255,.09);
+
+    pointer-events:none;
 }
+
+
+.hero-label{
+
+    font-size:10px;
+
+    letter-spacing:2.5px;
+
+    color:#5f91cf;
+
+    font-weight:800;
+
+    margin-bottom:9px;
+}
+
 
 .hero-title{
-    font-size:58px;
-    line-height:1.03;
 
-    font-weight:1000;
+    font-size:28px;
 
-    letter-spacing:-1.5px;
+    font-weight:800;
+
+    color:#ffffff;
+
+    letter-spacing:-.5px;
 }
 
-.hero-company{
-    margin-top:14px;
 
-    color:#e1edf8;
+.hero-subtitle{
 
-    font-size:30px;
-    font-weight:850;
+    margin-top:8px;
 
-    letter-spacing:.3px;
+    font-size:13px;
+
+    color:#8096ab;
 }
 
-.hero-control{
-    margin-top:18px;
 
-    color:#9fb3c8;
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section{
+
+    margin-bottom:40px;
+
+    scroll-margin-top:90px;
+}
+
+
+.section-header{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    margin-bottom:17px;
+}
+
+
+.section-title{
 
     font-size:18px;
 
     font-weight:800;
 
-    letter-spacing:1px;
+    color:#ffffff;
 }
 
-/* =========================================================
-   SECTION
-========================================================= */
-
-.section{
-    margin-top:34px;
-}
-
-.section-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:18px;
-}
-
-.section-title{
-    font-size:24px;
-    font-weight:1000;
-}
 
 .section-subtitle{
+
     margin-top:5px;
 
-    color:var(--muted);
+    font-size:12px;
 
-    font-size:13px;
+    color:#70859a;
 }
+
 
 /* =========================================================
    KPI
 ========================================================= */
 
 .kpi-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
 
-    gap:18px;
+    display:grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0,1fr));
+
+    gap:13px;
+
+    margin-bottom:30px;
 }
 
+
 .kpi{
-    min-height:155px;
+
+    min-height:128px;
 
     position:relative;
-    overflow:hidden;
 
-    padding:24px;
+    padding:20px;
 
-    border-radius:17px;
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:14px;
 
     background:
         linear-gradient(
             145deg,
-            #11243a,
-            #0c1b2d
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.018)
         );
 
-    border:1px solid var(--line);
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.kpi:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(255,255,255,.20);
 
     box-shadow:
-        0 8px 25px rgba(0,0,0,.18);
+        0 10px 30px
+        rgba(0,0,0,.25);
 }
+
+
+.kpi:active{
+
+    transform:
+        translateY(-1px);
+}
+
+
+.kpi.yellow{
+
+    border-color:
+        rgba(239,190,67,.12);
+}
+
+
+.kpi.orange{
+
+    border-color:
+        rgba(255,145,73,.12);
+}
+
+
+.kpi.purple{
+
+    border-color:
+        rgba(167,119,255,.12);
+}
+
+
+.kpi.green{
+
+    border-color:
+        rgba(57,217,138,.12);
+}
+
+
+.kpi.red{
+
+    border-color:
+        rgba(255,92,107,.14);
+}
+
 
 .kpi-label{
-    color:#91a6ba;
 
-    font-size:12px;
-    font-weight:900;
+    font-size:9px;
 
-    letter-spacing:.4px;
+    letter-spacing:1.3px;
+
+    color:#7890a6;
+
+    font-weight:800;
 }
+
 
 .kpi-value{
-    margin-top:14px;
 
-    font-size:43px;
-    line-height:1;
+    font-size:30px;
 
-    font-weight:1000;
+    font-weight:800;
+
+    margin-top:15px;
+
+    color:#ffffff;
 }
+
 
 .kpi-icon{
+
     position:absolute;
 
-    right:20px;
-    top:20px;
+    right:16px;
 
-    width:43px;
-    height:43px;
+    bottom:15px;
 
-    border-radius:12px;
+    font-size:25px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    color:#49657e;
 
-    color:var(--cyan);
-
-    background:rgba(32,217,255,.08);
+    opacity:.7;
 }
 
-.kpi.green .kpi-icon{
-    color:var(--green);
-}
-
-.kpi.yellow .kpi-icon{
-    color:var(--yellow);
-}
-
-.kpi.orange .kpi-icon{
-    color:var(--orange);
-}
-
-.kpi.purple .kpi-icon{
-    color:var(--purple);
-}
-
-.kpi.red .kpi-icon{
-    color:var(--red);
-}
 
 /* =========================================================
    ACTION CENTER
 ========================================================= */
 
 .action-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
 
-    gap:18px;
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
 }
 
+
 .action-card{
-    padding:24px;
 
-    border-radius:17px;
+    padding:20px;
 
-    border:1px solid var(--line);
+    border:
+        1px solid
+        rgba(255,255,255,.07);
 
-    background:var(--panel);
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.025);
 
     cursor:pointer;
 
     transition:.2s;
 }
 
+
 .action-card:hover{
-    transform:translateY(-2px);
-    border-color:#3b5672;
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(255,255,255,.04);
 }
 
+
 .action-top{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 }
 
+
 .action-name{
-    font-size:16px;
-    font-weight:900;
-}
-
-.action-count{
-    margin-top:17px;
-
-    font-size:40px;
-    font-weight:1000;
-}
-
-.action-desc{
-    margin-top:5px;
-
-    color:var(--muted);
 
     font-size:13px;
+
+    font-weight:700;
+
+    color:#dce7f1;
 }
+
+
+.action-count{
+
+    font-size:32px;
+
+    font-weight:800;
+
+    margin-top:15px;
+
+    color:#ffffff;
+}
+
+
+.action-desc{
+
+    margin-top:5px;
+
+    color:#70869b;
+
+    font-size:11px;
+}
+
 
 /* =========================================================
    BADGES
 ========================================================= */
 
 .badge{
+
     display:inline-flex;
+
     align-items:center;
+
     justify-content:center;
 
-    padding:6px 10px;
+    padding:
+        5px 8px;
 
-    border-radius:30px;
+    border-radius:6px;
 
-    font-size:10px;
-    font-weight:1000;
+    font-size:9px;
 
-    text-transform:uppercase;
+    font-weight:800;
+
     letter-spacing:.5px;
 }
 
+
 .badge-new{
-    color:#8ceaff;
-    background:rgba(32,217,255,.1);
+
+    color:#72aaff;
+
+    background:
+        rgba(72,139,255,.12);
 }
+
 
 .badge-investigation{
-    color:#ffe39a;
-    background:rgba(255,200,87,.1);
+
+    color:#f3cc55;
+
+    background:
+        rgba(243,204,85,.12);
 }
+
 
 .badge-corrective{
-    color:#ffc17c;
-    background:rgba(255,159,67,.1);
+
+    color:#ff9b5e;
+
+    background:
+        rgba(255,155,94,.12);
 }
+
 
 .badge-verification{
-    color:#d3baff;
-    background:rgba(168,121,255,.1);
+
+    color:#bc91ff;
+
+    background:
+        rgba(188,145,255,.12);
 }
+
 
 .badge-closed{
-    color:#9ff1c7;
-    background:rgba(33,215,137,.1);
+
+    color:#4be39a;
+
+    background:
+        rgba(75,227,154,.12);
 }
 
+
 .badge-overdue{
-    color:#ff9ca8;
-    background:rgba(255,83,100,.1);
+
+    color:#ff7180;
+
+    background:
+        rgba(255,113,128,.12);
 }
+
 
 /* =========================================================
    ANALYTICS
 ========================================================= */
 
 .analytics-grid{
+
     display:grid;
 
     grid-template-columns:
-        1.45fr
-        1fr
-        1fr;
+        repeat(3,1fr);
 
-    gap:18px;
+    gap:15px;
 }
+
 
 .chart-card{
-    min-height:355px;
 
-    padding:24px;
+    border:
+        1px solid
+        rgba(255,255,255,.07);
 
-    border-radius:17px;
+    background:
+        rgba(255,255,255,.025);
 
-    border:1px solid var(--line);
+    border-radius:14px;
 
-    background:var(--panel);
+    padding:20px;
 }
+
 
 .chart-title{
-    font-size:17px;
-    font-weight:900;
-}
-
-.chart-subtitle{
-    margin-top:5px;
-
-    color:var(--muted);
 
     font-size:13px;
+
+    font-weight:700;
+
+    color:#e5edf5;
 }
+
+
+.chart-subtitle{
+
+    font-size:11px;
+
+    color:#6f8498;
+
+    margin-top:4px;
+}
+
 
 .chart-wrap{
-    height:270px;
-    margin-top:20px;
+
+    height:260px;
+
+    margin-top:18px;
 }
 
-canvas{
-    width:100%!important;
-    height:100%!important;
-}
 
 /* =========================================================
    TOOLBAR
 ========================================================= */
 
 .toolbar{
-    padding:17px;
 
     display:flex;
+
     align-items:center;
 
-    gap:12px;
+    gap:10px;
+
     flex-wrap:wrap;
 
-    border-radius:15px;
-
-    background:var(--panel);
-
-    border:1px solid var(--line);
+    margin-bottom:18px;
 }
+
 
 .search{
+
     flex:1;
-    min-width:250px;
+
+    min-width:230px;
 }
+
 
 .search input,
 .toolbar select{
+
     width:100%;
-    height:46px;
 
-    padding:0 14px;
+    height:40px;
 
-    border-radius:9px;
+    border:
+        1px solid
+        rgba(255,255,255,.08);
 
-    border:1px solid var(--line);
+    background:
+        #0b1929;
+
+    color:#dbe7f1;
+
+    border-radius:8px;
+
+    padding:
+        0 12px;
 
     outline:none;
 
-    background:#081523;
-    color:#fff;
-
-    font-size:13px;
+    font-size:12px;
 }
+
+
+.toolbar select{
+
+    width:auto;
+
+    min-width:150px;
+}
+
 
 .search input:focus,
 .toolbar select:focus{
-    border-color:rgba(32,217,255,.5);
+
+    border-color:
+        rgba(80,145,255,.5);
 }
+
 
 .btn{
-    height:46px;
 
-    padding:0 17px;
+    height:40px;
 
-    border-radius:9px;
+    padding:
+        0 14px;
 
-    border:1px solid var(--line);
-
-    background:#12263d;
-
-    color:#fff;
-
-    font-weight:800;
-
-    cursor:pointer;
-}
-
-.btn:hover{
-    background:#19324e;
-}
-
-.btn-primary{
-    border-color:transparent;
+    border:
+        1px solid
+        rgba(255,255,255,.09);
 
     background:
-        linear-gradient(
-            135deg,
-            #159dca,
-            #2672dc
-        );
+        rgba(255,255,255,.035);
+
+    color:#9db0c2;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    font-weight:700;
 }
 
+
+.btn:hover{
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#ffffff;
+}
+
+
+.btn-primary{
+
+    background:
+        #256ee8;
+
+    border-color:
+        #256ee8;
+
+    color:#ffffff;
+}
+
+
+.btn-primary:hover{
+
+    background:
+        #347cf0;
+}
+
+
 /* =========================================================
-   REPORT GRID
+   REPORTS
 ========================================================= */
 
 .reports-grid{
-    margin-top:18px;
 
     display:grid;
 
     grid-template-columns:
-        repeat(3,minmax(0,1fr));
+        repeat(3,1fr);
 
-    gap:18px;
+    gap:14px;
 }
 
+
 .report-card{
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.025);
+
     overflow:hidden;
-
-    border-radius:17px;
-
-    border:1px solid var(--line);
-
-    background:var(--panel);
 
     cursor:pointer;
 
     transition:.2s;
 }
 
-.report-card:hover{
-    transform:translateY(-3px);
 
-    border-color:#3a5675;
+.report-card:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(86,148,255,.25);
 
     box-shadow:
-        0 16px 35px rgba(0,0,0,.28);
+        0 12px 30px
+        rgba(0,0,0,.18);
 }
 
+
 .report-head{
-    padding:17px 20px;
 
     display:flex;
+
+    justify-content:space-between;
+
     align-items:center;
+
+    padding:
+        15px 16px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+
+.report-number{
+
+    font-size:11px;
+
+    font-weight:800;
+
+    color:#78aaff;
+
+    letter-spacing:.4px;
+}
+
+
+.report-body{
+
+    padding:16px;
+}
+
+
+.report-title{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#e5edf5;
+
+    line-height:1.45;
+
+    min-height:38px;
+}
+
+
+.report-meta{
+
+    margin-top:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+
+.meta-row{
+
+    display:flex;
+
     justify-content:space-between;
 
     gap:10px;
 
-    border-bottom:1px solid rgba(255,255,255,.05);
+    font-size:10px;
+
+    color:#71869a;
 }
 
-.report-number{
-    color:var(--cyan);
-
-    font-size:14px;
-    font-weight:1000;
-}
-
-.report-body{
-    padding:20px;
-}
-
-.report-title{
-    font-size:16px;
-    line-height:1.4;
-    font-weight:900;
-}
-
-.report-meta{
-    display:grid;
-    gap:9px;
-
-    margin-top:17px;
-}
-
-.meta-row{
-    display:flex;
-    justify-content:space-between;
-
-    gap:15px;
-
-    color:var(--muted);
-
-    font-size:12px;
-}
 
 .meta-row strong{
-    color:#dfeaf5;
+
+    color:#aebdcb;
+
     text-align:right;
+
+    font-weight:600;
 }
+
 
 .report-footer{
-    padding:13px 20px;
 
-    border-top:1px solid rgba(255,255,255,.05);
+    padding:
+        11px 16px;
 
-    color:#7f94aa;
+    border-top:
+        1px solid
+        rgba(255,255,255,.055);
 
-    font-size:11px;
+    color:#667c91;
+
+    font-size:10px;
 }
+
 
 /* =========================================================
    EMPTY
 ========================================================= */
 
 .empty{
-    grid-column:1/-1;
 
-    padding:60px 20px;
+    grid-column:
+        1 / -1;
+
+    padding:55px 20px;
 
     text-align:center;
 
-    border:1px dashed #30455c;
+    border:
+        1px dashed
+        rgba(255,255,255,.08);
 
-    border-radius:17px;
+    border-radius:14px;
 
-    color:var(--muted);
+    color:#70869a;
 }
+
 
 .empty-icon{
-    font-size:40px;
-    opacity:.6;
+
+    font-size:26px;
+
+    color:#50677e;
+
+    margin-bottom:10px;
 }
+
 
 .empty-title{
-    margin-top:13px;
 
-    color:#dbe8f4;
+    color:#a7b7c7;
 
-    font-size:18px;
-    font-weight:900;
+    font-size:13px;
+
+    font-weight:700;
 }
+
 
 /* =========================================================
    MODAL
 ========================================================= */
 
 .modal{
+
     position:fixed;
+
     inset:0;
 
-    z-index:5000;
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:
+        blur(5px);
+
+    z-index:1000;
 
     display:none;
 
     align-items:center;
+
     justify-content:center;
 
-    padding:25px;
-
-    background:rgba(0,0,0,.72);
-
-    backdrop-filter:blur(7px);
+    padding:20px;
 }
+
 
 .modal.show{
+
     display:flex;
 }
+
 
 .modal-box{
-    width:min(1250px,100%);
-    max-height:92vh;
 
-    overflow:auto;
+    width:
+        min(1100px,100%);
 
-    border-radius:20px;
+    max-height:
+        92vh;
 
-    background:#0b1829;
+    background:
+        #0a1726;
 
-    border:1px solid #304961;
+    border:
+        1px solid
+        rgba(255,255,255,.09);
 
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.55);
-}
+    border-radius:17px;
 
-.modal-head{
-    position:sticky;
-    top:0;
-
-    z-index:3;
-
-    padding:23px 28px;
+    overflow:hidden;
 
     display:flex;
+
+    flex-direction:column;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.5);
+}
+
+
+.modal-head{
+
+    padding:
+        20px 24px;
+
+    display:flex;
+
     justify-content:space-between;
 
-    gap:20px;
+    align-items:center;
 
-    background:#0d1c2f;
-
-    border-bottom:1px solid var(--line);
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
 }
+
 
 .modal-title{
-    font-size:25px;
-    font-weight:1000;
+
+    font-size:17px;
+
+    font-weight:800;
+
+    color:#ffffff;
 }
+
 
 .modal-subtitle{
-    margin-top:5px;
 
-    color:var(--muted);
+    font-size:11px;
 
-    font-size:13px;
+    color:#70869a;
+
+    margin-top:4px;
 }
+
 
 .close{
-    width:40px;
-    height:40px;
 
-    border-radius:9px;
+    border:none;
 
-    border:1px solid var(--line);
+    background:transparent;
 
-    background:#13263d;
+    color:#8298ad;
 
-    color:#fff;
-
-    font-size:22px;
+    font-size:27px;
 
     cursor:pointer;
+
+    line-height:1;
 }
+
+
+.close:hover{
+
+    color:#ffffff;
+}
+
 
 .modal-body{
-    padding:28px;
+
+    padding:24px;
+
+    overflow-y:auto;
 }
+
+
+.modal-footer{
+
+    padding:
+        15px 24px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.07);
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+}
+
+
+/* =========================================================
+   OVERDUE BANNER
+========================================================= */
 
 .overdue-banner{
+
     display:none;
 
-    margin-bottom:20px;
+    background:
+        rgba(255,80,96,.10);
 
-    padding:13px 16px;
+    border:
+        1px solid
+        rgba(255,80,96,.2);
 
-    border-radius:10px;
+    color:#ff7d89;
 
-    background:rgba(255,83,100,.08);
+    border-radius:8px;
 
-    border:1px solid rgba(255,83,100,.25);
+    padding:11px 14px;
 
-    color:#ff9da8;
+    font-size:11px;
 
-    font-weight:900;
+    font-weight:800;
+
+    margin-bottom:18px;
 }
 
+
 .overdue-banner.show{
+
     display:block;
 }
 
+
+/* =========================================================
+   CASE TOP
+========================================================= */
+
 .case-top{
+
     display:grid;
 
     grid-template-columns:
         repeat(4,1fr);
 
-    gap:13px;
+    gap:10px;
 
-    margin-bottom:24px;
+    margin-bottom:20px;
 }
+
 
 .case-info{
-    padding:15px;
 
-    border-radius:12px;
+    background:
+        rgba(255,255,255,.025);
 
-    background:#0e2034;
-
-    border:1px solid var(--line);
-}
-
-.case-info-label{
-    color:#7389a0;
-
-    font-size:10px;
-
-    font-weight:900;
-
-    letter-spacing:1px;
-}
-
-.case-info-value{
-    margin-top:7px;
-
-    color:#edf5fc;
-
-    font-size:14px;
-
-    font-weight:800;
-}
-
-.modal-grid{
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:20px;
-}
-
-.modal-section{
-    padding:20px;
-
-    border-radius:15px;
-
-    background:#0d1b2d;
-
-    border:1px solid var(--line);
-}
-
-.modal-section.full{
-    grid-column:1/-1;
-}
-
-.modal-section-title{
-    margin-bottom:16px;
-
-    color:#eaf5ff;
-
-    font-size:16px;
-
-    font-weight:1000;
-}
-
-.incident-box{
-    padding:17px;
-
-    min-height:100px;
-
-    border-radius:12px;
-
-    background:#091625;
-
-    border:1px solid var(--line);
-
-    color:#d8e4ef;
-
-    font-size:14px;
-
-    line-height:1.65;
-
-    white-space:pre-wrap;
-}
-
-.form-group{
-    margin-bottom:15px;
-}
-
-.form-group label{
-    display:block;
-
-    margin-bottom:7px;
-
-    color:#92a6ba;
-
-    font-size:12px;
-
-    font-weight:800;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select{
-    width:100%;
-
-    padding:12px 13px;
+    border:
+        1px solid
+        rgba(255,255,255,.06);
 
     border-radius:9px;
 
-    border:1px solid var(--line);
-
-    outline:none;
-
-    background:#091625;
-
-    color:#fff;
-
-    font-family:inherit;
-
-    font-size:13px;
+    padding:13px;
 }
 
-.form-group textarea{
-    min-height:105px;
-    resize:vertical;
+
+.case-info-label{
+
+    font-size:8px;
+
+    letter-spacing:1px;
+
+    color:#647b91;
+
+    font-weight:800;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-    border-color:rgba(32,217,255,.5);
+
+.case-info-value{
+
+    font-size:12px;
+
+    color:#dbe7f1;
+
+    font-weight:700;
+
+    margin-top:6px;
 }
+
 
 /* =========================================================
    TIMELINE
 ========================================================= */
 
 .timeline{
-    display:flex;
 
-    overflow:auto;
+    display:grid;
 
-    padding-bottom:10px;
-}
-
-.timeline-item{
-    min-width:150px;
+    grid-template-columns:
+        repeat(5,1fr);
 
     position:relative;
 
-    text-align:center;
+    margin-top:18px;
 }
 
-.timeline-item:not(:last-child)::after{
+
+.timeline:before{
+
     content:"";
 
     position:absolute;
 
-    top:14px;
-    left:50%;
+    left:10%;
 
-    width:100%;
+    right:10%;
+
+    top:11px;
+
     height:2px;
 
-    background:#2b4057;
-
-    z-index:0;
+    background:
+        rgba(255,255,255,.08);
 }
 
-.timeline-dot{
+
+.timeline-item{
+
     position:relative;
+
+    text-align:center;
+
     z-index:1;
+}
 
-    width:28px;
-    height:28px;
 
-    margin:auto;
+.timeline-dot{
+
+    width:23px;
+
+    height:23px;
 
     border-radius:50%;
 
-    border:3px solid #2b4057;
+    background:
+        #15263a;
 
-    background:#0b1829;
+    border:
+        2px solid
+        #41566b;
+
+    margin:auto;
 }
+
 
 .timeline-item.active .timeline-dot{
-    border-color:var(--cyan);
-    background:var(--cyan);
+
+    background:#2675ef;
+
+    border-color:#4b95ff;
 
     box-shadow:
-        0 0 15px rgba(32,217,255,.4);
+        0 0 14px
+        rgba(75,149,255,.35);
 }
+
 
 .timeline-item.completed .timeline-dot{
-    border-color:var(--green);
-    background:var(--green);
+
+    background:#36cb87;
+
+    border-color:#36cb87;
 }
+
 
 .timeline-label{
-    margin-top:9px;
 
-    color:#8195aa;
+    font-size:9px;
+
+    color:#70869a;
+
+    margin-top:7px;
+}
+
+
+.timeline-item.active .timeline-label{
+
+    color:#75aaff;
+
+    font-weight:700;
+}
+
+
+.timeline-item.completed .timeline-label{
+
+    color:#54d99b;
+}
+
+
+/* =========================================================
+   MODAL GRID
+========================================================= */
+
+.modal-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:16px;
+}
+
+
+.modal-section{
+
+    border:
+        1px solid
+        rgba(255,255,255,.065);
+
+    border-radius:12px;
+
+    padding:17px;
+
+    background:
+        rgba(255,255,255,.018);
+}
+
+
+.modal-section.full{
+
+    grid-column:
+        1 / -1;
+}
+
+
+.modal-section-title{
 
     font-size:11px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    color:#8ca2b7;
+
     font-weight:800;
+
+    margin-bottom:13px;
 }
 
-.timeline-item.active .timeline-label,
-.timeline-item.completed .timeline-label{
-    color:#dbeaf7;
+
+/* =========================================================
+   INCIDENT
+========================================================= */
+
+.incident-box{
+
+    white-space:pre-line;
+
+    color:#b9c7d4;
+
+    font-size:12px;
+
+    line-height:1.7;
 }
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:13px;
+}
+
+
+.form-group:last-child{
+
+    margin-bottom:0;
+}
+
+
+.form-group label{
+
+    display:block;
+
+    font-size:10px;
+
+    color:#71879c;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+}
+
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+
+    width:100%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        #081522;
+
+    color:#dbe6ef;
+
+    border-radius:7px;
+
+    padding:
+        9px 10px;
+
+    outline:none;
+
+    font-family:inherit;
+
+    font-size:11px;
+}
+
+
+.form-group textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+
+    border-color:
+        rgba(73,139,255,.5);
+}
+
 
 /* =========================================================
    PHOTOS
 ========================================================= */
 
 .photo-grid{
+
     display:grid;
 
     grid-template-columns:
         repeat(4,1fr);
 
-    gap:12px;
+    gap:10px;
 }
 
+
 .photo-card{
-    aspect-ratio:1/1;
+
+    height:130px;
+
+    border-radius:9px;
 
     overflow:hidden;
 
-    border-radius:10px;
+    background:#06101c;
 
-    background:#081421;
-
-    border:1px solid var(--line);
+    border:
+        1px solid
+        rgba(255,255,255,.06);
 }
 
+
 .photo-card img{
+
     width:100%;
+
     height:100%;
 
     object-fit:cover;
 
-    display:block;
-
     cursor:pointer;
+
+    transition:.2s;
 }
 
-.video-card{
-    margin-top:15px;
 
-    overflow:hidden;
+.photo-card img:hover{
 
-    border-radius:12px;
-
-    background:#081421;
-
-    border:1px solid var(--line);
+    transform:scale(1.03);
 }
 
-.video-card video{
-    width:100%;
-    max-height:400px;
-
-    display:block;
-}
 
 /* =========================================================
-   MODAL FOOTER
+   VIDEO
 ========================================================= */
 
-.modal-footer{
-    position:sticky;
-    bottom:0;
+.video-card{
 
-    padding:20px 28px;
+    margin-top:15px;
 
-    display:flex;
-    justify-content:flex-end;
-
-    gap:10px;
-
-    background:#0d1c2f;
-
-    border-top:1px solid var(--line);
+    max-width:600px;
 }
+
+
+.video-card video{
+
+    width:100%;
+
+    max-height:350px;
+
+    border-radius:10px;
+
+    background:#000;
+}
+
 
 /* =========================================================
    TOAST
 ========================================================= */
 
 .toast{
+
     position:fixed;
 
-    right:25px;
-    bottom:25px;
+    right:24px;
 
-    z-index:10000;
+    bottom:24px;
 
-    max-width:400px;
+    padding:
+        12px 17px;
 
-    padding:15px 18px;
+    background:
+        #122437;
 
-    border-radius:11px;
+    border:
+        1px solid
+        rgba(255,255,255,.1);
 
-    background:#102b26;
+    border-radius:9px;
 
-    border:1px solid rgba(33,215,137,.25);
+    color:#dce8f2;
 
-    color:#b9f5d8;
-
-    font-size:13px;
-    font-weight:800;
+    font-size:12px;
 
     box-shadow:
-        0 15px 40px rgba(0,0,0,.35);
+        0 10px 35px
+        rgba(0,0,0,.3);
 
-    transform:translateY(120px);
+    transform:
+        translateY(20px);
 
     opacity:0;
 
-    transition:.3s;
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:3000;
 }
 
+
 .toast.show{
-    transform:translateY(0);
+
+    transform:
+        translateY(0);
+
     opacity:1;
 }
+
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:1450px){
-
-    .sidebar{
-        width:260px;
-    }
-
-    .main{
-        margin-left:260px;
-        width:calc(100% - 260px);
-    }
-
-    .content{
-        padding:28px;
-    }
+@media(max-width:1300px){
 
     .kpi-grid{
+
         grid-template-columns:
-            repeat(3,1fr);
+            repeat(4,1fr);
+
     }
 
-    .reports-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
 }
 
-@media(max-width:1100px){
 
-    .app{
-        display:block;
-    }
+@media(max-width:1050px){
 
     .sidebar{
-        position:relative;
 
-        width:100%;
-        min-height:auto;
+        width:210px;
 
-        border-right:0;
-        border-bottom:1px solid var(--line);
     }
 
     .main{
-        margin-left:0;
-        width:100%;
-    }
 
-    .sidebar-bottom{
-        margin-top:20px;
+        margin-left:210px;
+
+        width:
+            calc(100% - 210px);
+
     }
 
     .analytics-grid{
-        grid-template-columns:1fr;
-    }
 
-    .action-grid{
-        grid-template-columns:1fr;
-    }
-
-    .kpi-grid{
         grid-template-columns:
-            repeat(2,1fr);
-    }
-}
+            1fr;
 
-@media(max-width:760px){
-
-    .topbar{
-        padding:16px 18px;
-    }
-
-    .header-title{
-        font-size:21px;
-    }
-
-    .header-kicker{
-        font-size:9px;
-        letter-spacing:1.5px;
-    }
-
-    .header-company{
-        font-size:11px;
-    }
-
-    .online{
-        display:none;
-    }
-
-    .content{
-        padding:20px 16px 35px;
-    }
-
-    .hero{
-        min-height:245px;
-        padding:32px;
-    }
-
-    .hero-kicker{
-        font-size:12px;
-        letter-spacing:2px;
-    }
-
-    .hero-title{
-        font-size:35px;
-    }
-
-    .hero-company{
-        font-size:22px;
-    }
-
-    .hero-control{
-        font-size:14px;
-    }
-
-    .kpi-grid{
-        grid-template-columns:1fr;
     }
 
     .reports-grid{
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:800px){
+
+    .sidebar{
+
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+        border-right:none;
+
+        border-bottom:
+            1px solid
+            rgba(255,255,255,.07);
+
+    }
+
+    .app{
+
+        flex-direction:column;
+
+    }
+
+    .main{
+
+        margin-left:0;
+
+        width:100%;
+
+    }
+
+    .nav{
+
+        flex-direction:row;
+
+        overflow-x:auto;
+
+    }
+
+    .nav button{
+
+        white-space:nowrap;
+
+    }
+
+    .content{
+
+        padding:20px;
+
+    }
+
+    .topbar{
+
+        padding:
+            0 20px;
+
+    }
+
+    .kpi-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .action-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .reports-grid{
+
+        grid-template-columns:
+            1fr;
+
     }
 
     .case-top{
+
         grid-template-columns:
-            1fr 1fr;
+            repeat(2,1fr);
+
     }
 
     .modal-grid{
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .modal-section.full{
+
+        grid-column:auto;
+
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .kpi-grid{
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+    .hero-title{
+
+        font-size:22px;
+
+    }
+
+    .case-top{
+
+        grid-template-columns:
+            1fr;
+
     }
 
     .photo-grid{
+
         grid-template-columns:
             repeat(2,1fr);
+
     }
+
 }
+
 </style>
+
 </head>
 
+
 <body>
+
 
 <!-- ======================================================
      LOGIN GUARD
@@ -1599,14 +2039,14 @@ canvas{
 
 <div id="loginGuard">
 
-    <div class="loader">
+    <div class="login-loading">
 
-        <div class="loader-logo">
-            E
+        <div class="login-loading-title">
+            ESH MANAGEMENT SYSTEM
         </div>
 
-        <div class="loader-text">
-            Loading ESH Management System...
+        <div class="login-loading-text">
+            Checking access...
         </div>
 
     </div>
@@ -1614,7 +2054,12 @@ canvas{
 </div>
 
 
+<!-- ======================================================
+     APP
+====================================================== -->
+
 <div class="app">
+
 
 <!-- ======================================================
      SIDEBAR
@@ -1622,24 +2067,19 @@ canvas{
 
 <aside class="sidebar">
 
+
     <div class="brand">
 
-        <div class="brand-title">
+        <div class="brand-small">
+            ENVIRONMENT • SAFETY • HEALTH
+        </div>
+
+        <div class="brand-name">
             ESH MANAGEMENT SYSTEM
         </div>
 
-        <div class="brand-company">
+        <div class="brand-sub">
             BIDOR KWONG HENG
-        </div>
-
-        <div class="system-status">
-
-            <div class="system-dot"></div>
-
-            <span>
-                SYSTEM ONLINE
-            </span>
-
         </div>
 
     </div>
@@ -1647,62 +2087,53 @@ canvas{
 
     <nav class="nav">
 
-        <div class="nav-label">
-            CONTROL CENTER
-        </div>
-
         <button
             class="active"
             onclick="showSection('overview',this)"
         >
-            <span class="nav-icon">▦</span>
             Overview
         </button>
+
 
         <button
             onclick="showSection('analytics',this)"
         >
-            <span class="nav-icon">◈</span>
             Analytics
         </button>
+
 
         <button
             onclick="showSection('actions',this)"
         >
-            <span class="nav-icon">✓</span>
             Action Center
         </button>
+
 
         <button
             onclick="showSection('reports',this)"
         >
-            <span class="nav-icon">▤</span>
             Reports
         </button>
 
     </nav>
 
 
-    <div class="sidebar-bottom">
+    <div class="sidebar-footer">
 
-        <div class="admin-card">
+        <div class="sidebar-footer-text">
 
-            <div class="admin-label">
-                ENVIRONMENT • SAFETY • HEALTH
-            </div>
-
-            <div class="admin-name">
-                ESH ADMIN
-            </div>
-
-            <button
-                class="logout"
-                onclick="logout()"
-            >
-                Logout
-            </button>
+            ESH CONTROL CENTER<br>
+            Near Miss Management System
 
         </div>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
 
     </div>
 
@@ -1717,38 +2148,32 @@ canvas{
 
 
 <!-- ======================================================
-     TOP HEADER
+     TOPBAR
 ====================================================== -->
 
-<header class="topbar">
+<div class="topbar">
 
-    <div>
+    <div class="topbar-title">
+        ESH CONTROL CENTER
+    </div>
 
-        <div class="header-kicker">
-            ENVIRONMENT • SAFETY • HEALTH
-        </div>
 
-        <div class="header-title">
-            ESH MANAGEMENT SYSTEM
-        </div>
+    <div class="topbar-right">
 
-        <div class="header-company">
-            BIDOR KWONG HENG
+        <div class="status-dot"></div>
+
+        <div class="status-text">
+            SYSTEM ONLINE
         </div>
 
     </div>
 
+</div>
 
-    <div class="online">
 
-        <div class="online-dot"></div>
-
-        SYSTEM ONLINE
-
-    </div>
-
-</header>
-
+<!-- ======================================================
+     CONTENT
+====================================================== -->
 
 <div class="content">
 
@@ -1757,29 +2182,21 @@ canvas{
      HERO
 ====================================================== -->
 
-<section class="hero">
+<div class="hero">
 
-    <div class="hero-content">
-
-        <div class="hero-kicker">
-            ENVIRONMENT • SAFETY • HEALTH
-        </div>
-
-        <div class="hero-title">
-            ESH MANAGEMENT SYSTEM
-        </div>
-
-        <div class="hero-company">
-            BIDOR KWONG HENG
-        </div>
-
-        <div class="hero-control">
-            CONTROL CENTER
-        </div>
-
+    <div class="hero-label">
+        ENVIRONMENT • SAFETY • HEALTH
     </div>
 
-</section>
+    <div class="hero-title">
+        ESH Management Dashboard
+    </div>
+
+    <div class="hero-subtitle">
+        Near Miss reporting, investigation, corrective action and case closure control center.
+    </div>
+
+</div>
 
 
 <!-- ======================================================
@@ -1791,16 +2208,17 @@ canvas{
     id="overview"
 >
 
+
     <div class="section-header">
 
         <div>
 
             <div class="section-title">
-                ESH Performance Overview
+                Overview
             </div>
 
             <div class="section-subtitle">
-                Real-time ESH case monitoring
+                Current ESH case status
             </div>
 
         </div>
@@ -1808,10 +2226,17 @@ canvas{
     </div>
 
 
+    <!-- KPI -->
+
     <div class="kpi-grid">
 
 
-        <div class="kpi">
+        <!-- TOTAL -->
+
+        <div
+            class="kpi"
+            onclick="filterKPI('ALL')"
+        >
 
             <div class="kpi-label">
                 TOTAL REPORTS
@@ -1831,7 +2256,12 @@ canvas{
         </div>
 
 
-        <div class="kpi">
+        <!-- NEW -->
+
+        <div
+            class="kpi"
+            onclick="filterKPI('New')"
+        >
 
             <div class="kpi-label">
                 NEW
@@ -1851,7 +2281,12 @@ canvas{
         </div>
 
 
-        <div class="kpi yellow">
+        <!-- INVESTIGATION -->
+
+        <div
+            class="kpi yellow"
+            onclick="filterKPI('Investigation')"
+        >
 
             <div class="kpi-label">
                 INVESTIGATION
@@ -1871,7 +2306,12 @@ canvas{
         </div>
 
 
-        <div class="kpi orange">
+        <!-- CORRECTIVE -->
+
+        <div
+            class="kpi orange"
+            onclick="filterKPI('Corrective Action')"
+        >
 
             <div class="kpi-label">
                 CORRECTIVE ACTION
@@ -1891,7 +2331,12 @@ canvas{
         </div>
 
 
-        <div class="kpi purple">
+        <!-- VERIFICATION -->
+
+        <div
+            class="kpi purple"
+            onclick="filterKPI('Verification')"
+        >
 
             <div class="kpi-label">
                 VERIFICATION
@@ -1911,7 +2356,12 @@ canvas{
         </div>
 
 
-        <div class="kpi green">
+        <!-- CLOSED -->
+
+        <div
+            class="kpi green"
+            onclick="filterKPI('Closed')"
+        >
 
             <div class="kpi-label">
                 CLOSED
@@ -1931,7 +2381,12 @@ canvas{
         </div>
 
 
-        <div class="kpi red">
+        <!-- OVERDUE -->
+
+        <div
+            class="kpi red"
+            onclick="filterKPI('OVERDUE')"
+        >
 
             <div class="kpi-label">
                 OVERDUE ACTIONS
@@ -1953,6 +2408,7 @@ canvas{
 
     </div>
 
+
 </section>
 
 
@@ -1965,6 +2421,7 @@ canvas{
     id="actions"
 >
 
+
     <div class="section-header">
 
         <div>
@@ -1974,7 +2431,7 @@ canvas{
             </div>
 
             <div class="section-subtitle">
-                Items requiring ESH attention
+                Cases requiring ESH attention
             </div>
 
         </div>
@@ -2202,6 +2659,7 @@ canvas{
 
     <div class="toolbar">
 
+
         <div class="search">
 
             <input
@@ -2272,6 +2730,7 @@ canvas{
         >
             ↻ Refresh
         </button>
+
 
     </div>
 
@@ -2770,6 +3229,7 @@ canvas{
         Cancel
     </button>
 
+
     <button
         class="btn btn-primary"
         id="saveButton"
@@ -2810,10 +3270,13 @@ const GOOGLE_SCRIPT_URL =
 ========================================================= */
 
 let reports = [];
+
 let selectedReport = null;
 
 let trendChart = null;
+
 let categoryChart = null;
+
 let departmentChart = null;
 
 
@@ -2837,8 +3300,11 @@ let departmentChart = null;
 
     }
 
+
     document
-        .getElementById("loginGuard")
+        .getElementById(
+            "loginGuard"
+        )
         .classList
         .add("hidden");
 
@@ -2854,6 +3320,7 @@ function logout(){
     sessionStorage.removeItem(
         "eshLoggedIn"
     );
+
 
     window.location.replace(
         "esh-login.html"
@@ -2906,27 +3373,38 @@ async function loadReports(){
             await response.json();
 
 
-        if(Array.isArray(data)){
+        if(
+            Array.isArray(data)
+        ){
 
             reports = data;
 
         }
+
         else if(
             data &&
-            Array.isArray(data.reports)
+            Array.isArray(
+                data.reports
+            )
         ){
 
-            reports = data.reports;
+            reports =
+                data.reports;
 
         }
+
         else if(
             data &&
-            Array.isArray(data.data)
+            Array.isArray(
+                data.data
+            )
         ){
 
-            reports = data.data;
+            reports =
+                data.data;
 
         }
+
         else{
 
             reports = [];
@@ -2943,9 +3421,11 @@ async function loadReports(){
         renderAnalytics();
 
     }
+
     catch(error){
 
         console.error(error);
+
 
         document.getElementById(
             "reportsGrid"
@@ -2983,20 +3463,36 @@ function updateDashboard(){
     const total =
         reports.length;
 
+
     const newCount =
-        countStatus("New");
+        countStatus(
+            "New"
+        );
+
 
     const investigation =
-        countStatus("Investigation");
+        countStatus(
+            "Investigation"
+        );
+
 
     const corrective =
-        countStatus("Corrective Action");
+        countStatus(
+            "Corrective Action"
+        );
+
 
     const verification =
-        countStatus("Verification");
+        countStatus(
+            "Verification"
+        );
+
 
     const closed =
-        countStatus("Closed");
+        countStatus(
+            "Closed"
+        );
+
 
     const overdue =
         calculateOverdue();
@@ -3004,52 +3500,62 @@ function updateDashboard(){
 
     document.getElementById(
         "totalReports"
-    ).textContent = total;
+    ).textContent =
+        total;
 
 
     document.getElementById(
         "newReports"
-    ).textContent = newCount;
+    ).textContent =
+        newCount;
 
 
     document.getElementById(
         "investigationReports"
-    ).textContent = investigation;
+    ).textContent =
+        investigation;
 
 
     document.getElementById(
         "correctiveReports"
-    ).textContent = corrective;
+    ).textContent =
+        corrective;
 
 
     document.getElementById(
         "verificationReports"
-    ).textContent = verification;
+    ).textContent =
+        verification;
 
 
     document.getElementById(
         "closedReports"
-    ).textContent = closed;
+    ).textContent =
+        closed;
 
 
     document.getElementById(
         "overdueReports"
-    ).textContent = overdue;
+    ).textContent =
+        overdue;
 
 
     document.getElementById(
         "actionNew"
-    ).textContent = newCount;
+    ).textContent =
+        newCount;
 
 
     document.getElementById(
         "actionCorrective"
-    ).textContent = corrective;
+    ).textContent =
+        corrective;
 
 
     document.getElementById(
         "actionOverdue"
-    ).textContent = overdue;
+    ).textContent =
+        overdue;
 
 }
 
@@ -3058,14 +3564,17 @@ function updateDashboard(){
    COUNT STATUS
 ========================================================= */
 
-function countStatus(status){
+function countStatus(
+    status
+){
 
     return reports.filter(
         function(report){
 
             return normalizeStatus(
                 report.status
-            ) === normalizeStatus(
+            ) ===
+            normalizeStatus(
                 status
             );
 
@@ -3079,7 +3588,9 @@ function countStatus(status){
    OVERDUE
 ========================================================= */
 
-function isReportOverdue(report){
+function isReportOverdue(
+    report
+){
 
     if(
         normalizeStatus(
@@ -3092,7 +3603,9 @@ function isReportOverdue(report){
     }
 
 
-    if(!report.dueDate){
+    if(
+        !report.dueDate
+    ){
 
         return false;
 
@@ -3117,12 +3630,18 @@ function isReportOverdue(report){
 
 
     today.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
 
     due.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
 
@@ -3182,8 +3701,11 @@ function showSection(
     if(target){
 
         target.scrollIntoView({
+
             behavior:"smooth",
+
             block:"start"
+
         });
 
     }
@@ -3191,43 +3713,247 @@ function showSection(
 }
 
 
+/* =========================================================
+   GO TO REPORTS
+========================================================= */
+
 function goToReports(){
 
-    document
-        .getElementById("reports")
-        .scrollIntoView({
-            behavior:"smooth"
+    const target =
+        document.getElementById(
+            "reports"
+        );
+
+
+    if(target){
+
+        target.scrollIntoView({
+
+            behavior:"smooth",
+
+            block:"start"
+
         });
+
+    }
 
 }
 
+
+/* =========================================================
+   KPI FILTER
+========================================================= */
+
+function filterKPI(
+    filter
+){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    /* TOTAL */
+
+    if(
+        filter === "ALL"
+    ){
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "";
+
+
+        renderReports();
+
+        goToReports();
+
+        return;
+
+    }
+
+
+    /* OVERDUE */
+
+    if(
+        filter === "OVERDUE"
+    ){
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "";
+
+
+        renderOverdueReports();
+
+        goToReports();
+
+        return;
+
+    }
+
+
+    /* STATUS */
+
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        filter;
+
+
+    renderReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   ACTION CENTER FILTER
+========================================================= */
+
+function filterStatus(
+    status
+){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        status;
+
+
+    renderReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   OVERDUE
+========================================================= */
 
 function goToOverdue(){
 
-    document
-        .getElementById(
-            "statusFilter"
-        )
-        .value = "";
+    document.getElementById(
+        "searchInput"
+    ).value = "";
 
-    renderReports();
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    renderOverdueReports();
 
     goToReports();
 
 }
 
 
-function filterStatus(status){
+/* =========================================================
+   RENDER OVERDUE REPORTS
+========================================================= */
 
-    document
-        .getElementById(
-            "statusFilter"
-        )
-        .value = status;
+function renderOverdueReports(){
 
-    renderReports();
+    const container =
+        document.getElementById(
+            "reportsGrid"
+        );
 
-    goToReports();
+
+    const filtered =
+        reports.filter(
+            function(report){
+
+                return isReportOverdue(
+                    report
+                );
+
+            }
+        );
+
+
+    if(
+        !filtered.length
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <div class="empty-title">
+                    No overdue reports
+                </div>
+
+                <p style="margin-top:8px;">
+                    There are currently no overdue actions.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    filtered.sort(
+        function(a,b){
+
+            const dateA =
+                parseDate(
+                    a.dueDate
+                ) ||
+                new Date(0);
+
+
+            const dateB =
+                parseDate(
+                    b.dueDate
+                ) ||
+                new Date(0);
+
+
+            return dateA - dateB;
+
+        }
+    );
+
+
+    container.innerHTML =
+        filtered
+            .map(
+                createReportCard
+            )
+            .join("");
 
 }
 
@@ -3242,13 +3968,16 @@ function resetFilters(){
         "searchInput"
     ).value = "";
 
+
     document.getElementById(
         "statusFilter"
     ).value = "";
 
+
     document.getElementById(
         "categoryFilter"
     ).value = "";
+
 
     renderReports();
 
@@ -3270,6 +3999,7 @@ function populateCategoryFilter(){
     const categories =
         [
             ...new Set(
+
                 reports
                     .map(
                         r =>
@@ -3278,18 +4008,24 @@ function populateCategoryFilter(){
                                 ""
                             ).trim()
                     )
-                    .filter(Boolean)
+
+                    .filter(
+                        Boolean
+                    )
+
             )
+
         ]
         .sort();
 
 
-    select.innerHTML =
-        `
-            <option value="">
-                All Categories
-            </option>
-        `;
+    select.innerHTML = `
+
+        <option value="">
+            All Categories
+        </option>
+
+    `;
 
 
     categories.forEach(
@@ -3300,11 +4036,14 @@ function populateCategoryFilter(){
                     "option"
                 );
 
+
             option.value =
                 category;
 
+
             option.textContent =
                 category;
+
 
             select.appendChild(
                 option
@@ -3349,59 +4088,68 @@ function renderReports(){
 
 
     const filtered =
-        reports
-            .filter(
-                function(report){
+        reports.filter(
+            function(report){
 
-                    const text = [
+                const text = [
 
-                        report.reportNumber,
-                        report.location,
-                        report.department,
-                        report.hazardCategory,
-                        report.whatHappened,
-                        report.reporterName,
-                        report.status
+                    report.reportNumber,
 
-                    ]
-                    .join(" ")
-                    .toLowerCase();
+                    report.location,
 
+                    report.department,
 
-                    const searchMatch =
-                        !search ||
-                        text.includes(search);
+                    report.hazardCategory,
 
+                    report.whatHappened,
 
-                    const statusMatch =
-                        !status ||
-                        normalizeStatus(
-                            report.status
-                        ) ===
-                        normalizeStatus(
-                            status
-                        );
+                    report.reporterName,
+
+                    report.status
+
+                ]
+                .join(" ")
+                .toLowerCase();
 
 
-                    const categoryMatch =
-                        !category ||
-                        String(
-                            report.hazardCategory ||
-                            ""
-                        ) === category;
-
-
-                    return (
-                        searchMatch &&
-                        statusMatch &&
-                        categoryMatch
+                const searchMatch =
+                    !search ||
+                    text.includes(
+                        search
                     );
 
-                }
-            );
+
+                const statusMatch =
+                    !status ||
+                    normalizeStatus(
+                        report.status
+                    ) ===
+                    normalizeStatus(
+                        status
+                    );
 
 
-    if(!filtered.length){
+                const categoryMatch =
+                    !category ||
+                    String(
+                        report.hazardCategory ||
+                        ""
+                    ) === category;
+
+
+                return (
+                    searchMatch &&
+                    statusMatch &&
+                    categoryMatch
+                );
+
+            }
+        );
+
+
+    if(
+        !filtered.length
+    ){
 
         container.innerHTML = `
 
@@ -3435,14 +4183,16 @@ function renderReports(){
                 parseDate(
                     a.dateTime ||
                     a.submittedAt
-                ) || new Date(0);
+                ) ||
+                new Date(0);
 
 
             const db =
                 parseDate(
                     b.dateTime ||
                     b.submittedAt
-                ) || new Date(0);
+                ) ||
+                new Date(0);
 
 
             return db - da;
@@ -3478,7 +4228,8 @@ function createReportCard(
     const status =
         normalizeStatus(
             report.status
-        ) || "New";
+        ) ||
+        "New";
 
 
     const overdue =
@@ -3500,33 +4251,49 @@ function createReportCard(
             onclick="openReport(${index})"
         >
 
+
             <div class="report-head">
 
+
                 <div class="report-number">
+
                     ${escapeHtml(
                         report.reportNumber ||
                         "ESH REPORT"
                     )}
+
                 </div>
 
-                <div class="badge ${statusClass}">
-                    ${escapeHtml(status)}
+
+                <div
+                    class="badge ${statusClass}"
+                >
+
+                    ${escapeHtml(
+                        status
+                    )}
+
                 </div>
+
 
             </div>
 
 
             <div class="report-body">
 
+
                 <div class="report-title">
+
                     ${escapeHtml(
                         report.whatHappened ||
                         "ESH report submitted"
                     )}
+
                 </div>
 
 
                 <div class="report-meta">
+
 
                     <div class="meta-row">
 
@@ -3535,12 +4302,14 @@ function createReportCard(
                         </span>
 
                         <strong>
+
                             ${escapeHtml(
                                 formatDisplayDate(
                                     report.dateTime ||
                                     report.submittedAt
                                 )
                             )}
+
                         </strong>
 
                     </div>
@@ -3553,10 +4322,12 @@ function createReportCard(
                         </span>
 
                         <strong>
+
                             ${escapeHtml(
                                 report.location ||
                                 "-"
                             )}
+
                         </strong>
 
                     </div>
@@ -3569,10 +4340,12 @@ function createReportCard(
                         </span>
 
                         <strong>
+
                             ${escapeHtml(
                                 report.department ||
                                 "-"
                             )}
+
                         </strong>
 
                     </div>
@@ -3585,10 +4358,12 @@ function createReportCard(
                         </span>
 
                         <strong>
+
                             ${escapeHtml(
                                 report.hazardCategory ||
                                 "-"
                             )}
+
                         </strong>
 
                     </div>
@@ -3598,6 +4373,7 @@ function createReportCard(
                         overdue
                         ?
                         `
+
                         <div class="meta-row">
 
                             <span
@@ -3609,18 +4385,22 @@ function createReportCard(
                             <strong
                                 style="color:#ff7382;"
                             >
+
                                 ${escapeHtml(
                                     formatDisplayDate(
                                         report.dueDate
                                     )
                                 )}
+
                             </strong>
 
                         </div>
+
                         `
                         :
                         ""
                     }
+
 
                 </div>
 
@@ -3639,6 +4419,7 @@ function createReportCard(
 
             </div>
 
+
         </div>
 
     `;
@@ -3650,13 +4431,17 @@ function createReportCard(
    OPEN REPORT
 ========================================================= */
 
-function openReport(index){
+function openReport(
+    index
+){
 
     selectedReport =
         reports[index];
 
 
-    if(!selectedReport){
+    if(
+        !selectedReport
+    ){
 
         return;
 
@@ -3713,6 +4498,7 @@ function openReport(index){
     ).textContent =
 
         [
+
             "Date: " +
             formatDisplayDate(
                 report.dateTime ||
@@ -3808,7 +4594,8 @@ function openReport(index){
     const status =
         normalizeStatus(
             report.status
-        ) || "New";
+        ) ||
+        "New";
 
 
     document.getElementById(
@@ -3858,9 +4645,13 @@ function updateTimeline(
     const steps = [
 
         "New",
+
         "Investigation",
+
         "Corrective Action",
+
         "Verification",
+
         "Closed"
 
     ];
@@ -3869,8 +4660,12 @@ function updateTimeline(
     const current =
         steps.findIndex(
             step =>
-                normalizeStatus(step) ===
-                normalizeStatus(status)
+                normalizeStatus(
+                    step
+                ) ===
+                normalizeStatus(
+                    status
+                )
         );
 
 
@@ -3897,6 +4692,7 @@ function updateTimeline(
                     );
 
                 }
+
                 else if(
                     index ===
                     current
@@ -3939,6 +4735,7 @@ function updateCaseOverdue(
         );
 
     }
+
     else{
 
         banner.classList.remove(
@@ -3951,7 +4748,7 @@ function updateCaseOverdue(
 
 
 /* =========================================================
-   PHOTOS
+   DRIVE FILE ID
 ========================================================= */
 
 function extractDriveFileId(
@@ -3978,6 +4775,10 @@ function extractDriveFileId(
 }
 
 
+/* =========================================================
+   PHOTO LIST
+========================================================= */
+
 function getPhotoList(
     report
 ){
@@ -3990,7 +4791,9 @@ function getPhotoList(
         "";
 
 
-    if(Array.isArray(value)){
+    if(
+        Array.isArray(value)
+    ){
 
         return value.filter(
             Boolean
@@ -4007,7 +4810,9 @@ function getPhotoList(
 
 
     const text =
-        String(value).trim();
+        String(
+            value
+        ).trim();
 
 
     try{
@@ -4018,7 +4823,11 @@ function getPhotoList(
             );
 
 
-        if(Array.isArray(parsed)){
+        if(
+            Array.isArray(
+                parsed
+            )
+        ){
 
             return parsed.filter(
                 Boolean
@@ -4027,37 +4836,54 @@ function getPhotoList(
         }
 
     }
+
     catch(e){}
 
 
-    if(text.includes("\n")){
+    if(
+        text.includes("\n")
+    ){
 
         return text
             .split("\n")
             .map(
-                x => x.trim()
+                x =>
+                    x.trim()
             )
-            .filter(Boolean);
+            .filter(
+                Boolean
+            );
 
     }
 
 
-    if(text.includes(",")){
+    if(
+        text.includes(",")
+    ){
 
         return text
             .split(",")
             .map(
-                x => x.trim()
+                x =>
+                    x.trim()
             )
-            .filter(Boolean);
+            .filter(
+                Boolean
+            );
 
     }
 
 
-    return [text];
+    return [
+        text
+    ];
 
 }
 
+
+/* =========================================================
+   LOAD PHOTOS
+========================================================= */
 
 function loadPhotos(
     report
@@ -4075,7 +4901,9 @@ function loadPhotos(
         );
 
 
-    if(!photos.length){
+    if(
+        !photos.length
+    ){
 
         container.innerHTML = `
 
@@ -4113,7 +4941,9 @@ function loadPhotos(
 
                     return `
 
-                        <div class="photo-card">
+                        <div
+                            class="photo-card"
+                        >
 
                             <img
                                 src="${escapeAttribute(src)}"
@@ -4171,7 +5001,9 @@ function loadVideo(
 
 
     let videoUrl =
-        String(url);
+        String(
+            url
+        );
 
 
     const id =
@@ -4204,7 +5036,9 @@ function loadVideo(
             >
 
                 <source
-                    src="${escapeAttribute(videoUrl)}"
+                    src="${escapeAttribute(
+                        videoUrl
+                    )}"
                 >
 
                 Your browser does not support video playback.
@@ -4219,12 +5053,14 @@ function loadVideo(
 
 
 /* =========================================================
-   SAVE
+   SAVE REPORT
 ========================================================= */
 
 async function saveReport(){
 
-    if(!selectedReport){
+    if(
+        !selectedReport
+    ){
 
         return;
 
@@ -4310,17 +5146,22 @@ async function saveReport(){
             await fetch(
                 GOOGLE_SCRIPT_URL,
                 {
-                    method:"POST",
+
+                    method:
+                        "POST",
 
                     headers:{
+
                         "Content-Type":
                             "text/plain;charset=utf-8"
+
                     },
 
                     body:
                         JSON.stringify(
                             data
                         )
+
                 }
             );
 
@@ -4338,13 +5179,16 @@ async function saveReport(){
 
             closeModal();
 
+
             showToast(
                 "Case updated successfully."
             );
 
+
             await loadReports();
 
         }
+
         else{
 
             throw new Error(
@@ -4355,9 +5199,13 @@ async function saveReport(){
         }
 
     }
+
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         showToast(
             "Error: " +
@@ -4365,9 +5213,12 @@ async function saveReport(){
         );
 
     }
+
     finally{
 
-        button.disabled = false;
+        button.disabled =
+            false;
+
 
         button.textContent =
             "Save Case";
@@ -4388,9 +5239,13 @@ function closeModal(){
             "caseModal"
         )
         .classList
-        .remove("show");
+        .remove(
+            "show"
+        );
 
-    selectedReport = null;
+
+    selectedReport =
+        null;
 
 }
 
@@ -4431,6 +5286,10 @@ function renderAnalytics(){
 }
 
 
+/* =========================================================
+   TREND
+========================================================= */
+
 function renderTrend(){
 
     const canvas =
@@ -4451,6 +5310,7 @@ function renderTrend(){
 
 
     const labels = [];
+
     const values = [];
 
 
@@ -4480,6 +5340,7 @@ function renderTrend(){
 
 
         values.push(
+
             reports.filter(
                 function(report){
 
@@ -4491,22 +5352,30 @@ function renderTrend(){
 
 
                     return (
+
                         d &&
+
                         d.getFullYear() ===
                             date.getFullYear()
+
                         &&
+
                         d.getMonth() ===
                             date.getMonth()
+
                     );
 
                 }
             ).length
+
         );
 
     }
 
 
-    if(trendChart){
+    if(
+        trendChart
+    ){
 
         trendChart.destroy();
 
@@ -4518,57 +5387,97 @@ function renderTrend(){
             canvas,
             {
 
-                type:"line",
+                type:
+                    "line",
 
                 data:{
-                    labels:labels,
+
+                    labels:
+                        labels,
 
                     datasets:[
+
                         {
-                            label:"Reports",
-                            data:values,
-                            tension:.35,
-                            fill:true
+
+                            label:
+                                "Reports",
+
+                            data:
+                                values,
+
+                            tension:
+                                .35,
+
+                            fill:
+                                true
+
                         }
+
                     ]
+
                 },
 
                 options:{
 
-                    responsive:true,
-                    maintainAspectRatio:false,
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
 
                     plugins:{
+
                         legend:{
-                            display:false
+
+                            display:
+                                false
+
                         }
+
                     },
 
                     scales:{
 
                         x:{
+
                             ticks:{
-                                color:"#8fa4ba"
+
+                                color:
+                                    "#8fa4ba"
+
                             },
 
                             grid:{
+
                                 color:
                                     "rgba(255,255,255,.05)"
+
                             }
+
                         },
 
                         y:{
-                            beginAtZero:true,
+
+                            beginAtZero:
+                                true,
 
                             ticks:{
-                                color:"#8fa4ba",
-                                precision:0
+
+                                color:
+                                    "#8fa4ba",
+
+                                precision:
+                                    0
+
                             },
 
                             grid:{
+
                                 color:
                                     "rgba(255,255,255,.05)"
+
                             }
+
                         }
 
                     }
@@ -4580,6 +5489,10 @@ function renderTrend(){
 
 }
 
+
+/* =========================================================
+   CATEGORY
+========================================================= */
 
 function renderCategory(){
 
@@ -4608,14 +5521,18 @@ function renderCategory(){
 
 
             map[category] =
-                (map[category] || 0) +
-                1;
+                (
+                    map[category] ||
+                    0
+                ) + 1;
 
         }
     );
 
 
-    if(categoryChart){
+    if(
+        categoryChart
+    ){
 
         categoryChart.destroy();
 
@@ -4627,37 +5544,57 @@ function renderCategory(){
             canvas,
             {
 
-                type:"doughnut",
+                type:
+                    "doughnut",
 
                 data:{
 
                     labels:
-                        Object.keys(map),
+                        Object.keys(
+                            map
+                        ),
 
                     datasets:[
+
                         {
+
                             data:
-                                Object.values(map)
+                                Object.values(
+                                    map
+                                )
+
                         }
+
                     ]
 
                 },
 
                 options:{
 
-                    responsive:true,
-                    maintainAspectRatio:false,
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
 
                     plugins:{
 
                         legend:{
 
-                            position:"bottom",
+                            position:
+                                "bottom",
 
                             labels:{
-                                color:"#a9bbce",
-                                boxWidth:12,
-                                padding:12
+
+                                color:
+                                    "#a9bbce",
+
+                                boxWidth:
+                                    12,
+
+                                padding:
+                                    12
+
                             }
 
                         }
@@ -4671,6 +5608,10 @@ function renderCategory(){
 
 }
 
+
+/* =========================================================
+   DEPARTMENT
+========================================================= */
 
 function renderDepartment(){
 
@@ -4699,14 +5640,18 @@ function renderDepartment(){
 
 
             map[department] =
-                (map[department] || 0) +
-                1;
+                (
+                    map[department] ||
+                    0
+                ) + 1;
 
         }
     );
 
 
-    if(departmentChart){
+    if(
+        departmentChart
+    ){
 
         departmentChart.destroy();
 
@@ -4718,59 +5663,95 @@ function renderDepartment(){
             canvas,
             {
 
-                type:"bar",
+                type:
+                    "bar",
 
                 data:{
 
                     labels:
-                        Object.keys(map),
+                        Object.keys(
+                            map
+                        ),
 
                     datasets:[
+
                         {
-                            label:"Reports",
+
+                            label:
+                                "Reports",
 
                             data:
-                                Object.values(map)
+                                Object.values(
+                                    map
+                                )
+
                         }
+
                     ]
 
                 },
 
                 options:{
 
-                    responsive:true,
-                    maintainAspectRatio:false,
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
 
                     plugins:{
+
                         legend:{
-                            display:false
+
+                            display:
+                                false
+
                         }
+
                     },
 
                     scales:{
 
                         x:{
+
                             ticks:{
-                                color:"#8fa4ba"
+
+                                color:
+                                    "#8fa4ba"
+
                             },
 
                             grid:{
-                                display:false
+
+                                display:
+                                    false
+
                             }
+
                         },
 
                         y:{
-                            beginAtZero:true,
+
+                            beginAtZero:
+                                true,
 
                             ticks:{
-                                color:"#8fa4ba",
-                                precision:0
+
+                                color:
+                                    "#8fa4ba",
+
+                                precision:
+                                    0
+
                             },
 
                             grid:{
+
                                 color:
                                     "rgba(255,255,255,.05)"
+
                             }
+
                         }
 
                     }
@@ -4857,6 +5838,10 @@ function normalizeStatus(
 }
 
 
+/* =========================================================
+   STATUS CLASS
+========================================================= */
+
 function getStatusClass(
     status
 ){
@@ -4868,21 +5853,32 @@ function getStatusClass(
     ){
 
         case "New":
+
             return "badge-new";
 
+
         case "Investigation":
+
             return "badge-investigation";
 
+
         case "Corrective Action":
+
             return "badge-corrective";
 
+
         case "Verification":
+
             return "badge-verification";
 
+
         case "Closed":
+
             return "badge-closed";
 
+
         default:
+
             return "badge-new";
 
     }
@@ -4891,7 +5887,7 @@ function getStatusClass(
 
 
 /* =========================================================
-   DATE
+   DATE PARSER
 ========================================================= */
 
 function parseDate(
@@ -4905,19 +5901,25 @@ function parseDate(
     }
 
 
-    if(value instanceof Date){
+    if(
+        value instanceof Date
+    ){
 
         return isNaN(
             value.getTime()
         )
-        ? null
-        : value;
+        ?
+        null
+        :
+        value;
 
     }
 
 
     const text =
-        String(value).trim();
+        String(
+            value
+        ).trim();
 
 
     if(!text){
@@ -4928,7 +5930,9 @@ function parseDate(
 
 
     const date =
-        new Date(text);
+        new Date(
+            text
+        );
 
 
     if(
@@ -4946,6 +5950,10 @@ function parseDate(
 
 }
 
+
+/* =========================================================
+   DATE INPUT
+========================================================= */
 
 function formatDateInput(
     value
@@ -4970,16 +5978,26 @@ function formatDateInput(
 
         String(
             date.getMonth()+1
-        ).padStart(2,"0"),
+        ).padStart(
+            2,
+            "0"
+        ),
 
         String(
             date.getDate()
-        ).padStart(2,"0")
+        ).padStart(
+            2,
+            "0"
+        )
 
     ].join("-");
 
 }
 
+
+/* =========================================================
+   DISPLAY DATE
+========================================================= */
 
 function formatDisplayDate(
     value
@@ -5001,9 +6019,16 @@ function formatDisplayDate(
     return date.toLocaleDateString(
         "en-MY",
         {
-            day:"2-digit",
-            month:"short",
-            year:"numeric"
+
+            day:
+                "2-digit",
+
+            month:
+                "short",
+
+            year:
+                "numeric"
+
         }
     );
 
@@ -5139,13 +6164,16 @@ document
             );
 
 
-            if(selectedReport){
+            if(
+                selectedReport
+            ){
 
                 updateCaseOverdue({
 
                     ...selectedReport,
 
-                    status:this.value,
+                    status:
+                        this.value,
 
                     dueDate:
                         document.getElementById(
@@ -5172,7 +6200,9 @@ document
         "change",
         function(){
 
-            if(selectedReport){
+            if(
+                selectedReport
+            ){
 
                 updateCaseOverdue({
 
@@ -5183,7 +6213,8 @@ document
                             "caseStatus"
                         ).value,
 
-                    dueDate:this.value
+                    dueDate:
+                        this.value
 
                 });
 
@@ -5202,7 +6233,8 @@ document.addEventListener(
     function(event){
 
         if(
-            event.key === "Escape"
+            event.key ===
+            "Escape"
         ){
 
             closeModal();
@@ -5229,4 +6261,5 @@ setInterval(
 </script>
 
 </body>
+
 </html>
