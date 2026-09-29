@@ -1843,11 +1843,31 @@ input:focus {
 
         </div>
 
-        <div class="online-status">
+        <div style="display:flex;align-items:center;gap:10px;">
 
-            <span class="online-dot"></span>
+            <div class="online-status">
 
-            SYSTEM ONLINE
+                <span class="online-dot"></span>
+
+                SYSTEM ONLINE
+
+            </div>
+
+            <button
+                onclick="logoutESH()"
+                style="
+                    border:1px solid rgba(255,255,255,.18);
+                    background:rgba(255,255,255,.08);
+                    color:white;
+                    padding:9px 15px;
+                    border-radius:10px;
+                    cursor:pointer;
+                    font-size:12px;
+                    font-weight:800;
+                "
+            >
+                ⇥ LOGOUT
+            </button>
 
         </div>
 
@@ -2785,6 +2805,31 @@ input:focus {
 
 
 <script>
+
+/* =====================================================
+   ESH LOGIN PROTECTION + LOGOUT
+===================================================== */
+
+if (
+    sessionStorage.getItem("eshLoggedIn") !== "true"
+) {
+    window.location.replace(
+        "esh-login.html"
+    );
+}
+
+function logoutESH() {
+
+    sessionStorage.removeItem(
+        "eshLoggedIn"
+    );
+
+    window.location.replace(
+        "esh-login.html"
+    );
+
+}
+
 
 /* =====================================================
    GOOGLE APPS SCRIPT
