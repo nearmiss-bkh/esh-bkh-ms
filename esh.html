@@ -1,1285 +1,2493 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>ESH Near Miss Management System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ESH Control Center</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+:root{
+    --bg:#06111f;
+    --panel:#0b1d31;
+    --panel2:#102841;
+    --border:rgba(150,190,230,.14);
+    --blue:#1687ff;
+    --cyan:#00d5ff;
+    --green:#00d49a;
+    --orange:#ffad32;
+    --red:#ff4f70;
+    --purple:#9b7aff;
+    --text:#f5f9ff;
+    --soft:#b8c9db;
+    --muted:#7890a8;
 }
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
 
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f3f6f9;
-    color:#17202a;
-}
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-#loginPage{
+    margin:0;
     min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#111827,#1f2937);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 10% 0%,rgba(0,180,255,.12),transparent 30%),
+        radial-gradient(circle at 90% 10%,rgba(0,220,255,.08),transparent 25%),
+        linear-gradient(180deg,#030a14,#061426 55%,#020913);
 }
 
-.login-box{
-    width:380px;
-    max-width:92%;
-    background:white;
-    border-radius:18px;
-    padding:35px;
-    box-shadow:0 20px 60px rgba(0,0,0,.25);
+button,input,select,textarea{
+    font-family:inherit;
 }
 
-.login-logo{
-    width:70px;
-    height:70px;
-    margin:0 auto 18px;
-    border-radius:18px;
-    background:#dc2626;
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:28px;
-    font-weight:bold;
-}
-
-.login-box h1{
-    text-align:center;
-    font-size:22px;
-    margin-bottom:6px;
-}
-
-.login-box p{
-    text-align:center;
-    color:#6b7280;
-    font-size:13px;
-    margin-bottom:25px;
-}
-
-.login-box input{
-    width:100%;
-    padding:13px;
-    border:1px solid #d1d5db;
-    border-radius:9px;
-    margin-bottom:12px;
-    font-size:14px;
-    outline:none;
-}
-
-.login-box input:focus{
-    border-color:#2563eb;
-}
-
-.login-btn{
-    width:100%;
-    border:0;
-    padding:13px;
-    background:#dc2626;
-    color:white;
-    border-radius:9px;
-    font-weight:bold;
+button{
     cursor:pointer;
 }
 
-.login-btn:hover{
-    background:#b91c1c;
+.hidden{
+    display:none!important;
 }
 
-.login-error{
-    color:#dc2626;
-    font-size:13px;
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:245px;
+    padding:22px 16px;
+    background:rgba(4,15,29,.97);
+    border-right:1px solid var(--border);
+    z-index:1200;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar-brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:5px 8px 25px;
+}
+
+.sidebar-mark{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:linear-gradient(135deg,#00d5ff,#176cff);
+    font-size:20px;
+    font-weight:900;
+    box-shadow:0 0 30px rgba(0,180,255,.25);
+}
+
+.sidebar-name{
+    font-size:14px;
+    font-weight:900;
+}
+
+.sidebar-sub{
+    margin-top:3px;
+    color:#63809d;
+    font-size:7px;
+    letter-spacing:1.2px;
+    font-weight:800;
+}
+
+.sidebar-label{
+    padding:0 9px 9px;
+    color:#506b84;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.sidebar-nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.side-link{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 12px;
+    border:1px solid transparent;
+    border-radius:9px;
+    color:#7990a8;
+    background:transparent;
+    text-align:left;
+    font-size:10px;
+    font-weight:800;
+}
+
+.side-link span{
+    width:18px;
     text-align:center;
-    margin-top:12px;
-    display:none;
 }
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-#dashboardPage{
-    display:none;
-    min-height:100vh;
+.side-link:hover,
+.side-link.active{
+    color:#fff;
+    background:rgba(22,135,255,.11);
+    border-color:rgba(22,135,255,.17);
 }
 
-.topbar{
-    height:70px;
-    background:#111827;
-    color:white;
+.side-link.active span{
+    color:#5ee7ff;
+}
+
+.sidebar-divider{
+    height:1px;
+    margin:18px 5px;
+    background:rgba(150,190,230,.1);
+}
+
+.sidebar-status{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:11px;
+    border:1px solid rgba(0,212,154,.13);
+    border-radius:10px;
+    background:rgba(0,212,154,.04);
+}
+
+.sidebar-status b{
+    display:block;
+    color:#a7ffe3;
+    font-size:9px;
+}
+
+.sidebar-status small{
+    display:block;
+    margin-top:3px;
+    color:#54766f;
+    font-size:7px;
+}
+
+.sidebar-footer{
+    margin-top:auto;
+    padding:10px;
+    color:#526b84;
+    font-size:7px;
+    line-height:1.8;
+    letter-spacing:.7px;
+    font-weight:800;
+}
+
+.sidebar-footer span{
+    color:#40586f;
+    letter-spacing:0;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#00e39a;
+    box-shadow:0 0 14px #00e39a;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{opacity:1}
+    50%{opacity:.4}
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    margin-left:245px;
+    background:rgba(3,13,27,.92);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+}
+
+.header-inner{
+    min-height:76px;
+    padding:0 28px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 25px;
-    position:sticky;
-    top:0;
-    z-index:100;
 }
 
-.brand{
+.header-brand{
     display:flex;
     align-items:center;
     gap:12px;
 }
 
-.brand-icon{
-    width:42px;
-    height:42px;
-    background:#dc2626;
-    border-radius:10px;
+.header-logo{
+    width:40px;
+    height:40px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-weight:bold;
+    border-radius:11px;
+    background:linear-gradient(135deg,#00d5ff,#176cff);
+    font-weight:900;
 }
 
-.brand-text h1{
-    font-size:18px;
+.header-title{
+    font-size:16px;
+    font-weight:900;
 }
 
-.brand-text span{
-    font-size:11px;
-    color:#cbd5e1;
+.header-subtitle{
+    margin-top:3px;
+    color:#66809c;
+    font-size:8px;
+    letter-spacing:1px;
+    font-weight:800;
 }
 
-.top-actions{
+.header-right{
     display:flex;
     align-items:center;
-    gap:10px;
+    gap:9px;
 }
 
-.refresh-btn,
+.system-status,
+.user-badge,
 .logout-btn{
-    border:1px solid #475569;
-    background:#1f2937;
-    color:white;
-    padding:9px 14px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:12px;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:9px;
+    background:rgba(255,255,255,.05);
 }
 
-.refresh-btn:hover,
+.system-status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 11px;
+    color:#8fffe0;
+    font-size:8px;
+    font-weight:900;
+}
+
+.user-badge{
+    padding:8px 11px;
+    color:#a9bad0;
+    font-size:8px;
+    font-weight:800;
+}
+
+.logout-btn{
+    padding:8px 13px;
+    color:#fff;
+    font-size:9px;
+    font-weight:800;
+}
+
 .logout-btn:hover{
-    background:#374151;
+    border-color:rgba(255,79,112,.35);
+    background:rgba(255,79,112,.12);
 }
 
-/* =====================================================
+/* =========================
    MAIN
-===================================================== */
+========================= */
 
-.main{
-    max-width:1500px;
-    margin:auto;
-    padding:25px;
+.container{
+    margin-left:245px;
+    padding:28px;
 }
 
-.page-title{
-    margin-bottom:20px;
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:34px;
+    margin-bottom:24px;
+    border:1px solid rgba(72,177,255,.18);
+    border-radius:20px;
+    background:
+        radial-gradient(circle at 85% 20%,rgba(0,210,255,.18),transparent 25%),
+        radial-gradient(circle at 70% 100%,rgba(78,90,255,.15),transparent 35%),
+        linear-gradient(120deg,#041121,#08233e 58%,#0b3154);
+    box-shadow:0 25px 70px rgba(0,0,0,.4);
 }
 
-.page-title h2{
-    font-size:25px;
-    margin-bottom:5px;
+.hero-content{
+    position:relative;
+    z-index:2;
 }
 
-.page-title p{
-    color:#6b7280;
-    font-size:13px;
-}
-
-/* =====================================================
-   KPI
-===================================================== */
-
-.kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:16px;
-    margin-bottom:22px;
-}
-
-.kpi{
-    background:white;
-    border-radius:14px;
-    padding:20px;
-    box-shadow:0 3px 15px rgba(0,0,0,.05);
-    border-left:5px solid #2563eb;
-}
-
-.kpi.new{
-    border-left-color:#f59e0b;
-}
-
-.kpi.progress{
-    border-left-color:#2563eb;
-}
-
-.kpi.closed{
-    border-left-color:#16a34a;
-}
-
-.kpi.total{
-    border-left-color:#7c3aed;
-}
-
-.kpi-label{
-    color:#6b7280;
-    font-size:12px;
+.hero-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+    color:#6ee6ff;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1.5px;
     text-transform:uppercase;
-    font-weight:bold;
 }
 
-.kpi-value{
-    font-size:30px;
-    font-weight:bold;
-    margin-top:7px;
+.hero h1{
+    margin:0;
+    font-size:clamp(30px,4vw,45px);
+    letter-spacing:-1.5px;
 }
 
-/* =====================================================
-   FILTER
-===================================================== */
-
-.filter-box{
-    background:white;
-    padding:18px;
-    border-radius:14px;
-    box-shadow:0 3px 15px rgba(0,0,0,.05);
-    margin-bottom:20px;
+.hero p{
+    max-width:700px;
+    margin:12px 0 0;
+    color:#8da6bf;
+    font-size:11px;
+    line-height:1.7;
 }
 
-.filter-grid{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr 1fr auto;
-    gap:10px;
+.hero-actions{
+    display:flex;
+    gap:9px;
+    margin-top:20px;
 }
 
-.filter-box input,
-.filter-box select{
-    width:100%;
-    padding:11px;
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    font-size:13px;
-    background:white;
+.hero-btn{
+    padding:10px 16px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:9px;
+    color:#dcecff;
+    background:rgba(255,255,255,.06);
+    font-size:9px;
+    font-weight:850;
 }
 
-.clear-btn{
+.hero-btn.primary{
     border:0;
-    padding:11px 16px;
-    border-radius:8px;
-    background:#6b7280;
-    color:white;
-    cursor:pointer;
+    color:#fff;
+    background:linear-gradient(135deg,#168cff,#005fd8);
 }
 
-/* =====================================================
-   REPORT GRID
-===================================================== */
+/* =========================
+   SECTION
+========================= */
 
 .section-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:12px;
+    margin:25px 0 12px;
 }
 
-.section-header h3{
-    font-size:18px;
-}
-
-.last-refresh{
+.section-heading{
+    display:flex;
+    align-items:center;
+    gap:9px;
     font-size:11px;
-    color:#6b7280;
+    font-weight:900;
+    letter-spacing:.8px;
+    text-transform:uppercase;
 }
 
-#reportsGrid{
+.section-heading:before{
+    content:"";
+    width:4px;
+    height:15px;
+    border-radius:5px;
+    background:linear-gradient(180deg,var(--cyan),var(--blue));
+}
+
+.section-caption{
+    color:#60758d;
+    font-size:8px;
+}
+
+/* =========================
+   KPI
+========================= */
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(120px,1fr));
+    gap:11px;
+}
+
+.kpi-card{
+    position:relative;
+    min-height:140px;
+    padding:16px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:linear-gradient(145deg,#0d2641,#071a2e);
+    box-shadow:0 15px 40px rgba(0,0,0,.28);
+    cursor:pointer;
+    transition:.2s;
+}
+
+.kpi-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(75,180,255,.35);
+}
+
+.kpi-icon{
+    width:33px;
+    height:33px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:9px;
+    font-size:14px;
+}
+
+.blue{color:#58b4ff;background:rgba(22,135,255,.13)}
+.orange{color:#ffbe55;background:rgba(255,173,50,.13)}
+.purple{color:#b09aff;background:rgba(155,122,255,.13)}
+.green{color:#4df0bf;background:rgba(0,212,154,.13)}
+.red{color:#ff718d;background:rgba(255,79,112,.13)}
+
+.kpi-label{
+    margin-top:15px;
+    color:#7890a9;
+    font-size:8px;
+    font-weight:850;
+    text-transform:uppercase;
+}
+
+.kpi-value{
+    margin-top:4px;
+    font-size:28px;
+    font-weight:950;
+}
+
+.kpi-small{
+    margin-top:7px;
+    color:#58708a;
+    font-size:7px;
+}
+
+/* =========================
+   ANALYTICS
+========================= */
+
+.analytics-grid{
+    display:grid;
+    grid-template-columns:1.35fr 1fr 1fr;
+    gap:14px;
+}
+
+.analytics-card{
+    min-height:300px;
+    padding:19px;
+    border:1px solid var(--border);
+    border-radius:16px;
+    background:linear-gradient(145deg,#0b1f35,#08182b);
+    box-shadow:0 15px 40px rgba(0,0,0,.28);
+}
+
+.card-title{
+    font-size:11px;
+    font-weight:900;
+}
+
+.card-subtitle{
+    margin-top:4px;
+    color:#60758d;
+    font-size:7px;
+}
+
+.chart-area{
+    min-height:220px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-around;
+    gap:8px;
+    padding:12px 4px 4px;
+    border-bottom:1px solid rgba(123,166,204,.12);
+}
+
+.trend-bar-wrap{
+    height:205px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-end;
+    gap:7px;
+}
+
+.trend-bar{
+    width:100%;
+    max-width:30px;
+    min-height:4px;
+    border-radius:6px 6px 2px 2px;
+    background:linear-gradient(180deg,#00d5ff,#126be9);
+}
+
+.trend-value{
+    color:#a9c0d8;
+    font-size:7px;
+    font-weight:900;
+}
+
+.trend-label{
+    color:#60758d;
+    font-size:7px;
+}
+
+.chart-list{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:18px;
+}
+
+.chart-row{
+    display:grid;
+    grid-template-columns:100px 1fr 25px;
+    gap:8px;
+    align-items:center;
+}
+
+.chart-row-label{
+    overflow:hidden;
+    color:#91a7bd;
+    font-size:7px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.chart-track{
+    height:6px;
+    overflow:hidden;
+    border-radius:99px;
+    background:#142c45;
+}
+
+.chart-fill{
+    height:100%;
+    border-radius:99px;
+    background:linear-gradient(90deg,#1687ff,#00d5ff);
+}
+
+.chart-number{
+    color:#c9daeb;
+    font-size:7px;
+    text-align:right;
+    font-weight:900;
+}
+
+/* =========================
+   ACTION CENTER
+========================= */
+
+.action-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:18px;
+    gap:13px;
+}
+
+.action-card{
+    padding:18px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:#0a1c30;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.action-card:hover{
+    transform:translateY(-3px);
+}
+
+.action-top{
+    display:flex;
+    justify-content:space-between;
+}
+
+.action-title{
+    font-size:10px;
+    font-weight:900;
+}
+
+.action-icon{
+    width:29px;
+    height:29px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+}
+
+.action-card.new .action-icon{
+    color:#58b4ff;
+    background:rgba(22,135,255,.13);
+}
+
+.action-card.corrective .action-icon{
+    color:#ffbe55;
+    background:rgba(255,173,50,.13);
+}
+
+.action-card.overdue .action-icon{
+    color:#ff718d;
+    background:rgba(255,79,112,.13);
+}
+
+.action-count{
+    margin-top:15px;
+    font-size:28px;
+    font-weight:950;
+}
+
+.action-description{
+    margin-top:4px;
+    color:#60758d;
+    font-size:7px;
+}
+
+/* =========================
+   REPORT TOOLBAR
+========================= */
+
+.report-toolbar{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-bottom:13px;
+}
+
+.search-box{
+    flex:1;
+    min-width:250px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#091b2e;
+}
+
+.search-box span{
+    color:#587c9d;
+}
+
+.search-box input{
+    width:100%;
+    border:0;
+    outline:0;
+    color:#fff;
+    background:transparent;
+    font-size:9px;
+}
+
+.filter-select,
+.filter-btn{
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    color:#b9c9dc;
+    background:#091b2e;
+    font-size:8px;
+}
+
+.filter-btn{
+    color:#fff;
+}
+
+.active-filter{
+    padding:7px 10px;
+    border-radius:99px;
+    color:#62dcff;
+    background:rgba(0,180,255,.08);
+    font-size:7px;
+}
+
+/* =========================
+   REPORT CARDS
+========================= */
+
+.reports-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:13px;
 }
 
 .report-card{
-    background:white;
+    position:relative;
+    padding:17px;
+    border:1px solid var(--border);
     border-radius:15px;
-    overflow:hidden;
-    box-shadow:0 3px 15px rgba(0,0,0,.06);
-    transition:.2s;
+    background:linear-gradient(145deg,#0c2137,#08182b);
     cursor:pointer;
+    transition:.2s;
 }
 
 .report-card:hover{
     transform:translateY(-3px);
-    box-shadow:0 10px 25px rgba(0,0,0,.10);
+    border-color:rgba(65,181,255,.35);
 }
 
-.report-photo{
-    height:190px;
-    background:#e5e7eb;
-    position:relative;
-    overflow:hidden;
-}
-
-.report-photo img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.photo-count{
-    position:absolute;
-    right:10px;
-    bottom:10px;
-    background:rgba(0,0,0,.7);
-    color:white;
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:11px;
-}
-
-.no-photo{
-    width:100%;
-    height:100%;
+.report-top{
     display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#9ca3af;
-    font-size:13px;
-}
-
-.report-body{
-    padding:16px;
+    justify-content:space-between;
+    gap:10px;
 }
 
 .report-number{
-    font-weight:bold;
-    color:#2563eb;
-    font-size:13px;
-    margin-bottom:8px;
+    color:#61dfff;
+    font-size:9px;
+    font-weight:900;
+}
+
+.report-date{
+    margin-top:4px;
+    color:#5f7892;
+    font-size:7px;
 }
 
 .report-title{
-    font-size:15px;
-    font-weight:bold;
-    margin-bottom:10px;
-    line-height:1.4;
+    margin-top:15px;
+    font-size:11px;
+    font-weight:900;
 }
 
-.report-info{
+.report-description{
+    min-height:50px;
+    margin-top:7px;
+    color:#8197ad;
+    font-size:8px;
+    line-height:1.65;
+}
+
+.report-meta{
     display:grid;
-    gap:6px;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:13px;
 }
 
-.info-row{
-    font-size:12px;
-    color:#6b7280;
-}
-
-.info-row strong{
-    color:#374151;
-}
-
-.status{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:10px;
-    font-weight:bold;
-    margin-top:10px;
+.meta-label{
+    color:#4e6881;
+    font-size:6px;
     text-transform:uppercase;
 }
 
-.status-new{
-    background:#fef3c7;
-    color:#92400e;
+.meta-value{
+    margin-top:3px;
+    color:#a9bdd0;
+    overflow:hidden;
+    font-size:8px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
 }
 
-.status-progress{
-    background:#dbeafe;
-    color:#1d4ed8;
+.report-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:15px;
+    padding-top:11px;
+    border-top:1px solid rgba(150,190,230,.08);
+}
+
+.report-open{
+    color:#58caff;
+    font-size:8px;
+    font-weight:900;
+}
+
+.overdue-label{
+    color:#ff718d;
+    font-size:7px;
+    font-weight:900;
+}
+
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:5px 8px;
+    border-radius:99px;
+    font-size:7px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.status-new{
+    color:#5db9ff;
+    background:rgba(22,135,255,.12);
+}
+
+.status-investigation{
+    color:#b49cff;
+    background:rgba(155,122,255,.12);
+}
+
+.status-corrective{
+    color:#ffc25b;
+    background:rgba(255,173,50,.12);
+}
+
+.status-verification{
+    color:#5deec0;
+    background:rgba(0,212,154,.12);
 }
 
 .status-closed{
-    background:#dcfce7;
-    color:#166534;
+    color:#7cf4ca;
+    background:rgba(0,212,154,.12);
 }
 
-.status-other{
-    background:#e5e7eb;
-    color:#374151;
+.status-overdue{
+    color:#ff718d;
+    background:rgba(255,79,112,.12);
 }
 
-/* =====================================================
+/* =========================
    EMPTY / LOADING
-===================================================== */
+========================= */
 
 .loading,
 .empty-state{
     grid-column:1/-1;
-    background:white;
-    padding:50px;
-    border-radius:14px;
+    min-height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:#6f879e;
     text-align:center;
-    color:#6b7280;
 }
 
 .spinner{
-    width:30px;
-    height:30px;
-    border:3px solid #e5e7eb;
-    border-top-color:#2563eb;
+    width:28px;
+    height:28px;
+    margin-bottom:12px;
+    border:3px solid rgba(255,255,255,.08);
+    border-top-color:#00d5ff;
     border-radius:50%;
     animation:spin 1s linear infinite;
-    margin:0 auto 15px;
 }
 
 @keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
+    to{transform:rotate(360deg)}
 }
 
-/* =====================================================
+.empty-icon{
+    font-size:25px;
+}
+
+.empty-title{
+    margin-top:8px;
+    color:#c5d6e8;
+    font-size:11px;
+    font-weight:900;
+}
+
+.empty-text{
+    max-width:400px;
+    margin-top:5px;
+    color:#617990;
+    font-size:8px;
+}
+
+/* =========================
    MODAL
-===================================================== */
+========================= */
 
 .modal{
-    display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.65);
-    z-index:500;
-    overflow-y:auto;
-    padding:30px;
+    z-index:2000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,5,12,.78);
+    backdrop-filter:blur(8px);
 }
 
 .modal.show{
-    display:block;
-}
-
-.modal-box{
-    max-width:1100px;
-    margin:20px auto;
-    background:white;
-    border-radius:18px;
-    overflow:hidden;
-}
-
-.modal-header{
-    background:#111827;
-    color:white;
-    padding:20px 25px;
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.modal-header h2{
-    font-size:18px;
-}
-
-.close-btn{
-    background:transparent;
-    border:0;
-    color:white;
-    font-size:28px;
-    cursor:pointer;
 }
 
 .modal-content{
-    padding:25px;
+    width:min(1250px,100%);
+    max-height:94vh;
+    overflow:auto;
+    border:1px solid rgba(150,190,230,.17);
+    border-radius:18px;
+    background:#08192c;
+    box-shadow:0 30px 100px rgba(0,0,0,.65);
 }
 
-.detail-grid{
+.modal-header{
+    position:sticky;
+    top:0;
+    z-index:5;
+    padding:18px 20px;
+    background:#091d32;
+    border-bottom:1px solid var(--border);
+}
+
+.modal-header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.modal-title{
+    font-size:16px;
+    font-weight:950;
+}
+
+.modal-subtitle{
+    margin-top:4px;
+    color:#607991;
+    font-size:8px;
+}
+
+.modal-header-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.modal-close{
+    width:31px;
+    height:31px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    color:#fff;
+    background:#10263d;
+    font-size:18px;
+}
+
+.modal-body{
+    padding:20px;
+}
+
+.modal-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:20px;
+    gap:16px;
 }
 
-.detail-box{
-    background:#f8fafc;
+.modal-section{
+    margin-bottom:14px;
     padding:16px;
-    border-radius:12px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    background:#0b1f34;
 }
 
-.detail-box.full{
+.modal-section-title{
+    margin-bottom:13px;
+    color:#dbe9f7;
+    font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.summary-item{
+    padding:10px;
+    border-radius:8px;
+    background:rgba(255,255,255,.025);
+}
+
+.summary-label{
+    color:#526b84;
+    font-size:6px;
+    text-transform:uppercase;
+}
+
+.summary-value{
+    margin-top:4px;
+    color:#b9cde0;
+    font-size:8px;
+    font-weight:800;
+}
+
+.timeline{
+    display:flex;
+    justify-content:space-between;
+    gap:5px;
+}
+
+.timeline-step{
+    position:relative;
+    flex:1;
+    text-align:center;
+}
+
+.timeline-dot{
+    width:25px;
+    height:25px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    color:#60758d;
+    background:#122b44;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:8px;
+    font-weight:900;
+}
+
+.timeline-step.active .timeline-dot,
+.timeline-step.completed .timeline-dot{
+    color:#fff;
+    background:#1687ff;
+    border-color:#1687ff;
+}
+
+.timeline-step.completed .timeline-dot{
+    background:#00b98a;
+}
+
+.timeline-label{
+    margin-top:6px;
+    color:#627990;
+    font-size:6px;
+}
+
+.timeline-step.active .timeline-label,
+.timeline-step.completed .timeline-label{
+    color:#bcd3e7;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.form-group.full{
     grid-column:1/-1;
 }
 
-.detail-box h4{
-    font-size:12px;
-    color:#6b7280;
-    text-transform:uppercase;
-    margin-bottom:8px;
+.form-label{
+    display:block;
+    margin-bottom:5px;
+    color:#738aa2;
+    font-size:7px;
+    font-weight:800;
 }
 
-.detail-box p{
-    font-size:14px;
-    line-height:1.5;
-    white-space:pre-wrap;
+.form-control{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid rgba(150,190,230,.12);
+    border-radius:8px;
+    outline:0;
+    color:#eaf5ff;
+    background:#07182a;
+    font-size:8px;
 }
 
-/* =====================================================
-   PHOTO GALLERY
-===================================================== */
+textarea.form-control{
+    min-height:80px;
+    resize:vertical;
+}
 
-.gallery-title{
-    font-size:15px;
-    font-weight:bold;
-    margin:25px 0 12px;
+.form-control:focus{
+    border-color:rgba(0,190,255,.45);
+    box-shadow:0 0 0 2px rgba(0,190,255,.06);
+}
+
+.overdue-banner{
+    display:none;
+    margin-bottom:14px;
+    padding:11px;
+    border:1px solid rgba(255,79,112,.2);
+    border-radius:9px;
+    color:#ff91a6;
+    background:rgba(255,79,112,.08);
+    font-size:8px;
+    font-weight:800;
+}
+
+.overdue-banner.show{
+    display:block;
 }
 
 .photo-gallery{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:12px;
+    gap:10px;
 }
 
-.photo-item{
-    border-radius:12px;
+.photo-card{
     overflow:hidden;
-    background:#f1f5f9;
-    min-height:220px;
-    position:relative;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#07182a;
 }
 
-.photo-item img{
-    width:100%;
-    height:220px;
-    object-fit:cover;
-    cursor:pointer;
-    display:block;
+.photo-card-title{
+    padding:7px 9px;
+    color:#7892aa;
+    font-size:7px;
+    font-weight:900;
 }
 
-.photo-label{
-    position:absolute;
-    left:8px;
-    top:8px;
-    background:rgba(0,0,0,.7);
-    color:white;
-    padding:5px 8px;
-    border-radius:6px;
-    font-size:11px;
-}
-
-.photo-error{
-    height:220px;
+.photo-image-wrapper{
+    min-height:130px;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#94a3b8;
-    font-size:12px;
+    background:#030c16;
+}
+
+.photo-evidence-image{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+    cursor:pointer;
+}
+
+.photo-placeholder{
+    min-height:100px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#526a81;
+    font-size:7px;
     text-align:center;
-    padding:15px;
 }
 
-/* =====================================================
-   TOAST
-===================================================== */
-
-.toast{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    background:#111827;
-    color:white;
-    padding:13px 18px;
-    border-radius:9px;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-    display:none;
-    z-index:1000;
-    font-size:13px;
-}
-
-.toast.show{
+.photo-link{
     display:block;
+    padding:8px;
+    color:#59cfff;
+    font-size:7px;
+    text-decoration:none;
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+.video-container{
+    margin-top:12px;
+}
 
-@media(max-width:1000px){
+.video-player{
+    width:100%;
+    max-height:320px;
+    border-radius:10px;
+    background:#000;
+}
+
+.video-link{
+    display:inline-block;
+    margin-top:7px;
+    color:#59cfff;
+    font-size:8px;
+    text-decoration:none;
+}
+
+.modal-footer{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+}
+
+.btn{
+    padding:10px 15px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    font-size:8px;
+    font-weight:900;
+}
+
+.btn-secondary{
+    color:#b9c9dc;
+    background:#10263d;
+}
+
+.btn-primary{
+    color:#fff;
+    border:0;
+    background:linear-gradient(135deg,#168cff,#005fd8);
+}
+
+/* MOBILE */
+
+.mobile-menu{
+    display:none;
+    position:fixed;
+    right:14px;
+    top:14px;
+    z-index:1500;
+    width:40px;
+    height:40px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:#fff;
+    background:#081b30;
+}
+
+@media(max-width:1200px){
+
+    .kpi-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .analytics-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .analytics-card:first-child{
+        grid-column:1/-1;
+    }
+
+    .reports-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-105%);
+        transition:.25s;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .header,
+    .container{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .header-right{
+        padding-right:50px;
+    }
 
     .kpi-grid{
         grid-template-columns:repeat(2,1fr);
     }
 
-    #reportsGrid{
-        grid-template-columns:repeat(2,1fr);
+    .modal-grid{
+        grid-template-columns:1fr;
     }
 
-    .filter-grid{
-        grid-template-columns:1fr 1fr;
+    .reports-grid{
+        grid-template-columns:1fr;
     }
-
 }
 
-@media(max-width:700px){
+@media(max-width:600px){
 
-    .topbar{
-        padding:0 12px;
+    .container{
+        padding:17px 12px 50px;
     }
 
-    .brand-text{
+    .header-inner{
+        padding:0 15px;
+    }
+
+    .system-status{
         display:none;
     }
 
-    .main{
-        padding:15px;
+    .hero{
+        padding:24px 20px;
+    }
+
+    .analytics-grid,
+    .action-grid{
+        grid-template-columns:1fr;
+    }
+
+    .analytics-card:first-child{
+        grid-column:auto;
     }
 
     .kpi-grid{
         grid-template-columns:1fr 1fr;
-    }
-
-    #reportsGrid{
-        grid-template-columns:1fr;
-    }
-
-    .filter-grid{
-        grid-template-columns:1fr;
-    }
-
-    .detail-grid{
-        grid-template-columns:1fr;
-    }
-
-    .detail-box.full{
-        grid-column:auto;
-    }
-
-    .photo-gallery{
-        grid-template-columns:1fr;
+        gap:8px;
     }
 
     .modal{
+        padding:5px;
+    }
+
+    .modal-body{
         padding:10px;
     }
 
+    .photo-gallery{
+        grid-template-columns:1fr 1fr;
+    }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
+<!-- =========================
+     SIDEBAR
+========================= -->
 
-<!-- =====================================================
-     LOGIN PAGE
-===================================================== -->
+<aside class="sidebar" id="sidebar">
 
-<div id="loginPage">
+    <div class="sidebar-brand">
 
-    <div class="login-box">
+        <div class="sidebar-mark">E</div>
 
-        <div class="login-logo">
-            ESH
+        <div>
+            <div class="sidebar-name">ESH CONTROL</div>
+            <div class="sidebar-sub">SAFETY MANAGEMENT</div>
         </div>
 
-        <h1>ESH Dashboard</h1>
+    </div>
 
-        <p>
-            Near Miss Management System
-        </p>
+    <div class="sidebar-label">MAIN MENU</div>
 
-        <input
-            type="text"
-            id="username"
-            placeholder="Username"
-        >
+    <nav class="sidebar-nav">
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            onkeydown="if(event.key==='Enter') login()"
-        >
-
-        <button
-            class="login-btn"
-            onclick="login()"
-        >
-            LOGIN
+        <button class="side-link active"
+                onclick="dashboardNav('overview',this)">
+            <span>▦</span>
+            Overview
         </button>
 
-        <div
-            id="loginError"
-            class="login-error"
+        <button class="side-link"
+                onclick="dashboardNav('analytics',this)">
+            <span>◒</span>
+            Analytics
+        </button>
+
+        <button class="side-link"
+                onclick="dashboardNav('actions',this)">
+            <span>✓</span>
+            Action Center
+        </button>
+
+        <button class="side-link"
+                onclick="dashboardNav('reports',this)">
+            <span>▤</span>
+            Safety Reports
+        </button>
+
+    </nav>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-status">
+
+        <span class="status-dot"></span>
+
+        <div>
+            <b>System Online</b>
+            <small>Data sync active</small>
+        </div>
+
+    </div>
+
+    <div class="sidebar-footer">
+        ESH MANAGEMENT SYSTEM<br>
+        <span>Proactive • Preventive • Continuous Improvement</span>
+    </div>
+
+</aside>
+
+<button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+<div class="header-inner">
+
+    <div class="header-brand">
+
+        <div class="header-logo">E</div>
+
+        <div>
+
+            <div class="header-title">
+                ESH Control Center
+            </div>
+
+            <div class="header-subtitle">
+                ENVIRONMENTAL • SAFETY • HEALTH MANAGEMENT
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            SYSTEM ONLINE
+        </div>
+
+        <div class="user-badge">
+            ESH ADMIN
+        </div>
+
+        <button class="logout-btn"
+                onclick="logoutESH()">
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
+</header>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="container">
+
+
+<section class="hero" id="overview">
+
+    <div class="hero-content">
+
+        <div class="hero-eyebrow">
+            <span class="status-dot"></span>
+            Safety Intelligence Dashboard
+        </div>
+
+        <h1>ESH Management System</h1>
+
+        <p>
+            Monitor near-miss reports, investigation progress,
+            corrective actions and verification from one central
+            ESH management dashboard.
+        </p>
+
+        <div class="hero-actions">
+
+            <button class="hero-btn primary"
+                    onclick="goToReports()">
+                View All Reports
+            </button>
+
+            <button class="hero-btn"
+                    onclick="loadReports()">
+                ↻ Refresh Data
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     KPI
+========================= -->
+
+<div class="section-header">
+
+    <div class="section-heading">
+        Safety Overview
+    </div>
+
+    <div class="section-caption">
+        Live system monitoring
+    </div>
+
+</div>
+
+
+<section class="kpi-grid">
+
+<div class="kpi-card"
+     onclick="goToReports()">
+
+    <div class="kpi-icon blue">▦</div>
+
+    <div class="kpi-label">
+        Total Reports
+    </div>
+
+    <div class="kpi-value"
+         id="totalReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        All submitted cases
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToReports('New')">
+
+    <div class="kpi-icon blue">+</div>
+
+    <div class="kpi-label">
+        New
+    </div>
+
+    <div class="kpi-value"
+         id="newReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Requires review
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToReports('Investigation')">
+
+    <div class="kpi-icon purple">!</div>
+
+    <div class="kpi-label">
+        Investigation
+    </div>
+
+    <div class="kpi-value"
+         id="investigationReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Under investigation
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToReports('Corrective Action')">
+
+    <div class="kpi-icon orange">✓</div>
+
+    <div class="kpi-label">
+        Corrective Action
+    </div>
+
+    <div class="kpi-value"
+         id="correctiveReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Action required
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToReports('Verification')">
+
+    <div class="kpi-icon green">✓</div>
+
+    <div class="kpi-label">
+        Verification
+    </div>
+
+    <div class="kpi-value"
+         id="verificationReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Awaiting verification
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToReports('Closed')">
+
+    <div class="kpi-icon green">✓</div>
+
+    <div class="kpi-label">
+        Closed
+    </div>
+
+    <div class="kpi-value"
+         id="closedReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Completed cases
+    </div>
+
+</div>
+
+
+<div class="kpi-card"
+     onclick="goToOverdue()">
+
+    <div class="kpi-icon red">!</div>
+
+    <div class="kpi-label">
+        Overdue
+    </div>
+
+    <div class="kpi-value"
+         id="overdueReports">
+        0
+    </div>
+
+    <div class="kpi-small">
+        Requires attention
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     ANALYTICS
+========================= -->
+
+<div class="section-header"
+     id="analytics">
+
+    <div class="section-heading">
+        Safety Analytics
+    </div>
+
+    <div class="section-caption">
+        Report activity and distribution
+    </div>
+
+</div>
+
+
+<section class="analytics-grid">
+
+<div class="analytics-card">
+
+    <div class="card-title">
+        7-Day Report Trend
+    </div>
+
+    <div class="card-subtitle">
+        Number of reports submitted
+    </div>
+
+    <div id="trendChart"
+         class="chart-area">
+    </div>
+
+</div>
+
+
+<div class="analytics-card">
+
+    <div class="card-title">
+        Hazard Category
+    </div>
+
+    <div class="card-subtitle">
+        Distribution by category
+    </div>
+
+    <div id="categoryChart"
+         class="chart-list">
+    </div>
+
+</div>
+
+
+<div class="analytics-card">
+
+    <div class="card-title">
+        Department
+    </div>
+
+    <div class="card-subtitle">
+        Reports by department
+    </div>
+
+    <div id="departmentChart"
+         class="chart-list">
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     ACTION CENTER
+========================= -->
+
+<div class="section-header"
+     id="actions">
+
+    <div class="section-heading">
+        Action Center
+    </div>
+
+    <div class="section-caption">
+        Cases requiring attention
+    </div>
+
+</div>
+
+
+<section class="action-grid">
+
+<div class="action-card new"
+     onclick="goToReports('New')">
+
+    <div class="action-top">
+
+        <div class="action-title">
+            New Reports
+        </div>
+
+        <div class="action-icon">
+            +
+        </div>
+
+    </div>
+
+    <div class="action-count"
+         id="actionNew">
+        0
+    </div>
+
+    <div class="action-description">
+        Reports requiring ESH review
+    </div>
+
+</div>
+
+
+<div class="action-card corrective"
+     onclick="goToReports('Corrective Action')">
+
+    <div class="action-top">
+
+        <div class="action-title">
+            Corrective Action
+        </div>
+
+        <div class="action-icon">
+            ✓
+        </div>
+
+    </div>
+
+    <div class="action-count"
+         id="actionCorrective">
+        0
+    </div>
+
+    <div class="action-description">
+        Actions currently pending
+    </div>
+
+</div>
+
+
+<div class="action-card overdue"
+     onclick="goToOverdue()">
+
+    <div class="action-top">
+
+        <div class="action-title">
+            Overdue Cases
+        </div>
+
+        <div class="action-icon">
+            !
+        </div>
+
+    </div>
+
+    <div class="action-count"
+         id="actionOverdue">
+        0
+    </div>
+
+    <div class="action-description">
+        Cases requiring immediate attention
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     REPORTS
+========================= -->
+
+<div class="section-header"
+     id="reports">
+
+    <div class="section-heading">
+        Safety Reports
+    </div>
+
+    <div class="section-caption">
+        Case management
+    </div>
+
+</div>
+
+
+<div class="report-toolbar">
+
+    <div class="search-box">
+
+        <span>⌕</span>
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search report number, location, department..."
         >
-            Invalid username or password.
-        </div>
+
+    </div>
+
+
+    <select id="statusFilter"
+            class="filter-select">
+
+        <option value="">
+            All Status
+        </option>
+
+        <option value="New">
+            New
+        </option>
+
+        <option value="Investigation">
+            Investigation
+        </option>
+
+        <option value="Corrective Action">
+            Corrective Action
+        </option>
+
+        <option value="Verification">
+            Verification
+        </option>
+
+        <option value="Closed">
+            Closed
+        </option>
+
+    </select>
+
+
+    <select id="categoryFilter"
+            class="filter-select">
+
+        <option value="">
+            All Categories
+        </option>
+
+    </select>
+
+
+    <button class="filter-btn"
+            onclick="resetFilters()">
+        Reset
+    </button>
+
+
+    <div id="activeFilter"
+         class="active-filter hidden">
+
+        <span id="activeFilterText">
+            Filter active
+        </span>
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     DASHBOARD PAGE
-===================================================== -->
+<div id="reportsGrid"
+     class="reports-grid">
 
-<div id="dashboardPage">
+    <div class="loading">
 
-    <div class="topbar">
+        <div class="spinner"></div>
 
-        <div class="brand">
-
-            <div class="brand-icon">
-                E
-            </div>
-
-            <div class="brand-text">
-
-                <h1>
-                    ESH Management System
-                </h1>
-
-                <span>
-                    Near Miss Dashboard
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="top-actions">
-
-            <button
-                class="refresh-btn"
-                onclick="loadReports()"
-            >
-                ↻ Refresh
-            </button>
-
-            <button
-                class="logout-btn"
-                onclick="logout()"
-            >
-                Logout
-            </button>
-
-        </div>
+        Loading ESH reports...
 
     </div>
-
-
-    <main class="main">
-
-        <div class="page-title">
-
-            <h2>
-                Near Miss Dashboard
-            </h2>
-
-            <p>
-                Monitor, review and manage submitted ESH reports.
-            </p>
-
-        </div>
-
-
-        <!-- KPI -->
-
-        <div class="kpi-grid">
-
-            <div class="kpi total">
-
-                <div class="kpi-label">
-                    Total Reports
-                </div>
-
-                <div
-                    class="kpi-value"
-                    id="totalCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="kpi new">
-
-                <div class="kpi-label">
-                    New
-                </div>
-
-                <div
-                    class="kpi-value"
-                    id="newCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="kpi progress">
-
-                <div class="kpi-label">
-                    In Progress
-                </div>
-
-                <div
-                    class="kpi-value"
-                    id="progressCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="kpi closed">
-
-                <div class="kpi-label">
-                    Closed
-                </div>
-
-                <div
-                    class="kpi-value"
-                    id="closedCount"
-                >
-                    0
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- FILTER -->
-
-        <div class="filter-box">
-
-            <div class="filter-grid">
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search report number, location, department..."
-                    oninput="applyFilters()"
-                >
-
-                <select
-                    id="statusFilter"
-                    onchange="applyFilters()"
-                >
-
-                    <option value="">
-                        All Status
-                    </option>
-
-                    <option value="New">
-                        New
-                    </option>
-
-                    <option value="In Progress">
-                        In Progress
-                    </option>
-
-                    <option value="Closed">
-                        Closed
-                    </option>
-
-                </select>
-
-
-                <select
-                    id="departmentFilter"
-                    onchange="applyFilters()"
-                >
-
-                    <option value="">
-                        All Departments
-                    </option>
-
-                </select>
-
-
-                <select
-                    id="categoryFilter"
-                    onchange="applyFilters()"
-                >
-
-                    <option value="">
-                        All Categories
-                    </option>
-
-                </select>
-
-
-                <button
-                    class="clear-btn"
-                    onclick="clearFilters()"
-                >
-                    Clear
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- REPORTS -->
-
-        <div class="section-header">
-
-            <h3>
-                Submitted Reports
-            </h3>
-
-            <div
-                class="last-refresh"
-                id="lastRefresh"
-            >
-                LAST REFRESH: -
-            </div>
-
-        </div>
-
-
-        <div id="reportsGrid">
-
-            <div class="loading">
-
-                <div class="spinner"></div>
-
-                Loading reports...
-
-            </div>
-
-        </div>
-
-    </main>
 
 </div>
 
 
-<!-- =====================================================
-     REPORT MODAL
-===================================================== -->
+</main>
 
-<div
-    class="modal"
-    id="reportModal"
-    onclick="closeModalOutside(event)"
->
 
-    <div class="modal-box">
+<!-- =========================
+     CASE MODAL
+========================= -->
 
-        <div class="modal-header">
+<div id="caseModal"
+     class="modal">
 
-            <h2 id="modalTitle">
-                Report Details
-            </h2>
+<div class="modal-content">
 
-            <button
-                class="close-btn"
-                onclick="closeModal()"
-            >
+
+<div class="modal-header">
+
+    <div class="modal-header-top">
+
+        <div>
+
+            <div id="modalTitle"
+                 class="modal-title">
+                Report
+            </div>
+
+            <div id="modalSubtitle"
+                 class="modal-subtitle">
+                ESH Case File
+            </div>
+
+        </div>
+
+
+        <div class="modal-header-right">
+
+            <div id="modalStatusBadge"
+                 class="status-badge status-new">
+                New
+            </div>
+
+            <button class="modal-close"
+                    onclick="closeModal()">
                 ×
             </button>
 
         </div>
 
-
-        <div class="modal-content">
-
-            <div class="detail-grid">
-
-                <div class="detail-box">
-
-                    <h4>
-                        Report Number
-                    </h4>
-
-                    <p id="detailReportNumber">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Date / Time
-                    </h4>
-
-                    <p id="detailDateTime">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Location
-                    </h4>
-
-                    <p id="detailLocation">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Department
-                    </h4>
-
-                    <p id="detailDepartment">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Hazard Category
-                    </h4>
-
-                    <p id="detailCategory">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Reporter
-                    </h4>
-
-                    <p id="detailReporter">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box full">
-
-                    <h4>
-                        What Happened
-                    </h4>
-
-                    <p id="detailWhat">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Status
-                    </h4>
-
-                    <p id="detailStatus">
-                        -
-                    </p>
-
-                </div>
-
-
-                <div class="detail-box">
-
-                    <h4>
-                        Submitted At
-                    </h4>
-
-                    <p id="detailSubmittedAt">
-                        -
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="gallery-title">
-                Photo Evidence
-            </div>
-
-            <div
-                id="photoGallery"
-                class="photo-gallery"
-            >
-            </div>
-
-        </div>
-
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     TOAST
-===================================================== -->
+<div class="modal-body">
 
-<div
-    id="toast"
-    class="toast"
-></div>
+
+<div id="caseOverdue"
+     class="overdue-banner">
+
+    ⚠ This case is overdue and requires ESH attention.
+
+</div>
+
+
+<div class="modal-grid">
+
+
+<!-- LEFT -->
+<div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Case Summary
+</div>
+
+<div class="summary-grid">
+
+<div class="summary-item">
+<div class="summary-label">Report Number</div>
+<div id="caseNumber"
+     class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Location</div>
+<div id="caseLocation"
+     class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Department</div>
+<div id="caseDepartment"
+     class="summary-value">-</div>
+</div>
+
+<div class="summary-item">
+<div class="summary-label">Category</div>
+<div id="caseCategory"
+     class="summary-value">-</div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Case Progress
+</div>
+
+<div id="timeline"
+     class="timeline">
+
+<div class="timeline-step active">
+<div class="timeline-dot">1</div>
+<div class="timeline-label">New</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">2</div>
+<div class="timeline-label">Investigation</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">3</div>
+<div class="timeline-label">Corrective Action</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">4</div>
+<div class="timeline-label">Verification</div>
+</div>
+
+<div class="timeline-step">
+<div class="timeline-dot">5</div>
+<div class="timeline-label">Closed</div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Incident Information
+</div>
+
+<div id="incidentInfo"
+     style="color:#91a8be;font-size:9px;line-height:1.7">
+-
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Reporter Narrative
+</div>
+
+<div id="caseNarrative"
+     style="color:#91a8be;font-size:9px;line-height:1.7;white-space:pre-wrap">
+-
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Photo Evidence
+</div>
+
+<div id="photoEvidence"
+     class="photo-container">
+
+    <div class="photo-placeholder">
+        No photo evidence available
+    </div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Video Evidence
+</div>
+
+<div id="videoEvidence"
+     class="video-container">
+
+    <div class="photo-placeholder">
+        No video evidence available
+    </div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- RIGHT -->
+<div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    ESH Investigation
+</div>
+
+<div class="form-grid">
+
+
+<div class="form-group full">
+
+<label class="form-label">
+Investigation Findings
+</label>
+
+<textarea
+    id="investigationFindings"
+    class="form-control"
+    placeholder="Enter investigation findings..."
+></textarea>
+
+</div>
+
+
+<div class="form-group full">
+
+<label class="form-label">
+Root Cause
+</label>
+
+<textarea
+    id="rootCause"
+    class="form-control"
+    placeholder="Identify the root cause..."
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+ESH Investigator
+</label>
+
+<input
+    id="eshInvestigator"
+    class="form-control"
+    type="text"
+    placeholder="Investigator name"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+ESH Remarks
+</label>
+
+<input
+    id="eshRemarks"
+    class="form-control"
+    type="text"
+    placeholder="ESH remarks"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    Corrective Action
+</div>
+
+<div class="form-grid">
+
+
+<div class="form-group full">
+
+<label class="form-label">
+Corrective Action
+</label>
+
+<textarea
+    id="correctiveAction"
+    class="form-control"
+    placeholder="Describe required corrective action..."
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+Person Responsible
+</label>
+
+<input
+    id="personResponsible"
+    class="form-control"
+    type="text"
+    placeholder="Responsible person"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+Due Date
+</label>
+
+<input
+    id="dueDate"
+    class="form-control"
+    type="date"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-section-title">
+    ESH Verification
+</div>
+
+<div class="form-grid">
+
+
+<div class="form-group full">
+
+<label class="form-label">
+Verification Remarks
+</label>
+
+<textarea
+    id="verificationRemarks"
+    class="form-control"
+    placeholder="Enter verification remarks..."
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+Closed Date
+</label>
+
+<input
+    id="closedDate"
+    class="form-control"
+    type="date"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label class="form-label">
+Case Status
+</label>
+
+<select id="caseStatus"
+        class="form-control">
+
+<option value="New">
+New
+</option>
+
+<option value="Investigation">
+Investigation
+</option>
+
+<option value="Corrective Action">
+Corrective Action
+</option>
+
+<option value="Verification">
+Verification
+</option>
+
+<option value="Closed">
+Closed
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-section">
+
+<div class="modal-footer">
+
+<button
+    class="btn btn-secondary"
+    onclick="closeModal()">
+Cancel
+</button>
+
+<button
+    id="saveButton"
+    class="btn btn-primary"
+    onclick="saveReport()">
+Save Changes
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 
 <script>
 
 /* =====================================================
-   CONFIGURATION
+   LOGIN
+===================================================== */
+
+if(sessionStorage.getItem("eshLoggedIn")!=="true"){
+    window.location.replace("esh-login.html");
+}
+
+function logoutESH(){
+
+    sessionStorage.removeItem("eshLoggedIn");
+
+    window.location.replace("esh-login.html");
+}
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT
 ===================================================== */
 
 const GOOGLE_SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
-/*
-   CHANGE THESE IF YOU WANT DIFFERENT LOGIN DETAILS
-*/
-
-const DASHBOARD_USERNAME = "esh";
-
-const DASHBOARD_PASSWORD = "1234";
-
-
-let reports = [];
-
-let filteredReports = [];
-
-let selectedReport = null;
+let reports=[];
+let selectedReport=null;
+let showOverdueOnly=false;
 
 
 /* =====================================================
-   LOGIN
+   NAVIGATION
 ===================================================== */
 
-function login(){
+function dashboardNav(target,button){
 
-    const username =
-        document.getElementById("username").value.trim();
+    const element=document.getElementById(target);
 
-    const password =
-        document.getElementById("password").value;
-
-    const error =
-        document.getElementById("loginError");
-
-
-    if(
-        username === DASHBOARD_USERNAME &&
-        password === DASHBOARD_PASSWORD
-    ){
-
-        sessionStorage.setItem(
-            "eshLoggedIn",
-            "true"
-        );
-
-        showDashboard();
-
-        loadReports();
-
-    }else{
-
-        error.style.display = "block";
-
+    if(element){
+        element.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
     }
 
-}
+    document
+        .querySelectorAll(".side-link")
+        .forEach(x=>x.classList.remove("active"));
 
-
-/* =====================================================
-   CHECK LOGIN
-===================================================== */
-
-function checkLogin(){
-
-    const loggedIn =
-        sessionStorage.getItem(
-            "eshLoggedIn"
-        );
-
-    if(loggedIn === "true"){
-
-        showDashboard();
-
-        loadReports();
-
-    }else{
-
-        document.getElementById(
-            "loginPage"
-        ).style.display = "flex";
-
-        document.getElementById(
-            "dashboardPage"
-        ).style.display = "none";
-
+    if(button){
+        button.classList.add("active");
     }
 
+    if(window.innerWidth<=900){
+        document
+            .getElementById("sidebar")
+            ?.classList.remove("open");
+    }
 }
 
 
-/* =====================================================
-   SHOW DASHBOARD
-===================================================== */
+function toggleSidebar(){
 
-function showDashboard(){
-
-    document.getElementById(
-        "loginPage"
-    ).style.display = "none";
-
-    document.getElementById(
-        "dashboardPage"
-    ).style.display = "block";
-
-}
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-function logout(){
-
-    sessionStorage.removeItem(
-        "eshLoggedIn"
-    );
-
-    location.reload();
-
+    document
+        .getElementById("sidebar")
+        ?.classList.toggle("open");
 }
 
 
@@ -1289,458 +2497,193 @@ function logout(){
 
 async function loadReports(){
 
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
+    const grid=document.getElementById("reportsGrid");
 
+    if(!reports.length){
 
-    grid.innerHTML = `
-
+        grid.innerHTML=`
         <div class="loading">
-
             <div class="spinner"></div>
-
-            Loading reports...
-
-        </div>
-
-    `;
-
+            Loading ESH reports...
+        </div>`;
+    }
 
     try{
 
-        console.log(
-            "Loading reports from:",
-            GOOGLE_SCRIPT_URL
+        const response=await fetch(
+            GOOGLE_SCRIPT_URL+"?test=reports"
         );
-
-
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL +
-                "?test=reports&_=" +
-                Date.now()
-            );
-
 
         if(!response.ok){
-
-            throw new Error(
-                "HTTP error " +
-                response.status
-            );
-
+            throw new Error("Network error");
         }
 
+        const data=await response.json();
 
-        const data =
-            await response.json();
-
-
-        console.log(
-            "REPORT BACKEND RESPONSE:",
-            data
-        );
-
-
-        if(
-            data &&
-            Array.isArray(data.reports)
-        ){
-
-            reports =
-                data.reports;
-
-        }else if(
-            Array.isArray(data)
-        ){
-
-            reports =
-                data;
-
-        }else{
-
-            reports = [];
-
+        if(Array.isArray(data)){
+            reports=data;
         }
-
-
-        reports =
-            reports.map(
-                normalizeReport
-            );
-
-
-        filteredReports =
-            [...reports];
-
-
-        populateFilters();
+        else if(Array.isArray(data.reports)){
+            reports=data.reports;
+        }
+        else{
+            reports=[];
+        }
 
         updateDashboard();
-
         renderReports();
-
-
-        document.getElementById(
-            "lastRefresh"
-        ).textContent =
-            "LAST REFRESH: " +
-            new Date().toLocaleString();
-
 
     }catch(error){
 
-        console.error(
-            "LOAD REPORTS ERROR:",
-            error
-        );
+        console.error(error);
 
+        grid.innerHTML=`
+        <div class="empty-state">
 
-        grid.innerHTML = `
-
-            <div class="empty-state">
-
-                <strong>
-                    Unable to load reports
-                </strong>
-
-                <br><br>
-
-                ${escapeHtml(
-                    error.message
-                )}
-
-                <br><br>
-
-                Check the Apps Script Web App URL
-                and deployment.
-
+            <div class="empty-icon">
+                ⚠
             </div>
 
-        `;
+            <div class="empty-title">
+                Unable to load reports
+            </div>
 
+            <div class="empty-text">
+                Check your internet connection and
+                Google Apps Script deployment.
+            </div>
 
-        showToast(
-            "Unable to load reports"
-        );
-
+        </div>`;
     }
-
 }
 
 
 /* =====================================================
-   NORMALIZE REPORT
+   DASHBOARD COUNTS
 ===================================================== */
 
-function normalizeReport(r){
+function updateDashboard(){
 
-    return {
+    const total=reports.length;
 
-        rowNumber:
-            r.rowNumber || "",
+    const n=countStatus("New");
+    const i=countStatus("Investigation");
+    const c=countStatus("Corrective Action");
+    const v=countStatus("Verification");
+    const closed=countStatus("Closed");
+    const overdue=calculateOverdue();
 
-        reportNumber:
-            r.reportNumber || "",
+    document.getElementById("totalReports").textContent=total;
+    document.getElementById("newReports").textContent=n;
+    document.getElementById("investigationReports").textContent=i;
+    document.getElementById("correctiveReports").textContent=c;
+    document.getElementById("verificationReports").textContent=v;
+    document.getElementById("closedReports").textContent=closed;
+    document.getElementById("overdueReports").textContent=overdue;
 
-        dateTime:
-            r.dateTime ||
-            r.timestamp ||
-            r.date ||
-            "",
+    document.getElementById("actionNew").textContent=n;
+    document.getElementById("actionCorrective").textContent=c;
+    document.getElementById("actionOverdue").textContent=overdue;
 
-        timestamp:
-            r.timestamp || "",
+    renderAnalytics();
+}
 
-        location:
-            r.location || "",
 
-        department:
-            r.department || "",
+function countStatus(status){
 
-        hazardCategory:
-            r.hazardCategory ||
-            r.category ||
-            "",
-
-        category:
-            r.category ||
-            r.hazardCategory ||
-            "",
-
-        whatHappened:
-            r.whatHappened ||
-            r.narrative ||
-            r.incidentInfo ||
-            "",
-
-        reporterName:
-            r.reporterName || "",
-
-        status:
-            r.status ||
-            "New",
-
-        eshAction:
-            r.eshAction || "",
-
-        investigationFindings:
-            r.investigationFindings || "",
-
-        rootCause:
-            r.rootCause || "",
-
-        correctiveAction:
-            r.correctiveAction || "",
-
-        responsiblePerson:
-            r.responsiblePerson ||
-            r.personResponsible ||
-            "",
-
-        targetDate:
-            r.targetDate ||
-            r.dueDate ||
-            "",
-
-        completionDate:
-            r.completionDate || "",
-
-        verification:
-            r.verification ||
-            r.verificationRemarks ||
-            "",
-
-        closedBy:
-            r.closedBy || "",
-
-        remarks:
-            r.remarks ||
-            r.eshRemarks ||
-            "",
-
-        submittedAt:
-            r.submittedAt || "",
-
-        closedDate:
-            r.closedDate || "",
-
-        photo:
-            cleanPhotoList(
-                r.photo
-            ),
-
-        photos:
-            cleanPhotoList(
-                r.photos
-            ),
-
-        photoLink:
-            cleanPhotoList(
-                r.photoLink
-            ),
-
-        photoLinks:
-            cleanPhotoList(
-                r.photoLinks
-            ),
-
-        photoUrls:
-            cleanPhotoList(
-                r.photoUrls
-            )
-
-    };
-
+    return reports.filter(report=>
+        normalizeStatus(report.status)===
+        normalizeStatus(status)
+    ).length;
 }
 
 
 /* =====================================================
-   CLEAN PHOTO LIST
+   OVERDUE
 ===================================================== */
 
-function cleanPhotoList(value){
+function isReportOverdue(report){
 
-    if(!value){
-        return [];
-    }
-
-
-    if(Array.isArray(value)){
-
-        return value
-            .filter(Boolean)
-            .map(x => String(x).trim())
-            .filter(Boolean);
-
-    }
-
-
-    if(typeof value === "string"){
-
-        return value
-            .split(/\n|,/)
-            .map(x => x.trim())
-            .filter(Boolean);
-
-    }
-
-
-    return [];
-
-}
-
-
-/* =====================================================
-   GET PHOTOS
-===================================================== */
-
-function getPhotoDataFromReport(report){
-
-    let photos = [];
-
-
-    const possibleFields = [
-
-        report.photos,
-
-        report.photoUrls,
-
-        report.photoLinks,
-
-        report.photoLink,
-
-        report.photo
-
-    ];
-
-
-    for(
-        const field of possibleFields
+    if(
+        normalizeStatus(report.status)==="closed"
     ){
-
-        const cleaned =
-            cleanPhotoList(field);
-
-
-        if(cleaned.length > 0){
-
-            photos = [
-                ...photos,
-                ...cleaned
-            ];
-
-        }
-
+        return false;
     }
 
+    if(!report.dueDate){
+        return false;
+    }
 
-    /*
-       Remove duplicates
-    */
+    const due=parseDate(report.dueDate);
 
-    return [
-        ...new Set(
-            photos
-        )
-    ];
+    if(!due){
+        return false;
+    }
 
+    const today=new Date();
+
+    today.setHours(0,0,0,0);
+    due.setHours(0,0,0,0);
+
+    return due<today;
+}
+
+
+function calculateOverdue(){
+
+    return reports.filter(
+        isReportOverdue
+    ).length;
 }
 
 
 /* =====================================================
-   DRIVE FILE ID
+   REPORT FILTERS
 ===================================================== */
 
-function extractDriveFileId(url){
+function goToReports(filter=""){
 
-    if(!url){
-        return "";
-    }
+    showOverdueOnly=false;
 
+    document.getElementById("statusFilter").value=filter;
+    document.getElementById("categoryFilter").value="";
 
-    url = String(url);
+    renderReports();
 
-
-    let match;
-
-
-    match =
-        url.match(
-            /[?&]id=([^&]+)/i
-        );
-
-
-    if(match){
-
-        return match[1];
-
-    }
-
-
-    match =
-        url.match(
-            /\/d\/([^/]+)/i
-        );
-
-
-    if(match){
-
-        return match[1];
-
-    }
-
-
-    return "";
-
+    document
+        .getElementById("reports")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
 }
 
 
-/* =====================================================
-   CREATE IMAGE URLS
-===================================================== */
+function goToOverdue(){
 
-function getImageUrls(originalUrl){
+    showOverdueOnly=true;
 
-    const fileId =
-        extractDriveFileId(
-            originalUrl
-        );
+    document.getElementById("statusFilter").value="";
+    document.getElementById("categoryFilter").value="";
 
+    renderReports();
 
-    if(!fileId){
-
-        return [
-            originalUrl
-        ];
-
-    }
+    document
+        .getElementById("reports")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+}
 
 
-    return [
+function resetFilters(){
 
-        "https://drive.google.com/thumbnail?id=" +
-        encodeURIComponent(fileId) +
-        "&sz=w1600",
+    showOverdueOnly=false;
 
-        "https://drive.google.com/uc?export=view&id=" +
-        encodeURIComponent(fileId),
+    document.getElementById("searchInput").value="";
+    document.getElementById("statusFilter").value="";
+    document.getElementById("categoryFilter").value="";
 
-        "https://drive.google.com/uc?export=download&id=" +
-        encodeURIComponent(fileId),
-
-        "https://lh3.googleusercontent.com/d/" +
-        encodeURIComponent(fileId) +
-        "=w1600",
-
-        "https://drive.usercontent.google.com/download?id=" +
-        encodeURIComponent(fileId) +
-        "&export=view&confirm=t"
-
-    ];
-
+    renderReports();
 }
 
 
@@ -1750,42 +2693,135 @@ function getImageUrls(originalUrl){
 
 function renderReports(){
 
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
+    const grid=document.getElementById("reportsGrid");
+
+    const search=document
+        .getElementById("searchInput")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const status=document
+        .getElementById("statusFilter")
+        .value;
+
+    const category=document
+        .getElementById("categoryFilter")
+        .value;
 
 
-    if(
-        !filteredReports.length
-    ){
+    const filtered=reports.filter(report=>{
 
-        grid.innerHTML = `
+        const searchable=[
 
-            <div class="empty-state">
+            report.reportNumber,
+            report.location,
+            report.department,
+            report.category,
+            report.narrative,
+            report.incidentInfo,
+            report.reporterName
 
-                No reports found.
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
 
-            </div>
 
-        `;
+        if(
+            search &&
+            !searchable.includes(search)
+        ){
+            return false;
+        }
 
-        return;
 
+        if(
+            status &&
+            normalizeStatus(report.status)!==
+            normalizeStatus(status)
+        ){
+            return false;
+        }
+
+
+        if(
+            category &&
+            String(report.category||"")!==category
+        ){
+            return false;
+        }
+
+
+        if(
+            showOverdueOnly &&
+            !isReportOverdue(report)
+        ){
+            return false;
+        }
+
+
+        return true;
+
+    });
+
+
+    const active=document.getElementById("activeFilter");
+    const activeText=document.getElementById("activeFilterText");
+
+    let filterText="";
+
+    if(showOverdueOnly){
+        filterText="Showing overdue cases";
+    }
+    else if(status){
+        filterText="Status: "+status;
+    }
+    else if(category){
+        filterText="Category: "+category;
+    }
+    else if(search){
+        filterText="Search: "+search;
+    }
+
+    if(filterText){
+
+        active.classList.remove("hidden");
+        activeText.textContent=filterText;
+
+    }else{
+
+        active.classList.add("hidden");
     }
 
 
-    grid.innerHTML =
-        filteredReports
-        .map(
-            (report,index) =>
-                createReportCard(
-                    report,
-                    index
-                )
-        )
-        .join("");
+    if(!filtered.length){
 
+        grid.innerHTML=`
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🔎
+            </div>
+
+            <div class="empty-title">
+                No reports found
+            </div>
+
+            <div class="empty-text">
+                Try changing your search or filters.
+            </div>
+
+        </div>`;
+
+        return;
+    }
+
+
+    grid.innerHTML=
+        filtered
+        .map(createReportCard)
+        .join("");
 }
 
 
@@ -1793,213 +2829,146 @@ function renderReports(){
    REPORT CARD
 ===================================================== */
 
-function createReportCard(
-    report,
-    index
-){
+function createReportCard(report){
 
-    const photos =
-        getPhotoDataFromReport(
-            report
+    const status=report.status||"New";
+
+    const overdue=isReportOverdue(report);
+
+    let statusClass=
+        getStatusClass(status);
+
+    if(overdue){
+        statusClass="status-overdue";
+    }
+
+
+    const number=
+        escapeHtml(
+            report.reportNumber||
+            ("REPORT-"+report.rowNumber)
         );
 
 
-    const firstPhoto =
-        photos.length
-            ? photos[0]
-            : "";
-
-
-    const title =
-        report.whatHappened ||
-        "Near Miss Report";
-
-
-    const statusClass =
-        getStatusClass(
-            report.status
+    const category=
+        escapeHtml(
+            report.category||"Uncategorized"
         );
 
 
-    return `
-
-        <div
-            class="report-card"
-            onclick="openReport(${index})"
-        >
-
-            <div class="report-photo">
-
-                ${
-                    firstPhoto
-                    ?
-
-                    `
-
-                    <img
-                        src="${escapeAttribute(
-                            getImageUrls(
-                                firstPhoto
-                            )[0]
-                        )}"
-
-                        alt="Near Miss Photo"
-
-                        loading="lazy"
-
-                        onerror="
-                            tryNextCardImage(
-                                this,
-                                '${escapeAttribute(
-                                    firstPhoto
-                                )}',
-                                1
-                            )
-                        "
-                    >
-
-                    `
-
-                    :
-
-                    `
-
-                    <div class="no-photo">
-                        No Photo
-                    </div>
-
-                    `
-                }
+    const location=
+        escapeHtml(
+            report.location||"-"
+        );
 
 
-                ${
-                    photos.length > 0
+    const department=
+        escapeHtml(
+            report.department||"-"
+        );
 
-                    ?
 
-                    `<div class="photo-count">
-                        📷 ${photos.length}
-                    </div>`
+    const narrative=
+        escapeHtml(
+            report.narrative||
+            report.incidentInfo||
+            "No description available."
+        );
 
-                    :
 
-                    ""
+    const date=
+        formatDisplayDate(
+            report.timestamp||
+            report.date||
+            report.dateTime
+        );
 
-                }
+
+    return`
+
+    <div class="report-card"
+         onclick="openReport(${Number(report.rowNumber)})">
+
+        <div class="report-top">
+
+            <div>
+
+                <div class="report-number">
+                    ${number}
+                </div>
+
+                <div class="report-date">
+                    ${escapeHtml(date)}
+                </div>
+
+            </div>
+
+            <div class="status-badge ${statusClass}">
+                ${escapeHtml(status)}
+            </div>
+
+        </div>
+
+
+        <div class="report-title">
+            ${category}
+        </div>
+
+
+        <div class="report-description">
+
+            ${narrative.substring(0,180)}
+
+            ${narrative.length>180?"...":""}
+
+        </div>
+
+
+        <div class="report-meta">
+
+            <div>
+
+                <div class="meta-label">
+                    Location
+                </div>
+
+                <div class="meta-value">
+                    ${location}
+                </div>
 
             </div>
 
 
-            <div class="report-body">
+            <div>
 
-                <div class="report-number">
-
-                    ${escapeHtml(
-                        report.reportNumber ||
-                        "NO NUMBER"
-                    )}
-
+                <div class="meta-label">
+                    Department
                 </div>
 
-
-                <div class="report-title">
-
-                    ${escapeHtml(
-                        title
-                    )}
-
+                <div class="meta-value">
+                    ${department}
                 </div>
-
-
-                <div class="report-info">
-
-                    <div class="info-row">
-                        <strong>Location:</strong>
-                        ${escapeHtml(
-                            report.location || "-"
-                        )}
-                    </div>
-
-
-                    <div class="info-row">
-                        <strong>Department:</strong>
-                        ${escapeHtml(
-                            report.department || "-"
-                        )}
-                    </div>
-
-
-                    <div class="info-row">
-                        <strong>Date:</strong>
-                        ${escapeHtml(
-                            report.dateTime || "-"
-                        )}
-                    </div>
-
-                </div>
-
-
-                <span
-                    class="status ${statusClass}"
-                >
-                    ${escapeHtml(
-                        report.status ||
-                        "New"
-                    )}
-                </span>
 
             </div>
 
         </div>
 
-    `;
 
-}
+        <div class="report-footer">
 
+            <span class="report-open">
+                Open Case →
+            </span>
 
-/* =====================================================
-   CARD IMAGE FALLBACK
-===================================================== */
+            ${
+                overdue
+                ? '<span class="overdue-label">⚠ OVERDUE</span>'
+                : ''
+            }
 
-function tryNextCardImage(
-    img,
-    originalUrl,
-    index
-){
+        </div>
 
-    const urls =
-        getImageUrls(
-            originalUrl
-        );
-
-
-    if(
-        index >= urls.length
-    ){
-
-        img.style.display =
-            "none";
-
-        return;
-
-    }
-
-
-    img.src =
-        urls[index];
-
-
-    img.onerror =
-        function(){
-
-            tryNextCardImage(
-                img,
-                originalUrl,
-                index + 1
-            );
-
-        };
-
+    </div>`;
 }
 
 
@@ -2007,277 +2976,897 @@ function tryNextCardImage(
    OPEN REPORT
 ===================================================== */
 
-function openReport(index){
+function openReport(rowNumber){
 
-    const report =
-        filteredReports[index];
+    selectedReport=reports.find(
+        report=>
+        Number(report.rowNumber)===
+        Number(rowNumber)
+    );
 
 
-    if(!report){
+    if(!selectedReport){
+
+        alert("Report not found.");
+
         return;
     }
 
 
-    selectedReport =
-        report;
+    const r=selectedReport;
 
 
-    document.getElementById(
-        "modalTitle"
-    ).textContent =
-        report.reportNumber ||
-        "Report Details";
+    document.getElementById("modalTitle")
+        .textContent=
+        r.reportNumber||"ESH Report";
 
 
-    document.getElementById(
-        "detailReportNumber"
-    ).textContent =
-        report.reportNumber || "-";
+    document.getElementById("modalSubtitle")
+        .textContent=
+        "ESH Case File • Row "+r.rowNumber;
 
 
-    document.getElementById(
-        "detailDateTime"
-    ).textContent =
-        report.dateTime || "-";
+    document.getElementById("caseNumber")
+        .textContent=
+        r.reportNumber||"-";
 
 
-    document.getElementById(
-        "detailLocation"
-    ).textContent =
-        report.location || "-";
+    document.getElementById("caseLocation")
+        .textContent=
+        r.location||"-";
 
 
-    document.getElementById(
-        "detailDepartment"
-    ).textContent =
-        report.department || "-";
+    document.getElementById("caseDepartment")
+        .textContent=
+        r.department||"-";
 
 
-    document.getElementById(
-        "detailCategory"
-    ).textContent =
-        report.hazardCategory || "-";
+    document.getElementById("caseCategory")
+        .textContent=
+        r.category||"-";
 
 
-    document.getElementById(
-        "detailReporter"
-    ).textContent =
-        report.reporterName || "-";
+    document.getElementById("incidentInfo")
+        .textContent=
+        r.incidentInfo||"-";
 
 
-    document.getElementById(
-        "detailWhat"
-    ).textContent =
-        report.whatHappened || "-";
+    document.getElementById("caseNarrative")
+        .textContent=
+        r.narrative||"-";
 
 
-    document.getElementById(
-        "detailStatus"
-    ).textContent =
-        report.status || "New";
+    document.getElementById("investigationFindings")
+        .value=
+        r.investigationFindings||"";
 
 
-    document.getElementById(
-        "detailSubmittedAt"
-    ).textContent =
-        report.submittedAt || "-";
+    document.getElementById("rootCause")
+        .value=
+        r.rootCause||"";
 
 
-    loadPhotosFromReport(
-        report
+    document.getElementById("eshInvestigator")
+        .value=
+        r.eshInvestigator||"";
+
+
+    document.getElementById("eshRemarks")
+        .value=
+        r.eshRemarks||"";
+
+
+    document.getElementById("correctiveAction")
+        .value=
+        r.correctiveAction||"";
+
+
+    document.getElementById("personResponsible")
+        .value=
+        r.personResponsible||"";
+
+
+    document.getElementById("dueDate")
+        .value=
+        formatDateInput(r.dueDate);
+
+
+    document.getElementById("verificationRemarks")
+        .value=
+        r.verificationRemarks||"";
+
+
+    document.getElementById("closedDate")
+        .value=
+        formatDateInput(r.closedDate);
+
+
+    document.getElementById("caseStatus")
+        .value=
+        r.status||"New";
+
+
+    loadPhotos(
+        r.photo||
+        r.photoLink||
+        r.photos||
+        ""
     );
 
 
-    document.getElementById(
-        "reportModal"
-    ).classList.add(
-        "show"
+    loadVideo(
+        r.video||
+        r.videoUrl||
+        r.videoLink||
+        ""
     );
 
+
+    updateTimeline(r.status);
+
+    updateCaseOverdue(r);
+
+    updateModalStatus(r.status);
+
+
+    document.getElementById("caseModal")
+        .classList.add("show");
 }
 
 
 /* =====================================================
-   LOAD PHOTO GALLERY
+   PHOTO
 ===================================================== */
 
-function loadPhotosFromReport(
-    report
-){
+function extractDriveFileId(url){
 
-    const gallery =
-        document.getElementById(
-            "photoGallery"
-        );
+    if(!url)return null;
+
+    const value=String(url).trim();
+
+    const patterns=[
+        /\/d\/([a-zA-Z0-9_-]+)/,
+        /[?&]id=([a-zA-Z0-9_-]+)/,
+        /\/file\/d\/([a-zA-Z0-9_-]+)/
+    ];
+
+    for(const pattern of patterns){
+
+        const match=value.match(pattern);
+
+        if(match&&match[1]){
+            return match[1];
+        }
+    }
+
+    return null;
+}
 
 
-    gallery.innerHTML = "";
+function getPhotoList(photoData){
+
+    if(!photoData){
+        return [];
+    }
 
 
-    const photos =
-        getPhotoDataFromReport(
-            report
-        );
+    if(Array.isArray(photoData)){
+
+        return photoData
+            .map(item=>
+                typeof item==="string"
+                ? item
+                : (
+                    item.url||
+                    item.photoUrl||
+                    item.photoData||
+                    ""
+                )
+            )
+            .filter(Boolean);
+    }
+
+
+    const text=String(photoData).trim();
+
+    if(!text){
+        return [];
+    }
+
+
+    if(
+        text.startsWith("[") &&
+        text.endsWith("]")
+    ){
+
+        try{
+
+            const parsed=
+                JSON.parse(text);
+
+            if(Array.isArray(parsed)){
+
+                return parsed
+                    .map(item=>
+                        typeof item==="string"
+                        ? item
+                        : (
+                            item.url||
+                            item.photoUrl||
+                            ""
+                        )
+                    )
+                    .filter(Boolean);
+            }
+
+        }catch(error){
+
+            console.warn(
+                "Photo JSON parse failed",
+                error
+            );
+        }
+    }
+
+
+    return text
+        .split(
+            /\r?\n|,(?=https?:\/\/)|;(?=https?:\/\/)/
+        )
+        .map(item=>item.trim())
+        .filter(Boolean);
+}
+
+
+function loadPhotos(photoData){
+
+    const container=
+        document.getElementById("photoEvidence");
+
+
+    container.innerHTML="";
+
+
+    const photos=
+        getPhotoList(photoData);
 
 
     if(!photos.length){
 
-        gallery.innerHTML = `
-
-            <div class="empty-state">
-                No photo evidence submitted.
-            </div>
-
-        `;
+        container.innerHTML=`
+        <div class="photo-placeholder">
+            No photo evidence available
+        </div>`;
 
         return;
-
     }
 
 
+    const gallery=
+        document.createElement("div");
+
+    gallery.className=
+        "photo-gallery";
+
+
+    container.appendChild(gallery);
+
+
     photos.forEach(
-        (
-            photoLink,
-            index
-        ) => {
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "photo-item";
-
-
-            card.innerHTML = `
-
-                <div class="photo-label">
-                    Photo ${index + 1}
-                </div>
-
-
-                <img
-                    src="${escapeAttribute(
-                        getImageUrls(
-                            photoLink
-                        )[0]
-                    )}"
-
-                    alt="Photo ${index + 1}"
-
-                    loading="lazy"
-
-                    onclick="openPhoto(
-                        '${escapeAttribute(
-                            photoLink
-                        )}'
-                    )"
-                >
-
-            `;
-
-
-            const img =
-                card.querySelector(
-                    "img"
-                );
-
-
-            img.dataset.source =
-                photoLink;
-
-
-            img.dataset.index =
-                "0";
-
-
-            img.onerror =
-                function(){
-
-                    const original =
-                        this.dataset.source;
-
-                    const current =
-                        parseInt(
-                            this.dataset.index
-                        ) || 0;
-
-
-                    const urls =
-                        getImageUrls(
-                            original
-                        );
-
-
-                    if(
-                        current + 1 <
-                        urls.length
-                    ){
-
-                        this.dataset.index =
-                            String(
-                                current + 1
-                            );
-
-                        this.src =
-                            urls[
-                                current + 1
-                            ];
-
-                    }else{
-
-                        this.outerHTML = `
-
-                            <div class="photo-error">
-
-                                Unable to display photo.<br><br>
-
-                                <a
-                                    href="${escapeAttribute(
-                                        original
-                                    )}"
-                                    target="_blank"
-                                >
-                                    Open photo
-                                </a>
-
-                            </div>
-
-                        `;
-
-                    }
-
-                };
-
-
-            gallery.appendChild(
-                card
-            );
-
-        }
+        (photo,index)=>
+        createPhotoCard(
+            photo,
+            index+1,
+            gallery
+        )
     );
+}
 
+
+function createPhotoCard(
+    photoLink,
+    photoNumber,
+    gallery
+){
+
+    const card=
+        document.createElement("div");
+
+    card.className="photo-card";
+
+
+    const title=
+        document.createElement("div");
+
+    title.className=
+        "photo-card-title";
+
+    title.textContent=
+        "Photo "+photoNumber;
+
+    card.appendChild(title);
+
+
+    const fileId=
+        extractDriveFileId(photoLink);
+
+
+    if(!fileId){
+
+        const placeholder=
+            document.createElement("div");
+
+        placeholder.className=
+            "photo-placeholder";
+
+        placeholder.textContent=
+            "Preview unavailable";
+
+        card.appendChild(placeholder);
+
+        gallery.appendChild(card);
+
+        return;
+    }
+
+
+    const wrapper=
+        document.createElement("div");
+
+    wrapper.className=
+        "photo-image-wrapper";
+
+
+    const img=
+        document.createElement("img");
+
+    img.className=
+        "photo-evidence-image";
+
+    img.alt=
+        "Photo Evidence "+photoNumber;
+
+    img.loading="lazy";
+
+
+    const urls=[
+
+        `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`,
+
+        `https://drive.google.com/uc?export=view&id=${fileId}`,
+
+        `https://lh3.googleusercontent.com/d/${fileId}=w1600`
+
+    ];
+
+
+    let index=0;
+
+
+    function tryNext(){
+
+        if(index>=urls.length){
+
+            wrapper.innerHTML=`
+            <div class="photo-placeholder">
+                Preview unavailable
+            </div>`;
+
+            return;
+        }
+
+        img.src=urls[index++];
+    }
+
+
+    img.onload=()=>{
+
+        wrapper.innerHTML="";
+        wrapper.appendChild(img);
+
+    };
+
+
+    img.onerror=()=>{
+
+        tryNext();
+
+    };
+
+
+    wrapper.appendChild(img);
+
+    card.appendChild(wrapper);
+
+
+    const link=
+        document.createElement("a");
+
+    link.className=
+        "photo-link";
+
+    link.href=
+        photoLink;
+
+    link.target="_blank";
+
+    link.rel=
+        "noopener noreferrer";
+
+    link.textContent=
+        "Open Full Photo ↗";
+
+    card.appendChild(link);
+
+
+    gallery.appendChild(card);
+
+
+    tryNext();
 }
 
 
 /* =====================================================
-   OPEN PHOTO
+   VIDEO
 ===================================================== */
 
-function openPhoto(url){
+function loadVideo(videoData){
 
-    if(!url){
+    const container=
+        document.getElementById("videoEvidence");
+
+
+    container.innerHTML="";
+
+
+    if(!videoData){
+
+        container.innerHTML=`
+        <div class="photo-placeholder">
+            No video evidence available
+        </div>`;
+
         return;
     }
 
 
-    window.open(
-        url,
-        "_blank"
-    );
+    let videoUrl="";
 
+
+    if(typeof videoData==="string"){
+
+        videoUrl=videoData;
+
+    }
+    else if(videoData.videoUrl){
+
+        videoUrl=videoData.videoUrl;
+
+    }
+    else if(videoData.url){
+
+        videoUrl=videoData.url;
+
+    }
+    else if(videoData.videoLink){
+
+        videoUrl=videoData.videoLink;
+
+    }
+
+
+    if(!videoUrl){
+
+        container.innerHTML=`
+        <div class="photo-placeholder">
+            Video link unavailable
+        </div>`;
+
+        return;
+    }
+
+
+    const fileId=
+        extractDriveFileId(videoUrl);
+
+
+    if(!fileId){
+
+        const link=
+            document.createElement("a");
+
+        link.href=videoUrl;
+
+        link.target="_blank";
+
+        link.className=
+            "video-link";
+
+        link.textContent=
+            "▶ Open Video ↗";
+
+        container.appendChild(link);
+
+        return;
+    }
+
+
+    const video=
+        document.createElement("video");
+
+    video.className=
+        "video-player";
+
+    video.controls=true;
+
+    video.preload="metadata";
+
+
+    const source=
+        document.createElement("source");
+
+
+    source.src=
+        `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+
+    source.type=
+        "video/mp4";
+
+
+    video.appendChild(source);
+
+
+    container.appendChild(video);
+
+
+    const link=
+        document.createElement("a");
+
+    link.href=
+        videoUrl;
+
+    link.target="_blank";
+
+    link.className=
+        "video-link";
+
+    link.textContent=
+        "▶ Open Video in Google Drive ↗";
+
+    container.appendChild(link);
+}
+
+
+/* =====================================================
+   MODAL STATUS
+===================================================== */
+
+function updateModalStatus(status){
+
+    const badge=
+        document.getElementById(
+            "modalStatusBadge"
+        );
+
+
+    badge.className=
+        "status-badge "+
+        getStatusClass(status);
+
+
+    badge.textContent=
+        status||"New";
+}
+
+
+/* =====================================================
+   OVERDUE MODAL
+===================================================== */
+
+function updateCaseOverdue(report){
+
+    const banner=
+        document.getElementById(
+            "caseOverdue"
+        );
+
+
+    if(isReportOverdue(report)){
+        banner.classList.add("show");
+    }
+    else{
+        banner.classList.remove("show");
+    }
+}
+
+
+/* =====================================================
+   TIMELINE
+===================================================== */
+
+function updateTimeline(status){
+
+    const steps=
+        document.querySelectorAll(
+            ".timeline-step"
+        );
+
+
+    const order=[
+        "new",
+        "investigation",
+        "corrective action",
+        "verification",
+        "closed"
+    ];
+
+
+    const current=
+        order.indexOf(
+            normalizeStatus(status)
+        );
+
+
+    steps.forEach(
+        (step,index)=>{
+
+            step.classList.remove(
+                "active",
+                "completed"
+            );
+
+
+            if(index<current){
+                step.classList.add(
+                    "completed"
+                );
+            }
+
+
+            if(index===current){
+                step.classList.add(
+                    "active"
+                );
+            }
+
+        }
+    );
+}
+
+
+/* =====================================================
+   SAVE REPORT
+===================================================== */
+
+async function saveReport(){
+
+    if(!selectedReport){
+        return;
+    }
+
+
+    const status=
+        document.getElementById(
+            "caseStatus"
+        ).value;
+
+
+    const investigationFindings=
+        document.getElementById(
+            "investigationFindings"
+        ).value.trim();
+
+
+    const rootCause=
+        document.getElementById(
+            "rootCause"
+        ).value.trim();
+
+
+    const correctiveAction=
+        document.getElementById(
+            "correctiveAction"
+        ).value.trim();
+
+
+    const personResponsible=
+        document.getElementById(
+            "personResponsible"
+        ).value.trim();
+
+
+    const dueDate=
+        document.getElementById(
+            "dueDate"
+        ).value;
+
+
+    const verificationRemarks=
+        document.getElementById(
+            "verificationRemarks"
+        ).value.trim();
+
+
+    let closedDate=
+        document.getElementById(
+            "closedDate"
+        ).value;
+
+
+    const eshInvestigator=
+        document.getElementById(
+            "eshInvestigator"
+        ).value.trim();
+
+
+    const eshRemarks=
+        document.getElementById(
+            "eshRemarks"
+        ).value.trim();
+
+
+    if(
+        status==="Investigation" &&
+        !investigationFindings
+    ){
+
+        alert(
+            "Please enter Investigation Findings."
+        );
+
+        return;
+    }
+
+
+    if(
+        status==="Corrective Action" &&
+        !correctiveAction
+    ){
+
+        alert(
+            "Please enter Corrective Action."
+        );
+
+        return;
+    }
+
+
+    if(
+        status==="Closed" &&
+        !verificationRemarks
+    ){
+
+        alert(
+            "Please enter Verification Remarks before closing the case."
+        );
+
+        return;
+    }
+
+
+    if(
+        status==="Closed" &&
+        !closedDate
+    ){
+
+        closedDate=
+            new Date()
+            .toISOString()
+            .split("T")[0];
+    }
+
+
+    if(status!=="Closed"){
+        closedDate="";
+    }
+
+
+    const data={
+
+        action:"updateReport",
+
+        rowNumber:
+            selectedReport.rowNumber,
+
+        status,
+
+        investigationFindings,
+
+        rootCause,
+
+        correctiveAction,
+
+        personResponsible,
+
+        dueDate,
+
+        verificationRemarks,
+
+        eshInvestigator,
+
+        eshRemarks,
+
+        closedDate
+    };
+
+
+    const saveButton=
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    const originalText=
+        saveButton.textContent;
+
+
+    saveButton.disabled=true;
+
+    saveButton.textContent=
+        "Saving...";
+
+
+    try{
+
+        const response=
+            await fetch(
+                GOOGLE_SCRIPT_URL,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(data)
+                }
+            );
+
+
+        const result=
+            await response.text();
+
+
+        console.log(
+            "Save result:",
+            result
+        );
+
+
+        await loadReports();
+
+
+        alert(
+            "Report updated successfully."
+        );
+
+
+        closeModal();
+
+
+    }catch(error){
+
+        console.error(
+            "Save error:",
+            error
+        );
+
+
+        alert(
+            "Unable to save report. Please try again."
+        );
+
+
+    }finally{
+
+        saveButton.disabled=false;
+
+        saveButton.textContent=
+            originalText;
+    }
 }
 
 
@@ -2287,538 +3876,609 @@ function openPhoto(url){
 
 function closeModal(){
 
-    document.getElementById(
-        "reportModal"
-    ).classList.remove(
-        "show"
-    );
+    document
+        .getElementById("caseModal")
+        .classList.remove("show");
 
+    selectedReport=null;
 }
 
 
-/* =====================================================
-   CLOSE OUTSIDE MODAL
-===================================================== */
+document.addEventListener(
+    "keydown",
+    event=>{
 
-function closeModalOutside(
-    event
-){
-
-    if(
-        event.target.id ===
-        "reportModal"
-    ){
-
-        closeModal();
+        if(event.key==="Escape"){
+            closeModal();
+        }
 
     }
-
-}
-
-
-/* =====================================================
-   STATUS CLASS
-===================================================== */
-
-function getStatusClass(
-    status
-){
-
-    const s =
-        String(
-            status || ""
-        )
-        .toLowerCase();
+);
 
 
-    if(
-        s === "new"
-    ){
+document
+    .getElementById("caseModal")
+    .addEventListener(
+        "click",
+        function(event){
 
-        return "status-new";
-
-    }
-
-
-    if(
-        s.includes(
-            "progress"
-        )
-    ){
-
-        return "status-progress";
-
-    }
-
-
-    if(
-        s === "closed"
-    ){
-
-        return "status-closed";
-
-    }
-
-
-    return "status-other";
-
-}
-
-
-/* =====================================================
-   KPI
-===================================================== */
-
-function updateDashboard(){
-
-    const total =
-        reports.length;
-
-
-    const newCount =
-        reports.filter(
-            r =>
-                String(
-                    r.status
-                ).toLowerCase()
-                === "new"
-        ).length;
-
-
-    const progressCount =
-        reports.filter(
-            r =>
-                String(
-                    r.status
-                ).toLowerCase()
-                .includes(
-                    "progress"
-                )
-        ).length;
-
-
-    const closedCount =
-        reports.filter(
-            r =>
-                String(
-                    r.status
-                ).toLowerCase()
-                === "closed"
-        ).length;
-
-
-    document.getElementById(
-        "totalCount"
-    ).textContent =
-        total;
-
-
-    document.getElementById(
-        "newCount"
-    ).textContent =
-        newCount;
-
-
-    document.getElementById(
-        "progressCount"
-    ).textContent =
-        progressCount;
-
-
-    document.getElementById(
-        "closedCount"
-    ).textContent =
-        closedCount;
-
-}
-
-
-/* =====================================================
-   POPULATE FILTERS
-===================================================== */
-
-function populateFilters(){
-
-    const departmentSelect =
-        document.getElementById(
-            "departmentFilter"
-        );
-
-
-    const categorySelect =
-        document.getElementById(
-            "categoryFilter"
-        );
-
-
-    const departments =
-        [
-            ...new Set(
-                reports
-                    .map(
-                        r =>
-                            r.department
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort();
-
-
-    const categories =
-        [
-            ...new Set(
-                reports
-                    .map(
-                        r =>
-                            r.hazardCategory
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort();
-
-
-    departmentSelect.innerHTML =
-        `<option value="">
-            All Departments
-        </option>`;
-
-
-    departments.forEach(
-        department => {
-
-            departmentSelect.innerHTML +=
-                `
-
-                <option value="${escapeAttribute(
-                    department
-                )}">
-
-                    ${escapeHtml(
-                        department
-                    )}
-
-                </option>
-
-                `;
+            if(event.target===this){
+                closeModal();
+            }
 
         }
     );
 
 
-    categorySelect.innerHTML =
+/* =====================================================
+   ANALYTICS
+===================================================== */
+
+function renderAnalytics(){
+
+    renderCategory();
+
+    renderDepartment();
+
+    renderTrend();
+
+    populateCategoryFilter();
+}
+
+
+function renderCategory(){
+
+    const container=
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    const counts={};
+
+
+    reports.forEach(report=>{
+
+        const category=
+            report.category||
+            "Uncategorized";
+
+        counts[category]=
+            (counts[category]||0)+1;
+
+    });
+
+
+    const entries=
+        Object.entries(counts)
+        .sort((a,b)=>b[1]-a[1]);
+
+
+    if(!entries.length){
+
+        container.innerHTML=
+            `<div class="empty-text">
+                No category data
+            </div>`;
+
+        return;
+    }
+
+
+    const max=
+        Math.max(
+            ...entries.map(
+                item=>item[1]
+            )
+        );
+
+
+    container.innerHTML=
+        entries
+        .slice(0,8)
+        .map(entry=>{
+
+            const width=
+                (entry[1]/max)*100;
+
+
+            return`
+
+            <div class="chart-row">
+
+                <div class="chart-row-label">
+                    ${escapeHtml(entry[0])}
+                </div>
+
+                <div class="chart-track">
+
+                    <div
+                        class="chart-fill"
+                        style="width:${width}%">
+                    </div>
+
+                </div>
+
+                <div class="chart-number">
+                    ${entry[1]}
+                </div>
+
+            </div>`;
+
+        })
+        .join("");
+}
+
+
+function renderDepartment(){
+
+    const container=
+        document.getElementById(
+            "departmentChart"
+        );
+
+
+    const counts={};
+
+
+    reports.forEach(report=>{
+
+        const department=
+            report.department||
+            "Unassigned";
+
+        counts[department]=
+            (counts[department]||0)+1;
+
+    });
+
+
+    const entries=
+        Object.entries(counts)
+        .sort((a,b)=>b[1]-a[1]);
+
+
+    if(!entries.length){
+
+        container.innerHTML=
+            `<div class="empty-text">
+                No department data
+            </div>`;
+
+        return;
+    }
+
+
+    const max=
+        Math.max(
+            ...entries.map(
+                item=>item[1]
+            )
+        );
+
+
+    container.innerHTML=
+        entries
+        .slice(0,8)
+        .map(entry=>{
+
+            const width=
+                (entry[1]/max)*100;
+
+
+            return`
+
+            <div class="chart-row">
+
+                <div class="chart-row-label">
+                    ${escapeHtml(entry[0])}
+                </div>
+
+                <div class="chart-track">
+
+                    <div
+                        class="chart-fill"
+                        style="width:${width}%">
+                    </div>
+
+                </div>
+
+                <div class="chart-number">
+                    ${entry[1]}
+                </div>
+
+            </div>`;
+
+        })
+        .join("");
+}
+
+
+function renderTrend(){
+
+    const container=
+        document.getElementById(
+            "trendChart"
+        );
+
+
+    const today=new Date();
+
+    today.setHours(0,0,0,0);
+
+
+    const days=[];
+
+
+    for(let i=6;i>=0;i--){
+
+        const date=
+            new Date(today);
+
+        date.setDate(
+            today.getDate()-i
+        );
+
+        days.push(date);
+    }
+
+
+    const counts=
+        days.map(day=>{
+
+            return reports.filter(
+                report=>{
+
+                    const raw=
+                        report.timestamp||
+                        report.date||
+                        report.dateTime||
+                        report.createdDate;
+
+
+                    const date=
+                        parseDate(raw);
+
+
+                    if(!date){
+                        return false;
+                    }
+
+
+                    date.setHours(
+                        0,0,0,0
+                    );
+
+
+                    return(
+                        date.getTime()===
+                        day.getTime()
+                    );
+
+                }
+            ).length;
+
+        });
+
+
+    const max=
+        Math.max(
+            1,
+            ...counts
+        );
+
+
+    container.innerHTML=
+        days.map(
+            (day,index)=>{
+
+                const count=
+                    counts[index];
+
+
+                const height=
+                    Math.max(
+                        5,
+                        (count/max)*175
+                    );
+
+
+                const label=
+                    day.toLocaleDateString(
+                        "en-MY",
+                        {
+                            day:"2-digit",
+                            month:"short"
+                        }
+                    );
+
+
+                return`
+
+                <div class="trend-bar-wrap">
+
+                    <div class="trend-value">
+                        ${count}
+                    </div>
+
+                    <div
+                        class="trend-bar"
+                        style="height:${height}px">
+                    </div>
+
+                    <div class="trend-label">
+                        ${label}
+                    </div>
+
+                </div>`;
+
+            }
+        ).join("");
+}
+
+
+/* =====================================================
+   CATEGORY FILTER
+===================================================== */
+
+function populateCategoryFilter(){
+
+    const select=
+        document.getElementById(
+            "categoryFilter"
+        );
+
+
+    const current=
+        select.value;
+
+
+    const categories=[
+        ...new Set(
+            reports
+            .map(r=>r.category)
+            .filter(Boolean)
+        )
+    ].sort();
+
+
+    select.innerHTML=
         `<option value="">
             All Categories
         </option>`;
 
 
-    categories.forEach(
-        category => {
-
-            categorySelect.innerHTML +=
-                `
-
-                <option value="${escapeAttribute(
-                    category
-                )}">
-
-                    ${escapeHtml(
-                        category
-                    )}
-
-                </option>
-
-                `;
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   FILTER
-===================================================== */
-
-function applyFilters(){
-
-    const search =
-        document.getElementById(
-            "searchInput"
-        ).value
-        .toLowerCase()
-        .trim();
-
-
-    const status =
-        document.getElementById(
-            "statusFilter"
-        ).value
-        .toLowerCase();
-
-
-    const department =
-        document.getElementById(
-            "departmentFilter"
-        ).value
-        .toLowerCase();
-
-
-    const category =
-        document.getElementById(
-            "categoryFilter"
-        ).value
-        .toLowerCase();
-
-
-    filteredReports =
-        reports.filter(
-            report => {
-
-                const searchable = (
-
-                    String(
-                        report.reportNumber
-                    ) +
-
-                    " " +
-
-                    String(
-                        report.location
-                    ) +
-
-                    " " +
-
-                    String(
-                        report.department
-                    ) +
-
-                    " " +
-
-                    String(
-                        report.whatHappened
-                    ) +
-
-                    " " +
-
-                    String(
-                        report.reporterName
-                    )
-
-                )
-                .toLowerCase();
-
-
-                const matchesSearch =
-                    !search ||
-                    searchable.includes(
-                        search
-                    );
-
-
-                const matchesStatus =
-                    !status ||
-                    String(
-                        report.status
-                    )
-                    .toLowerCase()
-                    === status;
-
-
-                const matchesDepartment =
-                    !department ||
-                    String(
-                        report.department
-                    )
-                    .toLowerCase()
-                    === department;
-
-
-                const matchesCategory =
-                    !category ||
-                    String(
-                        report.hazardCategory
-                    )
-                    .toLowerCase()
-                    === category;
-
-
-                return (
-
-                    matchesSearch &&
-                    matchesStatus &&
-                    matchesDepartment &&
-                    matchesCategory
-
-                );
-
-            }
-        );
-
-
-    renderReports();
-
-}
-
-
-/* =====================================================
-   CLEAR FILTERS
-===================================================== */
-
-function clearFilters(){
-
-    document.getElementById(
-        "searchInput"
-    ).value = "";
-
-
-    document.getElementById(
-        "statusFilter"
-    ).value = "";
-
-
-    document.getElementById(
-        "departmentFilter"
-    ).value = "";
-
-
-    document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
-
-    filteredReports =
-        [...reports];
-
-
-    renderReports();
-
-}
-
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-function showToast(
-    message
-){
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    setTimeout(
-        () => {
-
-            toast.classList.remove(
-                "show"
+    categories.forEach(category=>{
+
+        const option=
+            document.createElement(
+                "option"
             );
 
-        },
-        3000
-    );
+        option.value=category;
 
-}
+        option.textContent=category;
 
+        select.appendChild(option);
 
-/* =====================================================
-   HTML ESCAPE
-===================================================== */
-
-function escapeHtml(
-    value
-){
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
+    });
 
 
-/* =====================================================
-   ATTRIBUTE ESCAPE
-===================================================== */
-
-function escapeAttribute(
-    value
-){
-
-    return escapeHtml(
-        value
-    );
-
-}
-
-
-/* =====================================================
-   ESC KEY
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event){
-
-        if(
-            event.key === "Escape"
-        ){
-
-            closeModal();
-
-        }
-
+    if(categories.includes(current)){
+        select.value=current;
     }
-);
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        ()=>{
+            showOverdueOnly=false;
+            renderReports();
+        }
+    );
+
+
+document
+    .getElementById("statusFilter")
+    .addEventListener(
+        "change",
+        ()=>{
+            showOverdueOnly=false;
+            renderReports();
+        }
+    );
+
+
+document
+    .getElementById("categoryFilter")
+    .addEventListener(
+        "change",
+        ()=>{
+            showOverdueOnly=false;
+            renderReports();
+        }
+    );
+
+
+document
+    .getElementById("caseStatus")
+    .addEventListener(
+        "change",
+        function(){
+
+            const status=this.value;
+
+            updateTimeline(status);
+
+            if(selectedReport){
+
+                const temp={
+                    ...selectedReport,
+                    status
+                };
+
+                updateCaseOverdue(temp);
+            }
+
+            updateModalStatus(status);
+        }
+    );
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function normalizeStatus(status){
+
+    return String(status||"")
+        .trim()
+        .toLowerCase();
+}
+
+
+function getStatusClass(status){
+
+    switch(normalizeStatus(status)){
+
+        case "new":
+            return "status-new";
+
+        case "investigation":
+            return "status-investigation";
+
+        case "corrective action":
+            return "status-corrective";
+
+        case "verification":
+            return "status-verification";
+
+        case "closed":
+            return "status-closed";
+
+        default:
+            return "status-new";
+    }
+}
+
+
+function parseDate(value){
+
+    if(!value){
+        return null;
+    }
+
+
+    if(value instanceof Date){
+        return new Date(
+            value.getTime()
+        );
+    }
+
+
+    const date=
+        new Date(value);
+
+
+    if(isNaN(date.getTime())){
+        return null;
+    }
+
+
+    return date;
+}
+
+
+function formatDateInput(value){
+
+    if(!value){
+        return "";
+    }
+
+
+    const date=
+        parseDate(value);
+
+
+    if(!date){
+        return "";
+    }
+
+
+    return(
+        date.getFullYear()+
+        "-"+
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0")+
+        "-"+
+        String(
+            date.getDate()
+        ).padStart(2,"0")
+    );
+}
+
+
+function formatDisplayDate(value){
+
+    if(!value){
+        return "-";
+    }
+
+
+    const date=
+        parseDate(value);
+
+
+    if(!date){
+        return String(value);
+    }
+
+
+    return date.toLocaleDateString(
+        "en-MY",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+}
+
+
+function escapeHtml(value){
+
+    return String(value??"")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
 
 
 /* =====================================================
    START
 ===================================================== */
 
-window.addEventListener(
-    "load",
-    function(){
+loadReports();
 
-        checkLogin();
 
-    }
+/* Refresh every 30 seconds */
+
+setInterval(
+    loadReports,
+    30000
 );
 
 </script>
 
 </body>
-
 </html>
