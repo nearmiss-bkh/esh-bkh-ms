@@ -11,7 +11,9 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Near Miss Reporting System</title>
+    <title>
+        Near Miss Reporting System
+    </title>
 
     <link
         rel="stylesheet"
@@ -23,26 +25,39 @@
 
 <body>
 
+
     <div class="container">
 
+
+        <!-- ========================================= -->
+        <!-- TITLE -->
+        <!-- ========================================= -->
 
         <h1>
             Near Miss Report
         </h1>
+
 
         <p class="subtitle">
             ESH Near Miss Reporting System
         </p>
 
 
+        <!-- ========================================= -->
+        <!-- REPORT FORM -->
+        <!-- ========================================= -->
+
         <form id="nearMissForm">
 
 
+            <!-- ===================================== -->
             <!-- DATE & TIME -->
+            <!-- ===================================== -->
 
             <label for="dateTime">
                 Date & Time
             </label>
+
 
             <input
                 type="datetime-local"
@@ -53,11 +68,14 @@
             >
 
 
+            <!-- ===================================== -->
             <!-- LOCATION -->
+            <!-- ===================================== -->
 
             <label for="location">
                 Location
             </label>
+
 
             <input
                 type="text"
@@ -68,11 +86,14 @@
             >
 
 
+            <!-- ===================================== -->
             <!-- DEPARTMENT -->
+            <!-- ===================================== -->
 
             <label for="department">
                 Department
             </label>
+
 
             <select
                 id="department"
@@ -115,11 +136,14 @@
             </select>
 
 
+            <!-- ===================================== -->
             <!-- HAZARD CATEGORY -->
+            <!-- ===================================== -->
 
             <label for="hazardCategory">
                 Hazard Category
             </label>
+
 
             <select
                 id="hazardCategory"
@@ -146,11 +170,14 @@
             </select>
 
 
+            <!-- ===================================== -->
             <!-- WHAT HAPPENED -->
+            <!-- ===================================== -->
 
             <label for="whatHappened">
                 What happened?
             </label>
+
 
             <textarea
                 id="whatHappened"
@@ -161,11 +188,14 @@
             ></textarea>
 
 
+            <!-- ===================================== -->
             <!-- REPORTER NAME -->
+            <!-- ===================================== -->
 
             <label for="reporterName">
                 Reporter Name
             </label>
+
 
             <input
                 type="text"
@@ -176,11 +206,14 @@
             >
 
 
+            <!-- ===================================== -->
             <!-- PHOTOS -->
+            <!-- ===================================== -->
 
             <label for="photo">
                 Photos
             </label>
+
 
             <input
                 type="file"
@@ -188,9 +221,10 @@
                 name="photo"
                 accept="image/*"
                 multiple
-                onchange="showPhotoCount(this)"
             >
 
+
+            <!-- PHOTO COUNT -->
 
             <div
                 id="photoCount"
@@ -204,7 +238,22 @@
             </div>
 
 
-            <!-- SUBMIT -->
+            <!-- PHOTO LIMIT -->
+
+            <div
+                style="
+                    margin-top:5px;
+                    font-size:12px;
+                    color:#888;
+                "
+            >
+                Maximum 10 photos
+            </div>
+
+
+            <!-- ===================================== -->
+            <!-- SUBMIT BUTTON -->
+            <!-- ===================================== -->
 
             <button
                 type="submit"
@@ -217,22 +266,24 @@
         </form>
 
 
-        <!-- MESSAGE -->
+        <!-- ========================================= -->
+        <!-- SUCCESS / ERROR MESSAGE -->
+        <!-- ========================================= -->
 
         <div
             id="successMessage"
             class="success-message"
         >
-            Report submitted successfully!
         </div>
 
 
     </div>
 
 
-    <!-- =========================================
-         AUTO MALAYSIA DATE & TIME
-    ========================================== -->
+
+    <!-- ============================================= -->
+    <!-- AUTO MALAYSIA DATE & TIME -->
+    <!-- ============================================= -->
 
     <script>
 
@@ -244,13 +295,14 @@
                 );
 
 
+            if (!dateTime) {
+                return;
+            }
+
+
             const now =
                 new Date();
 
-
-            /*
-             * Malaysia = UTC +8
-             */
 
             const malaysiaTime =
                 new Date(
@@ -271,25 +323,37 @@
             const month =
                 String(
                     malaysiaTime.getMonth() + 1
-                ).padStart(2, "0");
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
             const day =
                 String(
                     malaysiaTime.getDate()
-                ).padStart(2, "0");
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
             const hour =
                 String(
                     malaysiaTime.getHours()
-                ).padStart(2, "0");
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
             const minute =
                 String(
                     malaysiaTime.getMinutes()
-                ).padStart(2, "0");
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
             dateTime.value =
@@ -306,16 +370,12 @@
         }
 
 
-        /*
-         * Run immediately
-         */
+        // Run immediately
 
         updateDateTime();
 
 
-        /*
-         * Update every 10 seconds
-         */
+        // Update every 10 seconds
 
         setInterval(
             updateDateTime,
@@ -325,9 +385,10 @@
     </script>
 
 
-    <!-- =========================================
-         PHOTO COUNTER
-    ========================================== -->
+
+    <!-- ============================================= -->
+    <!-- PHOTO COUNTER -->
+    <!-- ============================================= -->
 
     <script>
 
@@ -353,6 +414,16 @@
             }
 
 
+            if (count > 10) {
+
+                photoCount.textContent =
+                    "❌ Maximum 10 photos allowed";
+
+                return;
+
+            }
+
+
             photoCount.textContent =
                 "📷 " +
                 count +
@@ -360,12 +431,36 @@
 
         }
 
+
+
+        const photoInput =
+            document.getElementById(
+                "photo"
+            );
+
+
+        if (photoInput) {
+
+            photoInput.addEventListener(
+                "change",
+                function () {
+
+                    showPhotoCount(
+                        photoInput
+                    );
+
+                }
+            );
+
+        }
+
     </script>
 
 
-    <!-- =========================================
-         MAIN SCRIPT
-    ========================================== -->
+
+    <!-- ============================================= -->
+    <!-- MAIN JAVASCRIPT -->
+    <!-- ============================================= -->
 
     <script
         src="script.js"
