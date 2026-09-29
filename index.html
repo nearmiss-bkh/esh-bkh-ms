@@ -1,18 +1,31 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Near Miss Reporting System</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
+
     <div class="container">
+
 
         <h1>Near Miss Report</h1>
 
@@ -22,6 +35,9 @@
 
 
         <form id="nearMissForm">
+
+
+            <!-- DATE & TIME -->
 
             <label for="dateTime">
                 Date & Time
@@ -35,6 +51,8 @@
             >
 
 
+            <!-- LOCATION -->
+
             <label for="location">
                 Location
             </label>
@@ -47,6 +65,8 @@
                 required
             >
 
+
+            <!-- DEPARTMENT -->
 
             <label for="department">
                 Department
@@ -93,6 +113,8 @@
             </select>
 
 
+            <!-- HAZARD CATEGORY -->
+
             <label for="hazardCategory">
                 Hazard Category
             </label>
@@ -122,6 +144,8 @@
             </select>
 
 
+            <!-- WHAT HAPPENED -->
+
             <label for="whatHappened">
                 What happened?
             </label>
@@ -134,6 +158,8 @@
                 required
             ></textarea>
 
+
+            <!-- REPORTER -->
 
             <label for="reporterName">
                 Reporter Name
@@ -148,11 +174,14 @@
             >
 
 
-            <!-- MULTIPLE PHOTOS -->
+            <!-- =====================================
+                 MULTIPLE PHOTOS
+            ====================================== -->
 
             <label for="photo">
                 Photos
             </label>
+
 
             <input
                 type="file"
@@ -160,19 +189,25 @@
                 name="photo"
                 accept="image/*"
                 multiple
+                onchange="showPhotoCount(this)"
             >
+
 
             <div
                 id="photoCount"
                 style="
-                    margin-top:8px;
-                    font-size:14px;
-                    color:#666;
+                    margin-top: 8px;
+                    font-size: 14px;
+                    color: #666;
                 "
             >
                 No photos selected
             </div>
 
+
+            <!-- =====================================
+                 SUBMIT
+            ====================================== -->
 
             <button
                 type="submit"
@@ -181,8 +216,11 @@
                 SUBMIT NEAR MISS
             </button>
 
+
         </form>
 
+
+        <!-- SUCCESS / ERROR MESSAGE -->
 
         <div
             id="successMessage"
@@ -191,11 +229,56 @@
             Report submitted successfully!
         </div>
 
+
     </div>
 
 
-    <!-- ONLY LOAD script.js -->
+    <!-- ==========================================
+         PHOTO COUNTER
+    =========================================== -->
+
+    <script>
+
+        function showPhotoCount(input) {
+
+            const photoCount =
+                document.getElementById("photoCount");
+
+
+            const count =
+                input.files.length;
+
+
+            if (count === 0) {
+
+                photoCount.textContent =
+                    "No photos selected";
+
+                return;
+
+            }
+
+
+            photoCount.textContent =
+                "📷 " +
+                count +
+                " photo(s) selected";
+
+
+            console.log(
+                "Photos selected:",
+                count
+            );
+
+        }
+
+    </script>
+
+
+    <!-- MAIN JAVASCRIPT -->
+
     <script src="script.js"></script>
+
 
 </body>
 
