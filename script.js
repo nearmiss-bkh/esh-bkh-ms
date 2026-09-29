@@ -1,10 +1,14 @@
-
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
-// FIXED SUBMISSION VERSION
+// EMPLOYEE SUBMISSION
 // MULTIPLE PHOTOS
+// FORM WILL NOT AUTO-CLEAR
 // =====================================================
 
+
+// =====================================================
+// GET HTML ELEMENTS
+// =====================================================
 
 const form =
     document.getElementById("nearMissForm");
@@ -47,41 +51,7 @@ const JPEG_QUALITY = 0.75;
 
 
 // =====================================================
-// PHOTO COUNTER
-// =====================================================
-
-if (photoInput) {
-
-    photoInput.addEventListener(
-        "change",
-        function () {
-
-            const count =
-                photoInput.files.length;
-
-
-            if (count === 0) {
-
-                photoCount.textContent =
-                    "No photos selected";
-
-            } else {
-
-                photoCount.textContent =
-                    "📷 " +
-                    count +
-                    " photo(s) selected";
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// SET DATE & TIME
+// AUTO MALAYSIA DATE & TIME
 // =====================================================
 
 function setDateTime() {
@@ -154,12 +124,46 @@ function setDateTime() {
 setDateTime();
 
 
-// Update time every minute
+// Update every minute
 
 setInterval(
     setDateTime,
     60000
 );
+
+
+// =====================================================
+// PHOTO COUNTER
+// =====================================================
+
+if (photoInput) {
+
+    photoInput.addEventListener(
+        "change",
+        function () {
+
+            const count =
+                photoInput.files.length;
+
+
+            if (count === 0) {
+
+                photoCount.textContent =
+                    "No photos selected";
+
+            } else {
+
+                photoCount.textContent =
+                    "📷 " +
+                    count +
+                    " photo(s) selected";
+
+            }
+
+        }
+    );
+
+}
 
 
 // =====================================================
@@ -172,19 +176,31 @@ function generateReportNumber() {
         new Date();
 
 
+    const malaysiaTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone:
+                        "Asia/Kuala_Lumpur"
+                }
+            )
+        );
+
+
     const year =
-        now.getFullYear();
+        malaysiaTime.getFullYear();
 
 
     const month =
         String(
-            now.getMonth() + 1
+            malaysiaTime.getMonth() + 1
         ).padStart(2, "0");
 
 
     const day =
         String(
-            now.getDate()
+            malaysiaTime.getDate()
         ).padStart(2, "0");
 
 
@@ -389,20 +405,21 @@ form.addEventListener(
     "submit",
     async function (event) {
 
-        // VERY IMPORTANT
+        // STOP NORMAL HTML FORM SUBMISSION
+
         event.preventDefault();
 
         event.stopPropagation();
 
 
         console.log(
-            "SUBMIT BUTTON CLICKED"
+            "NEAR MISS FORM SUBMITTED"
         );
 
 
-        // ==============================================
-        // BUTTON
-        // ==============================================
+        // =================================================
+        // SUBMIT BUTTON
+        // =================================================
 
         const submitButton =
             form.querySelector(
@@ -428,17 +445,17 @@ form.addEventListener(
 
         try {
 
-            // ==========================================
-            // REPORT NUMBER
-            // ==========================================
+            // =============================================
+            // GENERATE REPORT NUMBER
+            // =============================================
 
             const reportNumber =
                 generateReportNumber();
 
 
-            // ==========================================
-            // PHOTOS
-            // ==========================================
+            // =============================================
+            // GET PHOTOS
+            // =============================================
 
             let photos = [];
 
@@ -448,10 +465,14 @@ form.addEventListener(
 
 
             console.log(
-                "Photos selected:",
+                "Number of photos:",
                 selectedFiles.length
             );
 
+
+            // =============================================
+            // MAX PHOTO CHECK
+            // =============================================
 
             if (
                 selectedFiles.length >
@@ -467,9 +488,9 @@ form.addEventListener(
             }
 
 
-            // ==========================================
+            // =============================================
             // PROCESS PHOTOS
-            // ==========================================
+            // =============================================
 
             for (
                 let i = 0;
@@ -480,6 +501,8 @@ form.addEventListener(
                 const photo =
                     selectedFiles[i];
 
+
+                // Check size
 
                 if (
                     photo.size >
@@ -495,6 +518,8 @@ form.addEventListener(
                 }
 
 
+                // Show progress
+
                 successMessage.innerHTML =
                     "<strong>📷 Processing photo " +
                     (i + 1) +
@@ -503,11 +528,15 @@ form.addEventListener(
                     "...</strong>";
 
 
+                // Compress
+
                 const compressed =
                     await compressPhoto(
                         photo
                     );
 
+
+                // Add photo
 
                 photos.push({
 
@@ -525,9 +554,9 @@ form.addEventListener(
             }
 
 
-            // ==========================================
+            // =============================================
             // CREATE REPORT
-            // ==========================================
+            // =============================================
 
             const report = {
 
@@ -584,14 +613,14 @@ form.addEventListener(
 
 
             console.log(
-                "Sending report:",
+                "REPORT DATA:",
                 report
             );
 
 
-            // ==========================================
-            // UPLOAD
-            // ==========================================
+            // =============================================
+            // SEND TO GOOGLE APPS SCRIPT
+            // =============================================
 
             successMessage.innerHTML =
                 "<strong>☁️ Sending report...</strong>";
@@ -624,21 +653,21 @@ form.addEventListener(
 
 
             console.log(
-                "Server response status:",
+                "Response status:",
                 response.status
             );
 
 
-            // ==========================================
-            // READ SERVER RESPONSE
-            // ==========================================
+            // =============================================
+            // GET RESPONSE
+            // =============================================
 
             const responseText =
                 await response.text();
 
 
             console.log(
-                "Server response:",
+                "Google Apps Script response:",
                 responseText
             );
 
@@ -653,18 +682,20 @@ form.addEventListener(
                         responseText
                     );
 
-            } catch (jsonError) {
+            }
+
+            catch (jsonError) {
 
                 throw new Error(
-                    "Server did not return a valid response."
+                    "Google Apps Script did not return a valid response."
                 );
 
             }
 
 
-            // ==========================================
+            // =============================================
             // CHECK SUCCESS
-            // ==========================================
+            // =============================================
 
             if (
                 !result ||
@@ -673,15 +704,15 @@ form.addEventListener(
 
                 throw new Error(
                     result.error ||
-                    "Report was not accepted by the server."
+                    "Report was not accepted."
                 );
 
             }
 
 
-            // ==========================================
+            // =============================================
             // SUCCESS
-            // ==========================================
+            // =============================================
 
             successMessage.innerHTML =
                 "<strong>✅ Report submitted successfully!</strong>" +
@@ -692,33 +723,34 @@ form.addEventListener(
                 "<br><br>" +
                 "📷 Photos uploaded: <strong>" +
                 photos.length +
-                "</strong>";
+                "</strong>" +
+                "<br><br>" +
+                "Your report has been recorded.";
 
 
-            // ==========================================
-            // ONLY CLEAR AFTER SUCCESS
-            // ==========================================
-
-            form.reset();
-
-
-            setDateTime();
-
-
-            photoCount.textContent =
-                "No photos selected";
+            // =================================================
+            // IMPORTANT
+            // =================================================
+            //
+            // DO NOT CLEAR THE FORM.
+            //
+            // We intentionally leave all information
+            // on screen until the system is confirmed
+            // working correctly.
+            //
+            // =================================================
 
 
             console.log(
-                "FORM RESET AFTER SUCCESS"
+                "REPORT SUBMITTED SUCCESSFULLY"
             );
 
         }
 
 
-        // ==============================================
+        // =================================================
         // ERROR
-        // ==============================================
+        // =================================================
 
         catch (error) {
 
@@ -734,23 +766,14 @@ form.addEventListener(
                 error.message;
 
 
-            /*
-             * IMPORTANT:
-             *
-             * We DO NOT use form.reset()
-             * here.
-             *
-             * Therefore your information
-             * remains in the form if
-             * submission fails.
-             */
+            // DO NOT CLEAR FORM
 
         }
 
 
-        // ==============================================
-        // ENABLE BUTTON
-        // ==============================================
+        // =================================================
+        // ENABLE BUTTON AGAIN
+        // =================================================
 
         finally {
 
