@@ -25,445 +25,309 @@
 <body>
 
 
-    <div class="container">
+<div class="container">
 
 
-        <!-- ========================================= -->
-        <!-- TITLE -->
-        <!-- ========================================= -->
+    <h1>
+        Near Miss Report
+    </h1>
 
-        <h1>
-            Near Miss Report
-        </h1>
 
+    <p class="subtitle">
+        ESH Near Miss Reporting System
+    </p>
 
-        <p class="subtitle">
-            ESH Near Miss Reporting System
-        </p>
 
+    <!-- ========================================= -->
+    <!-- FORM -->
+    <!-- ========================================= -->
 
-        <!-- ========================================= -->
-        <!-- REPORT FORM -->
-        <!-- ========================================= -->
+    <form id="nearMissForm">
 
-        <form id="nearMissForm">
 
+        <!-- DATE & TIME -->
 
-            <!-- ===================================== -->
-            <!-- DATE & TIME -->
-            <!-- ===================================== -->
+        <label for="dateTime">
+            Date & Time
+        </label>
 
-            <label for="dateTime">
-                Date & Time
-            </label>
+        <input
+            type="datetime-local"
+            id="dateTime"
+            name="dateTime"
+            required
+            readonly
+        >
 
 
-            <input
-                type="datetime-local"
-                id="dateTime"
-                name="dateTime"
-                required
-                readonly
-            >
+        <!-- LOCATION -->
 
+        <label for="location">
+            Location
+        </label>
 
-            <!-- ===================================== -->
-            <!-- LOCATION -->
-            <!-- ===================================== -->
+        <input
+            type="text"
+            id="location"
+            name="location"
+            placeholder="Enter location"
+            required
+        >
 
-            <label for="location">
-                Location
-            </label>
 
+        <!-- DEPARTMENT -->
 
-            <input
-                type="text"
-                id="location"
-                name="location"
-                placeholder="Enter location"
-                required
-            >
+        <label for="department">
+            Department
+        </label>
 
+        <select
+            id="department"
+            name="department"
+            required
+        >
 
-            <!-- ===================================== -->
-            <!-- DEPARTMENT -->
-            <!-- ===================================== -->
+            <option value="">
+                Select Department
+            </option>
 
-            <label for="department">
-                Department
-            </label>
+            <option value="Production">
+                Production
+            </option>
 
+            <option value="Warehouse">
+                Warehouse
+            </option>
 
-            <select
-                id="department"
-                name="department"
-                required
-            >
+            <option value="Maintenance">
+                Maintenance
+            </option>
 
-                <option value="">
-                    Select Department
-                </option>
+            <option value="Quality">
+                Quality
+            </option>
 
-                <option value="Production">
-                    Production
-                </option>
+            <option value="Engineering">
+                Engineering
+            </option>
 
-                <option value="Warehouse">
-                    Warehouse
-                </option>
+            <option value="ESH">
+                ESH
+            </option>
 
-                <option value="Maintenance">
-                    Maintenance
-                </option>
+            <option value="Other">
+                Other
+            </option>
 
-                <option value="Quality">
-                    Quality
-                </option>
+        </select>
 
-                <option value="Engineering">
-                    Engineering
-                </option>
 
-                <option value="ESH">
-                    ESH
-                </option>
+        <!-- HAZARD CATEGORY -->
 
-                <option value="Other">
-                    Other
-                </option>
+        <label for="hazardCategory">
+            Hazard Category
+        </label>
 
-            </select>
+        <select
+            id="hazardCategory"
+            name="hazardCategory"
+            required
+        >
 
+            <option value="">
+                Select Category
+            </option>
 
-            <!-- ===================================== -->
-            <!-- HAZARD CATEGORY -->
-            <!-- ===================================== -->
+            <option value="Near Miss">
+                Near Miss
+            </option>
 
-            <label for="hazardCategory">
-                Hazard Category
-            </label>
+            <option value="Unsafe Act">
+                Unsafe Act
+            </option>
 
+            <option value="Unsafe Condition">
+                Unsafe Condition
+            </option>
 
-            <select
-                id="hazardCategory"
-                name="hazardCategory"
-                required
-            >
+        </select>
 
-                <option value="">
-                    Select Category
-                </option>
 
-                <option value="Near Miss">
-                    Near Miss
-                </option>
+        <!-- WHAT HAPPENED -->
 
-                <option value="Unsafe Act">
-                    Unsafe Act
-                </option>
+        <label for="whatHappened">
+            What happened?
+        </label>
 
-                <option value="Unsafe Condition">
-                    Unsafe Condition
-                </option>
+        <textarea
+            id="whatHappened"
+            name="whatHappened"
+            rows="5"
+            placeholder="Describe what happened..."
+            required
+        ></textarea>
 
-            </select>
 
+        <!-- REPORTER -->
 
-            <!-- ===================================== -->
-            <!-- WHAT HAPPENED -->
-            <!-- ===================================== -->
+        <label for="reporterName">
+            Reporter Name
+        </label>
 
-            <label for="whatHappened">
-                What happened?
-            </label>
+        <input
+            type="text"
+            id="reporterName"
+            name="reporterName"
+            placeholder="Enter your name"
+            required
+        >
 
 
-            <textarea
-                id="whatHappened"
-                name="whatHappened"
-                rows="5"
-                placeholder="Describe what happened..."
-                required
-            ></textarea>
+        <!-- PHOTOS -->
 
+        <label for="photo">
+            Photos
+        </label>
 
-            <!-- ===================================== -->
-            <!-- REPORTER NAME -->
-            <!-- ===================================== -->
+        <input
+            type="file"
+            id="photo"
+            name="photo"
+            accept="image/*"
+            multiple
+        >
 
-            <label for="reporterName">
-                Reporter Name
-            </label>
-
-
-            <input
-                type="text"
-                id="reporterName"
-                name="reporterName"
-                placeholder="Enter your name"
-                required
-            >
-
-
-            <!-- ===================================== -->
-            <!-- PHOTOS -->
-            <!-- ===================================== -->
-
-            <label for="photo">
-                Photos
-            </label>
-
-
-            <input
-                type="file"
-                id="photo"
-                name="photo"
-                accept="image/*"
-                multiple
-            >
-
-
-            <!-- PHOTO COUNT -->
-
-            <div
-                id="photoCount"
-                style="
-                    margin-top:8px;
-                    font-size:14px;
-                    color:#666;
-                "
-            >
-                No photos selected
-            </div>
-
-
-            <!-- PHOTO LIMIT -->
-
-            <div
-                style="
-                    margin-top:5px;
-                    font-size:12px;
-                    color:#888;
-                "
-            >
-                Maximum 10 photos
-            </div>
-
-
-            <!-- ===================================== -->
-            <!-- SUBMIT BUTTON -->
-            <!-- ===================================== -->
-
-            <button
-                type="submit"
-                class="submit-button"
-            >
-                SUBMIT NEAR MISS
-            </button>
-
-
-        </form>
-
-
-        <!-- ========================================= -->
-        <!-- SUCCESS / ERROR MESSAGE -->
-        <!-- ========================================= -->
 
         <div
-            id="successMessage"
-            class="success-message"
+            id="photoCount"
+            style="
+                margin-top:8px;
+                font-size:14px;
+                color:#666;
+            "
         >
+            No photos selected
         </div>
 
 
-    </div>
+        <div
+            style="
+                margin-top:5px;
+                font-size:12px;
+                color:#888;
+            "
+        >
+            Maximum 10 photos
+        </div>
+
+
+        <!-- SUBMIT -->
+
+        <button
+            type="submit"
+            class="submit-button"
+        >
+            SUBMIT NEAR MISS
+        </button>
+
+
+    </form>
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="successMessage"
+        class="success-message"
+    ></div>
+
+
+</div>
 
 
 
-    <!-- ============================================= -->
-    <!-- AUTO MALAYSIA DATE & TIME -->
-    <!-- ============================================= -->
+<!-- ========================================= -->
+<!-- AUTO MALAYSIA DATE & TIME -->
+<!-- ========================================= -->
 
-    <script>
+<script>
 
-        function updateDateTime() {
+function updateDateTime() {
 
-            const dateTime =
-                document.getElementById(
-                    "dateTime"
-                );
+    const dateTime =
+        document.getElementById("dateTime");
 
+    if (!dateTime) {
+        return;
+    }
 
-            if (!dateTime) {
-                return;
-            }
+    const now =
+        new Date();
 
-
-            const now =
-                new Date();
-
-
-            const malaysiaTime =
-                new Date(
-                    now.toLocaleString(
-                        "en-US",
-                        {
-                            timeZone:
-                                "Asia/Kuala_Lumpur"
-                        }
-                    )
-                );
-
-
-            const year =
-                malaysiaTime.getFullYear();
-
-
-            const month =
-                String(
-                    malaysiaTime.getMonth() + 1
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const day =
-                String(
-                    malaysiaTime.getDate()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const hour =
-                String(
-                    malaysiaTime.getHours()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            const minute =
-                String(
-                    malaysiaTime.getMinutes()
-                ).padStart(
-                    2,
-                    "0"
-                );
-
-
-            dateTime.value =
-                year +
-                "-" +
-                month +
-                "-" +
-                day +
-                "T" +
-                hour +
-                ":" +
-                minute;
-
-        }
-
-
-        // Run immediately
-
-        updateDateTime();
-
-
-        // Update every 10 seconds
-
-        setInterval(
-            updateDateTime,
-            10000
+    const malaysiaTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone:
+                        "Asia/Kuala_Lumpur"
+                }
+            )
         );
 
-    </script>
+    const year =
+        malaysiaTime.getFullYear();
+
+    const month =
+        String(
+            malaysiaTime.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            malaysiaTime.getDate()
+        ).padStart(2, "0");
+
+    const hour =
+        String(
+            malaysiaTime.getHours()
+        ).padStart(2, "0");
+
+    const minute =
+        String(
+            malaysiaTime.getMinutes()
+        ).padStart(2, "0");
+
+    dateTime.value =
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        "T" +
+        hour +
+        ":" +
+        minute;
+}
+
+
+updateDateTime();
+
+
+setInterval(
+    updateDateTime,
+    10000
+);
+
+</script>
 
 
 
-    <!-- ============================================= -->
-    <!-- PHOTO COUNTER -->
-    <!-- ============================================= -->
+<!-- ========================================= -->
+<!-- MAIN SCRIPT -->
+<!-- ========================================= -->
 
-    <script>
-
-        function showPhotoCount(input) {
-
-            const photoCount =
-                document.getElementById(
-                    "photoCount"
-                );
-
-
-            const count =
-                input.files.length;
-
-
-            if (count === 0) {
-
-                photoCount.textContent =
-                    "No photos selected";
-
-                return;
-
-            }
-
-
-            if (count > 10) {
-
-                photoCount.textContent =
-                    "❌ Maximum 10 photos allowed";
-
-                return;
-
-            }
-
-
-            photoCount.textContent =
-                "📷 " +
-                count +
-                " photo(s) selected";
-
-        }
-
-
-
-        const photoInput =
-            document.getElementById(
-                "photo"
-            );
-
-
-        if (photoInput) {
-
-            photoInput.addEventListener(
-                "change",
-                function () {
-
-                    showPhotoCount(
-                        photoInput
-                    );
-
-                }
-            );
-
-        }
-
-    </script>
-
-
-
-    <!-- ============================================= -->
-    <!-- MAIN JAVASCRIPT -->
-    <!-- ============================================= -->
-
-    <script
-        src="script.js"
-    ></script>
+<script src="script.js"></script>
 
 
 </body>
