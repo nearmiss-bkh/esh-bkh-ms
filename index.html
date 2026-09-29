@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +23,6 @@
 
         <form id="nearMissForm">
 
-            <!-- DATE & TIME -->
             <label for="dateTime">
                 Date & Time
             </label>
@@ -35,7 +35,6 @@
             >
 
 
-            <!-- LOCATION -->
             <label for="location">
                 Location
             </label>
@@ -49,7 +48,6 @@
             >
 
 
-            <!-- DEPARTMENT -->
             <label for="department">
                 Department
             </label>
@@ -95,7 +93,6 @@
             </select>
 
 
-            <!-- HAZARD CATEGORY -->
             <label for="hazardCategory">
                 Hazard Category
             </label>
@@ -125,7 +122,6 @@
             </select>
 
 
-            <!-- WHAT HAPPENED -->
             <label for="whatHappened">
                 What happened?
             </label>
@@ -139,7 +135,6 @@
             ></textarea>
 
 
-            <!-- REPORTER NAME -->
             <label for="reporterName">
                 Reporter Name
             </label>
@@ -154,6 +149,7 @@
 
 
             <!-- MULTIPLE PHOTOS -->
+
             <label for="photo">
                 Photos
             </label>
@@ -178,7 +174,6 @@
             </div>
 
 
-            <!-- SUBMIT -->
             <button
                 type="submit"
                 class="submit-button"
@@ -189,7 +184,6 @@
         </form>
 
 
-        <!-- SUCCESS MESSAGE -->
         <div
             id="successMessage"
             class="success-message"
@@ -200,53 +194,9 @@
     </div>
 
 
-    <!-- PHOTO COUNT SCRIPT -->
-    <script>
-
-        const photoInput =
-            document.getElementById("photo");
-
-        const photoCount =
-            document.getElementById("photoCount");
-
-
-        photoInput.addEventListener(
-            "change",
-            function () {
-
-                const count =
-                    photoInput.files.length;
-
-
-                if (count === 0) {
-
-                    photoCount.textContent =
-                        "No photos selected";
-
-                }
-
-                else if (count === 1) {
-
-                    photoCount.textContent =
-                        "1 photo selected";
-
-                }
-
-                else {
-
-                    photoCount.textContent =
-                        count + " photos selected";
-
-                }
-
-            }
-        );
-
-    </script>
-
-
-    <!-- MAIN JAVASCRIPT -->
+    <!-- ONLY LOAD script.js -->
     <script src="script.js"></script>
 
 </body>
+
 </html>
