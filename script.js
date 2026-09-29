@@ -22,6 +22,12 @@ const photoInput =
 const photoCount =
     document.getElementById("photoCount");
 
+const videoInput =
+    document.getElementById("video");
+
+const videoInfo =
+    document.getElementById("videoInfo");
+
 
 // =====================================================
 // GOOGLE APPS SCRIPT URL
@@ -39,6 +45,9 @@ const MAX_PHOTOS = 10;
 
 const MAX_PHOTO_SIZE =
     10 * 1024 * 1024;
+
+const MAX_VIDEO_SIZE =
+    50 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
 
@@ -94,6 +103,63 @@ if (photoInput) {
                 "📷 " +
                 count +
                 " photo(s) selected";
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// VIDEO INFORMATION
+// =====================================================
+
+if (videoInput) {
+
+    videoInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                videoInput.files[0];
+
+
+            if (!file) {
+
+                videoInfo.textContent =
+                    "No video selected";
+
+                return;
+
+            }
+
+
+            const sizeMB =
+                file.size /
+                (1024 * 1024);
+
+
+            if (
+                file.size >
+                MAX_VIDEO_SIZE
+            ) {
+
+                videoInfo.textContent =
+                    "❌ Video is larger than 50 MB";
+
+                videoInput.value = "";
+
+                return;
+
+            }
+
+
+            videoInfo.textContent =
+                "🎥 " +
+                file.name +
+                " (" +
+                sizeMB.toFixed(1) +
+                " MB)";
 
         }
     );
@@ -341,6 +407,88 @@ function compressPhoto(file) {
 
 
 // =====================================================
+// READ VIDEO
+// =====================================================
+
+function readVideo(file) {
+
+    return new Promise(
+        function (resolve, reject) {
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    try {
+
+                        const base64 =
+                            event.target.result
+                                .split(",")[1];
+
+
+                        resolve({
+
+                            data:
+                                base64,
+
+                            type:
+                                file.type ||
+                                "video/mp4",
+
+                            name:
+                                "NearMiss_Video_" +
+                                Date.now() +
+                                "_" +
+                                Math.random()
+                                    .toString(36)
+                                    .substring(
+                                        2,
+                                        8
+                                    ) +
+                                "_" +
+                                file.name
+
+                        });
+
+                    }
+
+                    catch (error) {
+
+                        reject(
+                            new Error(
+                                "Unable to process video."
+                            )
+                        );
+
+                    }
+
+                };
+
+
+            reader.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Unable to read video."
+                        )
+                    );
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+// =====================================================
 // SUBMIT FORM
 // =====================================================
 
@@ -494,6 +642,52 @@ if (!form) {
 
 
                 // =========================================
+                // GET VIDEO
+                // =========================================
+
+                let video = null;
+
+
+                if (
+                    videoInput &&
+                    videoInput.files.length > 0
+                ) {
+
+                    const selectedVideo =
+                        videoInput.files[0];
+
+
+                    console.log(
+                        "Video selected:",
+                        selectedVideo.name
+                    );
+
+
+                    if (
+                        selectedVideo.size >
+                        MAX_VIDEO_SIZE
+                    ) {
+
+                        throw new Error(
+                            "Video is larger than 50 MB."
+                        );
+
+                    }
+
+
+                    successMessage.innerHTML =
+                        "<strong>🎥 Processing video...</strong>";
+
+
+                    video =
+                        await readVideo(
+                            selectedVideo
+                        );
+
+                }
+
+
+                // =========================================
                 // CREATE REPORT
                 // =========================================
 
@@ -532,6 +726,9 @@ if (!form) {
 
                     photos:
                         photos,
+
+                    video:
+                        video,
 
                     status:
                         "New",
@@ -651,6 +848,10 @@ if (!form) {
                     photos.length +
                     "</strong>" +
                     "<br><br>" +
+                    "🎥 Video uploaded: <strong>" +
+                    (video ? "Yes" : "No") +
+                    "</strong>" +
+                    "<br><br>" +
                     "Your report has been recorded.";
 
 
@@ -660,13 +861,7 @@ if (!form) {
 
 
                 // =========================================
-                // IMPORTANT
-                // =========================================
-                //
-                // DO NOT RESET THE FORM.
-                //
-                // The form remains filled after submission.
-                //
+                // DO NOT RESET FORM
                 // =========================================
 
             }
