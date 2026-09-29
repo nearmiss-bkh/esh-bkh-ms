@@ -1,3 +1,4 @@
+```javascript
 // =====================================================
 // NEAR MISS REPORTING SYSTEM
 // EMPLOYEE SUBMISSION
@@ -8,16 +9,59 @@ const form = document.getElementById("nearMissForm");
 const successMessage = document.getElementById("successMessage");
 const dateTime = document.getElementById("dateTime");
 const photoInput = document.getElementById("photo");
+const photoCount = document.getElementById("photoCount");
+
+
+// =====================================================
+// GOOGLE APPS SCRIPT URL
+// =====================================================
 
 const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
+
+// =====================================================
+// PHOTO SETTINGS
+// =====================================================
+
 const MAX_PHOTOS = 10;
-const MAX_PHOTO_SIZE = 10 * 1024 * 1024;
+
+const MAX_PHOTO_SIZE =
+    10 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
 const MAX_HEIGHT = 1200;
+
 const JPEG_QUALITY = 0.75;
+
+
+// =====================================================
+// PHOTO SELECTION COUNTER
+// =====================================================
+
+photoInput.addEventListener(
+    "change",
+    function () {
+
+        const count =
+            photoInput.files.length;
+
+
+        if (count === 0) {
+
+            photoCount.textContent =
+                "No photos selected";
+
+        } else {
+
+            photoCount.textContent =
+                count +
+                " photo(s) selected";
+
+        }
+
+    }
+);
 
 
 // =====================================================
@@ -29,7 +73,8 @@ function setDateTime() {
     const now = new Date();
 
     now.setMinutes(
-        now.getMinutes() - now.getTimezoneOffset()
+        now.getMinutes() -
+        now.getTimezoneOffset()
     );
 
     dateTime.value =
@@ -47,30 +92,42 @@ function generateReportNumber() {
 
     const now = new Date();
 
-    const year = now.getFullYear();
+    const year =
+        now.getFullYear();
 
     const month =
-        String(now.getMonth() + 1).padStart(2, "0");
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
 
     const day =
-        String(now.getDate()).padStart(2, "0");
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
 
     let counter =
         Number(
-            localStorage.getItem("nearMissCounter")
+            localStorage.getItem(
+                "nearMissCounter"
+            )
         ) || 0;
 
+
     counter++;
+
 
     localStorage.setItem(
         "nearMissCounter",
         counter
     );
 
+
     return (
         `NM-${year}${month}${day}-` +
         `${String(counter).padStart(4, "0")}`
     );
+
 }
 
 
@@ -80,116 +137,157 @@ function generateReportNumber() {
 
 function compressPhoto(file) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(
+        (resolve, reject) => {
 
-        const reader = new FileReader();
-
-        reader.onload = function(event) {
-
-            const img = new Image();
-
-            img.onload = function() {
-
-                let width = img.width;
-                let height = img.height;
-
-                if (
-                    width > MAX_WIDTH ||
-                    height > MAX_HEIGHT
-                ) {
-
-                    const ratio =
-                        Math.min(
-                            MAX_WIDTH / width,
-                            MAX_HEIGHT / height
-                        );
-
-                    width =
-                        Math.round(width * ratio);
-
-                    height =
-                        Math.round(height * ratio);
-                }
+            const reader =
+                new FileReader();
 
 
-                const canvas =
-                    document.createElement("canvas");
+            reader.onload =
+                function (event) {
 
-                canvas.width = width;
-                canvas.height = height;
-
-
-                const context =
-                    canvas.getContext("2d");
-
-                context.drawImage(
-                    img,
-                    0,
-                    0,
-                    width,
-                    height
-                );
+                    const img =
+                        new Image();
 
 
-                const compressed =
-                    canvas.toDataURL(
-                        "image/jpeg",
-                        JPEG_QUALITY
+                    img.onload =
+                        function () {
+
+                            let width =
+                                img.width;
+
+                            let height =
+                                img.height;
+
+
+                            if (
+                                width >
+                                    MAX_WIDTH ||
+                                height >
+                                    MAX_HEIGHT
+                            ) {
+
+                                const ratio =
+                                    Math.min(
+                                        MAX_WIDTH /
+                                            width,
+                                        MAX_HEIGHT /
+                                            height
+                                    );
+
+
+                                width =
+                                    Math.round(
+                                        width *
+                                            ratio
+                                    );
+
+                                height =
+                                    Math.round(
+                                        height *
+                                            ratio
+                                    );
+
+                            }
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                width;
+
+                            canvas.height =
+                                height;
+
+
+                            const context =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            context.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+                            const compressed =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    JPEG_QUALITY
+                                );
+
+
+                            resolve({
+
+                                data:
+                                    compressed.split(
+                                        ","
+                                    )[1],
+
+                                type:
+                                    "image/jpeg",
+
+                                name:
+                                    "NearMiss_" +
+                                    Date.now() +
+                                    "_" +
+                                    Math.random()
+                                        .toString(36)
+                                        .substring(
+                                            2,
+                                            8
+                                        ) +
+                                    ".jpg"
+
+                            });
+
+                        };
+
+
+                    img.onerror =
+                        function () {
+
+                            reject(
+                                new Error(
+                                    "Unable to read image."
+                                )
+                            );
+
+                        };
+
+
+                    img.src =
+                        event.target.result;
+
+                };
+
+
+            reader.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Unable to read photo."
+                        )
                     );
 
-
-                resolve({
-
-                    data:
-                        compressed.split(",")[1],
-
-                    type:
-                        "image/jpeg",
-
-                    name:
-                        "NearMiss_" +
-                        Date.now() +
-                        "_" +
-                        Math.random()
-                            .toString(36)
-                            .substring(2, 8) +
-                        ".jpg"
-
-                });
-
-            };
+                };
 
 
-            img.onerror = function() {
+            reader.readAsDataURL(file);
 
-                reject(
-                    new Error(
-                        "Unable to read image."
-                    )
-                );
-
-            };
-
-
-            img.src = event.target.result;
-
-        };
-
-
-        reader.onerror = function() {
-
-            reject(
-                new Error(
-                    "Unable to read photo."
-                )
-            );
-
-        };
-
-
-        reader.readAsDataURL(file);
-
-    });
+        }
+    );
 
 }
 
@@ -200,18 +298,24 @@ function compressPhoto(file) {
 
 form.addEventListener(
     "submit",
-    async function(event) {
+    async function (event) {
 
-        // IMPORTANT
         event.preventDefault();
 
-        // Prevent double submission
+
+        // ==============================================
+        // SUBMIT BUTTON
+        // ==============================================
+
         const submitButton =
             form.querySelector(
                 ".submit-button"
             );
 
-        submitButton.disabled = true;
+
+        submitButton.disabled =
+            true;
+
 
         submitButton.textContent =
             "SUBMITTING...";
@@ -219,6 +323,7 @@ form.addEventListener(
 
         successMessage.style.display =
             "block";
+
 
         successMessage.innerHTML =
             "<strong>⏳ Preparing report...</strong>";
@@ -235,36 +340,43 @@ form.addEventListener(
 
 
             // ==========================================
-            // GET PHOTOS
+            // GET SELECTED PHOTOS
             // ==========================================
 
             let photos = [];
+
 
             const selectedFiles =
                 photoInput.files;
 
 
+            // ==========================================
+            // CHECK PHOTO COUNT
+            // ==========================================
+
+            if (
+                selectedFiles &&
+                selectedFiles.length >
+                MAX_PHOTOS
+            ) {
+
+                throw new Error(
+                    "You can upload a maximum of " +
+                    MAX_PHOTOS +
+                    " photos."
+                );
+
+            }
+
+
+            // ==========================================
+            // PROCESS PHOTOS
+            // ==========================================
+
             if (
                 selectedFiles &&
                 selectedFiles.length > 0
             ) {
-
-                if (
-                    selectedFiles.length >
-                    MAX_PHOTOS
-                ) {
-
-                    throw new Error(
-                        "You can upload a maximum of " +
-                        MAX_PHOTOS +
-                        " photos."
-                    );
-                }
-
-
-                // ======================================
-                // PROCESS EACH PHOTO
-                // ======================================
 
                 for (
                     let i = 0;
@@ -276,6 +388,8 @@ form.addEventListener(
                         selectedFiles[i];
 
 
+                    // Check original photo size
+
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -286,8 +400,11 @@ form.addEventListener(
                             (i + 1) +
                             " is larger than 10 MB."
                         );
+
                     }
 
+
+                    // Show progress
 
                     successMessage.innerHTML =
                         "<strong>📷 Processing photo " +
@@ -297,11 +414,15 @@ form.addEventListener(
                         "...</strong>";
 
 
+                    // Compress photo
+
                     const compressed =
                         await compressPhoto(
                             photo
                         );
 
+
+                    // Add to photos array
 
                     photos.push({
 
@@ -330,41 +451,50 @@ form.addEventListener(
                 reportNumber:
                     reportNumber,
 
+
                 dateTime:
                     document.getElementById(
                         "dateTime"
                     ).value,
+
 
                 location:
                     document.getElementById(
                         "location"
                     ).value,
 
+
                 department:
                     document.getElementById(
                         "department"
                     ).value,
+
 
                 hazardCategory:
                     document.getElementById(
                         "hazardCategory"
                     ).value,
 
+
                 whatHappened:
                     document.getElementById(
                         "whatHappened"
                     ).value,
+
 
                 reporterName:
                     document.getElementById(
                         "reporterName"
                     ).value,
 
+
                 photos:
                     photos,
 
+
                 status:
                     "New",
+
 
                 submittedAt:
                     new Date().toISOString()
@@ -373,11 +503,12 @@ form.addEventListener(
 
 
             // ==========================================
-            // UPLOAD
+            // UPLOAD REPORT
             // ==========================================
 
             successMessage.innerHTML =
-                "<strong>☁️ Uploading report...</strong><br><br>" +
+                "<strong>☁️ Uploading report...</strong>" +
+                "<br><br>" +
                 photos.length +
                 " photo(s) attached.";
 
@@ -387,19 +518,30 @@ form.addEventListener(
                     GOOGLE_SCRIPT_URL,
                     {
 
-                        method: "POST",
+                        method:
+                            "POST",
+
 
                         headers: {
+
                             "Content-Type":
                                 "text/plain;charset=utf-8"
+
                         },
 
+
                         body:
-                            JSON.stringify(report)
+                            JSON.stringify(
+                                report
+                            )
 
                     }
                 );
 
+
+            // ==========================================
+            // READ RESPONSE
+            // ==========================================
 
             const result =
                 await response.json();
@@ -426,7 +568,7 @@ form.addEventListener(
 
 
             // ==========================================
-            // SUCCESS
+            // SUCCESS MESSAGE
             // ==========================================
 
             successMessage.innerHTML =
@@ -442,28 +584,25 @@ form.addEventListener(
 
 
             // ==========================================
-            // ONLY RESET AFTER SUCCESS
+            // RESET FORM ONLY AFTER SUCCESS
             // ==========================================
 
             form.reset();
 
+
             setDateTime();
 
 
-            const photoCount =
-                document.getElementById(
-                    "photoCount"
-                );
-
-            if (photoCount) {
-
-                photoCount.textContent =
-                    "No photos selected";
-
-            }
+            photoCount.textContent =
+                "No photos selected";
 
 
         }
+
+
+        // ==============================================
+        // ERROR
+        // ==============================================
 
         catch (error) {
 
@@ -480,14 +619,20 @@ form.addEventListener(
 
 
             // IMPORTANT:
-            // DO NOT RESET FORM WHEN ERROR OCCURS
+            // Form is NOT reset if there is an error.
 
         }
+
+
+        // ==============================================
+        // ENABLE BUTTON AGAIN
+        // ==============================================
 
         finally {
 
             submitButton.disabled =
                 false;
+
 
             submitButton.textContent =
                 "SUBMIT NEAR MISS";
