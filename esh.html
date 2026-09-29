@@ -10,7 +10,7 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>ESH Near Miss Report</title>
+<title>Environmental, Safety and Health</title>
 
 <style>
 
@@ -1933,11 +1933,11 @@ input:focus {
         <div>
 
             <div class="header-title">
-                ESH NEAR MISS REPORT
+                Environmental, Safety and Health
             </div>
 
             <div class="header-subtitle">
-                Near Miss Management System
+                ESH Management System
             </div>
 
         </div>
@@ -1985,12 +1985,11 @@ input:focus {
 <section class="hero">
 
     <h1>
-        Near Miss Command Center
+        ESH System
     </h1>
 
     <p>
-        Monitor, investigate and close workplace
-        near miss reports efficiently.
+        Transform proactive hazard reporting into actionable safety intelligence and rapid incident closure.
     </p>
 
 </section>
@@ -3938,35 +3937,20 @@ function loadPhoto(link) {
 
     const sources = [
 
-        /*
-         * Primary Drive thumbnail.
-         */
         "https://drive.google.com/thumbnail?id=" +
         encodeURIComponent(fileId) +
         "&sz=w1600",
 
-        /*
-         * Drive image view.
-         */
         "https://drive.google.com/uc?export=view&id=" +
         encodeURIComponent(fileId),
 
-        /*
-         * Drive download endpoint.
-         */
         "https://drive.google.com/uc?export=download&id=" +
         encodeURIComponent(fileId),
 
-        /*
-         * Googleusercontent image endpoint.
-         */
         "https://lh3.googleusercontent.com/d/" +
         encodeURIComponent(fileId) +
         "=w1600",
 
-        /*
-         * Drive user content endpoint.
-         */
         "https://drive.usercontent.google.com/download?id=" +
         encodeURIComponent(fileId) +
         "&export=view&confirm=t"
@@ -4120,9 +4104,6 @@ function loadPhoto(link) {
 
     /* =================================================
        GOOGLE DRIVE PREVIEW FALLBACK
-       
-       If all direct image endpoints fail,
-       embed Google's own preview inside the modal.
     ================================================= */
 
     function showDrivePreviewFallback() {
@@ -4230,10 +4211,6 @@ function extractDriveFileId(value) {
     }
 
 
-    /* -----------------------------------------------
-       /file/d/FILE_ID
-    ----------------------------------------------- */
-
     let match =
         text.match(
             /\/file\/d\/([a-zA-Z0-9_-]+)/
@@ -4246,10 +4223,6 @@ function extractDriveFileId(value) {
 
     }
 
-
-    /* -----------------------------------------------
-       /d/FILE_ID
-    ----------------------------------------------- */
 
     match =
         text.match(
@@ -4264,10 +4237,6 @@ function extractDriveFileId(value) {
     }
 
 
-    /* -----------------------------------------------
-       ?id=FILE_ID
-    ----------------------------------------------- */
-
     match =
         text.match(
             /[?&]id=([a-zA-Z0-9_-]+)/
@@ -4280,12 +4249,6 @@ function extractDriveFileId(value) {
 
     }
 
-
-    /* -----------------------------------------------
-       Raw Google Drive ID
-
-       Drive IDs are normally long strings.
-    ----------------------------------------------- */
 
     if (
         /^[a-zA-Z0-9_-]{20,}$/.test(
