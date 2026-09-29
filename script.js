@@ -22,6 +22,12 @@ const photoInput =
 const photoCount =
     document.getElementById("photoCount");
 
+const videoInput =
+    document.getElementById("video");
+
+const videoInfo =
+    document.getElementById("videoInfo");
+
 
 // =====================================================
 // GOOGLE APPS SCRIPT URL
@@ -39,6 +45,9 @@ const MAX_PHOTOS = 10;
 
 const MAX_PHOTO_SIZE =
     10 * 1024 * 1024;
+
+const MAX_VIDEO_SIZE =
+    20 * 1024 * 1024;
 
 const MAX_WIDTH = 1200;
 
@@ -94,6 +103,99 @@ if (photoInput) {
                 "📷 " +
                 count +
                 " photo(s) selected";
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// VIDEO INFORMATION
+// =====================================================
+
+if (videoInput) {
+
+    videoInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                videoInput.files[0];
+
+
+            if (!file) {
+
+                if (videoInfo) {
+
+                    videoInfo.textContent =
+                        "No video selected";
+
+                }
+
+                return;
+
+            }
+
+
+            if (
+                !file.type.startsWith("video/")
+            ) {
+
+                videoInput.value = "";
+
+                if (videoInfo) {
+
+                    videoInfo.textContent =
+                        "❌ Please select a video file.";
+
+                }
+
+                return;
+
+            }
+
+
+            const sizeMB =
+                file.size /
+                (1024 * 1024);
+
+
+            if (
+                file.size >
+                MAX_VIDEO_SIZE
+            ) {
+
+                if (videoInfo) {
+
+                    videoInfo.textContent =
+                        "❌ Video is larger than 20 MB.";
+
+                }
+
+                return;
+
+            }
+
+
+            if (videoInfo) {
+
+                videoInfo.textContent =
+                    "🎥 " +
+                    file.name +
+                    " (" +
+                    sizeMB.toFixed(1) +
+                    " MB)";
+
+            }
+
+
+            console.log(
+                "Video selected:",
+                file.name,
+                file.size,
+                file.type
+            );
 
         }
     );
@@ -341,6 +443,133 @@ function compressPhoto(file) {
 
 
 // =====================================================
+// READ VIDEO AS BASE64
+// =====================================================
+
+function readVideo(file) {
+
+    return new Promise(
+        function (resolve, reject) {
+
+            if (!file) {
+
+                resolve(null);
+
+                return;
+
+            }
+
+
+            if (
+                !file.type.startsWith("video/")
+            ) {
+
+                reject(
+                    new Error(
+                        "Selected file is not a video."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            if (
+                file.size >
+                MAX_VIDEO_SIZE
+            ) {
+
+                reject(
+                    new Error(
+                        "Video is larger than 20 MB."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    const result =
+                        event.target.result;
+
+
+                    const commaIndex =
+                        result.indexOf(",");
+
+
+                    if (
+                        commaIndex === -1
+                    ) {
+
+                        reject(
+                            new Error(
+                                "Unable to process video."
+                            )
+                        );
+
+                        return;
+
+                    }
+
+
+                    const base64 =
+                        result.substring(
+                            commaIndex + 1
+                        );
+
+
+                    resolve({
+
+                        data:
+                            base64,
+
+                        type:
+                            file.type ||
+                            "video/mp4",
+
+                        name:
+                            file.name ||
+                            (
+                                "NearMiss_Video_" +
+                                Date.now() +
+                                ".mp4"
+                            )
+
+                    });
+
+                };
+
+
+            reader.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Unable to read video."
+                        )
+                    );
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+// =====================================================
 // SUBMIT FORM
 // =====================================================
 
@@ -494,6 +723,65 @@ if (!form) {
 
 
                 // =========================================
+                // PROCESS VIDEO
+                // =========================================
+
+                let video = null;
+
+
+                if (
+                    videoInput &&
+                    videoInput.files &&
+                    videoInput.files.length > 0
+                ) {
+
+                    const selectedVideo =
+                        videoInput.files[0];
+
+
+                    const videoSizeMB =
+                        selectedVideo.size /
+                        (1024 * 1024);
+
+
+                    console.log(
+                        "Video selected:",
+                        selectedVideo.name,
+                        videoSizeMB.toFixed(2) +
+                        " MB"
+                    );
+
+
+                    if (
+                        selectedVideo.size >
+                        MAX_VIDEO_SIZE
+                    ) {
+
+                        throw new Error(
+                            "Video is larger than 20 MB."
+                        );
+
+                    }
+
+
+                    successMessage.innerHTML =
+                        "<strong>🎥 Processing video...</strong>";
+
+
+                    video =
+                        await readVideo(
+                            selectedVideo
+                        );
+
+
+                    console.log(
+                        "Video processed successfully"
+                    );
+
+                }
+
+
+                // =========================================
                 // CREATE REPORT
                 // =========================================
 
@@ -532,6 +820,9 @@ if (!form) {
 
                     photos:
                         photos,
+
+                    video:
+                        video,
 
                     status:
                         "New",
@@ -651,6 +942,14 @@ if (!form) {
                     photos.length +
                     "</strong>" +
                     "<br><br>" +
+                    "🎥 Video uploaded: <strong>" +
+                    (
+                        video
+                            ? "Yes"
+                            : "No"
+                    ) +
+                    "</strong>" +
+                    "<br><br>" +
                     "Your report has been recorded.";
 
 
@@ -660,13 +959,7 @@ if (!form) {
 
 
                 // =========================================
-                // IMPORTANT
-                // =========================================
-                //
-                // DO NOT RESET THE FORM.
-                //
-                // The form remains filled after submission.
-                //
+                // DO NOT RESET FORM
                 // =========================================
 
             }
