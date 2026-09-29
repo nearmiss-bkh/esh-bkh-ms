@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,9 +22,7 @@
 
         <form id="nearMissForm">
 
-
             <!-- DATE & TIME -->
-
             <label for="dateTime">
                 Date & Time
             </label>
@@ -39,7 +36,6 @@
 
 
             <!-- LOCATION -->
-
             <label for="location">
                 Location
             </label>
@@ -54,7 +50,6 @@
 
 
             <!-- DEPARTMENT -->
-
             <label for="department">
                 Department
             </label>
@@ -101,7 +96,6 @@
 
 
             <!-- HAZARD CATEGORY -->
-
             <label for="hazardCategory">
                 Hazard Category
             </label>
@@ -132,7 +126,6 @@
 
 
             <!-- WHAT HAPPENED -->
-
             <label for="whatHappened">
                 What happened?
             </label>
@@ -147,7 +140,6 @@
 
 
             <!-- REPORTER NAME -->
-
             <label for="reporterName">
                 Reporter Name
             </label>
@@ -161,8 +153,7 @@
             >
 
 
-            <!-- PHOTO -->
-
+            <!-- MULTIPLE PHOTOS -->
             <label for="photo">
                 Photos
             </label>
@@ -175,13 +166,19 @@
                 multiple
             >
 
-            <small>
-                You can select multiple photos.
-            </small>
+            <div
+                id="photoCount"
+                style="
+                    margin-top:8px;
+                    font-size:14px;
+                    color:#666;
+                "
+            >
+                No photos selected
+            </div>
 
 
             <!-- SUBMIT -->
-
             <button
                 type="submit"
                 class="submit-button"
@@ -189,12 +186,10 @@
                 SUBMIT NEAR MISS
             </button>
 
-
         </form>
 
 
         <!-- SUCCESS MESSAGE -->
-
         <div
             id="successMessage"
             class="success-message"
@@ -202,14 +197,56 @@
             Report submitted successfully!
         </div>
 
-
     </div>
 
 
-    <!-- JAVASCRIPT -->
+    <!-- PHOTO COUNT SCRIPT -->
+    <script>
 
+        const photoInput =
+            document.getElementById("photo");
+
+        const photoCount =
+            document.getElementById("photoCount");
+
+
+        photoInput.addEventListener(
+            "change",
+            function () {
+
+                const count =
+                    photoInput.files.length;
+
+
+                if (count === 0) {
+
+                    photoCount.textContent =
+                        "No photos selected";
+
+                }
+
+                else if (count === 1) {
+
+                    photoCount.textContent =
+                        "1 photo selected";
+
+                }
+
+                else {
+
+                    photoCount.textContent =
+                        count + " photos selected";
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+    <!-- MAIN JAVASCRIPT -->
     <script src="script.js"></script>
 
 </body>
-
 </html>
