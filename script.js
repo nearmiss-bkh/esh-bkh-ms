@@ -318,82 +318,6 @@ setInterval(
 
 
 // =====================================================
-// GENERATE REPORT NUMBER
-// =====================================================
-
-function generateReportNumber() {
-
-    const now =
-        new Date();
-
-
-    const malaysiaTime =
-        new Date(
-            now.toLocaleString(
-                "en-US",
-                {
-                    timeZone:
-                        "Asia/Kuala_Lumpur"
-                }
-            )
-        );
-
-
-    const year =
-        malaysiaTime.getFullYear();
-
-
-    const month =
-        String(
-            malaysiaTime.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            malaysiaTime.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    let counter =
-        Number(
-            localStorage.getItem(
-                "nearMissCounter"
-            )
-        ) || 0;
-
-
-    counter++;
-
-
-    localStorage.setItem(
-        "nearMissCounter",
-        counter
-    );
-
-
-    return (
-        "NM-" +
-        year +
-        month +
-        day +
-        "-" +
-        String(counter).padStart(
-            4,
-            "0"
-        )
-    );
-
-}
-
-
-// =====================================================
 // COMPRESS PHOTO
 // =====================================================
 
@@ -783,11 +707,12 @@ else {
             try {
 
                 // =========================================
-                // GENERATE REPORT NUMBER
+                // IMPORTANT:
+                // REPORT NUMBER IS NOT GENERATED HERE
+                //
+                // Google Apps Script generates the permanent
+                // report number.
                 // =========================================
-
-                const reportNumber =
-                    generateReportNumber();
 
 
                 // =========================================
@@ -960,8 +885,11 @@ else {
 
                 const report = {
 
-                    reportNumber:
-                        reportNumber,
+                    // =====================================
+                    // NO REPORT NUMBER HERE
+                    //
+                    // Backend generates it permanently.
+                    // =====================================
 
                     dateTime:
                         getValue(
@@ -1114,6 +1042,21 @@ else {
 
 
                 // =========================================
+                // GET PERMANENT REPORT NUMBER
+                // FROM GOOGLE APPS SCRIPT
+                // =========================================
+
+                const assignedReportNumber =
+                    result.reportNumber;
+
+
+                console.log(
+                    "SERVER ASSIGNED REPORT NUMBER:",
+                    assignedReportNumber
+                );
+
+
+                // =========================================
                 // SUCCESS
                 // =========================================
 
@@ -1123,7 +1066,10 @@ else {
                         "<strong>✅ Report submitted successfully!</strong>" +
                         "<br><br>" +
                         "Report No: <strong>" +
-                        reportNumber +
+                        (
+                            assignedReportNumber ||
+                            "Assigned by system"
+                        ) +
                         "</strong>" +
                         "<br><br>" +
                         "📷 Photos uploaded: <strong>" +
@@ -1144,7 +1090,8 @@ else {
 
 
                 console.log(
-                    "REPORT SUBMITTED SUCCESSFULLY"
+                    "REPORT SUBMITTED SUCCESSFULLY:",
+                    assignedReportNumber
                 );
 
 
