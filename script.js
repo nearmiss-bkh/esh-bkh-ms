@@ -81,8 +81,12 @@ if (photoInput) {
 
             if (count === 0) {
 
-                photoCount.textContent =
-                    "No photos selected";
+                if (photoCount) {
+
+                    photoCount.textContent =
+                        "No photos selected";
+
+                }
 
                 return;
 
@@ -91,18 +95,26 @@ if (photoInput) {
 
             if (count > MAX_PHOTOS) {
 
-                photoCount.textContent =
-                    "❌ Maximum 10 photos allowed";
+                if (photoCount) {
+
+                    photoCount.textContent =
+                        "❌ Maximum 10 photos allowed";
+
+                }
 
                 return;
 
             }
 
 
-            photoCount.textContent =
-                "📷 " +
-                count +
-                " photo(s) selected";
+            if (photoCount) {
+
+                photoCount.textContent =
+                    "📷 " +
+                    count +
+                    " photo(s) selected";
+
+            }
 
         }
     );
@@ -166,6 +178,8 @@ if (videoInput) {
                 MAX_VIDEO_SIZE
             ) {
 
+                videoInput.value = "";
+
                 if (videoInfo) {
 
                     videoInfo.textContent =
@@ -201,6 +215,106 @@ if (videoInput) {
     );
 
 }
+
+
+// =====================================================
+// MALAYSIA DATE/TIME
+// =====================================================
+
+function setMalaysiaDateTime() {
+
+    if (!dateTime) {
+
+        return;
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const malaysiaTime =
+        new Date(
+            now.toLocaleString(
+                "en-US",
+                {
+                    timeZone:
+                        "Asia/Kuala_Lumpur"
+                }
+            )
+        );
+
+
+    const year =
+        malaysiaTime.getFullYear();
+
+
+    const month =
+        String(
+            malaysiaTime.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const day =
+        String(
+            malaysiaTime.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const hours =
+        String(
+            malaysiaTime.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minutes =
+        String(
+            malaysiaTime.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    dateTime.value =
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        "T" +
+        hours +
+        ":" +
+        minutes;
+
+}
+
+
+// =====================================================
+// SET DATE/TIME WHEN PAGE LOADS
+// =====================================================
+
+setMalaysiaDateTime();
+
+
+// =====================================================
+// UPDATE DATE/TIME EVERY MINUTE
+// =====================================================
+
+setInterval(
+    setMalaysiaDateTime,
+    60000
+);
 
 
 // =====================================================
@@ -570,6 +684,33 @@ function readVideo(file) {
 
 
 // =====================================================
+// GET FORM VALUE SAFELY
+// =====================================================
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (!element) {
+
+        console.error(
+            "Missing form element:",
+            id
+        );
+
+        return "";
+
+    }
+
+
+    return element.value.trim();
+
+}
+
+
+// =====================================================
 // SUBMIT FORM
 // =====================================================
 
@@ -579,19 +720,23 @@ if (!form) {
         "ERROR: nearMissForm was not found."
     );
 
-} else {
+}
+
+else {
 
     form.addEventListener(
         "submit",
         async function (event) {
 
             // =============================================
-            // STOP NORMAL FORM SUBMISSION
+            // STOP NORMAL HTML FORM SUBMISSION
             // =============================================
 
             event.preventDefault();
 
             event.stopPropagation();
+
+            event.stopImmediatePropagation();
 
 
             console.log(
@@ -609,26 +754,36 @@ if (!form) {
                 );
 
 
-            submitButton.disabled =
-                true;
+            if (submitButton) {
+
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "SUBMITTING...";
+
+            }
 
 
-            submitButton.textContent =
-                "SUBMITTING...";
+            // =============================================
+            // STATUS MESSAGE
+            // =============================================
 
+            if (successMessage) {
 
-            successMessage.style.display =
-                "block";
+                successMessage.style.display =
+                    "block";
 
+                successMessage.innerHTML =
+                    "<strong>⏳ Preparing report...</strong>";
 
-            successMessage.innerHTML =
-                "<strong>⏳ Preparing report...</strong>";
+            }
 
 
             try {
 
                 // =========================================
-                // REPORT NUMBER
+                // GENERATE REPORT NUMBER
                 // =========================================
 
                 const reportNumber =
@@ -643,7 +798,9 @@ if (!form) {
 
 
                 const selectedFiles =
-                    photoInput.files;
+                    photoInput
+                        ? photoInput.files
+                        : [];
 
 
                 console.log(
@@ -692,12 +849,16 @@ if (!form) {
                     }
 
 
-                    successMessage.innerHTML =
-                        "<strong>📷 Processing photo " +
-                        (i + 1) +
-                        " of " +
-                        selectedFiles.length +
-                        "...</strong>";
+                    if (successMessage) {
+
+                        successMessage.innerHTML =
+                            "<strong>📷 Processing photo " +
+                            (i + 1) +
+                            " of " +
+                            selectedFiles.length +
+                            "...</strong>";
+
+                    }
 
 
                     const compressed =
@@ -739,17 +900,25 @@ if (!form) {
                         videoInput.files[0];
 
 
-                    const videoSizeMB =
-                        selectedVideo.size /
-                        (1024 * 1024);
-
-
                     console.log(
                         "Video selected:",
                         selectedVideo.name,
-                        videoSizeMB.toFixed(2) +
-                        " MB"
+                        selectedVideo.size,
+                        selectedVideo.type
                     );
+
+
+                    if (
+                        !selectedVideo.type.startsWith(
+                            "video/"
+                        )
+                    ) {
+
+                        throw new Error(
+                            "Selected file is not a video."
+                        );
+
+                    }
 
 
                     if (
@@ -764,8 +933,12 @@ if (!form) {
                     }
 
 
-                    successMessage.innerHTML =
-                        "<strong>🎥 Processing video...</strong>";
+                    if (successMessage) {
+
+                        successMessage.innerHTML =
+                            "<strong>🎥 Processing video...</strong>";
+
+                    }
 
 
                     video =
@@ -782,7 +955,7 @@ if (!form) {
 
 
                 // =========================================
-                // CREATE REPORT
+                // CREATE REPORT OBJECT
                 // =========================================
 
                 const report = {
@@ -791,32 +964,34 @@ if (!form) {
                         reportNumber,
 
                     dateTime:
-                        dateTime.value,
+                        getValue(
+                            "dateTime"
+                        ),
 
                     location:
-                        document.getElementById(
+                        getValue(
                             "location"
-                        ).value,
+                        ),
 
                     department:
-                        document.getElementById(
+                        getValue(
                             "department"
-                        ).value,
+                        ),
 
                     hazardCategory:
-                        document.getElementById(
+                        getValue(
                             "hazardCategory"
-                        ).value,
+                        ),
 
                     whatHappened:
-                        document.getElementById(
+                        getValue(
                             "whatHappened"
-                        ).value,
+                        ),
 
                     reporterName:
-                        document.getElementById(
+                        getValue(
                             "reporterName"
-                        ).value,
+                        ),
 
                     photos:
                         photos,
@@ -843,8 +1018,12 @@ if (!form) {
                 // SEND TO GOOGLE APPS SCRIPT
                 // =========================================
 
-                successMessage.innerHTML =
-                    "<strong>☁️ Sending report...</strong>";
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>☁️ Sending report...</strong>";
+
+                }
 
 
                 const response =
@@ -901,7 +1080,14 @@ if (!form) {
                             responseText
                         );
 
-                } catch (error) {
+                }
+
+                catch (jsonError) {
+
+                    console.error(
+                        "JSON ERROR:",
+                        jsonError
+                    );
 
                     throw new Error(
                         "Server did not return valid JSON."
@@ -911,7 +1097,7 @@ if (!form) {
 
 
                 // =========================================
-                // CHECK SUCCESS
+                // CHECK SERVER SUCCESS
                 // =========================================
 
                 if (
@@ -931,26 +1117,30 @@ if (!form) {
                 // SUCCESS
                 // =========================================
 
-                successMessage.innerHTML =
-                    "<strong>✅ Report submitted successfully!</strong>" +
-                    "<br><br>" +
-                    "Report No: <strong>" +
-                    reportNumber +
-                    "</strong>" +
-                    "<br><br>" +
-                    "📷 Photos uploaded: <strong>" +
-                    photos.length +
-                    "</strong>" +
-                    "<br><br>" +
-                    "🎥 Video uploaded: <strong>" +
-                    (
-                        video
-                            ? "Yes"
-                            : "No"
-                    ) +
-                    "</strong>" +
-                    "<br><br>" +
-                    "Your report has been recorded.";
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>✅ Report submitted successfully!</strong>" +
+                        "<br><br>" +
+                        "Report No: <strong>" +
+                        reportNumber +
+                        "</strong>" +
+                        "<br><br>" +
+                        "📷 Photos uploaded: <strong>" +
+                        photos.length +
+                        "</strong>" +
+                        "<br><br>" +
+                        "🎥 Video uploaded: <strong>" +
+                        (
+                            video
+                                ? "Yes"
+                                : "No"
+                        ) +
+                        "</strong>" +
+                        "<br><br>" +
+                        "Your report has been recorded.";
+
+                }
 
 
                 console.log(
@@ -959,11 +1149,48 @@ if (!form) {
 
 
                 // =========================================
-                // DO NOT RESET FORM
+                // CLEAR FORM ONLY AFTER SUCCESS
                 // =========================================
+
+                form.reset();
+
+
+                // =========================================
+                // RESET PHOTO INFORMATION
+                // =========================================
+
+                if (photoCount) {
+
+                    photoCount.textContent =
+                        "No photos selected";
+
+                }
+
+
+                // =========================================
+                // RESET VIDEO INFORMATION
+                // =========================================
+
+                if (videoInfo) {
+
+                    videoInfo.textContent =
+                        "No video selected";
+
+                }
+
+
+                // =========================================
+                // NEW DATE/TIME
+                // =========================================
+
+                setMalaysiaDateTime();
 
             }
 
+
+            // =============================================
+            // ERROR
+            // =============================================
 
             catch (error) {
 
@@ -973,22 +1200,36 @@ if (!form) {
                 );
 
 
-                successMessage.innerHTML =
-                    "<strong>❌ Unable to submit report.</strong>" +
-                    "<br><br>" +
-                    error.message;
+                if (successMessage) {
+
+                    successMessage.innerHTML =
+                        "<strong>❌ Unable to submit report.</strong>" +
+                        "<br><br>" +
+                        error.message +
+                        "<br><br>" +
+                        "Your information has NOT been cleared. " +
+                        "Please try again.";
+
+                }
 
             }
 
 
+            // =============================================
+            // FINALLY
+            // =============================================
+
             finally {
 
-                submitButton.disabled =
-                    false;
+                if (submitButton) {
 
+                    submitButton.disabled =
+                        false;
 
-                submitButton.textContent =
-                    "SUBMIT NEAR MISS";
+                    submitButton.textContent =
+                        "SUBMIT NEAR MISS";
+
+                }
 
             }
 
@@ -996,3 +1237,12 @@ if (!form) {
     );
 
 }
+
+
+// =====================================================
+// END OF SCRIPT
+// =====================================================
+
+console.log(
+    "NEAR MISS REPORTING SYSTEM READY"
+);
