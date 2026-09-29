@@ -254,7 +254,9 @@
         </div>
 
 
+        <!-- ========================================= -->
         <!-- VIDEO PREVIEW -->
+        <!-- ========================================= -->
 
         <div
             id="videoPreview"
@@ -293,7 +295,9 @@
     </form>
 
 
+    <!-- ========================================= -->
     <!-- SUCCESS / ERROR MESSAGE -->
+    <!-- ========================================= -->
 
     <div
         id="successMessage"
@@ -304,200 +308,7 @@
 
 
 <!-- ============================================= -->
-<!-- MALAYSIA DATE & TIME -->
-<!-- ============================================= -->
-
-<script>
-
-function updateDateTime() {
-
-    const dateTime =
-        document.getElementById("dateTime");
-
-    if (!dateTime) {
-        return;
-    }
-
-    const now =
-        new Date();
-
-    const malaysiaTime =
-        new Date(
-            now.toLocaleString(
-                "en-US",
-                {
-                    timeZone:
-                        "Asia/Kuala_Lumpur"
-                }
-            )
-        );
-
-    const year =
-        malaysiaTime.getFullYear();
-
-    const month =
-        String(
-            malaysiaTime.getMonth() + 1
-        ).padStart(2, "0");
-
-    const day =
-        String(
-            malaysiaTime.getDate()
-        ).padStart(2, "0");
-
-    const hour =
-        String(
-            malaysiaTime.getHours()
-        ).padStart(2, "0");
-
-    const minute =
-        String(
-            malaysiaTime.getMinutes()
-        ).padStart(2, "0");
-
-    dateTime.value =
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        "T" +
-        hour +
-        ":" +
-        minute;
-}
-
-
-updateDateTime();
-
-
-setInterval(
-    updateDateTime,
-    10000
-);
-
-
-/* ============================================= */
-/* PHOTO COUNT */
-/* ============================================= */
-
-const photoInput =
-    document.getElementById("photo");
-
-const photoCount =
-    document.getElementById("photoCount");
-
-
-if(photoInput){
-
-    photoInput.addEventListener(
-        "change",
-        function(){
-
-            const count =
-                this.files.length;
-
-
-            if(count === 0){
-
-                photoCount.textContent =
-                    "No photos selected";
-
-            }else{
-
-                photoCount.textContent =
-                    count +
-                    " photo" +
-                    (count > 1 ? "s" : "") +
-                    " selected";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* ============================================= */
-/* VIDEO PREVIEW */
-/* ============================================= */
-
-const videoInput =
-    document.getElementById("video");
-
-const videoInfo =
-    document.getElementById("videoInfo");
-
-const videoPreview =
-    document.getElementById("videoPreview");
-
-const videoPlayer =
-    document.getElementById("videoPlayer");
-
-
-if(videoInput){
-
-    videoInput.addEventListener(
-        "change",
-        function(){
-
-            const file =
-                this.files[0];
-
-
-            if(!file){
-
-                videoInfo.textContent =
-                    "No video selected";
-
-                videoPreview.style.display =
-                    "none";
-
-                videoPlayer.removeAttribute(
-                    "src"
-                );
-
-                return;
-
-            }
-
-
-            const sizeMB =
-                file.size /
-                (1024 * 1024);
-
-
-            videoInfo.textContent =
-                file.name +
-                " (" +
-                sizeMB.toFixed(1) +
-                " MB)";
-
-
-            const videoURL =
-                URL.createObjectURL(
-                    file
-                );
-
-
-            videoPlayer.src =
-                videoURL;
-
-
-            videoPreview.style.display =
-                "block";
-
-        }
-    );
-
-}
-
-</script>
-
-
-<!-- ============================================= -->
-<!-- MAIN JAVASCRIPT -->
+<!-- MAIN JAVASCRIPT ONLY -->
 <!-- ============================================= -->
 
 <script src="script.js"></script>
