@@ -5,138 +5,156 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<title>ESH Near Miss Command Center</title>
+<title>ESH Near Miss Management System</title>
 
 <style>
 
-/* =====================================================
-   GLOBAL
-   ===================================================== */
-
 *{
     box-sizing:border-box;
-}
-
-html,body{
     margin:0;
     padding:0;
-    min-height:100%;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#030b14;
-    color:#d9e8f5;
 }
 
 body{
-    overflow-x:hidden;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f6f9;
+    color:#17202a;
 }
 
-button,
-input,
-select,
-textarea{
-    font-family:inherit;
+/* =====================================================
+   LOGIN
+===================================================== */
+
+#loginPage{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#111827,#1f2937);
 }
 
-button{
+.login-box{
+    width:380px;
+    max-width:92%;
+    background:white;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.login-logo{
+    width:70px;
+    height:70px;
+    margin:0 auto 18px;
+    border-radius:18px;
+    background:#dc2626;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.login-box h1{
+    text-align:center;
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+.login-box p{
+    text-align:center;
+    color:#6b7280;
+    font-size:13px;
+    margin-bottom:25px;
+}
+
+.login-box input{
+    width:100%;
+    padding:13px;
+    border:1px solid #d1d5db;
+    border-radius:9px;
+    margin-bottom:12px;
+    font-size:14px;
+    outline:none;
+}
+
+.login-box input:focus{
+    border-color:#2563eb;
+}
+
+.login-btn{
+    width:100%;
+    border:0;
+    padding:13px;
+    background:#dc2626;
+    color:white;
+    border-radius:9px;
+    font-weight:bold;
     cursor:pointer;
 }
 
+.login-btn:hover{
+    background:#b91c1c;
+}
 
-/* =====================================================
-   LOGIN PROTECTION
-   ===================================================== */
-
-#dashboardApp{
+.login-error{
+    color:#dc2626;
+    font-size:13px;
+    text-align:center;
+    margin-top:12px;
     display:none;
 }
 
-
 /* =====================================================
-   TOP NAV
-   ===================================================== */
+   DASHBOARD
+===================================================== */
+
+#dashboardPage{
+    display:none;
+    min-height:100vh;
+}
 
 .topbar{
-
-    position:sticky;
-    top:0;
-    z-index:1000;
-
-    height:68px;
-
+    height:70px;
+    background:#111827;
+    color:white;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    padding:0 28px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #061321,
-            #081b2d
-        );
-
-    border-bottom:
-        1px solid
-        rgba(90,170,220,.18);
-
-    box-shadow:
-        0 8px 30px
-        rgba(0,0,0,.35);
+    padding:0 25px;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .brand{
     display:flex;
     align-items:center;
-    gap:13px;
+    gap:12px;
 }
 
 .brand-icon{
-
-    width:40px;
-    height:40px;
-
+    width:42px;
+    height:42px;
+    background:#dc2626;
+    border-radius:10px;
     display:flex;
     align-items:center;
     justify-content:center;
+    font-weight:bold;
+}
 
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0876b9,
-            #13b7e8
-        );
-
-    color:white;
-
+.brand-text h1{
     font-size:18px;
-    font-weight:900;
-
-    box-shadow:
-        0 0 20px
-        rgba(22,173,235,.25);
 }
 
-.brand-title{
-    font-size:16px;
-    font-weight:900;
-    letter-spacing:.7px;
-}
-
-.brand-sub{
-    margin-top:3px;
-    font-size:8px;
-    color:#68849a;
-    font-weight:700;
-    letter-spacing:1px;
-    text-transform:uppercase;
+.brand-text span{
+    font-size:11px;
+    color:#cbd5e1;
 }
 
 .top-actions{
@@ -145,1625 +163,514 @@ button{
     gap:10px;
 }
 
-.system-status{
-
-    display:flex;
-    align-items:center;
-    gap:7px;
-
-    padding:8px 12px;
-
-    border-radius:20px;
-
-    background:
-        rgba(29,183,115,.08);
-
-    border:
-        1px solid
-        rgba(29,183,115,.20);
-
-    color:#69dba6;
-
-    font-size:8px;
-    font-weight:900;
-    text-transform:uppercase;
-}
-
-.status-dot{
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#31d48b;
-
-    box-shadow:
-        0 0 9px
-        rgba(49,212,139,.8);
-}
-
+.refresh-btn,
 .logout-btn{
-
-    border:1px solid
-        rgba(255,255,255,.10);
-
-    background:#091827;
-
-    color:#9cb4c8;
-
-    border-radius:8px;
-
-    padding:9px 12px;
-
-    font-size:8px;
-    font-weight:900;
-}
-
-.logout-btn:hover{
-    background:#102438;
+    border:1px solid #475569;
+    background:#1f2937;
     color:white;
+    padding:9px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:12px;
 }
 
+.refresh-btn:hover,
+.logout-btn:hover{
+    background:#374151;
+}
 
 /* =====================================================
    MAIN
-   ===================================================== */
+===================================================== */
 
 .main{
-    width:min(1500px,94%);
-    margin:0 auto;
-    padding:30px 0 60px;
+    max-width:1500px;
+    margin:auto;
+    padding:25px;
 }
 
-
-/* =====================================================
-   HERO
-   ===================================================== */
-
-.hero{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-
-    gap:25px;
-
-    margin-bottom:24px;
+.page-title{
+    margin-bottom:20px;
 }
 
-.hero-left h1{
-
-    margin:0;
-
-    font-size:
-        clamp(25px,4vw,42px);
-
-    line-height:1;
-
-    color:#f1f8fd;
-
-    letter-spacing:-1.5px;
+.page-title h2{
+    font-size:25px;
+    margin-bottom:5px;
 }
 
-.hero-left p{
-
-    margin:12px 0 0;
-
-    max-width:700px;
-
-    color:#7893a8;
-
-    font-size:12px;
-    line-height:1.7;
+.page-title p{
+    color:#6b7280;
+    font-size:13px;
 }
-
-.hero-right{
-    text-align:right;
-}
-
-.last-refresh{
-    color:#557188;
-    font-size:8px;
-    font-weight:800;
-    text-transform:uppercase;
-}
-
-.refresh-btn{
-
-    margin-top:8px;
-
-    border:1px solid
-        rgba(64,181,236,.25);
-
-    background:
-        rgba(20,135,190,.10);
-
-    color:#54c7fa;
-
-    padding:9px 14px;
-
-    border-radius:8px;
-
-    font-size:8px;
-    font-weight:900;
-}
-
 
 /* =====================================================
    KPI
-   ===================================================== */
+===================================================== */
 
 .kpi-grid{
-
     display:grid;
-
-    grid-template-columns:
-        repeat(5,minmax(0,1fr));
-
-    gap:13px;
-
-    margin-bottom:18px;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:22px;
 }
 
 .kpi{
-
-    position:relative;
-
-    overflow:hidden;
-
-    padding:18px;
-
-    min-height:112px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #071625,
-            #06111e
-        );
-
-    border:
-        1px solid
-        rgba(101,169,210,.13);
-
-    border-radius:12px;
-
-    box-shadow:
-        0 10px 25px
-        rgba(0,0,0,.20);
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+    border-left:5px solid #2563eb;
 }
 
-.kpi::after{
+.kpi.new{
+    border-left-color:#f59e0b;
+}
 
-    content:"";
+.kpi.progress{
+    border-left-color:#2563eb;
+}
 
-    position:absolute;
+.kpi.closed{
+    border-left-color:#16a34a;
+}
 
-    right:-30px;
-    bottom:-30px;
-
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
-
-    background:
-        rgba(24,152,216,.05);
+.kpi.total{
+    border-left-color:#7c3aed;
 }
 
 .kpi-label{
-
-    color:#627d92;
-
-    font-size:8px;
-    font-weight:900;
-
-    letter-spacing:1px;
-
+    color:#6b7280;
+    font-size:12px;
     text-transform:uppercase;
+    font-weight:bold;
 }
 
 .kpi-value{
-
-    margin-top:10px;
-
     font-size:30px;
-
-    line-height:1;
-
-    font-weight:900;
-
-    color:#e8f6ff;
+    font-weight:bold;
+    margin-top:7px;
 }
-
-.kpi-info{
-
-    margin-top:9px;
-
-    color:#4f6b80;
-
-    font-size:8px;
-    font-weight:700;
-}
-
-
-/* =====================================================
-   PANELS
-   ===================================================== */
-
-.panel{
-
-    background:
-        linear-gradient(
-            145deg,
-            #061321,
-            #05101c
-        );
-
-    border:
-        1px solid
-        rgba(93,157,197,.13);
-
-    border-radius:12px;
-
-    padding:18px;
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.18);
-}
-
-.panel-title{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-bottom:16px;
-}
-
-.panel-title h2{
-
-    margin:0;
-
-    font-size:11px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-
-    color:#c8dce9;
-}
-
-.panel-title span{
-
-    color:#4e6d83;
-
-    font-size:8px;
-    font-weight:800;
-}
-
-
-/* =====================================================
-   ANALYTICS
-   ===================================================== */
-
-.analytics-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1.5fr 1fr 1fr;
-
-    gap:15px;
-
-    margin-bottom:18px;
-}
-
-.chart-area{
-
-    min-height:220px;
-
-    display:flex;
-    align-items:flex-end;
-
-    gap:10px;
-
-    padding:
-        20px 5px
-        10px;
-}
-
-.chart-column{
-
-    flex:1;
-
-    height:180px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    align-items:center;
-
-    gap:7px;
-}
-
-.chart-bar-wrap{
-
-    width:100%;
-    height:145px;
-
-    display:flex;
-    align-items:flex-end;
-
-    justify-content:center;
-}
-
-.chart-bar{
-
-    width:55%;
-
-    min-height:3px;
-
-    border-radius:
-        5px 5px 2px 2px;
-
-    background:
-        linear-gradient(
-            to top,
-            #0877b9,
-            #32c7f3
-        );
-
-    box-shadow:
-        0 0 15px
-        rgba(30,184,240,.15);
-
-    transition:
-        height .4s ease;
-}
-
-.chart-number{
-
-    color:#9dc5dc;
-
-    font-size:8px;
-    font-weight:900;
-}
-
-.chart-label{
-
-    color:#4f6d82;
-
-    font-size:7px;
-    font-weight:800;
-
-    text-transform:uppercase;
-}
-
-
-/* =====================================================
-   CATEGORY / DEPARTMENT LIST
-   ===================================================== */
-
-.stat-list{
-    display:flex;
-    flex-direction:column;
-    gap:11px;
-}
-
-.stat-row{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 35px;
-
-    gap:10px;
-
-    align-items:center;
-}
-
-.stat-name{
-
-    color:#7893a7;
-
-    font-size:8px;
-    font-weight:800;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.stat-number{
-
-    text-align:right;
-
-    color:#b9d8ea;
-
-    font-size:8px;
-    font-weight:900;
-}
-
-.stat-bar{
-
-    grid-column:1 / -1;
-
-    height:4px;
-
-    border-radius:10px;
-
-    background:#0b2234;
-
-    overflow:hidden;
-
-    margin-top:-6px;
-}
-
-.stat-fill{
-
-    height:100%;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #0877b9,
-            #2bc7f4
-        );
-}
-
-
-/* =====================================================
-   ACTION CENTER
-   ===================================================== */
-
-.action-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:12px;
-
-    margin-bottom:18px;
-}
-
-.action-card{
-
-    padding:14px;
-
-    border-radius:10px;
-
-    background:#071725;
-
-    border:
-        1px solid
-        rgba(98,158,196,.10);
-}
-
-.action-top{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.action-label{
-
-    color:#6c879b;
-
-    font-size:8px;
-    font-weight:900;
-
-    text-transform:uppercase;
-}
-
-.action-value{
-
-    margin-top:8px;
-
-    color:#e7f5fc;
-
-    font-size:22px;
-    font-weight:900;
-}
-
-.action-desc{
-
-    margin-top:5px;
-
-    color:#486276;
-
-    font-size:8px;
-}
-
 
 /* =====================================================
    FILTER
-   ===================================================== */
+===================================================== */
 
-.filter-panel{
-    margin-bottom:18px;
+.filter-box{
+    background:white;
+    padding:18px;
+    border-radius:14px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+    margin-bottom:20px;
 }
 
-.filters{
-
+.filter-grid{
     display:grid;
-
-    grid-template-columns:
-        2fr 1fr 1fr 1fr auto;
-
+    grid-template-columns:2fr 1fr 1fr 1fr auto;
     gap:10px;
 }
 
-.input,
-.select{
-
+.filter-box input,
+.filter-box select{
     width:100%;
-
-    padding:
-        11px 12px;
-
+    padding:11px;
+    border:1px solid #d1d5db;
     border-radius:8px;
-
-    border:
-        1px solid
-        rgba(96,156,193,.14);
-
-    background:#071725;
-
-    color:#c9dce8;
-
-    outline:none;
-
-    font-size:9px;
-}
-
-.input:focus,
-.select:focus{
-
-    border-color:
-        rgba(41,181,237,.45);
-
-    box-shadow:
-        0 0 0 2px
-        rgba(32,165,219,.06);
+    font-size:13px;
+    background:white;
 }
 
 .clear-btn{
-
-    padding:0 14px;
-
+    border:0;
+    padding:11px 16px;
     border-radius:8px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:#0b1d2c;
-
-    color:#7690a3;
-
-    font-size:8px;
-    font-weight:900;
+    background:#6b7280;
+    color:white;
+    cursor:pointer;
 }
 
-
 /* =====================================================
-   REPORTS
-   ===================================================== */
+   REPORT GRID
+===================================================== */
 
-.reports-header{
-
+.section-header{
     display:flex;
-
-    align-items:center;
     justify-content:space-between;
-
+    align-items:center;
     margin-bottom:12px;
 }
 
-.reports-header h2{
-
-    margin:0;
-
-    font-size:12px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-}
-
-.report-count{
-
-    color:#557188;
-
-    font-size:8px;
-    font-weight:800;
-}
-
-.reports-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
-
-    gap:13px;
-}
-
-.report-card{
-
-    cursor:pointer;
-
-    padding:16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #071725,
-            #06111c
-        );
-
-    border:
-        1px solid
-        rgba(98,158,196,.12);
-
-    border-radius:11px;
-
-    transition:
-        transform .15s ease,
-        border-color .15s ease,
-        background .15s ease;
-}
-
-.report-card:hover{
-
-    transform:
-        translateY(-2px);
-
-    border-color:
-        rgba(40,181,238,.30);
-
-    background:#091c2c;
-}
-
-.report-top{
-
-    display:flex;
-
-    justify-content:space-between;
-    align-items:flex-start;
-
-    gap:10px;
-}
-
-.report-number{
-
-    color:#51c8f7;
-
-    font-size:10px;
-    font-weight:900;
-}
-
-.report-date{
-
-    margin-top:5px;
-
-    color:#4f6d81;
-
-    font-size:7px;
-    font-weight:800;
-}
-
-.badge{
-
-    display:inline-flex;
-
-    padding:5px 8px;
-
-    border-radius:20px;
-
-    font-size:7px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-}
-
-.badge-new{
-
-    color:#58c6fa;
-    background:rgba(48,177,233,.10);
-}
-
-.badge-investigation{
-
-    color:#d8b45a;
-    background:rgba(216,180,90,.10);
-}
-
-.badge-corrective{
-
-    color:#c89df5;
-    background:rgba(168,106,230,.10);
-}
-
-.badge-verification{
-
-    color:#74d8bc;
-    background:rgba(65,195,157,.10);
-}
-
-.badge-closed{
-
-    color:#69d58d;
-    background:rgba(67,203,120,.10);
-}
-
-.report-location{
-
-    margin-top:15px;
-
-    color:#d0e1eb;
-
-    font-size:10px;
-    font-weight:900;
-}
-
-.report-meta{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:8px;
-
-    margin-top:12px;
-}
-
-.meta-item{
-
-    padding:8px;
-
-    border-radius:7px;
-
-    background:#061321;
-
-    border:
-        1px solid
-        rgba(99,157,193,.07);
-}
-
-.meta-label{
-
-    color:#466378;
-
-    font-size:6px;
-    font-weight:900;
-
-    text-transform:uppercase;
-}
-
-.meta-value{
-
-    margin-top:4px;
-
-    color:#91adbf;
-
-    font-size:8px;
-    font-weight:800;
-}
-
-.report-narrative{
-
-    margin-top:12px;
-
-    color:#678296;
-
-    font-size:8px;
-
-    line-height:1.6;
-
-    display:-webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-}
-
-.report-footer{
-
-    margin-top:14px;
-
-    padding-top:10px;
-
-    border-top:
-        1px solid
-        rgba(90,148,184,.08);
-
-    display:flex;
-
-    justify-content:space-between;
-
-    color:#405b6e;
-
-    font-size:7px;
-    font-weight:800;
-}
-
-
-/* =====================================================
-   EMPTY / LOADING
-   ===================================================== */
-
-.empty-state{
-
-    grid-column:
-        1 / -1;
-
-    padding:60px 20px;
-
-    text-align:center;
-
-    border:
-        1px dashed
-        rgba(92,152,191,.13);
-
-    border-radius:10px;
-
-    color:#4c687c;
-
-    font-size:10px;
-    font-weight:800;
-}
-
-.loading{
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    min-height:250px;
-
-    color:#547185;
-
-    font-size:10px;
-    font-weight:800;
-}
-
-
-/* =====================================================
-   MODAL
-   ===================================================== */
-
-.modal{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:5000;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    padding:20px;
-
-    background:
-        rgba(0,0,0,.72);
-
-    backdrop-filter:
-        blur(6px);
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-
-    width:
-        min(1150px,100%);
-
-    max-height:
-        94vh;
-
-    overflow:auto;
-
-    background:
-        linear-gradient(
-            145deg,
-            #071522,
-            #040d16
-        );
-
-    border:
-        1px solid
-        rgba(105,171,211,.17);
-
-    border-radius:15px;
-
-    box-shadow:
-        0 30px 90px
-        rgba(0,0,0,.65);
-}
-
-.modal-header{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:10;
-
-    display:flex;
-
-    justify-content:space-between;
-    align-items:center;
-
-    padding:17px 20px;
-
-    background:#071522;
-
-    border-bottom:
-        1px solid
-        rgba(96,156,193,.10);
-}
-
-.modal-title{
-
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.modal-title h2{
-
-    margin:0;
-
-    font-size:15px;
-    font-weight:900;
-}
-
-.modal-close{
-
-    width:32px;
-    height:32px;
-
-    border:0;
-
-    border-radius:8px;
-
-    background:#0b2030;
-
-    color:#8ba5b7;
-
+.section-header h3{
     font-size:18px;
 }
 
-.modal-body{
-    padding:20px;
+.last-refresh{
+    font-size:11px;
+    color:#6b7280;
 }
 
-.modal-section{
-
-    margin-bottom:18px;
-
-    padding:16px;
-
-    border:
-        1px solid
-        rgba(96,156,193,.10);
-
-    border-radius:10px;
-
-    background:
-        rgba(4,15,25,.65);
-}
-
-.section-heading{
-
-    margin-bottom:14px;
-
-    color:#74c9ee;
-
-    font-size:9px;
-
-    font-weight:900;
-
-    letter-spacing:1px;
-
-    text-transform:uppercase;
-}
-
-
-/* =====================================================
-   CASE SUMMARY
-   ===================================================== */
-
-.case-summary{
-
+#reportsGrid{
     display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:10px;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
 }
 
-.case-field{
-
-    padding:10px;
-
-    border-radius:8px;
-
-    background:#061321;
+.report-card{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+    transition:.2s;
+    cursor:pointer;
 }
 
-.case-label{
-
-    color:#49677b;
-
-    font-size:6px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
+.report-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(0,0,0,.10);
 }
 
-.case-value{
-
-    margin-top:5px;
-
-    color:#b9d3e1;
-
-    font-size:9px;
-
-    font-weight:800;
-
-    word-break:break-word;
-}
-
-
-/* =====================================================
-   TIMELINE
-   ===================================================== */
-
-.timeline{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(5,1fr);
-
-    gap:7px;
-}
-
-.timeline-step{
-
+.report-photo{
+    height:190px;
+    background:#e5e7eb;
     position:relative;
-
-    padding:10px;
-
-    text-align:center;
-
-    border-radius:8px;
-
-    background:#061321;
-
-    border:
-        1px solid
-        rgba(89,145,181,.08);
+    overflow:hidden;
 }
 
-.timeline-step.active{
-
-    border-color:
-        rgba(43,193,239,.35);
-
-    background:
-        rgba(26,133,179,.10);
-}
-
-.timeline-dot{
-
-    width:8px;
-    height:8px;
-
-    margin:
-        0 auto 7px;
-
-    border-radius:50%;
-
-    background:#284354;
-}
-
-.timeline-step.active .timeline-dot{
-
-    background:#32c8f2;
-
-    box-shadow:
-        0 0 10px
-        rgba(50,200,242,.6);
-}
-
-.timeline-name{
-
-    color:#577286;
-
-    font-size:6px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-}
-
-.timeline-step.active .timeline-name{
-    color:#86d8f5;
-}
-
-
-/* =====================================================
-   NARRATIVE
-   ===================================================== */
-
-.text-box{
-
-    padding:12px;
-
-    min-height:55px;
-
-    border-radius:8px;
-
-    background:#061321;
-
-    color:#8ba7b8;
-
-    font-size:9px;
-
-    line-height:1.7;
-
-    white-space:pre-wrap;
-}
-
-
-/* =====================================================
-   PHOTO EVIDENCE
-   ===================================================== */
-
-.photo-container{
-
-    min-height:180px;
-
-    display:block;
-
-    overflow:auto;
-
-    border:
-        1px dashed
-        rgba(115,165,205,.20);
-
-    border-radius:11px;
-
-    padding:12px;
-
-    background:#061426;
-}
-
-.photo-gallery{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(220px,1fr)
-        );
-
-    gap:14px;
-
+.report-photo img{
     width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
 }
 
-.photo-card{
-
-    min-width:0;
-
-    padding:10px;
-
-    border:
-        1px solid
-        rgba(115,165,205,.12);
-
-    border-radius:10px;
-
-    background:#081a2d;
+.photo-count{
+    position:absolute;
+    right:10px;
+    bottom:10px;
+    background:rgba(0,0,0,.7);
+    color:white;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
 }
 
-.photo-card-title{
-
-    margin-bottom:8px;
-
-    color:#b9cee1;
-
-    font-size:8px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-}
-
-.photo-image-wrapper{
-
-    min-height:160px;
-
+.no-photo{
+    width:100%;
+    height:100%;
     display:flex;
-
     align-items:center;
     justify-content:center;
-
-    overflow:hidden;
-
-    border-radius:8px;
-
-    background:#061426;
+    color:#9ca3af;
+    font-size:13px;
 }
 
-.photo-container img,
-.photo-evidence-image{
-
-    display:block;
-
-    width:100%;
-
-    max-width:100%;
-
-    height:240px;
-
-    object-fit:contain;
-
-    border-radius:8px;
+.report-body{
+    padding:16px;
 }
 
-.photo-placeholder{
-
-    color:#59738c;
-
-    font-size:9px;
-
-    font-weight:700;
-
-    text-align:center;
-
-    padding:20px;
+.report-number{
+    font-weight:bold;
+    color:#2563eb;
+    font-size:13px;
+    margin-bottom:8px;
 }
 
-.photo-link{
-
-    display:inline-flex;
-
-    margin-top:9px;
-
-    padding:8px 11px;
-
-    border-radius:8px;
-
-    color:#58c3ff;
-
-    background:
-        rgba(22,135,255,.12);
-
-    font-size:8px;
-
-    font-weight:900;
-
-    text-decoration:none;
+.report-title{
+    font-size:15px;
+    font-weight:bold;
+    margin-bottom:10px;
+    line-height:1.4;
 }
 
-
-/* =====================================================
-   FORM
-   ===================================================== */
-
-.form-grid{
-
+.report-info{
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:12px;
-}
-
-.form-group{
-    display:flex;
-    flex-direction:column;
     gap:6px;
 }
 
-.form-group.full{
-    grid-column:
-        1 / -1;
+.info-row{
+    font-size:12px;
+    color:#6b7280;
 }
 
-.form-label{
+.info-row strong{
+    color:#374151;
+}
 
-    color:#587388;
-
-    font-size:7px;
-
-    font-weight:900;
-
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:bold;
+    margin-top:10px;
     text-transform:uppercase;
 }
 
-.form-control{
-
-    width:100%;
-
-    border:
-        1px solid
-        rgba(92,151,190,.12);
-
-    background:#061321;
-
-    color:#bcd4e1;
-
-    border-radius:8px;
-
-    padding:10px;
-
-    outline:none;
-
-    font-size:9px;
+.status-new{
+    background:#fef3c7;
+    color:#92400e;
 }
 
-textarea.form-control{
-    min-height:90px;
-    resize:vertical;
+.status-progress{
+    background:#dbeafe;
+    color:#1d4ed8;
 }
 
-.form-control:focus{
-
-    border-color:
-        rgba(39,185,237,.35);
+.status-closed{
+    background:#dcfce7;
+    color:#166534;
 }
 
+.status-other{
+    background:#e5e7eb;
+    color:#374151;
+}
 
 /* =====================================================
-   MODAL FOOTER
-   ===================================================== */
+   EMPTY / LOADING
+===================================================== */
 
-.modal-footer{
-
-    position:sticky;
-
-    bottom:0;
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:9px;
-
-    padding:14px 20px;
-
-    background:#071522;
-
-    border-top:
-        1px solid
-        rgba(96,156,193,.10);
+.loading,
+.empty-state{
+    grid-column:1/-1;
+    background:white;
+    padding:50px;
+    border-radius:14px;
+    text-align:center;
+    color:#6b7280;
 }
 
-.btn{
-
-    border:0;
-
-    border-radius:8px;
-
-    padding:10px 15px;
-
-    font-size:8px;
-
-    font-weight:900;
+.spinner{
+    width:30px;
+    height:30px;
+    border:3px solid #e5e7eb;
+    border-top-color:#2563eb;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 15px;
 }
 
-.btn-secondary{
-
-    background:#0b2030;
-
-    color:#7590a3;
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
 }
 
-.btn-primary{
+/* =====================================================
+   MODAL
+===================================================== */
 
-    background:
-        linear-gradient(
-            135deg,
-            #087bbd,
-            #11b4df
-        );
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:500;
+    overflow-y:auto;
+    padding:30px;
+}
 
+.modal.show{
+    display:block;
+}
+
+.modal-box{
+    max-width:1100px;
+    margin:20px auto;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+}
+
+.modal-header{
+    background:#111827;
     color:white;
-
-    box-shadow:
-        0 5px 18px
-        rgba(15,155,214,.15);
+    padding:20px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
+.modal-header h2{
+    font-size:18px;
+}
+
+.close-btn{
+    background:transparent;
+    border:0;
+    color:white;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.modal-content{
+    padding:25px;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.detail-box{
+    background:#f8fafc;
+    padding:16px;
+    border-radius:12px;
+}
+
+.detail-box.full{
+    grid-column:1/-1;
+}
+
+.detail-box h4{
+    font-size:12px;
+    color:#6b7280;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.detail-box p{
+    font-size:14px;
+    line-height:1.5;
+    white-space:pre-wrap;
+}
+
+/* =====================================================
+   PHOTO GALLERY
+===================================================== */
+
+.gallery-title{
+    font-size:15px;
+    font-weight:bold;
+    margin:25px 0 12px;
+}
+
+.photo-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.photo-item{
+    border-radius:12px;
+    overflow:hidden;
+    background:#f1f5f9;
+    min-height:220px;
+    position:relative;
+}
+
+.photo-item img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    cursor:pointer;
+    display:block;
+}
+
+.photo-label{
+    position:absolute;
+    left:8px;
+    top:8px;
+    background:rgba(0,0,0,.7);
+    color:white;
+    padding:5px 8px;
+    border-radius:6px;
+    font-size:11px;
+}
+
+.photo-error{
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#94a3b8;
+    font-size:12px;
+    text-align:center;
+    padding:15px;
+}
 
 /* =====================================================
    TOAST
-   ===================================================== */
+===================================================== */
 
 .toast{
-
     position:fixed;
-
     right:20px;
     bottom:20px;
-
-    z-index:9000;
-
-    max-width:350px;
-
-    padding:12px 15px;
-
+    background:#111827;
+    color:white;
+    padding:13px 18px;
     border-radius:9px;
-
-    background:#0a1d2d;
-
-    border:
-        1px solid
-        rgba(93,162,201,.18);
-
-    color:#b8d4e2;
-
-    font-size:8px;
-
-    font-weight:900;
-
-    box-shadow:
-        0 15px 40px
-        rgba(0,0,0,.45);
-
-    transform:
-        translateY(100px);
-
-    opacity:0;
-
-    transition:.25s ease;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+    display:none;
+    z-index:1000;
+    font-size:13px;
 }
 
 .toast.show{
-
-    transform:
-        translateY(0);
-
-    opacity:1;
+    display:block;
 }
-
 
 /* =====================================================
    RESPONSIVE
-   ===================================================== */
+===================================================== */
 
-@media(max-width:1100px){
+@media(max-width:1000px){
 
     .kpi-grid{
-        grid-template-columns:
-            repeat(3,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .analytics-grid{
-        grid-template-columns:
-            1fr 1fr;
+    #reportsGrid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .analytics-grid .panel:first-child{
-        grid-column:
-            1 / -1;
-    }
-
-    .reports-grid{
-        grid-template-columns:
-            repeat(2,1fr);
+    .filter-grid{
+        grid-template-columns:1fr 1fr;
     }
 
 }
 
-@media(max-width:750px){
+@media(max-width:700px){
 
     .topbar{
-        padding:0 15px;
+        padding:0 12px;
     }
 
-    .brand-sub{
-        display:none;
-    }
-
-    .system-status{
+    .brand-text{
         display:none;
     }
 
     .main{
-        width:92%;
-        padding-top:20px;
-    }
-
-    .hero{
-        display:block;
-    }
-
-    .hero-right{
-        margin-top:15px;
-        text-align:left;
+        padding:15px;
     }
 
     .kpi-grid{
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:1fr 1fr;
     }
 
-    .analytics-grid{
+    #reportsGrid{
         grid-template-columns:1fr;
     }
 
-    .analytics-grid .panel:first-child{
+    .filter-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detail-box.full{
         grid-column:auto;
     }
 
-    .action-grid{
+    .photo-gallery{
         grid-template-columns:1fr;
     }
 
-    .filters{
-        grid-template-columns:1fr;
-    }
-
-    .reports-grid{
-        grid-template-columns:1fr;
-    }
-
-    .case-summary{
-        grid-template-columns:
-            1fr 1fr;
-    }
-
-    .timeline{
-        grid-template-columns:
-            1fr;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .form-group.full{
-        grid-column:auto;
-    }
-
-}
-
-@media(max-width:480px){
-
-    .kpi-grid{
-        grid-template-columns:1fr;
-    }
-
-    .case-summary{
-        grid-template-columns:1fr;
+    .modal{
+        padding:10px;
     }
 
 }
@@ -1777,587 +684,318 @@ textarea.form-control{
 
 
 <!-- =====================================================
-     DASHBOARD APP
-     ===================================================== -->
+     LOGIN PAGE
+===================================================== -->
 
-<div id="dashboardApp">
+<div id="loginPage">
 
+    <div class="login-box">
 
-<!-- =====================================================
-     TOP BAR
-     ===================================================== -->
-
-<header class="topbar">
-
-    <div class="brand">
-
-        <div class="brand-icon">
-            E
+        <div class="login-logo">
+            ESH
         </div>
 
-        <div>
-
-            <div class="brand-title">
-                ESH COMMAND CENTER
-            </div>
-
-            <div class="brand-sub">
-                Near Miss Management System
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="top-actions">
-
-        <div class="system-status">
-
-            <span class="status-dot"></span>
-
-            SYSTEM ONLINE
-
-        </div>
-
-
-        <button
-            class="logout-btn"
-            onclick="logout()"
-        >
-            LOGOUT
-        </button>
-
-    </div>
-
-</header>
-
-
-
-<!-- =====================================================
-     MAIN
-     ===================================================== -->
-
-<main class="main">
-
-
-<!-- =====================================================
-     HERO
-     ===================================================== -->
-
-<section class="hero">
-
-    <div class="hero-left">
-
-        <h1>
-            Near Miss Command Center
-        </h1>
+        <h1>ESH Dashboard</h1>
 
         <p>
-            Monitor, investigate and close workplace
-            near miss reports through one ESH control
-            dashboard.
+            Near Miss Management System
         </p>
 
-    </div>
-
-
-    <div class="hero-right">
-
-        <div
-            id="lastRefresh"
-            class="last-refresh"
+        <input
+            type="text"
+            id="username"
+            placeholder="Username"
         >
-            LAST REFRESH: --
-        </div>
-
-        <button
-            class="refresh-btn"
-            onclick="loadReports()"
-        >
-            ↻ REFRESH REPORTS
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     KPI
-     ===================================================== -->
-
-<section class="kpi-grid">
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            Total Reports
-        </div>
-
-        <div
-            class="kpi-value"
-            id="totalReports"
-        >
-            0
-        </div>
-
-        <div class="kpi-info">
-            All submitted reports
-        </div>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            New
-        </div>
-
-        <div
-            class="kpi-value"
-            id="newReports"
-        >
-            0
-        </div>
-
-        <div class="kpi-info">
-            Awaiting investigation
-        </div>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            Investigation
-        </div>
-
-        <div
-            class="kpi-value"
-            id="investigationReports"
-        >
-            0
-        </div>
-
-        <div class="kpi-info">
-            Investigation in progress
-        </div>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            Corrective Action
-        </div>
-
-        <div
-            class="kpi-value"
-            id="correctiveReports"
-        >
-            0
-        </div>
-
-        <div class="kpi-info">
-            Action required
-        </div>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-label">
-            Closed
-        </div>
-
-        <div
-            class="kpi-value"
-            id="closedReports"
-        >
-            0
-        </div>
-
-        <div class="kpi-info">
-            Successfully closed
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     ANALYTICS
-     ===================================================== -->
-
-<section class="analytics-grid">
-
-
-    <!-- TREND -->
-
-    <div class="panel">
-
-        <div class="panel-title">
-
-            <h2>
-                7 Period Report Trend
-            </h2>
-
-            <span>
-                REPORT ACTIVITY
-            </span>
-
-        </div>
-
-
-        <div
-            id="trendChart"
-            class="chart-area"
-        >
-
-            <div class="loading">
-                Loading analytics...
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- CATEGORY -->
-
-    <div class="panel">
-
-        <div class="panel-title">
-
-            <h2>
-                Hazard Categories
-            </h2>
-
-            <span>
-                TOP
-            </span>
-
-        </div>
-
-
-        <div
-            id="categoryStats"
-            class="stat-list"
-        ></div>
-
-    </div>
-
-
-
-    <!-- DEPARTMENT -->
-
-    <div class="panel">
-
-        <div class="panel-title">
-
-            <h2>
-                Departments
-            </h2>
-
-            <span>
-                REPORTS
-            </span>
-
-        </div>
-
-
-        <div
-            id="departmentStats"
-            class="stat-list"
-        ></div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     ACTION CENTER
-     ===================================================== -->
-
-<section class="action-grid">
-
-    <div class="action-card">
-
-        <div class="action-top">
-
-            <div class="action-label">
-                Overdue
-            </div>
-
-            <div>
-                ⚠
-            </div>
-
-        </div>
-
-        <div
-            class="action-value"
-            id="overdueReports"
-        >
-            0
-        </div>
-
-        <div class="action-desc">
-            Corrective actions past due date
-        </div>
-
-    </div>
-
-
-    <div class="action-card">
-
-        <div class="action-top">
-
-            <div class="action-label">
-                Open Cases
-            </div>
-
-            <div>
-                ◉
-            </div>
-
-        </div>
-
-        <div
-            class="action-value"
-            id="openReports"
-        >
-            0
-        </div>
-
-        <div class="action-desc">
-            Reports requiring ESH action
-        </div>
-
-    </div>
-
-
-    <div class="action-card">
-
-        <div class="action-top">
-
-            <div class="action-label">
-                Closure Rate
-            </div>
-
-            <div>
-                ✓
-            </div>
-
-        </div>
-
-        <div
-            class="action-value"
-            id="closureRate"
-        >
-            0%
-        </div>
-
-        <div class="action-desc">
-            Closed reports versus total
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     FILTERS
-     ===================================================== -->
-
-<section class="panel filter-panel">
-
-    <div class="panel-title">
-
-        <h2>
-            Report Search & Filter
-        </h2>
-
-        <span>
-            LIVE FILTER
-        </span>
-
-    </div>
-
-
-    <div class="filters">
 
         <input
-            id="searchInput"
-            class="input"
-            type="text"
-            placeholder="Search report number, location, department, narrative..."
-            oninput="applyFilters()"
+            type="password"
+            id="password"
+            placeholder="Password"
+            onkeydown="if(event.key==='Enter') login()"
         >
-
-
-        <select
-            id="statusFilter"
-            class="select"
-            onchange="applyFilters()"
-        >
-
-            <option value="">
-                All Status
-            </option>
-
-            <option value="New">
-                New
-            </option>
-
-            <option value="Investigation">
-                Investigation
-            </option>
-
-            <option value="Corrective Action">
-                Corrective Action
-            </option>
-
-            <option value="Verification">
-                Verification
-            </option>
-
-            <option value="Closed">
-                Closed
-            </option>
-
-        </select>
-
-
-        <select
-            id="categoryFilter"
-            class="select"
-            onchange="applyFilters()"
-        >
-
-            <option value="">
-                All Categories
-            </option>
-
-        </select>
-
-
-        <select
-            id="departmentFilter"
-            class="select"
-            onchange="applyFilters()"
-        >
-
-            <option value="">
-                All Departments
-            </option>
-
-        </select>
-
 
         <button
-            class="clear-btn"
-            onclick="clearFilters()"
+            class="login-btn"
+            onclick="login()"
         >
-            CLEAR
+            LOGIN
         </button>
 
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     REPORTS
-     ===================================================== -->
-
-<section>
-
-    <div class="reports-header">
-
-        <h2>
-            Near Miss Reports
-        </h2>
-
         <div
-            id="reportCount"
-            class="report-count"
+            id="loginError"
+            class="login-error"
         >
-            0 REPORTS
+            Invalid username or password.
         </div>
 
     </div>
-
-
-    <div
-        id="reportsGrid"
-        class="reports-grid"
-    >
-
-        <div class="loading">
-            Loading reports...
-        </div>
-
-    </div>
-
-</section>
-
-
-</main>
-
 
 </div>
 
 
-
 <!-- =====================================================
-     CASE MODAL
-     ===================================================== -->
+     DASHBOARD PAGE
+===================================================== -->
 
-<div
-    id="caseModal"
-    class="modal"
->
+<div id="dashboardPage">
 
-    <div class="modal-box">
+    <div class="topbar">
 
+        <div class="brand">
 
-        <!-- HEADER -->
+            <div class="brand-icon">
+                E
+            </div>
 
-        <div class="modal-header">
+            <div class="brand-text">
 
-            <div class="modal-title">
+                <h1>
+                    ESH Management System
+                </h1>
 
-                <h2 id="modalReportNumber">
-                    Near Miss Report
-                </h2>
-
-                <span
-                    id="modalStatus"
-                    class="badge badge-new"
-                >
-                    New
+                <span>
+                    Near Miss Dashboard
                 </span>
 
             </div>
 
+        </div>
+
+
+        <div class="top-actions">
 
             <button
-                class="modal-close"
+                class="refresh-btn"
+                onclick="loadReports()"
+            >
+                ↻ Refresh
+            </button>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <main class="main">
+
+        <div class="page-title">
+
+            <h2>
+                Near Miss Dashboard
+            </h2>
+
+            <p>
+                Monitor, review and manage submitted ESH reports.
+            </p>
+
+        </div>
+
+
+        <!-- KPI -->
+
+        <div class="kpi-grid">
+
+            <div class="kpi total">
+
+                <div class="kpi-label">
+                    Total Reports
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="totalCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="kpi new">
+
+                <div class="kpi-label">
+                    New
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="newCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="kpi progress">
+
+                <div class="kpi-label">
+                    In Progress
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="progressCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="kpi closed">
+
+                <div class="kpi-label">
+                    Closed
+                </div>
+
+                <div
+                    class="kpi-value"
+                    id="closedCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FILTER -->
+
+        <div class="filter-box">
+
+            <div class="filter-grid">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search report number, location, department..."
+                    oninput="applyFilters()"
+                >
+
+                <select
+                    id="statusFilter"
+                    onchange="applyFilters()"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="New">
+                        New
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Closed">
+                        Closed
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="departmentFilter"
+                    onchange="applyFilters()"
+                >
+
+                    <option value="">
+                        All Departments
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="categoryFilter"
+                    onchange="applyFilters()"
+                >
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                </select>
+
+
+                <button
+                    class="clear-btn"
+                    onclick="clearFilters()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- REPORTS -->
+
+        <div class="section-header">
+
+            <h3>
+                Submitted Reports
+            </h3>
+
+            <div
+                class="last-refresh"
+                id="lastRefresh"
+            >
+                LAST REFRESH: -
+            </div>
+
+        </div>
+
+
+        <div id="reportsGrid">
+
+            <div class="loading">
+
+                <div class="spinner"></div>
+
+                Loading reports...
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     REPORT MODAL
+===================================================== -->
+
+<div
+    class="modal"
+    id="reportModal"
+    onclick="closeModalOutside(event)"
+>
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2 id="modalTitle">
+                Report Details
+            </h2>
+
+            <button
+                class="close-btn"
                 onclick="closeModal()"
             >
                 ×
@@ -2366,497 +1004,149 @@ textarea.form-control{
         </div>
 
 
+        <div class="modal-content">
 
-        <!-- BODY -->
+            <div class="detail-grid">
 
-        <div class="modal-body">
+                <div class="detail-box">
 
+                    <h4>
+                        Report Number
+                    </h4>
 
-            <!-- CASE SUMMARY -->
+                    <p id="detailReportNumber">
+                        -
+                    </p>
 
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    Case Summary
                 </div>
 
 
-                <div class="case-summary">
+                <div class="detail-box">
 
-                    <div class="case-field">
+                    <h4>
+                        Date / Time
+                    </h4>
 
-                        <div class="case-label">
-                            Report Number
-                        </div>
+                    <p id="detailDateTime">
+                        -
+                    </p>
 
-                        <div
-                            class="case-value"
-                            id="caseReportNumber"
-                        >
-                            -
-                        </div>
-
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Date
-                        </div>
+                    <h4>
+                        Location
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseDate"
-                        >
-                            -
-                        </div>
+                    <p id="detailLocation">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Location
-                        </div>
+                    <h4>
+                        Department
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseLocation"
-                        >
-                            -
-                        </div>
+                    <p id="detailDepartment">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Department
-                        </div>
+                    <h4>
+                        Hazard Category
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseDepartment"
-                        >
-                            -
-                        </div>
+                    <p id="detailCategory">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Category
-                        </div>
+                    <h4>
+                        Reporter
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseCategory"
-                        >
-                            -
-                        </div>
+                    <p id="detailReporter">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box full">
 
-                        <div class="case-label">
-                            Timestamp
-                        </div>
+                    <h4>
+                        What Happened
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseTimestamp"
-                        >
-                            -
-                        </div>
+                    <p id="detailWhat">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Current Status
-                        </div>
+                    <h4>
+                        Status
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseCurrentStatus"
-                        >
-                            -
-                        </div>
+                    <p id="detailStatus">
+                        -
+                    </p>
 
-                    </div>
+                </div>
 
 
-                    <div class="case-field">
+                <div class="detail-box">
 
-                        <div class="case-label">
-                            Row
-                        </div>
+                    <h4>
+                        Submitted At
+                    </h4>
 
-                        <div
-                            class="case-value"
-                            id="caseRow"
-                        >
-                            -
-                        </div>
-
-                    </div>
+                    <p id="detailSubmittedAt">
+                        -
+                    </p>
 
                 </div>
 
             </div>
 
 
-
-            <!-- TIMELINE -->
-
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    Investigation Workflow
-                </div>
-
-
-                <div
-                    id="caseTimeline"
-                    class="timeline"
-                >
-
-                    <div class="timeline-step">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            New
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-step">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            Investigation
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-step">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            Corrective Action
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-step">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            Verification
-                        </div>
-
-                    </div>
-
-
-                    <div class="timeline-step">
-
-                        <div class="timeline-dot"></div>
-
-                        <div class="timeline-name">
-                            Closed
-                        </div>
-
-                    </div>
-
-                </div>
-
+            <div class="gallery-title">
+                Photo Evidence
             </div>
 
-
-
-            <!-- INCIDENT -->
-
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    Incident / Near Miss Information
-                </div>
-
-
-                <div
-                    id="caseIncidentInfo"
-                    class="text-box"
-                >
-                    -
-                </div>
-
+            <div
+                id="photoGallery"
+                class="photo-gallery"
+            >
             </div>
-
-
-
-            <!-- NARRATIVE -->
-
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    Reporter Narrative
-                </div>
-
-
-                <div
-                    id="caseNarrative"
-                    class="text-box"
-                >
-                    -
-                </div>
-
-            </div>
-
-
-
-            <!-- PHOTO -->
-
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    Photo Evidence
-                </div>
-
-
-                <div
-                    id="photoEvidence"
-                    class="photo-container"
-                >
-
-                    <div class="photo-placeholder">
-                        No photo evidence available
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- INVESTIGATION -->
-
-            <div class="modal-section">
-
-                <div class="section-heading">
-                    ESH Investigation & Corrective Action
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Status
-                        </label>
-
-                        <select
-                            id="caseStatus"
-                            class="form-control"
-                        >
-
-                            <option value="New">
-                                New
-                            </option>
-
-                            <option value="Investigation">
-                                Investigation
-                            </option>
-
-                            <option value="Corrective Action">
-                                Corrective Action
-                            </option>
-
-                            <option value="Verification">
-                                Verification
-                            </option>
-
-                            <option value="Closed">
-                                Closed
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            ESH Investigator
-                        </label>
-
-                        <input
-                            id="caseInvestigator"
-                            class="form-control"
-                            type="text"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            Investigation Findings
-                        </label>
-
-                        <textarea
-                            id="caseInvestigation"
-                            class="form-control"
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            Root Cause
-                        </label>
-
-                        <textarea
-                            id="caseRootCause"
-                            class="form-control"
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            Corrective Action
-                        </label>
-
-                        <textarea
-                            id="caseCorrectiveAction"
-                            class="form-control"
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Person Responsible
-                        </label>
-
-                        <input
-                            id="caseResponsible"
-                            class="form-control"
-                            type="text"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Due Date
-                        </label>
-
-                        <input
-                            id="caseDueDate"
-                            class="form-control"
-                            type="date"
-                        >
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            Verification Remarks
-                        </label>
-
-                        <textarea
-                            id="caseVerification"
-                            class="form-control"
-                        ></textarea>
-
-                    </div>
-
-
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            ESH Remarks
-                        </label>
-
-                        <textarea
-                            id="caseRemarks"
-                            class="form-control"
-                        ></textarea>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
 
         </div>
-
-
-
-        <!-- FOOTER -->
-
-        <div class="modal-footer">
-
-            <button
-                class="btn btn-secondary"
-                onclick="closeModal()"
-            >
-                CLOSE
-            </button>
-
-
-            <button
-                class="btn btn-primary"
-                onclick="saveReport()"
-            >
-                SAVE / UPDATE REPORT
-            </button>
-
-        </div>
-
 
     </div>
 
 </div>
 
 
-
 <!-- =====================================================
      TOAST
-     ===================================================== -->
+===================================================== -->
 
 <div
     id="toast"
@@ -2864,21 +1154,24 @@ textarea.form-control{
 ></div>
 
 
-
 <script>
-
 
 /* =====================================================
    CONFIGURATION
-   ===================================================== */
+===================================================== */
 
 const GOOGLE_SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
-/* =====================================================
-   GLOBAL DATA
-   ===================================================== */
+/*
+   CHANGE THESE IF YOU WANT DIFFERENT LOGIN DETAILS
+*/
+
+const DASHBOARD_USERNAME = "esh";
+
+const DASHBOARD_PASSWORD = "1234";
+
 
 let reports = [];
 
@@ -2888,42 +1181,96 @@ let selectedReport = null;
 
 
 /* =====================================================
-   LOGIN CHECK
-   ===================================================== */
+   LOGIN
+===================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+function login(){
 
-        const loggedIn =
-            sessionStorage.getItem(
-                "eshLoggedIn"
-            );
+    const username =
+        document.getElementById("username").value.trim();
 
-        if(loggedIn !== "true"){
+    const password =
+        document.getElementById("password").value;
 
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
+    const error =
+        document.getElementById("loginError");
 
 
-        document.getElementById(
-            "dashboardApp"
-        ).style.display = "block";
+    if(
+        username === DASHBOARD_USERNAME &&
+        password === DASHBOARD_PASSWORD
+    ){
 
+        sessionStorage.setItem(
+            "eshLoggedIn",
+            "true"
+        );
+
+        showDashboard();
 
         loadReports();
 
+    }else{
+
+        error.style.display = "block";
+
     }
-);
+
+}
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+function checkLogin(){
+
+    const loggedIn =
+        sessionStorage.getItem(
+            "eshLoggedIn"
+        );
+
+    if(loggedIn === "true"){
+
+        showDashboard();
+
+        loadReports();
+
+    }else{
+
+        document.getElementById(
+            "loginPage"
+        ).style.display = "flex";
+
+        document.getElementById(
+            "dashboardPage"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW DASHBOARD
+===================================================== */
+
+function showDashboard(){
+
+    document.getElementById(
+        "loginPage"
+    ).style.display = "none";
+
+    document.getElementById(
+        "dashboardPage"
+    ).style.display = "block";
+
+}
 
 
 /* =====================================================
    LOGOUT
-   ===================================================== */
+===================================================== */
 
 function logout(){
 
@@ -2931,15 +1278,14 @@ function logout(){
         "eshLoggedIn"
     );
 
-    window.location.href =
-        "login.html";
+    location.reload();
 
 }
 
 
 /* =====================================================
    LOAD REPORTS
-   ===================================================== */
+===================================================== */
 
 async function loadReports(){
 
@@ -2950,19 +1296,42 @@ async function loadReports(){
 
 
     grid.innerHTML = `
+
         <div class="loading">
+
+            <div class="spinner"></div>
+
             Loading reports...
+
         </div>
+
     `;
 
 
     try{
 
+        console.log(
+            "Loading reports from:",
+            GOOGLE_SCRIPT_URL
+        );
+
+
         const response =
             await fetch(
                 GOOGLE_SCRIPT_URL +
-                "?test=reports"
+                "?test=reports&_=" +
+                Date.now()
             );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "HTTP error " +
+                response.status
+            );
+
+        }
 
 
         const data =
@@ -2975,35 +1344,27 @@ async function loadReports(){
         );
 
 
-        if(Array.isArray(data)){
-
-            reports = data;
-
-        }
-        else if(
+        if(
             data &&
             Array.isArray(data.reports)
         ){
 
-            reports = data.reports;
+            reports =
+                data.reports;
 
-        }
-        else if(
-            data &&
-            Array.isArray(data.data)
+        }else if(
+            Array.isArray(data)
         ){
 
-            reports = data.data;
+            reports =
+                data;
 
-        }
-        else{
+        }else{
 
             reports = [];
 
         }
 
-
-        /* Normalize reports */
 
         reports =
             reports.map(
@@ -3029,8 +1390,7 @@ async function loadReports(){
             new Date().toLocaleString();
 
 
-    }
-    catch(error){
+    }catch(error){
 
         console.error(
             "LOAD REPORTS ERROR:",
@@ -3039,12 +1399,28 @@ async function loadReports(){
 
 
         grid.innerHTML = `
+
             <div class="empty-state">
-                Unable to load reports.<br><br>
-                Please check your Apps Script Web App URL
+
+                <strong>
+                    Unable to load reports
+                </strong>
+
+                <br><br>
+
+                ${escapeHtml(
+                    error.message
+                )}
+
+                <br><br>
+
+                Check the Apps Script Web App URL
                 and deployment.
+
             </div>
+
         `;
+
 
         showToast(
             "Unable to load reports"
@@ -3057,151 +1433,124 @@ async function loadReports(){
 
 /* =====================================================
    NORMALIZE REPORT
-   ===================================================== */
+===================================================== */
 
 function normalizeReport(r){
 
-    if(!r){
-        return {};
-    }
-
-
     return {
 
-        ...r,
-
         rowNumber:
-            r.rowNumber ||
-            r.row ||
-            r.Row ||
-            "",
-
+            r.rowNumber || "",
 
         reportNumber:
-            r.reportNumber ||
-            r.ReportNumber ||
-            r.reportNo ||
-            r.ReportNo ||
-            r.id ||
+            r.reportNumber || "",
+
+        dateTime:
+            r.dateTime ||
+            r.timestamp ||
+            r.date ||
             "",
 
-
-        status:
-            r.status ||
-            r.Status ||
-            "New",
-
+        timestamp:
+            r.timestamp || "",
 
         location:
-            r.location ||
-            r.Location ||
-            "",
-
+            r.location || "",
 
         department:
-            r.department ||
-            r.Department ||
-            "",
+            r.department || "",
 
+        hazardCategory:
+            r.hazardCategory ||
+            r.category ||
+            "",
 
         category:
             r.category ||
-            r.Category ||
+            r.hazardCategory ||
             "",
 
-
-        narrative:
+        whatHappened:
+            r.whatHappened ||
             r.narrative ||
-            r.Narrative ||
-            r.description ||
-            "",
-
-
-        incidentInfo:
             r.incidentInfo ||
-            r.IncidentInfo ||
-            r.incident ||
             "",
 
+        reporterName:
+            r.reporterName || "",
 
-        timestamp:
-            r.timestamp ||
-            r.Timestamp ||
-            "",
+        status:
+            r.status ||
+            "New",
 
-
-        date:
-            r.date ||
-            r.Date ||
-            r.createdDate ||
-            r.CreatedDate ||
-            "",
-
-
-        photo:
-            r.photo ||
-            r.Photo ||
-            "",
-
-
-        photoLink:
-            r.photoLink ||
-            r.PhotoLink ||
-            "",
-
+        eshAction:
+            r.eshAction || "",
 
         investigationFindings:
-            r.investigationFindings ||
-            r.InvestigationFindings ||
-            "",
-
+            r.investigationFindings || "",
 
         rootCause:
-            r.rootCause ||
-            r.RootCause ||
-            "",
-
-
-        eshInvestigator:
-            r.eshInvestigator ||
-            r.ESHInvestigator ||
-            "",
-
-
-        eshRemarks:
-            r.eshRemarks ||
-            r.ESHRemarks ||
-            "",
-
+            r.rootCause || "",
 
         correctiveAction:
-            r.correctiveAction ||
-            r.CorrectiveAction ||
-            "",
+            r.correctiveAction || "",
 
-
-        personResponsible:
+        responsiblePerson:
+            r.responsiblePerson ||
             r.personResponsible ||
-            r.PersonResponsible ||
             "",
 
-
-        dueDate:
+        targetDate:
+            r.targetDate ||
             r.dueDate ||
-            r.DueDate ||
             "",
 
+        completionDate:
+            r.completionDate || "",
 
-        verificationRemarks:
+        verification:
+            r.verification ||
             r.verificationRemarks ||
-            r.VerificationRemarks ||
             "",
 
+        closedBy:
+            r.closedBy || "",
+
+        remarks:
+            r.remarks ||
+            r.eshRemarks ||
+            "",
+
+        submittedAt:
+            r.submittedAt || "",
 
         closedDate:
-            r.closedDate ||
-            r.ClosedDate ||
-            ""
+            r.closedDate || "",
+
+        photo:
+            cleanPhotoList(
+                r.photo
+            ),
+
+        photos:
+            cleanPhotoList(
+                r.photos
+            ),
+
+        photoLink:
+            cleanPhotoList(
+                r.photoLink
+            ),
+
+        photoLinks:
+            cleanPhotoList(
+                r.photoLinks
+            ),
+
+        photoUrls:
+            cleanPhotoList(
+                r.photoUrls
+            )
 
     };
 
@@ -3209,8 +1558,816 @@ function normalizeReport(r){
 
 
 /* =====================================================
-   DASHBOARD UPDATE
-   ===================================================== */
+   CLEAN PHOTO LIST
+===================================================== */
+
+function cleanPhotoList(value){
+
+    if(!value){
+        return [];
+    }
+
+
+    if(Array.isArray(value)){
+
+        return value
+            .filter(Boolean)
+            .map(x => String(x).trim())
+            .filter(Boolean);
+
+    }
+
+
+    if(typeof value === "string"){
+
+        return value
+            .split(/\n|,/)
+            .map(x => x.trim())
+            .filter(Boolean);
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =====================================================
+   GET PHOTOS
+===================================================== */
+
+function getPhotoDataFromReport(report){
+
+    let photos = [];
+
+
+    const possibleFields = [
+
+        report.photos,
+
+        report.photoUrls,
+
+        report.photoLinks,
+
+        report.photoLink,
+
+        report.photo
+
+    ];
+
+
+    for(
+        const field of possibleFields
+    ){
+
+        const cleaned =
+            cleanPhotoList(field);
+
+
+        if(cleaned.length > 0){
+
+            photos = [
+                ...photos,
+                ...cleaned
+            ];
+
+        }
+
+    }
+
+
+    /*
+       Remove duplicates
+    */
+
+    return [
+        ...new Set(
+            photos
+        )
+    ];
+
+}
+
+
+/* =====================================================
+   DRIVE FILE ID
+===================================================== */
+
+function extractDriveFileId(url){
+
+    if(!url){
+        return "";
+    }
+
+
+    url = String(url);
+
+
+    let match;
+
+
+    match =
+        url.match(
+            /[?&]id=([^&]+)/i
+        );
+
+
+    if(match){
+
+        return match[1];
+
+    }
+
+
+    match =
+        url.match(
+            /\/d\/([^/]+)/i
+        );
+
+
+    if(match){
+
+        return match[1];
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
+   CREATE IMAGE URLS
+===================================================== */
+
+function getImageUrls(originalUrl){
+
+    const fileId =
+        extractDriveFileId(
+            originalUrl
+        );
+
+
+    if(!fileId){
+
+        return [
+            originalUrl
+        ];
+
+    }
+
+
+    return [
+
+        "https://drive.google.com/thumbnail?id=" +
+        encodeURIComponent(fileId) +
+        "&sz=w1600",
+
+        "https://drive.google.com/uc?export=view&id=" +
+        encodeURIComponent(fileId),
+
+        "https://drive.google.com/uc?export=download&id=" +
+        encodeURIComponent(fileId),
+
+        "https://lh3.googleusercontent.com/d/" +
+        encodeURIComponent(fileId) +
+        "=w1600",
+
+        "https://drive.usercontent.google.com/download?id=" +
+        encodeURIComponent(fileId) +
+        "&export=view&confirm=t"
+
+    ];
+
+}
+
+
+/* =====================================================
+   RENDER REPORTS
+===================================================== */
+
+function renderReports(){
+
+    const grid =
+        document.getElementById(
+            "reportsGrid"
+        );
+
+
+    if(
+        !filteredReports.length
+    ){
+
+        grid.innerHTML = `
+
+            <div class="empty-state">
+
+                No reports found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        filteredReports
+        .map(
+            (report,index) =>
+                createReportCard(
+                    report,
+                    index
+                )
+        )
+        .join("");
+
+}
+
+
+/* =====================================================
+   REPORT CARD
+===================================================== */
+
+function createReportCard(
+    report,
+    index
+){
+
+    const photos =
+        getPhotoDataFromReport(
+            report
+        );
+
+
+    const firstPhoto =
+        photos.length
+            ? photos[0]
+            : "";
+
+
+    const title =
+        report.whatHappened ||
+        "Near Miss Report";
+
+
+    const statusClass =
+        getStatusClass(
+            report.status
+        );
+
+
+    return `
+
+        <div
+            class="report-card"
+            onclick="openReport(${index})"
+        >
+
+            <div class="report-photo">
+
+                ${
+                    firstPhoto
+                    ?
+
+                    `
+
+                    <img
+                        src="${escapeAttribute(
+                            getImageUrls(
+                                firstPhoto
+                            )[0]
+                        )}"
+
+                        alt="Near Miss Photo"
+
+                        loading="lazy"
+
+                        onerror="
+                            tryNextCardImage(
+                                this,
+                                '${escapeAttribute(
+                                    firstPhoto
+                                )}',
+                                1
+                            )
+                        "
+                    >
+
+                    `
+
+                    :
+
+                    `
+
+                    <div class="no-photo">
+                        No Photo
+                    </div>
+
+                    `
+                }
+
+
+                ${
+                    photos.length > 0
+
+                    ?
+
+                    `<div class="photo-count">
+                        📷 ${photos.length}
+                    </div>`
+
+                    :
+
+                    ""
+
+                }
+
+            </div>
+
+
+            <div class="report-body">
+
+                <div class="report-number">
+
+                    ${escapeHtml(
+                        report.reportNumber ||
+                        "NO NUMBER"
+                    )}
+
+                </div>
+
+
+                <div class="report-title">
+
+                    ${escapeHtml(
+                        title
+                    )}
+
+                </div>
+
+
+                <div class="report-info">
+
+                    <div class="info-row">
+                        <strong>Location:</strong>
+                        ${escapeHtml(
+                            report.location || "-"
+                        )}
+                    </div>
+
+
+                    <div class="info-row">
+                        <strong>Department:</strong>
+                        ${escapeHtml(
+                            report.department || "-"
+                        )}
+                    </div>
+
+
+                    <div class="info-row">
+                        <strong>Date:</strong>
+                        ${escapeHtml(
+                            report.dateTime || "-"
+                        )}
+                    </div>
+
+                </div>
+
+
+                <span
+                    class="status ${statusClass}"
+                >
+                    ${escapeHtml(
+                        report.status ||
+                        "New"
+                    )}
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   CARD IMAGE FALLBACK
+===================================================== */
+
+function tryNextCardImage(
+    img,
+    originalUrl,
+    index
+){
+
+    const urls =
+        getImageUrls(
+            originalUrl
+        );
+
+
+    if(
+        index >= urls.length
+    ){
+
+        img.style.display =
+            "none";
+
+        return;
+
+    }
+
+
+    img.src =
+        urls[index];
+
+
+    img.onerror =
+        function(){
+
+            tryNextCardImage(
+                img,
+                originalUrl,
+                index + 1
+            );
+
+        };
+
+}
+
+
+/* =====================================================
+   OPEN REPORT
+===================================================== */
+
+function openReport(index){
+
+    const report =
+        filteredReports[index];
+
+
+    if(!report){
+        return;
+    }
+
+
+    selectedReport =
+        report;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        report.reportNumber ||
+        "Report Details";
+
+
+    document.getElementById(
+        "detailReportNumber"
+    ).textContent =
+        report.reportNumber || "-";
+
+
+    document.getElementById(
+        "detailDateTime"
+    ).textContent =
+        report.dateTime || "-";
+
+
+    document.getElementById(
+        "detailLocation"
+    ).textContent =
+        report.location || "-";
+
+
+    document.getElementById(
+        "detailDepartment"
+    ).textContent =
+        report.department || "-";
+
+
+    document.getElementById(
+        "detailCategory"
+    ).textContent =
+        report.hazardCategory || "-";
+
+
+    document.getElementById(
+        "detailReporter"
+    ).textContent =
+        report.reporterName || "-";
+
+
+    document.getElementById(
+        "detailWhat"
+    ).textContent =
+        report.whatHappened || "-";
+
+
+    document.getElementById(
+        "detailStatus"
+    ).textContent =
+        report.status || "New";
+
+
+    document.getElementById(
+        "detailSubmittedAt"
+    ).textContent =
+        report.submittedAt || "-";
+
+
+    loadPhotosFromReport(
+        report
+    );
+
+
+    document.getElementById(
+        "reportModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   LOAD PHOTO GALLERY
+===================================================== */
+
+function loadPhotosFromReport(
+    report
+){
+
+    const gallery =
+        document.getElementById(
+            "photoGallery"
+        );
+
+
+    gallery.innerHTML = "";
+
+
+    const photos =
+        getPhotoDataFromReport(
+            report
+        );
+
+
+    if(!photos.length){
+
+        gallery.innerHTML = `
+
+            <div class="empty-state">
+                No photo evidence submitted.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    photos.forEach(
+        (
+            photoLink,
+            index
+        ) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "photo-item";
+
+
+            card.innerHTML = `
+
+                <div class="photo-label">
+                    Photo ${index + 1}
+                </div>
+
+
+                <img
+                    src="${escapeAttribute(
+                        getImageUrls(
+                            photoLink
+                        )[0]
+                    )}"
+
+                    alt="Photo ${index + 1}"
+
+                    loading="lazy"
+
+                    onclick="openPhoto(
+                        '${escapeAttribute(
+                            photoLink
+                        )}'
+                    )"
+                >
+
+            `;
+
+
+            const img =
+                card.querySelector(
+                    "img"
+                );
+
+
+            img.dataset.source =
+                photoLink;
+
+
+            img.dataset.index =
+                "0";
+
+
+            img.onerror =
+                function(){
+
+                    const original =
+                        this.dataset.source;
+
+                    const current =
+                        parseInt(
+                            this.dataset.index
+                        ) || 0;
+
+
+                    const urls =
+                        getImageUrls(
+                            original
+                        );
+
+
+                    if(
+                        current + 1 <
+                        urls.length
+                    ){
+
+                        this.dataset.index =
+                            String(
+                                current + 1
+                            );
+
+                        this.src =
+                            urls[
+                                current + 1
+                            ];
+
+                    }else{
+
+                        this.outerHTML = `
+
+                            <div class="photo-error">
+
+                                Unable to display photo.<br><br>
+
+                                <a
+                                    href="${escapeAttribute(
+                                        original
+                                    )}"
+                                    target="_blank"
+                                >
+                                    Open photo
+                                </a>
+
+                            </div>
+
+                        `;
+
+                    }
+
+                };
+
+
+            gallery.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   OPEN PHOTO
+===================================================== */
+
+function openPhoto(url){
+
+    if(!url){
+        return;
+    }
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeModal(){
+
+    document.getElementById(
+        "reportModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   CLOSE OUTSIDE MODAL
+===================================================== */
+
+function closeModalOutside(
+    event
+){
+
+    if(
+        event.target.id ===
+        "reportModal"
+    ){
+
+        closeModal();
+
+    }
+
+}
+
+
+/* =====================================================
+   STATUS CLASS
+===================================================== */
+
+function getStatusClass(
+    status
+){
+
+    const s =
+        String(
+            status || ""
+        )
+        .toLowerCase();
+
+
+    if(
+        s === "new"
+    ){
+
+        return "status-new";
+
+    }
+
+
+    if(
+        s.includes(
+            "progress"
+        )
+    ){
+
+        return "status-progress";
+
+    }
+
+
+    if(
+        s === "closed"
+    ){
+
+        return "status-closed";
+
+    }
+
+
+    return "status-other";
+
+}
+
+
+/* =====================================================
+   KPI
+===================================================== */
 
 function updateDashboard(){
 
@@ -3219,175 +2376,79 @@ function updateDashboard(){
 
 
     const newCount =
-        countStatus("New");
+        reports.filter(
+            r =>
+                String(
+                    r.status
+                ).toLowerCase()
+                === "new"
+        ).length;
 
 
-    const investigation =
-        countStatus("Investigation");
+    const progressCount =
+        reports.filter(
+            r =>
+                String(
+                    r.status
+                ).toLowerCase()
+                .includes(
+                    "progress"
+                )
+        ).length;
 
 
-    const corrective =
-        countStatus("Corrective Action");
-
-
-    const closed =
-        countStatus("Closed");
+    const closedCount =
+        reports.filter(
+            r =>
+                String(
+                    r.status
+                ).toLowerCase()
+                === "closed"
+        ).length;
 
 
     document.getElementById(
-        "totalReports"
+        "totalCount"
     ).textContent =
         total;
 
 
     document.getElementById(
-        "newReports"
+        "newCount"
     ).textContent =
         newCount;
 
 
     document.getElementById(
-        "investigationReports"
+        "progressCount"
     ).textContent =
-        investigation;
+        progressCount;
 
 
     document.getElementById(
-        "correctiveReports"
+        "closedCount"
     ).textContent =
-        corrective;
-
-
-    document.getElementById(
-        "closedReports"
-    ).textContent =
-        closed;
-
-
-    const open =
-        reports.filter(
-            r =>
-                String(r.status)
-                .toLowerCase()
-                !== "closed"
-        ).length;
-
-
-    const overdue =
-        reports.filter(
-            isOverdue
-        ).length;
-
-
-    const closure =
-        total > 0
-            ? Math.round(
-                (closed / total) * 100
-            )
-            : 0;
-
-
-    document.getElementById(
-        "openReports"
-    ).textContent =
-        open;
-
-
-    document.getElementById(
-        "overdueReports"
-    ).textContent =
-        overdue;
-
-
-    document.getElementById(
-        "closureRate"
-    ).textContent =
-        closure + "%";
-
-
-    renderAnalytics();
-
-}
-
-
-/* =====================================================
-   COUNT STATUS
-   ===================================================== */
-
-function countStatus(status){
-
-    return reports.filter(
-        r =>
-            String(r.status)
-            .trim()
-            .toLowerCase()
-            ===
-            String(status)
-            .trim()
-            .toLowerCase()
-    ).length;
-
-}
-
-
-/* =====================================================
-   OVERDUE
-   ===================================================== */
-
-function isOverdue(report){
-
-    if(
-        !report.dueDate
-    ){
-        return false;
-    }
-
-
-    if(
-        String(report.status)
-            .toLowerCase()
-            === "closed"
-    ){
-        return false;
-    }
-
-
-    const due =
-        new Date(
-            report.dueDate
-        );
-
-
-    if(
-        isNaN(due.getTime())
-    ){
-        return false;
-    }
-
-
-    return due <
-        new Date();
+        closedCount;
 
 }
 
 
 /* =====================================================
    POPULATE FILTERS
-   ===================================================== */
+===================================================== */
 
 function populateFilters(){
 
-    const categories =
-        [
-            ...new Set(
-                reports
-                    .map(
-                        r => r.category
-                    )
-                    .filter(Boolean)
-            )
-        ]
-        .sort();
+    const departmentSelect =
+        document.getElementById(
+            "departmentFilter"
+        );
+
+
+    const categorySelect =
+        document.getElementById(
+            "categoryFilter"
+        );
 
 
     const departments =
@@ -3395,7 +2456,8 @@ function populateFilters(){
             ...new Set(
                 reports
                     .map(
-                        r => r.department
+                        r =>
+                            r.department
                     )
                     .filter(Boolean)
             )
@@ -3403,175 +2465,192 @@ function populateFilters(){
         .sort();
 
 
-    const categoryFilter =
-        document.getElementById(
-            "categoryFilter"
-        );
+    const categories =
+        [
+            ...new Set(
+                reports
+                    .map(
+                        r =>
+                            r.hazardCategory
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
 
 
-    const departmentFilter =
-        document.getElementById(
-            "departmentFilter"
-        );
-
-
-    const oldCategory =
-        categoryFilter.value;
-
-
-    const oldDepartment =
-        departmentFilter.value;
-
-
-    categoryFilter.innerHTML =
-        `
-        <option value="">
-            All Categories
-        </option>
-        `;
-
-
-    categories.forEach(
-        category => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                category;
-
-            option.textContent =
-                category;
-
-            categoryFilter.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    departmentFilter.innerHTML =
-        `
-        <option value="">
+    departmentSelect.innerHTML =
+        `<option value="">
             All Departments
-        </option>
-        `;
+        </option>`;
 
 
     departments.forEach(
         department => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
+            departmentSelect.innerHTML +=
+                `
 
-            option.value =
-                department;
+                <option value="${escapeAttribute(
+                    department
+                )}">
 
-            option.textContent =
-                department;
+                    ${escapeHtml(
+                        department
+                    )}
 
-            departmentFilter.appendChild(
-                option
-            );
+                </option>
+
+                `;
 
         }
     );
 
 
-    categoryFilter.value =
-        oldCategory;
+    categorySelect.innerHTML =
+        `<option value="">
+            All Categories
+        </option>`;
 
 
-    departmentFilter.value =
-        oldDepartment;
+    categories.forEach(
+        category => {
+
+            categorySelect.innerHTML +=
+                `
+
+                <option value="${escapeAttribute(
+                    category
+                )}">
+
+                    ${escapeHtml(
+                        category
+                    )}
+
+                </option>
+
+                `;
+
+        }
+    );
 
 }
 
 
 /* =====================================================
-   FILTER REPORTS
-   ===================================================== */
+   FILTER
+===================================================== */
 
 function applyFilters(){
 
     const search =
         document.getElementById(
             "searchInput"
-        )
-        .value
-        .trim()
-        .toLowerCase();
+        ).value
+        .toLowerCase()
+        .trim();
 
 
     const status =
         document.getElementById(
             "statusFilter"
-        ).value;
-
-
-    const category =
-        document.getElementById(
-            "categoryFilter"
-        ).value;
+        ).value
+        .toLowerCase();
 
 
     const department =
         document.getElementById(
             "departmentFilter"
-        ).value;
+        ).value
+        .toLowerCase();
+
+
+    const category =
+        document.getElementById(
+            "categoryFilter"
+        ).value
+        .toLowerCase();
 
 
     filteredReports =
         reports.filter(
-            r => {
+            report => {
 
-                const searchable = [
+                const searchable = (
 
-                    r.reportNumber,
-                    r.location,
-                    r.department,
-                    r.category,
-                    r.narrative,
-                    r.incidentInfo,
-                    r.status
+                    String(
+                        report.reportNumber
+                    ) +
 
-                ]
-                .join(" ")
+                    " " +
+
+                    String(
+                        report.location
+                    ) +
+
+                    " " +
+
+                    String(
+                        report.department
+                    ) +
+
+                    " " +
+
+                    String(
+                        report.whatHappened
+                    ) +
+
+                    " " +
+
+                    String(
+                        report.reporterName
+                    )
+
+                )
                 .toLowerCase();
 
 
-                const matchSearch =
+                const matchesSearch =
                     !search ||
                     searchable.includes(
                         search
                     );
 
 
-                const matchStatus =
+                const matchesStatus =
                     !status ||
-                    r.status === status;
+                    String(
+                        report.status
+                    )
+                    .toLowerCase()
+                    === status;
 
 
-                const matchCategory =
-                    !category ||
-                    r.category === category;
-
-
-                const matchDepartment =
+                const matchesDepartment =
                     !department ||
-                    r.department === department;
+                    String(
+                        report.department
+                    )
+                    .toLowerCase()
+                    === department;
+
+
+                const matchesCategory =
+                    !category ||
+                    String(
+                        report.hazardCategory
+                    )
+                    .toLowerCase()
+                    === category;
 
 
                 return (
-                    matchSearch &&
-                    matchStatus &&
-                    matchCategory &&
-                    matchDepartment
+
+                    matchesSearch &&
+                    matchesStatus &&
+                    matchesDepartment &&
+                    matchesCategory
+
                 );
 
             }
@@ -3585,7 +2664,7 @@ function applyFilters(){
 
 /* =====================================================
    CLEAR FILTERS
-   ===================================================== */
+===================================================== */
 
 function clearFilters(){
 
@@ -3600,2046 +2679,31 @@ function clearFilters(){
 
 
     document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
-
-    document.getElementById(
         "departmentFilter"
     ).value = "";
 
 
-    applyFilters();
-
-}
-
-
-/* =====================================================
-   RENDER REPORTS
-   ===================================================== */
-
-function renderReports(){
-
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
-
-
     document.getElementById(
-        "reportCount"
-    ).textContent =
-        filteredReports.length +
-        " REPORT" +
-        (
-            filteredReports.length === 1
-                ? ""
-                : "S"
-        );
+        "categoryFilter"
+    ).value = "";
 
 
-    if(
-        filteredReports.length === 0
-    ){
+    filteredReports =
+        [...reports];
 
-        grid.innerHTML = `
-            <div class="empty-state">
-                No reports found.
-            </div>
-        `;
 
-        return;
-
-    }
-
-
-    grid.innerHTML = "";
-
-
-    filteredReports.forEach(
-        report => {
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-            card.className =
-                "report-card";
-
-
-            card.onclick =
-                function(){
-
-                    openReport(
-                        report.rowNumber
-                    );
-
-                };
-
-
-            const statusClass =
-                getStatusClass(
-                    report.status
-                );
-
-
-            const overdue =
-                isOverdue(report);
-
-
-            card.innerHTML = `
-
-                <div class="report-top">
-
-                    <div>
-
-                        <div class="report-number">
-
-                            ${escapeHtml(
-                                report.reportNumber ||
-                                "NEAR MISS"
-                            )}
-
-                        </div>
-
-                        <div class="report-date">
-
-                            ${escapeHtml(
-                                formatDate(
-                                    report.date ||
-                                    report.timestamp
-                                )
-                            )}
-
-                        </div>
-
-                    </div>
-
-
-                    <span
-                        class="badge ${statusClass}"
-                    >
-
-                        ${escapeHtml(
-                            report.status ||
-                            "New"
-                        )}
-
-                    </span>
-
-                </div>
-
-
-                <div class="report-location">
-
-                    ${escapeHtml(
-                        report.location ||
-                        "Location not provided"
-                    )}
-
-                </div>
-
-
-                <div class="report-meta">
-
-
-                    <div class="meta-item">
-
-                        <div class="meta-label">
-                            Department
-                        </div>
-
-                        <div class="meta-value">
-
-                            ${escapeHtml(
-                                report.department ||
-                                "-"
-                            )}
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="meta-item">
-
-                        <div class="meta-label">
-                            Category
-                        </div>
-
-                        <div class="meta-value">
-
-                            ${escapeHtml(
-                                report.category ||
-                                "-"
-                            )}
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-                <div class="report-narrative">
-
-                    ${escapeHtml(
-                        report.narrative ||
-                        report.incidentInfo ||
-                        "No narrative available."
-                    )}
-
-                </div>
-
-
-                <div class="report-footer">
-
-                    <span>
-
-                        ${overdue
-                            ? "⚠ OVERDUE"
-                            : "ESH REVIEW"
-                        }
-
-                    </span>
-
-                    <span>
-                        OPEN CASE →
-                    </span>
-
-                </div>
-
-            `;
-
-
-            grid.appendChild(
-                card
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   STATUS CLASS
-   ===================================================== */
-
-function getStatusClass(status){
-
-    const value =
-        String(status || "")
-        .toLowerCase();
-
-
-    if(value === "investigation"){
-        return "badge-investigation";
-    }
-
-
-    if(
-        value === "corrective action"
-    ){
-        return "badge-corrective";
-    }
-
-
-    if(value === "verification"){
-        return "badge-verification";
-    }
-
-
-    if(value === "closed"){
-        return "badge-closed";
-    }
-
-
-    return "badge-new";
-
-}
-
-
-/* =====================================================
-   OPEN REPORT
-   ===================================================== */
-
-function openReport(rowNumber){
-
-    selectedReport =
-        reports.find(
-            r =>
-                Number(r.rowNumber) ===
-                Number(rowNumber)
-        );
-
-
-    if(!selectedReport){
-
-        showToast(
-            "Report not found"
-        );
-
-        return;
-
-    }
-
-
-    const r =
-        selectedReport;
-
-
-    document.getElementById(
-        "modalReportNumber"
-    ).textContent =
-        r.reportNumber ||
-        "Near Miss Report";
-
-
-    const modalStatus =
-        document.getElementById(
-            "modalStatus"
-        );
-
-
-    modalStatus.textContent =
-        r.status ||
-        "New";
-
-
-    modalStatus.className =
-        "badge " +
-        getStatusClass(
-            r.status
-        );
-
-
-    document.getElementById(
-        "caseReportNumber"
-    ).textContent =
-        r.reportNumber || "-";
-
-
-    document.getElementById(
-        "caseDate"
-    ).textContent =
-        formatDate(
-            r.date ||
-            r.timestamp
-        );
-
-
-    document.getElementById(
-        "caseLocation"
-    ).textContent =
-        r.location || "-";
-
-
-    document.getElementById(
-        "caseDepartment"
-    ).textContent =
-        r.department || "-";
-
-
-    document.getElementById(
-        "caseCategory"
-    ).textContent =
-        r.category || "-";
-
-
-    document.getElementById(
-        "caseTimestamp"
-    ).textContent =
-        r.timestamp || "-";
-
-
-    document.getElementById(
-        "caseCurrentStatus"
-    ).textContent =
-        r.status || "New";
-
-
-    document.getElementById(
-        "caseRow"
-    ).textContent =
-        r.rowNumber || "-";
-
-
-    document.getElementById(
-        "caseIncidentInfo"
-    ).textContent =
-        r.incidentInfo || "-";
-
-
-    document.getElementById(
-        "caseNarrative"
-    ).textContent =
-        r.narrative || "-";
-
-
-    document.getElementById(
-        "caseStatus"
-    ).value =
-        r.status || "New";
-
-
-    document.getElementById(
-        "caseInvestigator"
-    ).value =
-        r.eshInvestigator || "";
-
-
-    document.getElementById(
-        "caseInvestigation"
-    ).value =
-        r.investigationFindings || "";
-
-
-    document.getElementById(
-        "caseRootCause"
-    ).value =
-        r.rootCause || "";
-
-
-    document.getElementById(
-        "caseCorrectiveAction"
-    ).value =
-        r.correctiveAction || "";
-
-
-    document.getElementById(
-        "caseResponsible"
-    ).value =
-        r.personResponsible || "";
-
-
-    document.getElementById(
-        "caseDueDate"
-    ).value =
-        formatDateForInput(
-            r.dueDate
-        );
-
-
-    document.getElementById(
-        "caseVerification"
-    ).value =
-        r.verificationRemarks || "";
-
-
-    document.getElementById(
-        "caseRemarks"
-    ).value =
-        r.eshRemarks || "";
-
-
-    /* IMPORTANT PHOTO FUNCTION */
-
-    loadPhotosFromReport(r);
-
-
-    updateTimeline(
-        r.status
-    );
-
-
-    document.getElementById(
-        "caseModal"
-    ).classList.add(
-        "show"
-    );
-
-}
-
-
-/* =====================================================
-   CLOSE MODAL
-   ===================================================== */
-
-function closeModal(){
-
-    document.getElementById(
-        "caseModal"
-    ).classList.remove(
-        "show"
-    );
-
-    selectedReport = null;
-
-}
-
-
-/* =====================================================
-   UPDATE TIMELINE
-   ===================================================== */
-
-function updateTimeline(status){
-
-    const steps =
-        document.querySelectorAll(
-            ".timeline-step"
-        );
-
-
-    const statuses = [
-
-        "New",
-        "Investigation",
-        "Corrective Action",
-        "Verification",
-        "Closed"
-
-    ];
-
-
-    let current =
-        statuses.findIndex(
-            x =>
-                x.toLowerCase() ===
-                String(status || "New")
-                .toLowerCase()
-        );
-
-
-    if(current < 0){
-        current = 0;
-    }
-
-
-    steps.forEach(
-        (step,index) => {
-
-            if(index <= current){
-
-                step.classList.add(
-                    "active"
-                );
-
-            }
-            else{
-
-                step.classList.remove(
-                    "active"
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   PHOTO FILE ID
-   ===================================================== */
-
-function extractDriveFileId(url){
-
-    if(!url){
-        return null;
-    }
-
-
-    const value =
-        String(url).trim();
-
-
-    const patterns = [
-
-        /\/d\/([a-zA-Z0-9_-]+)/,
-
-        /[?&]id=([a-zA-Z0-9_-]+)/,
-
-        /\/file\/d\/([a-zA-Z0-9_-]+)/,
-
-        /\/open\?id=([a-zA-Z0-9_-]+)/,
-
-        /uc\?.*id=([a-zA-Z0-9_-]+)/
-
-    ];
-
-
-    for(
-        const pattern
-        of patterns
-    ){
-
-        const match =
-            value.match(
-                pattern
-            );
-
-
-        if(
-            match &&
-            match[1]
-        ){
-
-            return match[1];
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =====================================================
-   GET PHOTO DATA FROM REPORT
-   ===================================================== */
-
-function getPhotoDataFromReport(report){
-
-    if(!report){
-        return [];
-    }
-
-
-    console.log(
-        "FULL REPORT PHOTO DATA:",
-        report
-    );
-
-
-    const possibleFields = [
-
-        report.photo,
-
-        report.photoLink,
-
-        report.photoUrl,
-
-        report.photoURL,
-
-        report.photoUrls,
-
-        report.photoLinks,
-
-        report.photos,
-
-        report.images,
-
-        report.image,
-
-        report.imageUrl,
-
-        report.evidencePhoto,
-
-        report.photoEvidence
-
-    ];
-
-
-    let found = [];
-
-
-    for(
-        const value
-        of possibleFields
-    ){
-
-        if(
-            value === undefined ||
-            value === null
-        ){
-            continue;
-        }
-
-
-        if(
-            Array.isArray(value)
-        ){
-
-            found.push(
-                ...value
-            );
-
-        }
-        else if(
-            typeof value === "string"
-        ){
-
-            const text =
-                value.trim();
-
-
-            if(text){
-
-                found.push(
-                    text
-                );
-
-            }
-
-        }
-
-    }
-
-
-    return cleanPhotoList(
-        found
-    );
-
-}
-
-
-/* =====================================================
-   CLEAN PHOTO LIST
-   ===================================================== */
-
-function cleanPhotoList(data){
-
-    if(!data){
-        return [];
-    }
-
-
-    let result = [];
-
-
-    if(!Array.isArray(data)){
-
-        data = [data];
-
-    }
-
-
-    data.forEach(
-        item => {
-
-            if(
-                item === undefined ||
-                item === null
-            ){
-
-                return;
-
-            }
-
-
-            /* OBJECT */
-
-            if(
-                typeof item === "object"
-            ){
-
-                const possibleUrl =
-
-                    item.url ||
-
-                    item.photoUrl ||
-
-                    item.photoURL ||
-
-                    item.link ||
-
-                    item.photo ||
-
-                    item.imageUrl ||
-
-                    item.imageURL ||
-
-                    item.fileUrl ||
-
-                    item.fileURL;
-
-
-                if(possibleUrl){
-
-                    result.push(
-                        String(
-                            possibleUrl
-                        )
-                    );
-
-                }
-
-
-                return;
-
-            }
-
-
-            /* STRING */
-
-            const text =
-                String(item).trim();
-
-
-            if(!text){
-                return;
-            }
-
-
-            /* JSON ARRAY */
-
-            if(
-                text.startsWith("[") &&
-                text.endsWith("]")
-            ){
-
-                try{
-
-                    const parsed =
-                        JSON.parse(
-                            text
-                        );
-
-
-                    if(
-                        Array.isArray(parsed)
-                    ){
-
-                        parsed.forEach(
-                            x => {
-
-                                if(
-                                    typeof x ===
-                                    "string"
-                                ){
-
-                                    if(
-                                        x.trim()
-                                    ){
-
-                                        result.push(
-                                            x.trim()
-                                        );
-
-                                    }
-
-                                }
-                                else if(
-                                    x &&
-                                    typeof x ===
-                                    "object"
-                                ){
-
-                                    const url =
-
-                                        x.url ||
-
-                                        x.photoUrl ||
-
-                                        x.photoURL ||
-
-                                        x.link ||
-
-                                        x.photo ||
-
-                                        x.imageUrl ||
-
-                                        x.imageURL;
-
-
-                                    if(url){
-
-                                        result.push(
-                                            String(url)
-                                        );
-
-                                    }
-
-                                }
-
-                            }
-                        );
-
-
-                        return;
-
-                    }
-
-                }
-                catch(error){
-
-                    console.warn(
-                        "Photo JSON parse failed:",
-                        error
-                    );
-
-                }
-
-            }
-
-
-            /* NEWLINE */
-
-            const parts =
-                text
-                .split(/\r?\n/)
-                .map(
-                    x => x.trim()
-                )
-                .filter(Boolean);
-
-
-            if(
-                parts.length > 1
-            ){
-
-                result.push(
-                    ...parts
-                );
-
-            }
-            else{
-
-                /* COMMA */
-
-                const commaParts =
-                    text
-                    .split(
-                        /,(?=https?:\/\/)/
-                    )
-                    .map(
-                        x => x.trim()
-                    )
-                    .filter(Boolean);
-
-
-                if(
-                    commaParts.length > 1
-                ){
-
-                    result.push(
-                        ...commaParts
-                    );
-
-                }
-                else{
-
-                    result.push(
-                        text
-                    );
-
-                }
-
-            }
-
-        }
-    );
-
-
-    result =
-        [...new Set(result)];
-
-
-    console.log(
-        "FINAL PHOTO LIST:",
-        result
-    );
-
-
-    return result;
-
-}
-
-
-/* =====================================================
-   LOAD PHOTOS FROM REPORT
-   ===================================================== */
-
-function loadPhotosFromReport(report){
-
-    const container =
-        document.getElementById(
-            "photoEvidence"
-        );
-
-
-    if(!container){
-
-        console.error(
-            "photoEvidence container not found"
-        );
-
-        return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    const photoList =
-        getPhotoDataFromReport(
-            report
-        );
-
-
-    console.log(
-        "PHOTO LIST FOR DISPLAY:",
-        photoList
-    );
-
-
-    if(
-        photoList.length === 0
-    ){
-
-        container.innerHTML = `
-
-            <div class="photo-placeholder">
-
-                No photo evidence available
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const gallery =
-        document.createElement(
-            "div"
-        );
-
-
-    gallery.className =
-        "photo-gallery";
-
-
-    container.appendChild(
-        gallery
-    );
-
-
-    photoList.forEach(
-        (photo,index) => {
-
-            createPhotoCard(
-                photo,
-                index + 1,
-                gallery
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   CREATE PHOTO CARD
-   ===================================================== */
-
-function createPhotoCard(
-    photoLink,
-    photoNumber,
-    gallery
-){
-
-    const card =
-        document.createElement(
-            "div"
-        );
-
-
-    card.className =
-        "photo-card";
-
-
-    const title =
-        document.createElement(
-            "div"
-        );
-
-
-    title.className =
-        "photo-card-title";
-
-
-    title.textContent =
-        "PHOTO " +
-        photoNumber;
-
-
-    card.appendChild(
-        title
-    );
-
-
-    const fileId =
-        extractDriveFileId(
-            photoLink
-        );
-
-
-    console.log(
-        "PHOTO",
-        photoNumber,
-        "LINK:",
-        photoLink
-    );
-
-
-    console.log(
-        "PHOTO",
-        photoNumber,
-        "FILE ID:",
-        fileId
-    );
-
-
-    const imageWrapper =
-        document.createElement(
-            "div"
-        );
-
-
-    imageWrapper.className =
-        "photo-image-wrapper";
-
-
-    const img =
-        document.createElement(
-            "img"
-        );
-
-
-    img.className =
-        "photo-evidence-image";
-
-
-    img.alt =
-        "Photo Evidence " +
-        photoNumber;
-
-
-    img.loading =
-        "lazy";
-
-
-    let urls = [];
-
-
-    if(fileId){
-
-        urls = [
-
-            `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`,
-
-            `https://drive.google.com/uc?export=view&id=${fileId}`,
-
-            `https://drive.google.com/uc?export=download&id=${fileId}`,
-
-            `https://lh3.googleusercontent.com/d/${fileId}=w1600`,
-
-            `https://drive.usercontent.google.com/download?id=${fileId}&export=view&confirm=t`
-
-        ];
-
-    }
-    else{
-
-        urls = [
-            photoLink
-        ];
-
-    }
-
-
-    let imageIndex = 0;
-
-
-    function tryNextImage(){
-
-        if(
-            imageIndex >=
-            urls.length
-        ){
-
-            console.error(
-                "ALL PHOTO URLS FAILED:",
-                photoLink
-            );
-
-
-            imageWrapper.innerHTML = `
-
-                <div class="photo-placeholder">
-
-                    Photo preview unavailable
-
-                    <br><br>
-
-                    <span style="
-                        font-size:7px;
-                        color:#405a6c;
-                    ">
-                        Open Full Photo below
-                    </span>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        const currentUrl =
-            urls[
-                imageIndex
-            ];
-
-
-        console.log(
-            "Trying photo URL:",
-            currentUrl
-        );
-
-
-        imageIndex++;
-
-
-        img.src =
-            currentUrl;
-
-    }
-
-
-    img.onload =
-        function(){
-
-            console.log(
-                "PHOTO LOADED:",
-                photoNumber
-            );
-
-
-            imageWrapper.innerHTML =
-                "";
-
-
-            imageWrapper.appendChild(
-                img
-            );
-
-        };
-
-
-    img.onerror =
-        function(){
-
-            console.warn(
-                "PHOTO URL FAILED:",
-                img.src
-            );
-
-
-            tryNextImage();
-
-        };
-
-
-    imageWrapper.appendChild(
-        img
-    );
-
-
-    card.appendChild(
-        imageWrapper
-    );
-
-
-    const link =
-        document.createElement(
-            "a"
-        );
-
-
-    link.className =
-        "photo-link";
-
-
-    link.href =
-        photoLink;
-
-
-    link.target =
-        "_blank";
-
-
-    link.rel =
-        "noopener noreferrer";
-
-
-    link.textContent =
-        "Open Full Photo ↗";
-
-
-    card.appendChild(
-        link
-    );
-
-
-    gallery.appendChild(
-        card
-    );
-
-
-    tryNextImage();
-
-}
-
-
-/* =====================================================
-   OLD PHOTO FUNCTION
-   ===================================================== */
-
-function loadPhotos(photoLink){
-
-    loadPhotosFromReport({
-
-        photo:
-            photoLink
-
-    });
-
-}
-
-
-/* =====================================================
-   SAVE / UPDATE REPORT
-   ===================================================== */
-
-async function saveReport(){
-
-    if(!selectedReport){
-
-        showToast(
-            "No report selected"
-        );
-
-        return;
-
-    }
-
-
-    const payload = {
-
-        action:
-            "updateReport",
-
-
-        rowNumber:
-            selectedReport.rowNumber,
-
-
-        status:
-            document.getElementById(
-                "caseStatus"
-            ).value,
-
-
-        investigationFindings:
-            document.getElementById(
-                "caseInvestigation"
-            ).value,
-
-
-        rootCause:
-            document.getElementById(
-                "caseRootCause"
-            ).value,
-
-
-        eshInvestigator:
-            document.getElementById(
-                "caseInvestigator"
-            ).value,
-
-
-        eshRemarks:
-            document.getElementById(
-                "caseRemarks"
-            ).value,
-
-
-        correctiveAction:
-            document.getElementById(
-                "caseCorrectiveAction"
-            ).value,
-
-
-        personResponsible:
-            document.getElementById(
-                "caseResponsible"
-            ).value,
-
-
-        dueDate:
-            document.getElementById(
-                "caseDueDate"
-            ).value,
-
-
-        verificationRemarks:
-            document.getElementById(
-                "caseVerification"
-            ).value
-
-    };
-
-
-    console.log(
-        "UPDATE PAYLOAD:",
-        payload
-    );
-
-
-    try{
-
-        showToast(
-            "Saving report..."
-        );
-
-
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL,
-                {
-
-                    method:"POST",
-
-                    body:
-                        JSON.stringify(
-                            payload
-                        )
-
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        console.log(
-            "UPDATE RESPONSE:",
-            result
-        );
-
-
-        if(
-            result &&
-            (
-                result.success === true ||
-                result.status === "success"
-            )
-        ){
-
-            showToast(
-                "Report updated successfully"
-            );
-
-
-            closeModal();
-
-
-            await loadReports();
-
-        }
-        else{
-
-            showToast(
-                result.message ||
-                "Report update failed"
-            );
-
-        }
-
-    }
-    catch(error){
-
-        console.error(
-            "SAVE ERROR:",
-            error
-        );
-
-
-        showToast(
-            "Unable to update report"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   ANALYTICS
-   ===================================================== */
-
-function renderAnalytics(){
-
-    renderTrend();
-
-    renderStatList(
-        "categoryStats",
-        reports.map(
-            r => r.category
-        )
-    );
-
-
-    renderStatList(
-        "departmentStats",
-        reports.map(
-            r => r.department
-        )
-    );
-
-}
-
-
-/* =====================================================
-   TREND
-   ===================================================== */
-
-function renderTrend(){
-
-    const container =
-        document.getElementById(
-            "trendChart"
-        );
-
-
-    if(
-        reports.length === 0
-    ){
-
-        container.innerHTML =
-            `
-            <div class="loading">
-                No report data
-            </div>
-            `;
-
-        return;
-
-    }
-
-
-    const now =
-        new Date();
-
-
-    const periods = [];
-
-
-    for(
-        let i = 6;
-        i >= 0;
-        i--
-    ){
-
-        const date =
-            new Date(
-                now
-            );
-
-
-        date.setDate(
-            date.getDate() - i
-        );
-
-
-        periods.push({
-            date:date,
-            count:0
-        });
-
-    }
-
-
-    reports.forEach(
-        report => {
-
-            const raw =
-                report.date ||
-                report.timestamp;
-
-
-            if(!raw){
-                return;
-            }
-
-
-            const d =
-                new Date(raw);
-
-
-            if(
-                isNaN(
-                    d.getTime()
-                )
-            ){
-                return;
-            }
-
-
-            const match =
-                periods.find(
-                    p =>
-                        p.date
-                            .toDateString()
-                        ===
-                        d.toDateString()
-                );
-
-
-            if(match){
-
-                match.count++;
-
-            }
-
-        }
-    );
-
-
-    const max =
-        Math.max(
-            1,
-            ...periods.map(
-                p => p.count
-            )
-        );
-
-
-    container.innerHTML = "";
-
-
-    periods.forEach(
-        p => {
-
-            const column =
-                document.createElement(
-                    "div"
-                );
-
-
-            column.className =
-                "chart-column";
-
-
-            const number =
-                document.createElement(
-                    "div"
-                );
-
-
-            number.className =
-                "chart-number";
-
-
-            number.textContent =
-                p.count;
-
-
-            const wrap =
-                document.createElement(
-                    "div"
-                );
-
-
-            wrap.className =
-                "chart-bar-wrap";
-
-
-            const bar =
-                document.createElement(
-                    "div"
-                );
-
-
-            bar.className =
-                "chart-bar";
-
-
-            bar.style.height =
-                (
-                    p.count /
-                    max *
-                    100
-                ) + "%";
-
-
-            const label =
-                document.createElement(
-                    "div"
-                );
-
-
-            label.className =
-                "chart-label";
-
-
-            label.textContent =
-                p.date.toLocaleDateString(
-                    undefined,
-                    {
-                        day:"2-digit",
-                        month:"short"
-                    }
-                );
-
-
-            wrap.appendChild(
-                bar
-            );
-
-
-            column.appendChild(
-                number
-            );
-
-
-            column.appendChild(
-                wrap
-            );
-
-
-            column.appendChild(
-                label
-            );
-
-
-            container.appendChild(
-                column
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   STAT LIST
-   ===================================================== */
-
-function renderStatList(
-    elementId,
-    values
-){
-
-    const container =
-        document.getElementById(
-            elementId
-        );
-
-
-    const counts = {};
-
-
-    values.forEach(
-        value => {
-
-            if(!value){
-                return;
-            }
-
-
-            const key =
-                String(value)
-                .trim();
-
-
-            if(!key){
-                return;
-            }
-
-
-            counts[key] =
-                (
-                    counts[key] ||
-                    0
-                ) + 1;
-
-        }
-    );
-
-
-    const sorted =
-        Object.entries(
-            counts
-        )
-        .sort(
-            (a,b) =>
-                b[1] - a[1]
-        )
-        .slice(
-            0,
-            6
-        );
-
-
-    if(
-        sorted.length === 0
-    ){
-
-        container.innerHTML = `
-
-            <div class="empty-state"
-                 style="
-                    padding:25px 10px;
-                    border:0;
-                 ">
-
-                No data
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const max =
-        sorted[0][1];
-
-
-    container.innerHTML = "";
-
-
-    sorted.forEach(
-        ([name,count]) => {
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.className =
-                "stat-row";
-
-
-            row.innerHTML = `
-
-                <div class="stat-name">
-
-                    ${escapeHtml(
-                        name
-                    )}
-
-                </div>
-
-                <div class="stat-number">
-
-                    ${count}
-
-                </div>
-
-                <div class="stat-bar">
-
-                    <div
-                        class="stat-fill"
-                        style="
-                            width:
-                            ${
-                                (
-                                    count /
-                                    max *
-                                    100
-                                )
-                            }%;
-                        "
-                    ></div>
-
-                </div>
-
-            `;
-
-
-            container.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   DATE
-   ===================================================== */
-
-function formatDate(value){
-
-    if(!value){
-        return "-";
-    }
-
-
-    const d =
-        new Date(value);
-
-
-    if(
-        isNaN(
-            d.getTime()
-        )
-    ){
-
-        return String(value);
-
-    }
-
-
-    return d.toLocaleDateString(
-        undefined,
-        {
-            day:"2-digit",
-            month:"short",
-            year:"numeric"
-        }
-    );
-
-}
-
-
-/* =====================================================
-   DATE INPUT
-   ===================================================== */
-
-function formatDateForInput(value){
-
-    if(!value){
-        return "";
-    }
-
-
-    const d =
-        new Date(value);
-
-
-    if(
-        isNaN(
-            d.getTime()
-        )
-    ){
-
-        const match =
-            String(value)
-            .match(
-                /^(\d{4})-(\d{2})-(\d{2})/
-            );
-
-
-        if(match){
-
-            return match[0];
-
-        }
-
-
-        return "";
-
-    }
-
-
-    const year =
-        d.getFullYear();
-
-
-    const month =
-        String(
-            d.getMonth() + 1
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            d.getDate()
-        )
-        .padStart(
-            2,
-            "0"
-        );
-
-
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-    );
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-   ===================================================== */
-
-function escapeHtml(value){
-
-    if(
-        value === undefined ||
-        value === null
-    ){
-
-        return "";
-
-    }
-
-
-    return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    renderReports();
 
 }
 
 
 /* =====================================================
    TOAST
-   ===================================================== */
+===================================================== */
 
-let toastTimer;
-
-
-function showToast(message){
+function showToast(
+    message
+){
 
     const toast =
         document.getElementById(
@@ -5656,52 +2720,73 @@ function showToast(message){
     );
 
 
-    clearTimeout(
-        toastTimer
+    setTimeout(
+        () => {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        3000
     );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3000
-        );
 
 }
 
 
 /* =====================================================
-   CLOSE MODAL WHEN CLICK OUTSIDE
-   ===================================================== */
+   HTML ESCAPE
+===================================================== */
 
-document.getElementById(
-    "caseModal"
-).addEventListener(
-    "click",
-    function(event){
+function escapeHtml(
+    value
+){
 
-        if(
-            event.target ===
-            this
-        ){
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
-            closeModal();
+}
 
-        }
 
-    }
-);
+/* =====================================================
+   ATTRIBUTE ESCAPE
+===================================================== */
+
+function escapeAttribute(
+    value
+){
+
+    return escapeHtml(
+        value
+    );
+
+}
 
 
 /* =====================================================
    ESC KEY
-   ===================================================== */
+===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -5720,34 +2805,20 @@ document.addEventListener(
 
 
 /* =====================================================
-   AUTO REFRESH
-   ===================================================== */
+   START
+===================================================== */
 
-setInterval(
+window.addEventListener(
+    "load",
     function(){
 
-        const modal =
-            document.getElementById(
-                "caseModal"
-            );
+        checkLogin();
 
-
-        if(
-            !modal.classList.contains(
-                "show"
-            )
-        ){
-
-            loadReports();
-
-        }
-
-    },
-    30000
+    }
 );
-
 
 </script>
 
 </body>
+
 </html>
