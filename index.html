@@ -27,12 +27,22 @@
     <div class="container">
 
 
-        <h1>Near Miss Report</h1>
+        <!-- =========================================
+             HEADER
+        ========================================== -->
+
+        <h1>
+            Near Miss Report
+        </h1>
 
         <p class="subtitle">
             ESH Near Miss Reporting System
         </p>
 
+
+        <!-- =========================================
+             REPORT FORM
+        ========================================== -->
 
         <form id="nearMissForm">
 
@@ -48,6 +58,7 @@
                 id="dateTime"
                 name="dateTime"
                 required
+                readonly
             >
 
 
@@ -159,7 +170,7 @@
             ></textarea>
 
 
-            <!-- REPORTER -->
+            <!-- REPORTER NAME -->
 
             <label for="reporterName">
                 Reporter Name
@@ -174,14 +185,13 @@
             >
 
 
-            <!-- =====================================
+            <!-- =========================================
                  MULTIPLE PHOTOS
-            ====================================== -->
+            ========================================== -->
 
             <label for="photo">
                 Photos
             </label>
-
 
             <input
                 type="file"
@@ -205,9 +215,9 @@
             </div>
 
 
-            <!-- =====================================
-                 SUBMIT
-            ====================================== -->
+            <!-- =========================================
+                 SUBMIT BUTTON
+            ========================================== -->
 
             <button
                 type="submit"
@@ -220,7 +230,9 @@
         </form>
 
 
-        <!-- SUCCESS / ERROR MESSAGE -->
+        <!-- =========================================
+             SUCCESS / ERROR MESSAGE
+        ========================================== -->
 
         <div
             id="successMessage"
@@ -233,16 +245,18 @@
     </div>
 
 
-    <!-- ==========================================
+    <!-- =============================================
          PHOTO COUNTER
-    =========================================== -->
+    ============================================== -->
 
     <script>
 
         function showPhotoCount(input) {
 
             const photoCount =
-                document.getElementById("photoCount");
+                document.getElementById(
+                    "photoCount"
+                );
 
 
             const count =
@@ -275,7 +289,9 @@
     </script>
 
 
-    <!-- MAIN JAVASCRIPT -->
+    <!-- =============================================
+         MAIN JAVASCRIPT
+    ============================================== -->
 
     <script src="script.js"></script>
 
