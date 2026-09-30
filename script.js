@@ -347,6 +347,10 @@ function compressPhoto(file) {
                                 img.height;
 
 
+                            // =================================
+                            // RESIZE LARGE IMAGE
+                            // =================================
+
                             if (
                                 width >
                                     MAX_WIDTH ||
@@ -379,6 +383,10 @@ function compressPhoto(file) {
                             }
 
 
+                            // =================================
+                            // CREATE CANVAS
+                            // =================================
+
                             const canvas =
                                 document.createElement(
                                     "canvas"
@@ -408,12 +416,20 @@ function compressPhoto(file) {
                             );
 
 
+                            // =================================
+                            // COMPRESS TO JPEG
+                            // =================================
+
                             const compressed =
                                 canvas.toDataURL(
                                     "image/jpeg",
                                     JPEG_QUALITY
                                 );
 
+
+                            // =================================
+                            // RETURN PHOTO DATA
+                            // =================================
 
                             resolve({
 
@@ -707,15 +723,6 @@ else {
             try {
 
                 // =========================================
-                // IMPORTANT:
-                // REPORT NUMBER IS NOT GENERATED HERE
-                //
-                // Google Apps Script generates the permanent
-                // report number.
-                // =========================================
-
-
-                // =========================================
                 // GET PHOTOS
                 // =========================================
 
@@ -733,6 +740,10 @@ else {
                     selectedFiles.length
                 );
 
+
+                // =========================================
+                // CHECK PHOTO LIMIT
+                // =========================================
 
                 if (
                     selectedFiles.length >
@@ -760,6 +771,19 @@ else {
                         selectedFiles[i];
 
 
+                    console.log(
+                        "Processing photo:",
+                        i + 1,
+                        photo.name,
+                        photo.size,
+                        photo.type
+                    );
+
+
+                    // =====================================
+                    // CHECK PHOTO SIZE
+                    // =====================================
+
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -774,6 +798,10 @@ else {
                     }
 
 
+                    // =====================================
+                    // STATUS
+                    // =====================================
+
                     if (successMessage) {
 
                         successMessage.innerHTML =
@@ -786,24 +814,78 @@ else {
                     }
 
 
+                    // =====================================
+                    // COMPRESS
+                    // =====================================
+
                     const compressed =
                         await compressPhoto(
                             photo
                         );
 
 
+                    // =====================================
+                    // IMPORTANT FIX
+                    //
+                    // These property names MUST match
+                    // the Google Apps Script backend:
+                    //
+                    // base64
+                    // name
+                    // type
+                    // =====================================
+
                     photos.push({
 
-                        photoData:
+                        base64:
                             compressed.data,
 
-                        photoName:
+                        name:
                             compressed.name,
 
-                        photoType:
+                        type:
                             compressed.type
 
                     });
+
+
+                    console.log(
+                        "Photo processed:",
+                        i + 1,
+                        "Base64 length:",
+                        compressed.data.length
+                    );
+
+                }
+
+
+                // =========================================
+                // PHOTO DEBUG INFORMATION
+                // =========================================
+
+                console.log(
+                    "TOTAL PHOTOS PROCESSED:",
+                    photos.length
+                );
+
+
+                if (photos.length > 0) {
+
+                    console.log(
+                        "FIRST PHOTO DATA:",
+                        {
+                            name:
+                                photos[0].name,
+
+                            type:
+                                photos[0].type,
+
+                            base64Length:
+                                photos[0].base64
+                                    ? photos[0].base64.length
+                                    : 0
+                        }
+                    );
 
                 }
 
@@ -833,6 +915,10 @@ else {
                     );
 
 
+                    // =====================================
+                    // CHECK VIDEO TYPE
+                    // =====================================
+
                     if (
                         !selectedVideo.type.startsWith(
                             "video/"
@@ -846,6 +932,10 @@ else {
                     }
 
 
+                    // =====================================
+                    // CHECK VIDEO SIZE
+                    // =====================================
+
                     if (
                         selectedVideo.size >
                         MAX_VIDEO_SIZE
@@ -858,6 +948,10 @@ else {
                     }
 
 
+                    // =====================================
+                    // STATUS
+                    // =====================================
+
                     if (successMessage) {
 
                         successMessage.innerHTML =
@@ -865,6 +959,10 @@ else {
 
                     }
 
+
+                    // =====================================
+                    // READ VIDEO
+                    // =====================================
 
                     video =
                         await readVideo(
@@ -874,6 +972,14 @@ else {
 
                     console.log(
                         "Video processed successfully"
+                    );
+
+
+                    console.log(
+                        "Video Base64 length:",
+                        video && video.data
+                            ? video.data.length
+                            : 0
                     );
 
                 }
@@ -886,9 +992,15 @@ else {
                 const report = {
 
                     // =====================================
-                    // NO REPORT NUMBER HERE
-                    //
-                    // Backend generates it permanently.
+                    // ACTION
+                    // =====================================
+
+                    action:
+                        "saveReport",
+
+
+                    // =====================================
+                    // FORM DATA
                     // =====================================
 
                     dateTime:
@@ -896,39 +1008,64 @@ else {
                             "dateTime"
                         ),
 
+
                     location:
                         getValue(
                             "location"
                         ),
+
 
                     department:
                         getValue(
                             "department"
                         ),
 
+
                     hazardCategory:
                         getValue(
                             "hazardCategory"
                         ),
+
 
                     whatHappened:
                         getValue(
                             "whatHappened"
                         ),
 
+
                     reporterName:
                         getValue(
                             "reporterName"
                         ),
 
+
+                    // =====================================
+                    // PHOTOS
+                    // =====================================
+
                     photos:
                         photos,
+
+
+                    // =====================================
+                    // VIDEO
+                    // =====================================
 
                     video:
                         video,
 
+
+                    // =====================================
+                    // STATUS
+                    // =====================================
+
                     status:
                         "New",
+
+
+                    // =====================================
+                    // SUBMISSION TIME
+                    // =====================================
 
                     submittedAt:
                         new Date().toISOString()
@@ -936,10 +1073,45 @@ else {
                 };
 
 
+                // =========================================
+                // IMPORTANT DEBUG
+                // =========================================
+
                 console.log(
-                    "REPORT READY:",
-                    report
+                    "REPORT READY FULL:",
+                    JSON.stringify(
+                        report
+                    )
                 );
+
+
+                console.log(
+                    "REPORT PHOTO COUNT:",
+                    report.photos.length
+                );
+
+
+                if (
+                    report.photos.length > 0
+                ) {
+
+                    console.log(
+                        "REPORT FIRST PHOTO:",
+                        {
+                            name:
+                                report.photos[0].name,
+
+                            type:
+                                report.photos[0].type,
+
+                            base64Length:
+                                report.photos[0].base64
+                                    ? report.photos[0].base64.length
+                                    : 0
+                        }
+                    );
+
+                }
 
 
                 // =========================================
@@ -954,6 +1126,11 @@ else {
                 }
 
 
+                console.log(
+                    "Sending report to Google Apps Script..."
+                );
+
+
                 const response =
                     await fetch(
                         GOOGLE_SCRIPT_URL,
@@ -961,6 +1138,9 @@ else {
 
                             method:
                                 "POST",
+
+                            redirect:
+                                "follow",
 
                             headers: {
 
@@ -977,6 +1157,10 @@ else {
                         }
                     );
 
+
+                // =========================================
+                // SERVER STATUS
+                // =========================================
 
                 console.log(
                     "SERVER STATUS:",
@@ -998,6 +1182,10 @@ else {
                 );
 
 
+                // =========================================
+                // PARSE JSON
+                // =========================================
+
                 let result;
 
 
@@ -1017,6 +1205,7 @@ else {
                         jsonError
                     );
 
+
                     throw new Error(
                         "Server did not return valid JSON."
                     );
@@ -1035,6 +1224,7 @@ else {
 
                     throw new Error(
                         result.error ||
+                        result.message ||
                         "Report was not accepted by the server."
                     );
 
@@ -1043,7 +1233,6 @@ else {
 
                 // =========================================
                 // GET PERMANENT REPORT NUMBER
-                // FROM GOOGLE APPS SCRIPT
                 // =========================================
 
                 const assignedReportNumber =
@@ -1057,7 +1246,27 @@ else {
 
 
                 // =========================================
-                // SUCCESS
+                // PHOTO RESULT
+                // =========================================
+
+                console.log(
+                    "SERVER SAVED PHOTOS:",
+                    result.photos
+                );
+
+
+                // =========================================
+                // VIDEO RESULT
+                // =========================================
+
+                console.log(
+                    "SERVER SAVED VIDEO:",
+                    result.video
+                );
+
+
+                // =========================================
+                // SUCCESS MESSAGE
                 // =========================================
 
                 if (successMessage) {
@@ -1127,7 +1336,7 @@ else {
 
 
                 // =========================================
-                // NEW DATE/TIME
+                // RESET DATE/TIME
                 // =========================================
 
                 setMalaysiaDateTime();
