@@ -4440,9 +4440,10 @@ function createReportCard(report){
 
 /* =========================================================
    OPEN REPORT
+   LOAD LATEST DATA FROM GOOGLE SHEET
 ========================================================= */
 
-function openReport(index){
+async function openReport(index){
 
     const report =
         reports[index];
@@ -4472,6 +4473,25 @@ function openReport(index){
     }
 
 
+    const reportNumber =
+        report.reportNumber;
+
+
+    if(!reportNumber){
+
+        showToast(
+            "Report Number not found."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       SHOW LOADING MODAL
+    ===================================================== */
+
     selectedReport =
         report;
 
@@ -4479,8 +4499,7 @@ function openReport(index){
     document.getElementById(
         "modalTitle"
     ).textContent =
-        report.reportNumber ||
-        "ESH Case";
+        reportNumber;
 
 
     document.getElementById(
@@ -4490,10 +4509,14 @@ function openReport(index){
 
 
     document.getElementById(
+        "caseModal"
+    ).classList.add("show");
+
+
+    document.getElementById(
         "caseNumber"
     ).textContent =
-        report.reportNumber ||
-        "-";
+        reportNumber;
 
 
     document.getElementById(
@@ -4517,142 +4540,421 @@ function openReport(index){
         "-";
 
 
-    document.getElementById(
-        "incidentInfo"
-    ).textContent = [
+    /* =====================================================
+       LOAD LATEST RECORD
+    ===================================================== */
 
-        "Date: " +
-        formatDisplayDate(
-            report.dateTime ||
-            report.submittedAt
-        ),
+    try{
 
-        "Reporter: " +
-        (
-            report.reporterName ||
-            "-"
-        ),
-
-        "Submitted: " +
-        formatDisplayDate(
-            report.submittedAt
-        )
-
-    ].join("\n");
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL +
+                "?test=singleReport" +
+                "&reportNumber=" +
+                encodeURIComponent(
+                    reportNumber
+                ) +
+                "&ts=" +
+                Date.now()
+            );
 
 
-    document.getElementById(
-        "caseNarrative"
-    ).textContent =
-        report.whatHappened ||
-        "-";
+        if(!response.ok){
+
+            throw new Error(
+                "Server error " +
+                response.status
+            );
+
+        }
 
 
-    document.getElementById(
-        "investigationFindings"
-    ).value =
-        report.investigationFindings ||
-        "";
+        const result =
+            await response.json();
 
 
-    document.getElementById(
-        "rootCause"
-    ).value =
-        report.rootCause ||
-        "";
-
-
-    document.getElementById(
-        "eshInvestigator"
-    ).value =
-        report.eshInvestigator ||
-        "";
-
-
-    document.getElementById(
-        "eshRemarks"
-    ).value =
-        report.eshRemarks ||
-        "";
-
-
-    document.getElementById(
-        "correctiveAction"
-    ).value =
-        report.correctiveAction ||
-        "";
-
-
-    document.getElementById(
-        "personResponsible"
-    ).value =
-        report.personResponsible ||
-        "";
-
-
-    document.getElementById(
-        "dueDate"
-    ).value =
-        formatDateInput(
-            report.dueDate
+        console.log(
+            "LATEST REPORT FROM SHEET:",
+            result
         );
 
 
-    document.getElementById(
-        "verificationRemarks"
-    ).value =
-        report.verificationRemarks ||
-        "";
+        /*
+         * Apps Script may return:
+         *
+         * {status:"success", report:{...}}
+         *
+         * or
+         *
+         * {success:true, data:{...}}
+         *
+         * or the report object directly.
+         */
+
+        let latestReport = null;
 
 
-    document.getElementById(
-        "closedDate"
-    ).value =
-        formatDateInput(
-            report.closedDate
+        if(
+            result &&
+            result.report
+        ){
+
+            latestReport =
+                result.report;
+
+        }
+
+        else if(
+            result &&
+            result.data &&
+            !Array.isArray(result.data)
+        ){
+
+            latestReport =
+                result.data;
+
+        }
+
+        else if(
+            result &&
+            result.reportNumber
+        ){
+
+            latestReport =
+                result;
+
+        }
+
+
+        if(!latestReport){
+
+            throw new Error(
+                "Unable to retrieve the latest report data."
+            );
+
+        }
+
+
+        /* =================================================
+           REPLACE OLD DASHBOARD OBJECT
+        ================================================= */
+
+        selectedReport =
+            latestReport;
+
+
+        const reportIndex =
+            reports.findIndex(
+                function(item){
+
+                    return String(
+                        item.reportNumber
+                    ).trim() ===
+                    String(
+                        reportNumber
+                    ).trim();
+
+                }
+            );
+
+
+        if(reportIndex !== -1){
+
+            reports[reportIndex] =
+                latestReport;
+
+        }
+
+
+        /* =================================================
+           BASIC INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            latestReport.reportNumber ||
+            reportNumber;
+
+
+        document.getElementById(
+            "caseNumber"
+        ).textContent =
+            latestReport.reportNumber ||
+            "-";
+
+
+        document.getElementById(
+            "caseLocation"
+        ).textContent =
+            latestReport.location ||
+            "-";
+
+
+        document.getElementById(
+            "caseDepartment"
+        ).textContent =
+            latestReport.department ||
+            "-";
+
+
+        document.getElementById(
+            "caseCategory"
+        ).textContent =
+            latestReport.hazardCategory ||
+            "-";
+
+
+        /* =================================================
+           INCIDENT INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "incidentInfo"
+        ).textContent = [
+
+            "Date: " +
+            formatDisplayDate(
+                latestReport.dateTime ||
+                latestReport.submittedAt
+            ),
+
+            "Reporter: " +
+            (
+                latestReport.reporterName ||
+                "-"
+            ),
+
+            "Submitted: " +
+            formatDisplayDate(
+                latestReport.submittedAt
+            )
+
+        ].join("\n");
+
+
+        document.getElementById(
+            "caseNarrative"
+        ).textContent =
+            latestReport.whatHappened ||
+            "-";
+
+
+        /* =================================================
+           INVESTIGATION
+        ================================================= */
+
+        document.getElementById(
+            "investigationFindings"
+        ).value =
+            latestReport.investigationFindings ||
+            "";
+
+
+        document.getElementById(
+            "rootCause"
+        ).value =
+            latestReport.rootCause ||
+            "";
+
+
+        document.getElementById(
+            "eshInvestigator"
+        ).value =
+            latestReport.eshInvestigator ||
+            "";
+
+
+        document.getElementById(
+            "eshRemarks"
+        ).value =
+            latestReport.eshRemarks ||
+            "";
+
+
+        /* =================================================
+           CORRECTIVE ACTION
+        ================================================= */
+
+        document.getElementById(
+            "correctiveAction"
+        ).value =
+            latestReport.correctiveAction ||
+            "";
+
+
+        document.getElementById(
+            "personResponsible"
+        ).value =
+            latestReport.personResponsible ||
+            "";
+
+
+        document.getElementById(
+            "dueDate"
+        ).value =
+            formatDateInput(
+                latestReport.dueDate
+            );
+
+
+        /* =================================================
+           VERIFICATION
+        ================================================= */
+
+        document.getElementById(
+            "verificationRemarks"
+        ).value =
+            latestReport.verificationRemarks ||
+            "";
+
+
+        /* =================================================
+           CLOSURE
+        ================================================= */
+
+        document.getElementById(
+            "closedDate"
+        ).value =
+            formatDateInput(
+                latestReport.closedDate
+            );
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        const status =
+            normalizeStatus(
+                latestReport.status
+            ) ||
+            "New";
+
+
+        setupCaseStatusOptions(
+            status
         );
 
 
-    const status =
-        normalizeStatus(
-            report.status
-        ) ||
-        "New";
+        document.getElementById(
+            "caseStatus"
+        ).value =
+            status;
 
 
-    setupCaseStatusOptions(
-        status
-    );
+        /* =================================================
+           TIMELINE
+        ================================================= */
+
+        updateTimeline(
+            status
+        );
 
 
-    document.getElementById(
-        "caseStatus"
-    ).value =
-        status;
+        /* =================================================
+           OVERDUE
+        ================================================= */
+
+        updateCaseOverdue(
+            latestReport
+        );
 
 
-    updateTimeline(status);
+        /* =================================================
+           PHOTOS
+        ================================================= */
 
-    updateCaseOverdue(report);
-
-    loadPhotos(report);
-
-    loadCorrectiveActionPhotos(report);
-
-    loadVideo(report);
-
-    applyRolePermissions(status);
+        loadPhotos(
+            latestReport
+        );
 
 
-    document
-        .getElementById(
-            "caseModal"
-        )
-        .classList
-        .add("show");
+        loadCorrectiveActionPhotos(
+            latestReport
+        );
+
+
+        loadVideo(
+            latestReport
+        );
+
+
+        /* =================================================
+           ROLE PERMISSIONS
+        ================================================= */
+
+        applyRolePermissions(
+            status
+        );
+
+
+        /* =================================================
+           DEBUG
+        ================================================= */
+
+        console.log(
+            "Investigation Findings:",
+            latestReport.investigationFindings
+        );
+
+        console.log(
+            "Root Cause:",
+            latestReport.rootCause
+        );
+
+        console.log(
+            "ESH Investigator:",
+            latestReport.eshInvestigator
+        );
+
+        console.log(
+            "ESH Remarks:",
+            latestReport.eshRemarks
+        );
+
+        console.log(
+            "Corrective Action:",
+            latestReport.correctiveAction
+        );
+
+        console.log(
+            "Responsible Person:",
+            latestReport.personResponsible
+        );
+
+        console.log(
+            "Target Date:",
+            latestReport.dueDate
+        );
+
+        console.log(
+            "Verification Remarks:",
+            latestReport.verificationRemarks
+        );
+
+        console.log(
+            "Closed Date:",
+            latestReport.closedDate
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "OPEN REPORT ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Unable to load latest case data."
+        );
+
+    }
 
 }
-
 
 /* =========================================================
    MODAL SUBTITLE
