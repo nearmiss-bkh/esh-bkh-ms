@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>ESH Management System</title>
 
+
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
 
 *{
     box-sizing:border-box;
@@ -14,1568 +25,3309 @@
     padding:0;
 }
 
+
+html{
+    scroll-behavior:smooth;
+}
+
+
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f3f6f9;
-    color:#1f2937;
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#07111f;
+    color:#e8f0f8;
+
+    min-height:100vh;
 }
 
-.hidden{
-    display:none !important;
-}
 
-/* =====================================================
+/* =========================================================
    LOGIN GUARD
-===================================================== */
+========================================================= */
 
 #loginGuard{
     position:fixed;
     inset:0;
-    background:#0f172a;
+
+    background:#07111f;
+
     z-index:99999;
+
     display:flex;
     align-items:center;
     justify-content:center;
-    color:white;
 }
+
+
+#loginGuard.hidden{
+    display:none;
+}
+
 
 .login-loading{
     text-align:center;
+    color:#9db0c4;
 }
 
-.login-loading h2{
-    margin-bottom:10px;
-}
 
-.login-loading p{
-    color:#cbd5e1;
-}
-
-/* =====================================================
-   LAYOUT
-===================================================== */
-
-.dashboard{
-    min-height:100vh;
-    display:flex;
-}
-
-/* =====================================================
-   SIDEBAR
-===================================================== */
-
-.sidebar{
-    width:250px;
-    background:#111827;
-    color:white;
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-    padding:20px 15px;
-    overflow-y:auto;
-}
-
-.logo-area{
-    padding:10px 12px 25px;
-    border-bottom:1px solid #374151;
-    margin-bottom:20px;
-}
-
-.logo-area h2{
-    font-size:21px;
-    margin-bottom:5px;
-}
-
-.logo-area p{
-    color:#9ca3af;
-    font-size:12px;
-}
-
-.nav-title{
-    color:#6b7280;
-    font-size:11px;
-    font-weight:bold;
-    text-transform:uppercase;
-    margin:18px 12px 8px;
-}
-
-.nav-item{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:11px 12px;
-    border-radius:7px;
-    margin-bottom:4px;
-    color:#d1d5db;
-    cursor:pointer;
-    font-size:14px;
-}
-
-.nav-item:hover{
-    background:#1f2937;
-    color:white;
-}
-
-.nav-item.active{
-    background:#2563eb;
-    color:white;
-}
-
-.logout-btn{
-    margin-top:25px;
-    width:100%;
-    padding:11px;
-    border:none;
-    border-radius:7px;
-    background:#dc2626;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.logout-btn:hover{
-    background:#b91c1c;
-}
-
-/* =====================================================
-   MAIN
-===================================================== */
-
-.main{
-    margin-left:250px;
-    width:calc(100% - 250px);
-    min-height:100vh;
-    padding:25px;
-}
-
-/* =====================================================
-   TOP BAR
-===================================================== */
-
-.topbar{
-    background:white;
-    border-radius:12px;
-    padding:18px 22px;
-    margin-bottom:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-
-.topbar h1{
-    font-size:24px;
-    margin-bottom:5px;
-}
-
-.topbar p{
-    color:#6b7280;
-    font-size:13px;
-}
-
-.user-info{
-    text-align:right;
-}
-
-.user-role{
-    display:inline-block;
-    background:#e0e7ff;
-    color:#3730a3;
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-/* =====================================================
-   KPI
-===================================================== */
-
-.kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:12px;
-    margin-bottom:22px;
-}
-
-.kpi{
-    background:white;
-    border-radius:10px;
-    padding:16px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-
-.kpi-label{
-    color:#6b7280;
-    font-size:12px;
+.login-loading-title{
+    font-size:18px;
+    font-weight:700;
+    color:#ffffff;
     margin-bottom:8px;
 }
 
-.kpi-value{
-    font-size:25px;
-    font-weight:bold;
-}
 
-.kpi-overdue{
-    color:#dc2626;
-}
-
-/* =====================================================
-   SECTION
-===================================================== */
-
-.section{
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-}
-
-.section-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:18px;
-}
-
-.section-header h2{
-    font-size:18px;
-}
-
-.section-header p{
-    color:#6b7280;
+.login-loading-text{
     font-size:13px;
 }
 
-/* =====================================================
-   TOOLBAR
-===================================================== */
 
-.toolbar{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr auto auto;
-    gap:10px;
-    margin-bottom:18px;
-}
+/* =========================================================
+   APP
+========================================================= */
 
-.toolbar input,
-.toolbar select{
-    width:100%;
-    padding:10px 12px;
-    border:1px solid #d1d5db;
-    border-radius:7px;
-    background:white;
-}
-
-.btn{
-    padding:10px 14px;
-    border:none;
-    border-radius:7px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.btn-primary{
-    background:#2563eb;
-    color:white;
-}
-
-.btn-secondary{
-    background:#e5e7eb;
-    color:#374151;
-}
-
-.btn-danger{
-    background:#dc2626;
-    color:white;
-}
-
-.btn-success{
-    background:#16a34a;
-    color:white;
-}
-
-.btn:hover{
-    opacity:.9;
-}
-
-/* =====================================================
-   REPORT GRID
-===================================================== */
-
-.reports-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
-
-.report-card{
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:16px;
-    cursor:pointer;
-    transition:.2s;
-    background:white;
-}
-
-.report-card:hover{
-    transform:translateY(-2px);
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
-
-.report-header{
+.app{
+    min-height:100vh;
     display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:12px;
 }
 
-.report-number{
-    font-weight:bold;
-    color:#111827;
-}
 
-.status{
-    padding:5px 8px;
-    border-radius:15px;
-    font-size:10px;
-    font-weight:bold;
-    white-space:nowrap;
-}
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-.status-new{
-    background:#dbeafe;
-    color:#1d4ed8;
-}
+.sidebar{
 
-.status-investigation{
-    background:#fef3c7;
-    color:#92400e;
-}
+    width:250px;
 
-.status-corrective{
-    background:#ffedd5;
-    color:#c2410c;
-}
+    background:
+        linear-gradient(
+            180deg,
+            #0b1929 0%,
+            #07111f 100%
+        );
 
-.status-verification{
-    background:#e0e7ff;
-    color:#4338ca;
-}
+    border-right:
+        1px solid
+        rgba(255,255,255,.07);
 
-.status-closed{
-    background:#dcfce7;
-    color:#166534;
-}
-
-.report-row{
-    margin-bottom:7px;
-    font-size:13px;
-}
-
-.report-label{
-    color:#6b7280;
-}
-
-.report-value{
-    font-weight:500;
-}
-
-.overdue-badge{
-    margin-top:12px;
-    padding:8px;
-    background:#fee2e2;
-    color:#991b1b;
-    border-radius:6px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.empty-state{
-    grid-column:1/-1;
-    text-align:center;
-    padding:45px 20px;
-    color:#6b7280;
-}
-
-/* =====================================================
-   OVERDUE
-===================================================== */
-
-.overdue-list{
-    display:grid;
-    gap:10px;
-}
-
-.overdue-item{
-    border-left:4px solid #dc2626;
-    background:#fff7f7;
-    padding:12px;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-.overdue-item strong{
-    display:block;
-    margin-bottom:4px;
-}
-
-.overdue-item span{
-    font-size:12px;
-    color:#6b7280;
-}
-
-/* =====================================================
-   ANALYTICS
-===================================================== */
-
-.analytics-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
-
-.chart-box{
-    background:#f9fafb;
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:15px;
-}
-
-.chart-box h3{
-    font-size:14px;
-    margin-bottom:15px;
-}
-
-.bar-row{
-    margin-bottom:12px;
-}
-
-.bar-label{
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    margin-bottom:5px;
-}
-
-.bar{
-    height:9px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.bar-fill{
-    height:100%;
-    background:#2563eb;
-}
-
-/* =====================================================
-   MODAL
-===================================================== */
-
-.modal{
     position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.65);
-    z-index:5000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-}
 
-.modal.show{
-    display:flex;
-}
+    left:0;
+    top:0;
+    bottom:0;
 
-.modal-content{
-    background:white;
-    width:min(1100px,100%);
-    max-height:92vh;
+    z-index:100;
+
+    padding:24px 16px;
+
     overflow-y:auto;
-    border-radius:12px;
-    padding:25px;
 }
 
-.modal-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+
+.brand{
+    padding:
+        8px 12px
+        24px 12px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+
     margin-bottom:20px;
-    border-bottom:1px solid #e5e7eb;
-    padding-bottom:15px;
 }
 
-.modal-header h2{
-    font-size:20px;
-}
 
-.close-btn{
-    border:none;
-    background:#f3f4f6;
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    cursor:pointer;
-    font-size:20px;
-}
+.brand-small{
+    font-size:10px;
 
-.case-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
+    letter-spacing:2px;
 
-.form-group{
-    margin-bottom:15px;
-}
+    color:#6f879e;
 
-.form-group.full{
-    grid-column:1/-1;
-}
+    font-weight:700;
 
-.form-group label{
-    display:block;
-    font-size:12px;
-    font-weight:bold;
-    color:#374151;
     margin-bottom:6px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea{
+
+.brand-name{
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    line-height:1.25;
+}
+
+
+.brand-sub{
+    font-size:11px;
+
+    color:#7990a7;
+
+    margin-top:5px;
+}
+
+
+.nav{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:5px;
+}
+
+
+.nav button{
+
     width:100%;
-    border:1px solid #d1d5db;
-    border-radius:7px;
-    padding:10px;
-    font-family:inherit;
+
+    border:none;
+
+    background:transparent;
+
+    color:#8ea3b8;
+
+    padding:
+        12px
+        13px;
+
+    border-radius:9px;
+
+    text-align:left;
+
+    cursor:pointer;
+
     font-size:13px;
+
+    font-weight:600;
+
+    transition:.2s;
 }
 
-.form-group textarea{
-    min-height:100px;
-    resize:vertical;
+
+.nav button:hover{
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:#ffffff;
 }
 
-.form-group input:disabled,
-.form-group select:disabled,
-.form-group textarea:disabled{
-    background:#f3f4f6;
-    color:#6b7280;
-    cursor:not-allowed;
+
+.nav button.active{
+
+    background:
+        rgba(48,123,255,.13);
+
+    color:#67a5ff;
+
+    border:
+        1px solid
+        rgba(65,137,255,.18);
 }
 
-.info-box{
-    background:#f9fafb;
-    border:1px solid #e5e7eb;
-    padding:12px;
-    border-radius:7px;
+
+.sidebar-footer{
+
+    margin-top:30px;
+
+    padding:
+        16px 12px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+
+.sidebar-footer-text{
+
+    font-size:10px;
+
+    color:#60758a;
+
     line-height:1.6;
 }
 
-.timeline{
+
+.logout-btn{
+
+    width:100%;
+
+    margin-top:12px;
+
+    padding:10px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.03);
+
+    color:#91a5b9;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:12px;
+}
+
+
+.logout-btn:hover{
+
+    background:
+        rgba(255,255,255,.06);
+
+    color:#ffffff;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+
+    margin-left:250px;
+
+    width:
+        calc(100% - 250px);
+
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar{
+
+    height:68px;
+
     display:flex;
-    gap:5px;
-    margin:15px 0 25px;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        0 32px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.06);
+
+    background:
+        rgba(7,17,31,.88);
+
+    backdrop-filter:
+        blur(12px);
+
+    position:sticky;
+
+    top:0;
+
+    z-index:50;
 }
 
-.timeline-step{
-    flex:1;
-    text-align:center;
-    padding:9px 5px;
-    background:#e5e7eb;
-    color:#6b7280;
-    font-size:11px;
-    border-radius:5px;
+
+.topbar-title{
+
+    font-size:12px;
+
+    letter-spacing:1.5px;
+
+    color:#71869b;
+
+    font-weight:700;
 }
 
-.timeline-step.active{
-    background:#2563eb;
-    color:white;
-}
 
-.overdue-banner{
-    background:#fee2e2;
-    color:#991b1b;
-    padding:12px;
-    border-radius:7px;
-    margin-bottom:15px;
-    font-weight:bold;
-}
+.topbar-right{
 
-.media-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
+    display:flex;
+
+    align-items:center;
+
     gap:10px;
 }
 
-.media-grid img{
-    width:100%;
-    height:130px;
-    object-fit:cover;
-    border-radius:7px;
-    border:1px solid #ddd;
+
+.status-dot{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:#39d98a;
+
+    box-shadow:
+        0 0 10px
+        rgba(57,217,138,.6);
 }
 
-.video-link{
-    display:block;
-    padding:12px;
-    background:#f3f4f6;
-    border-radius:7px;
-    color:#2563eb;
-    word-break:break-all;
+
+.status-text{
+
+    font-size:11px;
+
+    color:#7e96ab;
 }
+
+
+/* =========================================================
+   ROLE DISPLAY
+========================================================= */
+
+.role-display{
+
+    font-size:10px;
+
+    color:#78aaff;
+
+    background:
+        rgba(72,139,255,.10);
+
+    border:
+        1px solid
+        rgba(72,139,255,.18);
+
+    padding:
+        6px 9px;
+
+    border-radius:6px;
+
+    font-weight:800;
+
+    letter-spacing:.4px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content{
+
+    padding:
+        32px;
+
+    max-width:1600px;
+
+    margin:auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    background:
+        linear-gradient(
+            135deg,
+            #10263e 0%,
+            #0b1829 60%,
+            #091422 100%
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:18px;
+
+    padding:30px;
+
+    margin-bottom:28px;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+
+.hero:after{
+
+    content:"";
+
+    position:absolute;
+
+    width:300px;
+
+    height:300px;
+
+    border-radius:50%;
+
+    right:-100px;
+
+    top:-140px;
+
+    background:
+        rgba(42,116,255,.09);
+
+    pointer-events:none;
+}
+
+
+.hero-label{
+
+    font-size:10px;
+
+    letter-spacing:2.5px;
+
+    color:#5f91cf;
+
+    font-weight:800;
+
+    margin-bottom:9px;
+}
+
+
+.hero-title{
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    letter-spacing:-.5px;
+}
+
+
+.hero-subtitle{
+
+    margin-top:8px;
+
+    font-size:13px;
+
+    color:#8096ab;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.section{
+
+    margin-bottom:40px;
+
+    scroll-margin-top:90px;
+}
+
+
+.section-header{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    margin-bottom:17px;
+}
+
+
+.section-title{
+
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#ffffff;
+}
+
+
+.section-subtitle{
+
+    margin-top:5px;
+
+    font-size:12px;
+
+    color:#70859a;
+}
+
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.kpi-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(7, minmax(0,1fr));
+
+    gap:13px;
+
+    margin-bottom:30px;
+}
+
+
+.kpi{
+
+    min-height:128px;
+
+    position:relative;
+
+    padding:20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.018)
+        );
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.kpi:hover{
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(255,255,255,.20);
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.25);
+}
+
+
+.kpi:active{
+
+    transform:
+        translateY(-1px);
+}
+
+
+.kpi.yellow{
+
+    border-color:
+        rgba(239,190,67,.12);
+}
+
+
+.kpi.orange{
+
+    border-color:
+        rgba(255,145,73,.12);
+}
+
+
+.kpi.purple{
+
+    border-color:
+        rgba(167,119,255,.12);
+}
+
+
+.kpi.green{
+
+    border-color:
+        rgba(57,217,138,.12);
+}
+
+
+.kpi.red{
+
+    border-color:
+        rgba(255,92,107,.14);
+}
+
+
+.kpi-label{
+
+    font-size:9px;
+
+    letter-spacing:1.3px;
+
+    color:#7890a6;
+
+    font-weight:800;
+}
+
+
+.kpi-value{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    margin-top:15px;
+
+    color:#ffffff;
+}
+
+
+.kpi-icon{
+
+    position:absolute;
+
+    right:16px;
+
+    bottom:15px;
+
+    font-size:25px;
+
+    color:#49657e;
+
+    opacity:.7;
+}
+
+
+/* =========================================================
+   ACTION CENTER
+========================================================= */
+
+.action-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+
+.action-card{
+
+    padding:20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.action-card:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(255,255,255,.15);
+
+    background:
+        rgba(255,255,255,.04);
+}
+
+
+.action-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+
+.action-name{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#dce7f1;
+}
+
+
+.action-count{
+
+    font-size:32px;
+
+    font-weight:800;
+
+    margin-top:15px;
+
+    color:#ffffff;
+}
+
+
+.action-desc{
+
+    margin-top:5px;
+
+    color:#70869b;
+
+    font-size:11px;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:
+        5px 8px;
+
+    border-radius:6px;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:.5px;
+}
+
+
+.badge-new{
+
+    color:#72aaff;
+
+    background:
+        rgba(72,139,255,.12);
+}
+
+
+.badge-investigation{
+
+    color:#f3cc55;
+
+    background:
+        rgba(243,204,85,.12);
+}
+
+
+.badge-corrective{
+
+    color:#ff9b5e;
+
+    background:
+        rgba(255,155,94,.12);
+}
+
+
+.badge-verification{
+
+    color:#bc91ff;
+
+    background:
+        rgba(188,145,255,.12);
+}
+
+
+.badge-closed{
+
+    color:#4be39a;
+
+    background:
+        rgba(75,227,154,.12);
+}
+
+
+.badge-overdue{
+
+    color:#ff7180;
+
+    background:
+        rgba(255,113,128,.12);
+}
+
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+.analytics-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+
+.chart-card{
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    background:
+        rgba(255,255,255,.025);
+
+    border-radius:14px;
+
+    padding:20px;
+}
+
+
+.chart-title{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#e5edf5;
+}
+
+
+.chart-subtitle{
+
+    font-size:11px;
+
+    color:#6f8498;
+
+    margin-top:4px;
+}
+
+
+.chart-wrap{
+
+    height:260px;
+
+    margin-top:18px;
+}
+
+
+/* =========================================================
+   TOOLBAR
+========================================================= */
+
+.toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin-bottom:18px;
+}
+
+
+.search{
+
+    flex:1;
+
+    min-width:230px;
+}
+
+
+.search input,
+.toolbar select{
+
+    width:100%;
+
+    height:40px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        #0b1929;
+
+    color:#dbe7f1;
+
+    border-radius:8px;
+
+    padding:
+        0 12px;
+
+    outline:none;
+
+    font-size:12px;
+}
+
+
+.toolbar select{
+
+    width:auto;
+
+    min-width:150px;
+}
+
+
+.search input:focus,
+.toolbar select:focus{
+
+    border-color:
+        rgba(80,145,255,.5);
+}
+
+
+.btn{
+
+    height:40px;
+
+    padding:
+        0 14px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    background:
+        rgba(255,255,255,.035);
+
+    color:#9db0c2;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    font-weight:700;
+}
+
+
+.btn:hover{
+
+    background:
+        rgba(255,255,255,.07);
+
+    color:#ffffff;
+}
+
+
+.btn-primary{
+
+    background:
+        #256ee8;
+
+    border-color:
+        #256ee8;
+
+    color:#ffffff;
+}
+
+
+.btn-primary:hover{
+
+    background:
+        #347cf0;
+}
+
+
+.btn:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+.reports-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+}
+
+
+.report-card{
+
+    border:
+        1px solid
+        rgba(255,255,255,.07);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.report-card:hover{
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(86,148,255,.25);
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.18);
+}
+
+
+.report-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:
+        15px 16px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+}
+
+
+.report-number{
+
+    font-size:11px;
+
+    font-weight:800;
+
+    color:#78aaff;
+
+    letter-spacing:.4px;
+}
+
+
+.report-body{
+
+    padding:16px;
+}
+
+
+.report-title{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#e5edf5;
+
+    line-height:1.45;
+
+    min-height:38px;
+}
+
+
+.report-meta{
+
+    margin-top:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+
+.meta-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    font-size:10px;
+
+    color:#71869a;
+}
+
+
+.meta-row strong{
+
+    color:#aebdcb;
+
+    text-align:right;
+
+    font-weight:600;
+}
+
+
+.report-footer{
+
+    padding:
+        11px 16px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.055);
+
+    color:#667c91;
+
+    font-size:10px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty{
+
+    grid-column:
+        1 / -1;
+
+    padding:55px 20px;
+
+    text-align:center;
+
+    border:
+        1px dashed
+        rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    color:#70869a;
+}
+
+
+.empty-icon{
+
+    font-size:26px;
+
+    color:#50677e;
+
+    margin-bottom:10px;
+}
+
+
+.empty-title{
+
+    color:#a7b7c7;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:
+        blur(5px);
+
+    z-index:1000;
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+
+.modal.show{
+
+    display:flex;
+}
+
+
+.modal-box{
+
+    width:
+        min(1100px,100%);
+
+    max-height:
+        92vh;
+
+    background:
+        #0a1726;
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    border-radius:17px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    box-shadow:
+        0 25px 80px
+        rgba(0,0,0,.5);
+}
+
+
+.modal-head{
+
+    padding:
+        20px 24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+}
+
+
+.modal-title{
+
+    font-size:17px;
+
+    font-weight:800;
+
+    color:#ffffff;
+}
+
+
+.modal-subtitle{
+
+    font-size:11px;
+
+    color:#70869a;
+
+    margin-top:4px;
+}
+
+
+.close{
+
+    border:none;
+
+    background:transparent;
+
+    color:#8298ad;
+
+    font-size:27px;
+
+    cursor:pointer;
+
+    line-height:1;
+}
+
+
+.close:hover{
+
+    color:#ffffff;
+}
+
+
+.modal-body{
+
+    padding:24px;
+
+    overflow-y:auto;
+}
+
 
 .modal-footer{
+
+    padding:
+        15px 24px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,.07);
+
     display:flex;
+
     justify-content:flex-end;
+
     gap:10px;
-    margin-top:20px;
-    padding-top:15px;
-    border-top:1px solid #e5e7eb;
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
 
-@media(max-width:1200px){
+/* =========================================================
+   OVERDUE BANNER
+========================================================= */
+
+.overdue-banner{
+
+    display:none;
+
+    background:
+        rgba(255,80,96,.10);
+
+    border:
+        1px solid
+        rgba(255,80,96,.2);
+
+    color:#ff7d89;
+
+    border-radius:8px;
+
+    padding:11px 14px;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    margin-bottom:18px;
+}
+
+
+.overdue-banner.show{
+
+    display:block;
+}
+
+
+/* =========================================================
+   CASE TOP
+========================================================= */
+
+.case-top{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+
+    margin-bottom:20px;
+}
+
+
+.case-info{
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+
+    border-radius:9px;
+
+    padding:13px;
+}
+
+
+.case-info-label{
+
+    font-size:8px;
+
+    letter-spacing:1px;
+
+    color:#647b91;
+
+    font-weight:800;
+}
+
+
+.case-info-value{
+
+    font-size:12px;
+
+    color:#dbe7f1;
+
+    font-weight:700;
+
+    margin-top:6px;
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.timeline{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    position:relative;
+
+    margin-top:18px;
+}
+
+
+.timeline:before{
+
+    content:"";
+
+    position:absolute;
+
+    left:10%;
+
+    right:10%;
+
+    top:11px;
+
+    height:2px;
+
+    background:
+        rgba(255,255,255,.08);
+}
+
+
+.timeline-item{
+
+    position:relative;
+
+    text-align:center;
+
+    z-index:1;
+}
+
+
+.timeline-dot{
+
+    width:23px;
+
+    height:23px;
+
+    border-radius:50%;
+
+    background:
+        #15263a;
+
+    border:
+        2px solid
+        #41566b;
+
+    margin:auto;
+}
+
+
+.timeline-item.active .timeline-dot{
+
+    background:#2675ef;
+
+    border-color:#4b95ff;
+
+    box-shadow:
+        0 0 14px
+        rgba(75,149,255,.35);
+}
+
+
+.timeline-item.completed .timeline-dot{
+
+    background:#36cb87;
+
+    border-color:#36cb87;
+}
+
+
+.timeline-label{
+
+    font-size:9px;
+
+    color:#70869a;
+
+    margin-top:7px;
+}
+
+
+.timeline-item.active .timeline-label{
+
+    color:#75aaff;
+
+    font-weight:700;
+}
+
+
+.timeline-item.completed .timeline-label{
+
+    color:#54d99b;
+}
+
+
+/* =========================================================
+   MODAL GRID
+========================================================= */
+
+.modal-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:16px;
+}
+
+
+.modal-section{
+
+    border:
+        1px solid
+        rgba(255,255,255,.065);
+
+    border-radius:12px;
+
+    padding:17px;
+
+    background:
+        rgba(255,255,255,.018);
+}
+
+
+.modal-section.full{
+
+    grid-column:
+        1 / -1;
+}
+
+
+.modal-section-title{
+
+    font-size:11px;
+
+    text-transform:uppercase;
+
+    letter-spacing:1px;
+
+    color:#8ca2b7;
+
+    font-weight:800;
+
+    margin-bottom:13px;
+}
+
+
+/* =========================================================
+   INCIDENT
+========================================================= */
+
+.incident-box{
+
+    white-space:pre-line;
+
+    color:#b9c7d4;
+
+    font-size:12px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-group{
+
+    margin-bottom:13px;
+}
+
+
+.form-group:last-child{
+
+    margin-bottom:0;
+}
+
+
+.form-group label{
+
+    display:block;
+
+    font-size:10px;
+
+    color:#71879c;
+
+    font-weight:700;
+
+    margin-bottom:6px;
+}
+
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+
+    width:100%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    background:
+        #081522;
+
+    color:#dbe6ef;
+
+    border-radius:7px;
+
+    padding:
+        9px 10px;
+
+    outline:none;
+
+    font-family:inherit;
+
+    font-size:11px;
+}
+
+
+.form-group textarea{
+
+    min-height:90px;
+
+    resize:vertical;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+
+    border-color:
+        rgba(73,139,255,.5);
+}
+
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    background:#07111d;
+}
+
+
+/* =========================================================
+   PHOTOS
+========================================================= */
+
+.photo-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
+}
+
+
+.photo-card{
+
+    height:130px;
+
+    border-radius:9px;
+
+    overflow:hidden;
+
+    background:#06101c;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+
+.photo-card img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+
+.photo-card img:hover{
+
+    transform:scale(1.03);
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.video-card{
+
+    margin-top:15px;
+
+    max-width:600px;
+}
+
+
+.video-card video{
+
+    width:100%;
+
+    max-height:350px;
+
+    border-radius:10px;
+
+    background:#000;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    right:24px;
+
+    bottom:24px;
+
+    padding:
+        12px 17px;
+
+    background:
+        #122437;
+
+    border:
+        1px solid
+        rgba(255,255,255,.1);
+
+    border-radius:9px;
+
+    color:#dce8f2;
+
+    font-size:12px;
+
+    box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.3);
+
+    transform:
+        translateY(20px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.25s;
+
+    z-index:3000;
+}
+
+
+.toast.show{
+
+    transform:
+        translateY(0);
+
+    opacity:1;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1300px){
 
     .kpi-grid{
-        grid-template-columns:repeat(4,1fr);
+
+        grid-template-columns:
+            repeat(4,1fr);
+
     }
 
-    .reports-grid{
-        grid-template-columns:repeat(2,1fr);
+}
+
+
+@media(max-width:1050px){
+
+    .sidebar{
+
+        width:210px;
+
+    }
+
+    .main{
+
+        margin-left:210px;
+
+        width:
+            calc(100% - 210px);
+
     }
 
     .analytics-grid{
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .reports-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
     }
 
 }
+
 
 @media(max-width:800px){
 
     .sidebar{
-        width:210px;
+
+        position:relative;
+
+        width:100%;
+
+        height:auto;
+
+        border-right:none;
+
+        border-bottom:
+            1px solid
+            rgba(255,255,255,.07);
+
+    }
+
+    .app{
+
+        flex-direction:column;
+
     }
 
     .main{
-        margin-left:210px;
-        width:calc(100% - 210px);
-        padding:15px;
+
+        margin-left:0;
+
+        width:100%;
+
     }
 
-    .toolbar{
-        grid-template-columns:1fr;
+    .nav{
+
+        flex-direction:row;
+
+        overflow-x:auto;
+
     }
 
-    .reports-grid{
-        grid-template-columns:1fr;
+    .nav button{
+
+        white-space:nowrap;
+
     }
 
-    .case-grid{
-        grid-template-columns:1fr;
+    .content{
+
+        padding:20px;
+
+    }
+
+    .topbar{
+
+        padding:
+            0 20px;
+
     }
 
     .kpi-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .action-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .reports-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .case-top{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+    .modal-grid{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .modal-section.full{
+
+        grid-column:auto;
+
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .kpi-grid{
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+    .hero-title{
+
+        font-size:22px;
+
+    }
+
+    .case-top{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .photo-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
     }
 
 }
 
 </style>
+
 </head>
+
 
 <body>
 
-<!-- =====================================================
+
+<!-- ======================================================
      LOGIN GUARD
-===================================================== -->
+====================================================== -->
 
 <div id="loginGuard">
 
     <div class="login-loading">
 
-        <h2>ESH Management System</h2>
+        <div class="login-loading-title">
+            ESH MANAGEMENT SYSTEM
+        </div>
 
-        <p>Checking login...</p>
+        <div class="login-loading-text">
+            Checking access...
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
+<!-- ======================================================
+     APP
+====================================================== -->
 
-<div class="dashboard">
+<div class="app">
 
-    <!-- SIDEBAR -->
 
-    <aside class="sidebar">
+<!-- ======================================================
+     SIDEBAR
+====================================================== -->
 
-        <div class="logo-area">
+<aside class="sidebar">
 
-            <h2>ESH MANAGEMENT</h2>
 
-            <p>Bidor Kwong Heng Sdn. Bhd.</p>
+    <div class="brand">
 
+        <div class="brand-small">
+            ENVIRONMENT • SAFETY • HEALTH
         </div>
 
-
-        <div class="nav-title">
-            Dashboard
+        <div class="brand-name">
+            ESH MANAGEMENT SYSTEM
         </div>
 
-        <div class="nav-item active"
-             onclick="scrollToSection('overview')">
-
-            📊 Overview
-
+        <div class="brand-sub">
+            BIDOR KWONG HENG
         </div>
 
-        <div class="nav-item"
-             onclick="scrollToSection('analytics')">
-
-            📈 Analytics
-
-        </div>
-
-        <div class="nav-item"
-             onclick="scrollToSection('actionCenter')">
-
-            ⚠️ Action Center
-
-        </div>
-
-        <div class="nav-item"
-             onclick="scrollToSection('reportsSection')">
-
-            📋 Reports
-
-        </div>
+    </div>
 
 
-        <button class="logout-btn"
-                onclick="logout()">
+    <nav class="nav">
 
-            Logout
-
+        <button
+            class="active"
+            onclick="showSection('overview',this)"
+        >
+            Overview
         </button>
 
-    </aside>
+
+        <button
+            onclick="showSection('analytics',this)"
+        >
+            Analytics
+        </button>
 
 
-    <!-- MAIN -->
+        <button
+            onclick="showSection('actions',this)"
+        >
+            Action Center
+        </button>
 
-    <main class="main">
 
-        <!-- TOP BAR -->
+        <button
+            onclick="showSection('reports',this)"
+        >
+            Reports
+        </button>
 
-        <div class="topbar">
+    </nav>
 
-            <div>
 
-                <h1>ESH Management System</h1>
+    <div class="sidebar-footer">
 
-                <p id="heroSubtitle">
-                    Near Miss reporting and ESH case management control center.
-                </p>
+        <div class="sidebar-footer-text">
 
-            </div>
-
-            <div class="user-info">
-
-                <div id="userRoleDisplay"
-                     class="user-role">
-                    Loading...
-                </div>
-
-            </div>
+            ESH CONTROL CENTER<br>
+            Near Miss Management System
 
         </div>
 
 
-        <!-- =================================================
-             OVERVIEW
-        ================================================== -->
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
 
-        <section id="overview">
+    </div>
 
-            <div class="kpi-grid">
+</aside>
 
-                <div class="kpi">
 
-                    <div class="kpi-label">
-                        Total Reports
-                    </div>
+<!-- ======================================================
+     MAIN
+====================================================== -->
 
-                    <div id="totalReports"
-                         class="kpi-value">
-                        0
-                    </div>
+<main class="main">
 
-                </div>
 
+<!-- ======================================================
+     TOPBAR
+====================================================== -->
 
-                <div class="kpi">
+<div class="topbar">
 
-                    <div class="kpi-label">
-                        New
-                    </div>
+    <div class="topbar-title">
+        ESH CONTROL CENTER
+    </div>
 
-                    <div id="newReports"
-                         class="kpi-value">
-                        0
-                    </div>
 
-                </div>
+    <div class="topbar-right">
 
+        <div
+            class="role-display"
+            id="userRoleDisplay"
+        >
+            ESH
+        </div>
 
-                <div class="kpi">
+        <div class="status-dot"></div>
 
-                    <div class="kpi-label">
-                        Investigation
-                    </div>
+        <div class="status-text">
+            SYSTEM ONLINE
+        </div>
 
-                    <div id="investigationReports"
-                         class="kpi-value">
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="kpi">
-
-                    <div class="kpi-label">
-                        Corrective Action
-                    </div>
-
-                    <div id="correctiveReports"
-                         class="kpi-value">
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="kpi">
-
-                    <div class="kpi-label">
-                        Verification
-                    </div>
-
-                    <div id="verificationReports"
-                         class="kpi-value">
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="kpi">
-
-                    <div class="kpi-label">
-                        Closed
-                    </div>
-
-                    <div id="closedReports"
-                         class="kpi-value">
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="kpi">
-
-                    <div class="kpi-label">
-                        Overdue Actions
-                    </div>
-
-                    <div id="overdueReports"
-                         class="kpi-value kpi-overdue">
-                        0
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ACTION CENTER
-        ================================================== -->
-
-        <section class="section"
-                 id="actionCenter">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>Action Center</h2>
-
-                    <p>
-                        Actions beyond target date
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div id="overdueList"
-                 class="overdue-list">
-
-                <div class="empty-state">
-                    No overdue actions.
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             REPORTS
-        ================================================== -->
-
-        <section class="section"
-                 id="reportsSection">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>Reports</h2>
-
-                    <p id="reportsSubtitle">
-                        ESH case management
-                    </p>
-
-                </div>
-
-                <button class="btn btn-primary"
-                        onclick="loadReports()">
-
-                    Refresh
-
-                </button>
-
-            </div>
-
-
-            <div class="toolbar">
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search report number, location, department..."
-                >
-
-
-                <select id="statusFilter">
-
-                    <option value="">All Status</option>
-
-                    <option value="New">
-                        New
-                    </option>
-
-                    <option value="Investigation">
-                        Investigation
-                    </option>
-
-                    <option value="Corrective Action">
-                        Corrective Action
-                    </option>
-
-                    <option value="Verification">
-                        Verification
-                    </option>
-
-                    <option value="Closed">
-                        Closed
-                    </option>
-
-                </select>
-
-
-                <select id="categoryFilter">
-
-                    <option value="">
-                        All Categories
-                    </option>
-
-                </select>
-
-
-                <button class="btn btn-secondary"
-                        onclick="resetFilters()">
-
-                    Reset
-
-                </button>
-
-
-                <button class="btn btn-primary"
-                        onclick="loadReports()">
-
-                    Refresh
-
-                </button>
-
-            </div>
-
-
-            <div id="reportsGrid"
-                 class="reports-grid">
-
-                <div class="empty-state">
-                    Loading reports...
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ANALYTICS
-        ================================================== -->
-
-        <section class="section"
-                 id="analytics">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>Analytics</h2>
-
-                    <p>
-                        Current report distribution
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="analytics-grid">
-
-                <div class="chart-box">
-
-                    <h3>
-                        Status
-                    </h3>
-
-                    <div id="statusAnalytics"></div>
-
-                </div>
-
-
-                <div class="chart-box">
-
-                    <h3>
-                        Hazard Category
-                    </h3>
-
-                    <div id="categoryAnalytics"></div>
-
-                </div>
-
-
-                <div class="chart-box">
-
-                    <h3>
-                        Department
-                    </h3>
-
-                    <div id="departmentAnalytics"></div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+    </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- ======================================================
+     CONTENT
+====================================================== -->
+
+<div class="content">
+
+
+<!-- ======================================================
+     HERO
+====================================================== -->
+
+<div class="hero">
+
+    <div class="hero-label">
+        ENVIRONMENT • SAFETY • HEALTH
+    </div>
+
+    <div class="hero-title">
+        ESH Management Dashboard
+    </div>
+
+    <div
+        class="hero-subtitle"
+        id="heroSubtitle"
+    >
+        Near Miss reporting, investigation, corrective action and case closure control center.
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     OVERVIEW
+====================================================== -->
+
+<section
+    class="section"
+    id="overview"
+>
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Overview
+            </div>
+
+            <div class="section-subtitle">
+                Current ESH case status
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="kpi-grid">
+
+
+        <div
+            class="kpi"
+            onclick="filterKPI('ALL')"
+        >
+
+            <div class="kpi-label">
+                TOTAL REPORTS
+            </div>
+
+            <div
+                class="kpi-value"
+                id="totalReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ▤
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi"
+            onclick="filterKPI('New')"
+        >
+
+            <div class="kpi-label">
+                NEW
+            </div>
+
+            <div
+                class="kpi-value"
+                id="newReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ●
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi yellow"
+            onclick="filterKPI('Investigation')"
+        >
+
+            <div class="kpi-label">
+                INVESTIGATION
+            </div>
+
+            <div
+                class="kpi-value"
+                id="investigationReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ⌕
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi orange"
+            onclick="filterKPI('Corrective Action')"
+        >
+
+            <div class="kpi-label">
+                CORRECTIVE ACTION
+            </div>
+
+            <div
+                class="kpi-value"
+                id="correctiveReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ⚙
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi purple"
+            onclick="filterKPI('Verification')"
+        >
+
+            <div class="kpi-label">
+                VERIFICATION
+            </div>
+
+            <div
+                class="kpi-value"
+                id="verificationReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ✓
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi green"
+            onclick="filterKPI('Closed')"
+        >
+
+            <div class="kpi-label">
+                CLOSED
+            </div>
+
+            <div
+                class="kpi-value"
+                id="closedReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                ✓
+            </div>
+
+        </div>
+
+
+        <div
+            class="kpi red"
+            onclick="filterKPI('OVERDUE')"
+        >
+
+            <div class="kpi-label">
+                OVERDUE ACTIONS
+            </div>
+
+            <div
+                class="kpi-value"
+                id="overdueReports"
+            >
+                0
+            </div>
+
+            <div class="kpi-icon">
+                !
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- ======================================================
+     ACTION CENTER
+====================================================== -->
+
+<section
+    class="section"
+    id="actions"
+>
+
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Action Center
+            </div>
+
+            <div class="section-subtitle">
+                Cases requiring attention
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="action-grid">
+
+
+        <div
+            class="action-card"
+            onclick="filterStatus('New')"
+        >
+
+            <div class="action-top">
+
+                <div class="action-name">
+                    New Reports
+                </div>
+
+                <div class="badge badge-new">
+                    NEW
+                </div>
+
+            </div>
+
+            <div
+                class="action-count"
+                id="actionNew"
+            >
+                0
+            </div>
+
+            <div class="action-desc">
+                Reports awaiting investigation
+            </div>
+
+        </div>
+
+
+        <div
+            class="action-card"
+            onclick="filterStatus('Corrective Action')"
+        >
+
+            <div class="action-top">
+
+                <div class="action-name">
+                    Corrective Actions
+                </div>
+
+                <div class="badge badge-corrective">
+                    ACTION
+                </div>
+
+            </div>
+
+            <div
+                class="action-count"
+                id="actionCorrective"
+            >
+                0
+            </div>
+
+            <div class="action-desc">
+                Actions currently in progress
+            </div>
+
+        </div>
+
+
+        <div
+            class="action-card"
+            onclick="goToOverdue()"
+        >
+
+            <div class="action-top">
+
+                <div class="action-name">
+                    Overdue
+                </div>
+
+                <div class="badge badge-overdue">
+                    ATTENTION
+                </div>
+
+            </div>
+
+            <div
+                class="action-count"
+                id="actionOverdue"
+            >
+                0
+            </div>
+
+            <div class="action-desc">
+                Actions beyond target date
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     ANALYTICS
+====================================================== -->
+
+<section
+    class="section"
+    id="analytics"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                ESH Analytics
+            </div>
+
+            <div class="section-subtitle">
+                Report trends and ESH performance
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="analytics-grid">
+
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Report Trend
+            </div>
+
+            <div class="chart-subtitle">
+                Reports by month
+            </div>
+
+            <div class="chart-wrap">
+
+                <canvas id="trendChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Hazard Category
+            </div>
+
+            <div class="chart-subtitle">
+                Distribution of reported hazards
+            </div>
+
+            <div class="chart-wrap">
+
+                <canvas id="categoryChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Department
+            </div>
+
+            <div class="chart-subtitle">
+                Reports by department
+            </div>
+
+            <div class="chart-wrap">
+
+                <canvas id="departmentChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     REPORTS
+====================================================== -->
+
+<section
+    class="section"
+    id="reports"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                ESH Reports
+            </div>
+
+            <div
+                class="section-subtitle"
+                id="reportsSubtitle"
+            >
+                ESH case management
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search report, location, department..."
+                oninput="renderReports()"
+            >
+
+        </div>
+
+
+        <select
+            id="statusFilter"
+            onchange="renderReports()"
+        >
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="New">
+                New
+            </option>
+
+            <option value="Investigation">
+                Investigation
+            </option>
+
+            <option value="Corrective Action">
+                Corrective Action
+            </option>
+
+            <option value="Verification">
+                Verification
+            </option>
+
+            <option value="Closed">
+                Closed
+            </option>
+
+        </select>
+
+
+        <select
+            id="categoryFilter"
+            onchange="renderReports()"
+        >
+
+            <option value="">
+                All Categories
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn"
+            onclick="resetFilters()"
+        >
+            Reset
+        </button>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="loadReports()"
+        >
+            ↻ Refresh
+        </button>
+
+
+    </div>
+
+
+    <div
+        class="reports-grid"
+        id="reportsGrid"
+    >
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ◌
+            </div>
+
+            <div class="empty-title">
+                Loading reports...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- ======================================================
      CASE MODAL
-===================================================== -->
+====================================================== -->
 
-<div id="caseModal"
-     class="modal">
+<div
+    class="modal"
+    id="caseModal"
+>
 
-    <div class="modal-content">
+<div class="modal-box">
 
-        <div class="modal-header">
 
-            <h2 id="caseNumber">
-                Report
-            </h2>
+<div class="modal-head">
 
-            <button class="close-btn"
-                    onclick="closeModal()">
+    <div>
 
-                ×
-
-            </button>
-
+        <div
+            class="modal-title"
+            id="modalTitle"
+        >
+            ESH Case
         </div>
 
-
-        <div id="caseOverdue"
-             class="overdue-banner hidden">
-
-            OVERDUE ACTION — TARGET DATE HAS PASSED
-
+        <div
+            class="modal-subtitle"
+            id="modalSubtitle"
+        >
+            ESH Case Management
         </div>
 
-
-        <!-- CASE INFORMATION -->
-
-        <div class="case-grid">
-
-            <div class="form-group">
-
-                <label>
-                    Location
-                </label>
-
-                <input
-                    type="text"
-                    id="caseLocation"
-                    disabled
-                >
-
-            </div>
+    </div>
 
 
-            <div class="form-group">
+    <button
+        class="close"
+        onclick="closeModal()"
+    >
+        ×
+    </button>
 
-                <label>
-                    Department
-                </label>
-
-                <input
-                    type="text"
-                    id="caseDepartment"
-                    disabled
-                >
-
-            </div>
+</div>
 
 
-            <div class="form-group">
-
-                <label>
-                    Hazard Category
-                </label>
-
-                <input
-                    type="text"
-                    id="caseCategory"
-                    disabled
-                >
-
-            </div>
+<div class="modal-body">
 
 
-            <div class="form-group">
-
-                <label>
-                    Status
-                </label>
-
-                <select id="caseStatus"></select>
-
-            </div>
-
-        </div>
+<div
+    class="overdue-banner"
+    id="caseOverdue"
+>
+    OVERDUE ACTION — TARGET DATE HAS PASSED
+</div>
 
 
-        <!-- TIMELINE -->
+<div class="case-top">
 
-        <div class="timeline"
-             id="caseTimeline">
 
-            <div class="timeline-step">
+<div class="case-info">
+
+    <div class="case-info-label">
+        REPORT NUMBER
+    </div>
+
+    <div
+        class="case-info-value"
+        id="caseNumber"
+    >
+        -
+    </div>
+
+</div>
+
+
+<div class="case-info">
+
+    <div class="case-info-label">
+        LOCATION
+    </div>
+
+    <div
+        class="case-info-value"
+        id="caseLocation"
+    >
+        -
+    </div>
+
+</div>
+
+
+<div class="case-info">
+
+    <div class="case-info-label">
+        DEPARTMENT
+    </div>
+
+    <div
+        class="case-info-value"
+        id="caseDepartment"
+    >
+        -
+    </div>
+
+</div>
+
+
+<div class="case-info">
+
+    <div class="case-info-label">
+        HAZARD CATEGORY
+    </div>
+
+    <div
+        class="case-info-value"
+        id="caseCategory"
+    >
+        -
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- TIMELINE -->
+
+<div class="modal-section">
+
+    <div class="modal-section-title">
+        ESH Case Progress
+    </div>
+
+
+    <div
+        class="timeline"
+        id="timeline"
+    >
+
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-label">
                 New
             </div>
 
-            <div class="timeline-step">
+        </div>
+
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-label">
                 Investigation
             </div>
 
-            <div class="timeline-step">
+        </div>
+
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-label">
                 Corrective Action
             </div>
 
-            <div class="timeline-step">
+        </div>
+
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-label">
                 Verification
             </div>
 
-            <div class="timeline-step">
+        </div>
+
+
+        <div class="timeline-item">
+
+            <div class="timeline-dot"></div>
+
+            <div class="timeline-label">
                 Closed
             </div>
 
         </div>
 
 
-        <!-- INCIDENT -->
+    </div>
 
-        <div class="section">
+</div>
 
-            <div class="section-header">
 
-                <div>
+<div
+    class="modal-grid"
+    style="margin-top:20px;"
+>
 
-                    <h2>
-                        Incident Information
-                    </h2>
 
-                </div>
+<!-- INCIDENT -->
 
-            </div>
+<div class="modal-section">
 
+    <div class="modal-section-title">
+        Incident Information
+    </div>
 
-            <div id="incidentInfo"
-                 class="info-box">
-            </div>
+    <div
+        class="incident-box"
+        id="incidentInfo"
+    >
+        -
+    </div>
 
-        </div>
+</div>
 
 
-        <!-- NARRATIVE -->
+<!-- NARRATIVE -->
 
-        <div class="form-group">
+<div class="modal-section">
 
-            <label>
-                What Happened
-            </label>
+    <div class="modal-section-title">
+        Incident Narrative
+    </div>
 
-            <textarea
-                id="caseNarrative"
-                disabled>
-            </textarea>
+    <div
+        class="incident-box"
+        id="caseNarrative"
+    >
+        -
+    </div>
 
-        </div>
+</div>
 
 
-        <!-- PHOTO -->
+<!-- PHOTO -->
 
-        <div class="form-group">
+<div class="modal-section full">
 
-            <label>
-                Photo Evidence
-            </label>
+    <div class="modal-section-title">
+        Photo Evidence
+    </div>
 
-            <div id="photoEvidence"
-                 class="media-grid">
+    <div
+        class="photo-grid"
+        id="photoEvidence"
+    >
+    </div>
 
-            </div>
+    <div id="videoEvidence"></div>
 
-        </div>
+</div>
 
 
-        <!-- VIDEO -->
+<!-- INVESTIGATION -->
 
-        <div class="form-group">
+<div class="modal-section">
 
-            <label>
-                Video Evidence
-            </label>
+    <div class="modal-section-title">
+        Investigation
+    </div>
 
-            <div id="videoEvidence">
 
-            </div>
+    <div class="form-group">
 
-        </div>
+        <label>
+            Investigation Findings
+        </label>
 
+        <textarea
+            id="investigationFindings"
+        ></textarea>
 
-        <!-- ESH ACTION -->
+    </div>
 
-        <div class="section">
 
-            <div class="section-header">
+    <div class="form-group">
 
-                <div>
+        <label>
+            Root Cause
+        </label>
 
-                    <h2>
-                        Investigation
-                    </h2>
+        <textarea
+            id="rootCause"
+        ></textarea>
 
-                </div>
+    </div>
 
-            </div>
 
+    <div class="form-group">
 
-            <div class="form-group">
+        <label>
+            ESH Investigator
+        </label>
 
-                <label>
-                    Investigation Findings / ESH Action
-                </label>
+        <input
+            id="eshInvestigator"
+        >
 
-                <textarea
-                    id="investigationFindings">
-                </textarea>
+    </div>
 
-            </div>
 
+    <div class="form-group">
 
-            <div class="form-group">
+        <label>
+            ESH Remarks
+        </label>
 
-                <label>
-                    Root Cause
-                </label>
-
-                <textarea
-                    id="rootCause">
-                </textarea>
-
-            </div>
-
-
-            <div class="case-grid">
-
-                <div class="form-group">
-
-                    <label>
-                        ESH Investigator
-                    </label>
-
-                    <input
-                        type="text"
-                        id="eshInvestigator"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        ESH Remarks
-                    </label>
-
-                    <input
-                        type="text"
-                        id="eshRemarks"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- CORRECTIVE ACTION -->
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        Corrective Action
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Corrective Action
-                </label>
-
-                <textarea
-                    id="correctiveAction">
-                </textarea>
-
-            </div>
-
-
-            <div class="case-grid">
-
-                <div class="form-group">
-
-                    <label>
-                        Person Responsible
-                    </label>
-
-                    <input
-                        type="text"
-                        id="personResponsible"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Target Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="dueDate"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- VERIFICATION -->
-
-        <div class="section">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        Verification / Closure
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Verification Remarks
-                </label>
-
-                <textarea
-                    id="verificationRemarks">
-                </textarea>
-
-            </div>
-
-
-            <div class="case-grid">
-
-                <div class="form-group">
-
-                    <label>
-                        Closed By
-                    </label>
-
-                    <input
-                        type="text"
-                        id="closedBy"
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        Completion Date
-                    </label>
-
-                    <input
-                        type="date"
-                        id="closedDate"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
-                    Remarks
-                </label>
-
-                <textarea
-                    id="caseRemarks">
-                </textarea>
-
-            </div>
-
-        </div>
-
-
-        <div class="modal-footer">
-
-            <button
-                class="btn btn-secondary"
-                onclick="closeModal()">
-
-                Close
-
-            </button>
-
-
-            <button
-                id="saveButton"
-                class="btn btn-success"
-                onclick="saveReport()">
-
-                Save Changes
-
-            </button>
-
-        </div>
+        <textarea
+            id="eshRemarks"
+        ></textarea>
 
     </div>
 
 </div>
 
 
+<!-- CORRECTIVE -->
+
+<div class="modal-section">
+
+    <div class="modal-section-title">
+        Corrective Action
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Corrective Action
+        </label>
+
+        <textarea
+            id="correctiveAction"
+        ></textarea>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Responsible Person
+        </label>
+
+        <input
+            id="personResponsible"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
+            Target Date
+        </label>
+
+        <input
+            type="date"
+            id="dueDate"
+        >
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label id="verificationRemarksLabel">
+            Verification Remarks
+        </label>
+
+        <textarea
+            id="verificationRemarks"
+        ></textarea>
+
+    </div>
+
+</div>
+
+
+<!-- CLOSURE -->
+
+<div class="modal-section full">
+
+    <div class="modal-section-title">
+        Case Closure
+    </div>
+
+
+    <div class="modal-grid">
+
+
+        <div class="form-group">
+
+            <label>
+                Case Status
+            </label>
+
+            <select id="caseStatus">
+
+                <option value="New">
+                    New
+                </option>
+
+                <option value="Investigation">
+                    Investigation
+                </option>
+
+                <option value="Corrective Action">
+                    Corrective Action
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Closed Date
+            </label>
+
+            <input
+                type="date"
+                id="closedDate"
+            >
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+
+    <button
+        class="btn"
+        onclick="closeModal()"
+    >
+        Cancel
+    </button>
+
+
+    <button
+        class="btn btn-primary"
+        id="saveButton"
+        onclick="saveReport()"
+    >
+        Save Case
+    </button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 <script>
 
-/* =====================================================
+/* =========================================================
    GOOGLE APPS SCRIPT
-===================================================== */
+========================================================= */
 
 const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyvYd4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
+"https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
-/* =====================================================
-   GLOBAL VARIABLES
-===================================================== */
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 let reports = [];
 
 let selectedReport = null;
 
+let trendChart = null;
 
-/* =====================================================
-   CURRENT USER
-===================================================== */
+let categoryChart = null;
+
+let departmentChart = null;
+
+
+/* =========================================================
+   CURRENT USER / ROLE
+========================================================= */
 
 const CURRENT_ROLE =
     sessionStorage.getItem("userRole") || "";
@@ -1587,20 +3339,29 @@ const CURRENT_DEPARTMENT =
     sessionStorage.getItem("department") || "";
 
 
-/* =====================================================
+/* =========================================================
    LOGIN GUARD
-===================================================== */
+========================================================= */
 
 (function(){
 
     const loggedIn =
-        sessionStorage.getItem("loggedIn");
+        sessionStorage.getItem(
+            "loggedIn"
+        );
+
 
     const role =
-        sessionStorage.getItem("userRole");
+        sessionStorage.getItem(
+            "userRole"
+        );
 
-    const validRoles =
-        ["ESH","HOD","MAINTENANCE"];
+
+    const validRoles = [
+        "ESH",
+        "HOD",
+        "MAINTENANCE"
+    ];
 
 
     if(
@@ -1618,15 +3379,18 @@ const CURRENT_DEPARTMENT =
 
 
     document
-        .getElementById("loginGuard")
-        .classList.add("hidden");
+        .getElementById(
+            "loginGuard"
+        )
+        .classList
+        .add("hidden");
 
 })();
 
 
-/* =====================================================
-   ROLE FUNCTIONS
-===================================================== */
+/* =========================================================
+   ROLE HELPERS
+========================================================= */
 
 function isESH(){
 
@@ -1649,9 +3413,91 @@ function isMaintenance(){
 }
 
 
-/* =====================================================
+/* =========================================================
+   VISIBLE REPORTS
+========================================================= */
+
+function getVisibleReports(){
+
+    if(
+        isESH()
+    ){
+
+        return reports;
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        const currentDepartment =
+            String(
+                CURRENT_DEPARTMENT
+            )
+            .trim()
+            .toLowerCase();
+
+
+        return reports.filter(
+            function(report){
+
+                const department =
+                    String(
+                        report.department ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                return (
+                    department ===
+                    currentDepartment
+                );
+
+            }
+        );
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        return reports.filter(
+            function(report){
+
+                const status =
+                    normalizeStatus(
+                        report.status
+                    );
+
+
+                return (
+                    status ===
+                        "Corrective Action"
+                    ||
+                    status ===
+                        "Verification"
+                );
+
+            }
+        );
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
    ROLE DISPLAY
-===================================================== */
+========================================================= */
 
 function setupRoleDisplay(){
 
@@ -1660,74 +3506,125 @@ function setupRoleDisplay(){
             "userRoleDisplay"
         );
 
+
     const hero =
         document.getElementById(
             "heroSubtitle"
         );
 
-    const subtitle =
+
+    const reportsSubtitle =
         document.getElementById(
             "reportsSubtitle"
         );
 
 
-    if(isESH()){
+    if(
+        isESH()
+    ){
 
-        display.textContent =
-            "ESH • FULL CONTROL";
+        if(display){
 
-        hero.textContent =
-            "Near Miss reporting, investigation, corrective action, verification and case closure control center.";
+            display.textContent =
+                "ESH • FULL CONTROL";
 
-        subtitle.textContent =
-            "ESH case management • Full access";
+        }
+
+
+        if(hero){
+
+            hero.textContent =
+                "Near Miss reporting, investigation, corrective action, verification and case closure control center.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "ESH case management • Full access";
+
+        }
 
         return;
 
     }
 
 
-    if(isHOD()){
+    if(
+        isHOD()
+    ){
 
-        display.textContent =
-            "HOD • DEPARTMENT VIEW";
+        if(display){
 
-        hero.textContent =
-            "Department-level ESH report monitoring and verification.";
+            display.textContent =
+                "HOD • " +
+                CURRENT_DEPARTMENT;
+        }
 
-        subtitle.textContent =
-            "Department reports • Verification access";
+
+        if(hero){
+
+            hero.textContent =
+                "Department near miss monitoring and corrective action verification.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "Reports for " +
+                CURRENT_DEPARTMENT +
+                " • Verification access";
+
+        }
 
         return;
 
     }
 
 
-    if(isMaintenance()){
+    if(
+        isMaintenance()
+    ){
 
-        display.textContent =
-            "MAINTENANCE • ACTION CONTROL";
+        if(display){
 
-        hero.textContent =
-            "Corrective action management and verification control.";
+            display.textContent =
+                "MAINTENANCE • ENGINEERING";
 
-        subtitle.textContent =
-            "Corrective action • Verification";
+        }
 
-        return;
+
+        if(hero){
+
+            hero.textContent =
+                "Corrective action and repair completion management.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "Corrective action reports • Repair update access";
+
+        }
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 function logout(){
 
     sessionStorage.clear();
+
 
     window.location.replace(
         "esh-login.html"
@@ -1736,29 +3633,9 @@ function logout(){
 }
 
 
-/* =====================================================
-   SCROLL
-===================================================== */
-
-function scrollToSection(id){
-
-    const element =
-        document.getElementById(id);
-
-    if(element){
-
-        element.scrollIntoView({
-            behavior:"smooth"
-        });
-
-    }
-
-}
-
-
-/* =====================================================
-   DOM READY
-===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -1766,102 +3643,17 @@ document.addEventListener(
 
         setupRoleDisplay();
 
-        setupEventListeners();
-
         loadReports();
 
     }
 );
 
 
-/* =====================================================
-   EVENT LISTENERS
-===================================================== */
-
-function setupEventListeners(){
-
-    document
-        .getElementById("searchInput")
-        .addEventListener(
-            "input",
-            renderReports
-        );
-
-
-    document
-        .getElementById("statusFilter")
-        .addEventListener(
-            "change",
-            renderReports
-        );
-
-
-    document
-        .getElementById("categoryFilter")
-        .addEventListener(
-            "change",
-            renderReports
-        );
-
-
-    document
-        .getElementById("dueDate")
-        .addEventListener(
-            "change",
-            function(){
-
-                if(selectedReport){
-
-                    updateCaseOverdue(
-                        selectedReport
-                    );
-
-                }
-
-            }
-        );
-
-
-    document
-        .getElementById("caseStatus")
-        .addEventListener(
-            "change",
-            function(){
-
-                updateTimeline();
-
-                if(selectedReport){
-
-                    updateCaseOverdue(
-                        selectedReport
-                    );
-
-                }
-
-                applyRolePermissions(
-                    this.value
-                );
-
-            }
-        );
-
-}
-
-
-/* =====================================================
+/* =========================================================
    LOAD REPORTS
-===================================================== */
+========================================================= */
 
 async function loadReports(){
-
-    const grid =
-        document.getElementById(
-            "reportsGrid"
-        );
-
-    grid.innerHTML =
-        '<div class="empty-state">Loading reports...</div>';
-
 
     try{
 
@@ -1876,7 +3668,7 @@ async function loadReports(){
         if(!response.ok){
 
             throw new Error(
-                "HTTP error " +
+                "Server error " +
                 response.status
             );
 
@@ -1887,66 +3679,38 @@ async function loadReports(){
             await response.json();
 
 
-        /*
-         * YOUR CODE.GS RETURNS:
-         *
-         * [
-         *   {
-         *      reportNumber,
-         *      dateTime,
-         *      location,
-         *      department,
-         *      hazardCategory,
-         *      whatHappened,
-         *      reporterName,
-         *      photos,
-         *      status,
-         *      eshAction,
-         *      rootCause,
-         *      correctiveAction,
-         *      responsiblePerson,
-         *      dueDate,
-         *      completionDate,
-         *      verification,
-         *      closedBy,
-         *      remarks,
-         *      submittedAt,
-         *      video
-         *   }
-         * ]
-         */
+        if(
+            Array.isArray(data)
+        ){
 
-
-        if(Array.isArray(data)){
-
-            reports =
-                data.map(
-                    normalizeReport
-                );
+            reports = data;
 
         }
+
         else if(
             data &&
-            Array.isArray(data.reports)
+            Array.isArray(
+                data.reports
+            )
         ){
 
             reports =
-                data.reports.map(
-                    normalizeReport
-                );
+                data.reports;
 
         }
+
         else if(
             data &&
-            Array.isArray(data.data)
+            Array.isArray(
+                data.data
+            )
         ){
 
             reports =
-                data.data.map(
-                    normalizeReport
-                );
+                data.data;
 
         }
+
         else{
 
             reports = [];
@@ -1954,29 +3718,41 @@ async function loadReports(){
         }
 
 
-        populateCategoryFilter();
-
         updateDashboard();
+
+        populateCategoryFilter();
 
         renderReports();
 
         renderAnalytics();
 
-
     }
+
     catch(error){
 
-        console.error(
-            "Load reports error:",
-            error
-        );
+        console.error(error);
 
 
-        grid.innerHTML = `
-            <div class="empty-state">
-                Unable to load reports.<br><br>
-                ${escapeHtml(error.message)}
+        document.getElementById(
+            "reportsGrid"
+        ).innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    !
+                </div>
+
+                <div class="empty-title">
+                    Unable to load reports
+                </div>
+
+                <p style="margin-top:8px;">
+                    Please check the Apps Script deployment.
+                </p>
+
             </div>
+
         `;
 
     }
@@ -1984,232 +3760,9 @@ async function loadReports(){
 }
 
 
-/* =====================================================
-   NORMALIZE REPORT
-   IMPORTANT
-===================================================== */
-
-function normalizeReport(raw){
-
-    raw =
-        raw || {};
-
-
-    return {
-
-        reportNumber:
-            raw.reportNumber || "",
-
-
-        dateTime:
-            raw.dateTime || "",
-
-
-        location:
-            raw.location || "",
-
-
-        department:
-            raw.department || "",
-
-
-        hazardCategory:
-            raw.hazardCategory || "",
-
-
-        whatHappened:
-            raw.whatHappened || "",
-
-
-        reporterName:
-            raw.reporterName || "",
-
-
-        photos:
-            raw.photos || "",
-
-
-        status:
-            raw.status || "New",
-
-
-        /*
-         * CODE.GS:
-         * eshAction
-         */
-
-        eshAction:
-            raw.eshAction ||
-            raw.investigationFindings ||
-            "",
-
-
-        /*
-         * CODE.GS:
-         * rootCause
-         */
-
-        rootCause:
-            raw.rootCause || "",
-
-
-        /*
-         * CODE.GS:
-         * correctiveAction
-         */
-
-        correctiveAction:
-            raw.correctiveAction || "",
-
-
-        /*
-         * CODE.GS:
-         * responsiblePerson
-         */
-
-        responsiblePerson:
-            raw.responsiblePerson ||
-            raw.personResponsible ||
-            "",
-
-
-        /*
-         * CODE.GS returns dueDate
-         */
-
-        dueDate:
-            raw.dueDate ||
-            raw.targetDate ||
-            "",
-
-
-        /*
-         * CODE.GS returns completionDate
-         */
-
-        completionDate:
-            raw.completionDate ||
-            raw.closedDate ||
-            "",
-
-
-        /*
-         * CODE.GS:
-         * verification
-         */
-
-        verification:
-            raw.verification ||
-            raw.verificationRemarks ||
-            "",
-
-
-        /*
-         * CODE.GS:
-         * closedBy
-         */
-
-        closedBy:
-            raw.closedBy ||
-            raw.eshInvestigator ||
-            "",
-
-
-        /*
-         * CODE.GS:
-         * remarks
-         */
-
-        remarks:
-            raw.remarks ||
-            raw.eshRemarks ||
-            "",
-
-
-        submittedAt:
-            raw.submittedAt || "",
-
-
-        video:
-            raw.video || ""
-
-    };
-
-}
-
-
-/* =====================================================
-   VISIBLE REPORTS
-===================================================== */
-
-function getVisibleReports(){
-
-    if(isESH()){
-
-        return reports;
-
-    }
-
-
-    if(isHOD()){
-
-        const department =
-            String(
-                CURRENT_DEPARTMENT || ""
-            )
-            .trim()
-            .toLowerCase();
-
-
-        return reports.filter(
-            function(report){
-
-                return String(
-                    report.department || ""
-                )
-                .trim()
-                .toLowerCase()
-                === department;
-
-            }
-        );
-
-    }
-
-
-    if(isMaintenance()){
-
-        return reports.filter(
-            function(report){
-
-                const status =
-                    normalizeStatus(
-                        report.status
-                    );
-
-
-                return (
-                    status ===
-                    "Corrective Action"
-                    ||
-                    status ===
-                    "Verification"
-                );
-
-            }
-        );
-
-    }
-
-
-    return [];
-
-}
-
-
-/* =====================================================
-   DASHBOARD COUNTS
-===================================================== */
+/* =========================================================
+   DASHBOARD
+========================================================= */
 
 function updateDashboard(){
 
@@ -2217,91 +3770,123 @@ function updateDashboard(){
         getVisibleReports();
 
 
-    setText(
-        "totalReports",
-        visible.length
-    );
+    const total =
+        visible.length;
 
 
-    setText(
-        "newReports",
+    const newCount =
         countStatus(
-            visible,
             "New"
-        )
-    );
-
-
-    setText(
-        "investigationReports",
-        countStatus(
-            visible,
-            "Investigation"
-        )
-    );
-
-
-    setText(
-        "correctiveReports",
-        countStatus(
-            visible,
-            "Corrective Action"
-        )
-    );
-
-
-    setText(
-        "verificationReports",
-        countStatus(
-            visible,
-            "Verification"
-        )
-    );
-
-
-    setText(
-        "closedReports",
-        countStatus(
-            visible,
-            "Closed"
-        )
-    );
-
-
-    const overdue =
-        visible.filter(
-            isReportOverdue
         );
 
 
-    setText(
-        "overdueReports",
-        overdue.length
-    );
+    const investigation =
+        countStatus(
+            "Investigation"
+        );
 
 
-    renderOverdueReports(
-        overdue
-    );
+    const corrective =
+        countStatus(
+            "Corrective Action"
+        );
+
+
+    const verification =
+        countStatus(
+            "Verification"
+        );
+
+
+    const closed =
+        countStatus(
+            "Closed"
+        );
+
+
+    const overdue =
+        calculateOverdue();
+
+
+    document.getElementById(
+        "totalReports"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "newReports"
+    ).textContent =
+        newCount;
+
+
+    document.getElementById(
+        "investigationReports"
+    ).textContent =
+        investigation;
+
+
+    document.getElementById(
+        "correctiveReports"
+    ).textContent =
+        corrective;
+
+
+    document.getElementById(
+        "verificationReports"
+    ).textContent =
+        verification;
+
+
+    document.getElementById(
+        "closedReports"
+    ).textContent =
+        closed;
+
+
+    document.getElementById(
+        "overdueReports"
+    ).textContent =
+        overdue;
+
+
+    document.getElementById(
+        "actionNew"
+    ).textContent =
+        newCount;
+
+
+    document.getElementById(
+        "actionCorrective"
+    ).textContent =
+        corrective;
+
+
+    document.getElementById(
+        "actionOverdue"
+    ).textContent =
+        overdue;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    COUNT STATUS
-===================================================== */
+========================================================= */
 
 function countStatus(
-    list,
     status
 ){
 
-    return list.filter(
+    return getVisibleReports().filter(
         function(report){
 
             return normalizeStatus(
                 report.status
-            ) === status;
+            ) ===
+            normalizeStatus(
+                status
+            );
 
         }
     ).length;
@@ -2309,16 +3894,18 @@ function countStatus(
 }
 
 
-/* =====================================================
+/* =========================================================
    OVERDUE
-===================================================== */
+========================================================= */
 
-function isReportOverdue(report){
+function isReportOverdue(
+    report
+){
 
     if(
-        !report ||
-        normalizeStatus(report.status)
-        === "Closed"
+        normalizeStatus(
+            report.status
+        ) === "Closed"
     ){
 
         return false;
@@ -2326,11 +3913,9 @@ function isReportOverdue(report){
     }
 
 
-    const value =
-        report.dueDate;
-
-
-    if(!value){
+    if(
+        !report.dueDate
+    ){
 
         return false;
 
@@ -2338,7 +3923,9 @@ function isReportOverdue(report){
 
 
     const due =
-        parseDate(value);
+        parseDate(
+            report.dueDate
+        );
 
 
     if(!due){
@@ -2353,12 +3940,18 @@ function isReportOverdue(report){
 
 
     today.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
 
     due.setHours(
-        0,0,0,0
+        0,
+        0,
+        0,
+        0
     );
 
 
@@ -2367,98 +3960,337 @@ function isReportOverdue(report){
 }
 
 
-/* =====================================================
-   OVERDUE LIST
-===================================================== */
+function calculateOverdue(){
 
-function renderOverdueReports(
-    overdueReports
+    return getVisibleReports().filter(
+        isReportOverdue
+    ).length;
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showSection(
+    section,
+    button
 ){
 
-    const container =
-        document.getElementById(
-            "overdueList"
-        );
+    document
+        .querySelectorAll(
+            ".nav button"
+        )
+        .forEach(
+            function(btn){
 
-
-    if(!overdueReports.length){
-
-        container.innerHTML =
-            '<div class="empty-state">No overdue actions.</div>';
-
-        return;
-
-    }
-
-
-    const sorted =
-        overdueReports.slice().sort(
-            function(a,b){
-
-                return (
-                    parseDate(
-                        a.dueDate
-                    ) -
-                    parseDate(
-                        b.dueDate
-                    )
+                btn.classList.remove(
+                    "active"
                 );
 
             }
         );
 
 
-    container.innerHTML =
-        sorted.map(
-            function(report){
+    if(button){
 
-                const index =
-                    reports.indexOf(
-                        report
-                    );
+        button.classList.add(
+            "active"
+        );
+
+    }
 
 
-                return `
-                    <div
-                        class="overdue-item"
-                        onclick="openReport(${index})"
-                    >
+    const target =
+        document.getElementById(
+            section
+        );
 
-                        <strong>
-                            ${escapeHtml(
-                                report.reportNumber
-                            )}
-                        </strong>
 
-                        <span>
-                            Target Date:
-                            ${escapeHtml(
-                                displayDate(
-                                    report.dueDate
-                                )
-                            )}
-                        </span>
+    if(target){
 
-                        <br>
+        target.scrollIntoView({
 
-                        <span>
-                            ${escapeHtml(
-                                report.location
-                            )}
-                        </span>
+            behavior:"smooth",
 
-                    </div>
-                `;
+            block:"start"
 
-            }
-        ).join("");
+        });
+
+    }
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   GO TO REPORTS
+========================================================= */
+
+function goToReports(){
+
+    const target =
+        document.getElementById(
+            "reports"
+        );
+
+
+    if(target){
+
+        target.scrollIntoView({
+
+            behavior:"smooth",
+
+            block:"start"
+
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   KPI FILTER
+========================================================= */
+
+function filterKPI(
+    filter
+){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    if(
+        filter === "ALL"
+    ){
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "";
+
+
+        renderReports();
+
+        goToReports();
+
+        return;
+
+    }
+
+
+    if(
+        filter === "OVERDUE"
+    ){
+
+        document.getElementById(
+            "statusFilter"
+        ).value = "";
+
+
+        renderOverdueReports();
+
+        goToReports();
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        filter;
+
+
+    renderReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   ACTION CENTER FILTER
+========================================================= */
+
+function filterStatus(
+    status
+){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        status;
+
+
+    renderReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   OVERDUE
+========================================================= */
+
+function goToOverdue(){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    renderOverdueReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   RENDER OVERDUE REPORTS
+========================================================= */
+
+function renderOverdueReports(){
+
+    const container =
+        document.getElementById(
+            "reportsGrid"
+        );
+
+
+    const filtered =
+        getVisibleReports().filter(
+            function(report){
+
+                return isReportOverdue(
+                    report
+                );
+
+            }
+        );
+
+
+    if(
+        !filtered.length
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <div class="empty-title">
+                    No overdue reports
+                </div>
+
+                <p style="margin-top:8px;">
+                    There are currently no overdue actions.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    filtered.sort(
+        function(a,b){
+
+            const dateA =
+                parseDate(
+                    a.dueDate
+                ) ||
+                new Date(0);
+
+
+            const dateB =
+                parseDate(
+                    b.dueDate
+                ) ||
+                new Date(0);
+
+
+            return dateA - dateB;
+
+        }
+    );
+
+
+    container.innerHTML =
+        filtered
+            .map(
+                createReportCard
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetFilters(){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    renderReports();
+
+}
+
+
+/* =========================================================
    CATEGORY FILTER
-===================================================== */
+========================================================= */
 
 function populateCategoryFilter(){
 
@@ -2468,29 +4300,36 @@ function populateCategoryFilter(){
         );
 
 
-    const current =
-        select.value;
-
-
     const categories =
-        Array.from(
-            new Set(
+        [
+            ...new Set(
+
                 getVisibleReports()
-                .map(
-                    function(report){
-                        return String(
-                            report.hazardCategory || ""
-                        ).trim();
-                    }
-                )
-                .filter(Boolean)
+                    .map(
+                        r =>
+                            String(
+                                r.hazardCategory ||
+                                ""
+                            ).trim()
+                    )
+
+                    .filter(
+                        Boolean
+                    )
+
             )
-        )
+
+        ]
         .sort();
 
 
-    select.innerHTML =
-        '<option value="">All Categories</option>';
+    select.innerHTML = `
+
+        <option value="">
+            All Categories
+        </option>
+
+    `;
 
 
     categories.forEach(
@@ -2501,11 +4340,14 @@ function populateCategoryFilter(){
                     "option"
                 );
 
+
             option.value =
                 category;
 
+
             option.textContent =
                 category;
+
 
             select.appendChild(
                 option
@@ -2514,39 +4356,27 @@ function populateCategoryFilter(){
         }
     );
 
-
-    if(
-        categories.includes(current)
-    ){
-
-        select.value =
-            current;
-
-    }
-
 }
 
 
-/* =====================================================
+/* =========================================================
    RENDER REPORTS
-===================================================== */
+========================================================= */
 
 function renderReports(){
 
-    const grid =
+    const container =
         document.getElementById(
             "reportsGrid"
         );
 
 
     const search =
-        String(
-            document.getElementById(
-                "searchInput"
-            ).value || ""
-        )
-        .trim()
-        .toLowerCase();
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
 
 
     const status =
@@ -2561,15 +4391,11 @@ function renderReports(){
         ).value;
 
 
-    let visible =
-        getVisibleReports();
-
-
-    visible =
-        visible.filter(
+    const filtered =
+        getVisibleReports().filter(
             function(report){
 
-                const searchable = [
+                const text = [
 
                     report.reportNumber,
 
@@ -2592,7 +4418,7 @@ function renderReports(){
 
                 const searchMatch =
                     !search ||
-                    searchable.includes(
+                    text.includes(
                         search
                     );
 
@@ -2601,13 +4427,18 @@ function renderReports(){
                     !status ||
                     normalizeStatus(
                         report.status
-                    ) === status;
+                    ) ===
+                    normalizeStatus(
+                        status
+                    );
 
 
                 const categoryMatch =
                     !category ||
-                    report.hazardCategory
-                    === category;
+                    String(
+                        report.hazardCategory ||
+                        ""
+                    ) === category;
 
 
                 return (
@@ -2620,55 +4451,100 @@ function renderReports(){
         );
 
 
-    if(!visible.length){
+    if(
+        !filtered.length
+    ){
 
-        grid.innerHTML =
-            '<div class="empty-state">No reports found.</div>';
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ⌕
+                </div>
+
+                <div class="empty-title">
+                    No reports found
+                </div>
+
+                <p style="margin-top:8px;">
+                    Try changing your search or filter.
+                </p>
+
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    grid.innerHTML =
-        visible.map(
-            function(report){
+    filtered.sort(
+        function(a,b){
 
-                const originalIndex =
-                    reports.indexOf(
-                        report
-                    );
+            const da =
+                parseDate(
+                    a.dateTime ||
+                    a.submittedAt
+                ) ||
+                new Date(0);
 
 
-                return createReportCard(
-                    report,
-                    originalIndex
-                );
+            const db =
+                parseDate(
+                    b.dateTime ||
+                    b.submittedAt
+                ) ||
+                new Date(0);
 
-            }
-        ).join("");
+
+            return db - da;
+
+        }
+    );
+
+
+    container.innerHTML =
+        filtered
+            .map(
+                createReportCard
+            )
+            .join("");
 
 }
 
 
-/* =====================================================
+/* =========================================================
    REPORT CARD
-===================================================== */
+========================================================= */
 
 function createReportCard(
-    report,
-    index
+    report
 ){
 
-    const statusClass =
-        getStatusClass(
-            report.status
+    const index =
+        reports.indexOf(
+            report
         );
+
+
+    const status =
+        normalizeStatus(
+            report.status
+        ) ||
+        "New";
 
 
     const overdue =
         isReportOverdue(
             report
+        );
+
+
+    const statusClass =
+        getStatusClass(
+            status
         );
 
 
@@ -2679,140 +4555,182 @@ function createReportCard(
             onclick="openReport(${index})"
         >
 
-            <div class="report-header">
+
+            <div class="report-head">
+
 
                 <div class="report-number">
 
                     ${escapeHtml(
                         report.reportNumber ||
-                        "No Report Number"
+                        "ESH REPORT"
                     )}
 
                 </div>
 
-                <div class="status ${statusClass}">
+
+                <div
+                    class="badge ${statusClass}"
+                >
 
                     ${escapeHtml(
-                        normalizeStatus(
-                            report.status
-                        )
+                        status
                     )}
+
+                </div>
+
+
+            </div>
+
+
+            <div class="report-body">
+
+
+                <div class="report-title">
+
+                    ${escapeHtml(
+                        report.whatHappened ||
+                        "ESH report submitted"
+                    )}
+
+                </div>
+
+
+                <div class="report-meta">
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Date
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                formatDisplayDate(
+                                    report.dateTime ||
+                                    report.submittedAt
+                                )
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Location
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.location ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Department
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.department ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.hazardCategory ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    ${
+                        overdue
+                        ?
+                        `
+
+                        <div class="meta-row">
+
+                            <span
+                                style="color:#ff7382;"
+                            >
+                                Target Date
+                            </span>
+
+                            <strong
+                                style="color:#ff7382;"
+                            >
+
+                                ${escapeHtml(
+                                    formatDisplayDate(
+                                        report.dueDate
+                                    )
+                                )}
+
+                            </strong>
+
+                        </div>
+
+                        `
+                        :
+                        ""
+                    }
+
 
                 </div>
 
             </div>
 
 
-            <div class="report-row">
+            <div class="report-footer">
 
-                <span class="report-label">
-                    Date:
-                </span>
-
-                <span class="report-value">
-
-                    ${escapeHtml(
-                        displayDate(
-                            report.dateTime
-                        )
-                    )}
-
-                </span>
-
-            </div>
-
-
-            <div class="report-row">
-
-                <span class="report-label">
-                    Location:
-                </span>
-
-                <span class="report-value">
-
-                    ${escapeHtml(
-                        report.location
-                    )}
-
-                </span>
+                ${
+                    overdue
+                    ?
+                    "⚠ OVERDUE ACTION"
+                    :
+                    isESH()
+                    ?
+                    "Open case for ESH management"
+                    :
+                    isHOD()
+                    ?
+                    "Open case for verification"
+                    :
+                    "Open case for corrective action update"
+                }
 
             </div>
 
-
-            <div class="report-row">
-
-                <span class="report-label">
-                    Department:
-                </span>
-
-                <span class="report-value">
-
-                    ${escapeHtml(
-                        report.department
-                    )}
-
-                </span>
-
-            </div>
-
-
-            <div class="report-row">
-
-                <span class="report-label">
-                    Category:
-                </span>
-
-                <span class="report-value">
-
-                    ${escapeHtml(
-                        report.hazardCategory
-                    )}
-
-                </span>
-
-            </div>
-
-
-            ${
-                report.dueDate
-                ?
-                `
-                <div class="report-row">
-
-                    <span class="report-label">
-                        Target Date:
-                    </span>
-
-                    <span class="report-value">
-
-                        ${escapeHtml(
-                            displayDate(
-                                report.dueDate
-                            )
-                        )}
-
-                    </span>
-
-                </div>
-                `
-                :
-                ""
-            }
-
-
-            ${
-                overdue
-                ?
-                `
-                <div class="overdue-badge">
-
-                    ⚠ OVERDUE ACTION
-
-                </div>
-                `
-                :
-                ""
-            }
 
         </div>
 
@@ -2821,30 +4739,38 @@ function createReportCard(
 }
 
 
-/* =====================================================
+/* =========================================================
    OPEN REPORT
-===================================================== */
+========================================================= */
 
-function openReport(index){
+function openReport(
+    index
+){
 
     const report =
         reports[index];
 
 
-    if(!report){
+    if(
+        !report
+    ){
 
         return;
 
     }
 
 
-    const visible =
+    const visibleReports =
         getVisibleReports();
 
 
-    if(!visible.includes(report)){
+    if(
+        !visibleReports.includes(
+            report
+        )
+    ){
 
-        alert(
+        showToast(
             "You do not have access to this report."
         );
 
@@ -2858,81 +4784,120 @@ function openReport(index){
 
 
     document.getElementById(
+        "modalTitle"
+    ).textContent =
+        report.reportNumber ||
+        "ESH Case";
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        getModalSubtitle();
+
+
+    document.getElementById(
         "caseNumber"
     ).textContent =
         report.reportNumber ||
-        "Report";
+        "-";
 
 
     document.getElementById(
         "caseLocation"
-    ).value =
-        report.location || "";
+    ).textContent =
+        report.location ||
+        "-";
 
 
     document.getElementById(
         "caseDepartment"
-    ).value =
-        report.department || "";
+    ).textContent =
+        report.department ||
+        "-";
 
 
     document.getElementById(
         "caseCategory"
-    ).value =
-        report.hazardCategory || "";
+    ).textContent =
+        report.hazardCategory ||
+        "-";
+
+
+    document.getElementById(
+        "incidentInfo"
+    ).textContent =
+
+        [
+
+            "Date: " +
+            formatDisplayDate(
+                report.dateTime ||
+                report.submittedAt
+            ),
+
+            "Reporter: " +
+            (
+                report.reporterName ||
+                "-"
+            ),
+
+            "Submitted: " +
+            formatDisplayDate(
+                report.submittedAt
+            )
+
+        ].join("\n");
 
 
     document.getElementById(
         "caseNarrative"
-    ).value =
-        report.whatHappened || "";
+    ).textContent =
+        report.whatHappened ||
+        "-";
 
 
     document.getElementById(
         "investigationFindings"
     ).value =
-        report.eshAction || "";
+        report.investigationFindings ||
+        "";
 
 
     document.getElementById(
         "rootCause"
     ).value =
-        report.rootCause || "";
+        report.rootCause ||
+        "";
 
 
     document.getElementById(
         "eshInvestigator"
     ).value =
-        report.closedBy || "";
+        report.eshInvestigator ||
+        "";
 
 
     document.getElementById(
         "eshRemarks"
     ).value =
-        report.remarks || "";
+        report.eshRemarks ||
+        "";
 
 
     document.getElementById(
         "correctiveAction"
     ).value =
-        report.correctiveAction || "";
+        report.correctiveAction ||
+        "";
 
 
     document.getElementById(
         "personResponsible"
     ).value =
-        report.responsiblePerson || "";
+        report.personResponsible ||
+        "";
 
-
-    /*
-     * IMPORTANT:
-     *
-     * Backend GET:
-     * dueDate
-     *
-     * Backend UPDATE:
-     * targetDate
-     */
 
     document.getElementById(
         "dueDate"
@@ -2945,92 +4910,118 @@ function openReport(index){
     document.getElementById(
         "verificationRemarks"
     ).value =
-        report.verification || "";
-
-
-    document.getElementById(
-        "closedBy"
-    ).value =
-        report.closedBy || "";
+        report.verificationRemarks ||
+        "";
 
 
     document.getElementById(
         "closedDate"
     ).value =
         formatDateInput(
-            report.completionDate
+            report.closedDate
         );
 
 
-    document.getElementById(
-        "caseRemarks"
-    ).value =
-        report.remarks || "";
-
-
-    document.getElementById(
-        "incidentInfo"
-    ).innerHTML = `
-
-        <strong>Observation / Report Date:</strong>
-        ${escapeHtml(
-            displayDate(report.dateTime)
-        )}
-
-        <br>
-
-        <strong>Reporter:</strong>
-        ${escapeHtml(
-            report.reporterName
-        )}
-
-        <br>
-
-        <strong>Submitted At:</strong>
-        ${escapeHtml(
-            displayDate(report.submittedAt)
-        )}
-
-    `;
+    const status =
+        normalizeStatus(
+            report.status
+        ) ||
+        "New";
 
 
     setupCaseStatusOptions(
-        report.status
+        status
     );
 
 
-    updateTimeline();
+    document.getElementById(
+        "caseStatus"
+    ).value =
+        status;
+
+
+    updateTimeline(
+        status
+    );
+
 
     updateCaseOverdue(
         report
     );
 
 
-    renderPhotos(
-        report.photos
+    loadPhotos(
+        report
     );
 
 
-    renderVideo(
-        report.video
+    loadVideo(
+        report
     );
 
 
     applyRolePermissions(
-        report.status
+        status
     );
 
 
     document
-        .getElementById("caseModal")
-        .classList.add("show");
+        .getElementById(
+            "caseModal"
+        )
+        .classList
+        .add("show");
 
 }
 
 
-/* =====================================================
-   STATUS OPTIONS
-===================================================== */
+/* =========================================================
+   MODAL SUBTITLE
+========================================================= */
+
+function getModalSubtitle(){
+
+    if(
+        isESH()
+    ){
+
+        return "ESH Case Management • Full Control";
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        return (
+            "HOD Verification • " +
+            CURRENT_DEPARTMENT
+        );
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        return (
+            "Maintenance / Engineering • " +
+            "Corrective Action Update"
+        );
+
+    }
+
+
+    return "ESH Case Management";
+
+}
+
+
+/* =========================================================
+   CASE STATUS OPTIONS
+========================================================= */
 
 function setupCaseStatusOptions(
     currentStatus
@@ -3042,62 +5033,158 @@ function setupCaseStatusOptions(
         );
 
 
-    select.innerHTML = "";
+    if(
+        isESH()
+    ){
+
+        select.innerHTML = `
+
+            <option value="New">New</option>
+
+            <option value="Investigation">
+                Investigation
+            </option>
+
+            <option value="Corrective Action">
+                Corrective Action
+            </option>
+
+            <option value="Verification">
+                Verification
+            </option>
+
+            <option value="Closed">
+                Closed
+            </option>
+
+        `;
+
+        return;
+
+    }
 
 
-    const statuses = [
+    if(
+        isHOD()
+    ){
 
-        "New",
+        if(
+            currentStatus ===
+            "Closed"
+        ){
 
-        "Investigation",
+            select.innerHTML = `
 
-        "Corrective Action",
+                <option value="Closed">
+                    Closed
+                </option>
 
-        "Verification",
-
-        "Closed"
-
-    ];
-
-
-    statuses.forEach(
-        function(status){
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-            option.value =
-                status;
-
-            option.textContent =
-                status;
-
-            if(
-                normalizeStatus(
-                    currentStatus
-                ) === status
-            ){
-
-                option.selected =
-                    true;
-
-            }
-
-            select.appendChild(
-                option
-            );
+            `;
 
         }
-    );
+
+        else if(
+            currentStatus ===
+            "Verification"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        else{
+
+            select.innerHTML = `
+
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
+                    ${escapeHtml(
+                        currentStatus
+                    )}
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        if(
+            currentStatus ===
+            "Closed"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+            `;
+
+        }
+
+        else if(
+            currentStatus ===
+            "Verification"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        else{
+
+            select.innerHTML = `
+
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
+                    ${escapeHtml(
+                        currentStatus
+                    )}
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+    }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    ROLE PERMISSIONS
-===================================================== */
+========================================================= */
 
 function applyRolePermissions(
     status
@@ -3127,20 +5214,17 @@ function applyRolePermissions(
     ];
 
 
-    const verificationFields = [
-
-        "verificationRemarks",
-
-        "closedBy",
-
-        "closedDate",
-
-        "caseRemarks"
-
-    ];
+    const verificationField =
+        "verificationRemarks";
 
 
-    const statusField =
+    const closedDate =
+        document.getElementById(
+            "closedDate"
+        );
+
+
+    const caseStatus =
         document.getElementById(
             "caseStatus"
         );
@@ -3152,152 +5236,227 @@ function applyRolePermissions(
         );
 
 
-    function setDisabled(
-        ids,
-        disabled
+    const verificationLabel =
+        document.getElementById(
+            "verificationRemarksLabel"
+        );
+
+
+    /* =====================================================
+       ESH
+    ===================================================== */
+
+    if(
+        isESH()
     ){
 
-        ids.forEach(
+        investigationFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-                if(element){
-
-                    element.disabled =
-                        disabled;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = false;
 
             }
         );
 
-    }
 
+        correctiveFields.forEach(
+            function(id){
 
-    if(isESH()){
+                document.getElementById(
+                    id
+                ).disabled = false;
 
-        setDisabled(
-            investigationFields,
-            false
+            }
         );
 
-        setDisabled(
-            correctiveFields,
-            false
-        );
 
-        setDisabled(
-            verificationFields,
-            false
-        );
+        document.getElementById(
+            verificationField
+        ).disabled = false;
 
-        statusField.disabled =
-            false;
+
+        closedDate.disabled = false;
+
+        caseStatus.disabled = false;
+
+        saveButton.style.display =
+            "inline-flex";
 
         saveButton.disabled =
             false;
+
+        saveButton.textContent =
+            "Save Case";
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
 
         return;
 
     }
 
 
-    if(isHOD()){
+    /* =====================================================
+       HOD
+    ===================================================== */
 
-        setDisabled(
-            investigationFields,
-            true
+    if(
+        isHOD()
+    ){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
         );
 
-        setDisabled(
-            correctiveFields,
-            true
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
         );
 
-        setDisabled(
-            verificationFields,
-            normalizeStatus(status)
-            === "Closed"
-        );
 
-        /*
-         * HOD can verify,
-         * but should not change
-         * investigation/corrective fields.
-         */
-
-        statusField.disabled =
-            normalizeStatus(status)
-            === "Closed";
+        closedDate.disabled = true;
 
 
-        saveButton.disabled =
-            false;
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
+
+
+        caseStatus.disabled =
+            status === "Closed";
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        if(
+            status === "Closed"
+        ){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Verify Solution";
+
+        }
 
         return;
 
     }
 
 
-    if(isMaintenance()){
+    /* =====================================================
+       MAINTENANCE
+    ===================================================== */
 
-        setDisabled(
-            investigationFields,
-            true
+    if(
+        isMaintenance()
+    ){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
         );
 
-        setDisabled(
-            correctiveFields,
-            normalizeStatus(status)
-            === "Closed"
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
         );
 
-        setDisabled(
-            verificationFields,
-            normalizeStatus(status)
-            === "Closed"
-        );
+
+        closedDate.disabled = true;
 
 
-        statusField.disabled =
-            normalizeStatus(status)
-            === "Closed";
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
 
 
-        saveButton.disabled =
-            normalizeStatus(status)
-            !== "Closed";
+        caseStatus.disabled =
+            status === "Closed";
+
+
+        verificationLabel.textContent =
+            "Repair / Completion Remarks";
+
+
+        if(
+            status === "Closed"
+        ){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Repair Update";
+
+        }
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    TIMELINE
-===================================================== */
+========================================================= */
 
-function updateTimeline(){
+function updateTimeline(
+    status
+){
 
-    const status =
-        normalizeStatus(
-            document.getElementById(
-                "caseStatus"
-            ).value
-        );
-
-
-    const steps =
-        document.querySelectorAll(
-            ".timeline-step"
-        );
-
-
-    const order = [
+    const steps = [
 
         "New",
 
@@ -3312,37 +5471,62 @@ function updateTimeline(){
     ];
 
 
-    const currentIndex =
-        order.indexOf(status);
+    const current =
+        steps.findIndex(
+            step =>
+                normalizeStatus(
+                    step
+                ) ===
+                normalizeStatus(
+                    status
+                )
+        );
 
 
-    steps.forEach(
-        function(step,index){
+    document
+        .querySelectorAll(
+            "#timeline .timeline-item"
+        )
+        .forEach(
+            function(item,index){
 
-            if(index <= currentIndex){
-
-                step.classList.add(
-                    "active"
+                item.classList.remove(
+                    "active",
+                    "completed"
                 );
 
+
+                if(
+                    index <
+                    current
+                ){
+
+                    item.classList.add(
+                        "completed"
+                    );
+
+                }
+
+                else if(
+                    index ===
+                    current
+                ){
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
             }
-            else{
-
-                step.classList.remove(
-                    "active"
-                );
-
-            }
-
-        }
-    );
+        );
 
 }
 
 
-/* =====================================================
-   UPDATE OVERDUE MODAL
-===================================================== */
+/* =========================================================
+   OVERDUE MODAL
+========================================================= */
 
 function updateCaseOverdue(
     report
@@ -3354,38 +5538,22 @@ function updateCaseOverdue(
         );
 
 
-    const selectedDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
-
-
-    const tempReport =
-        Object.assign(
-            {},
-            report || {},
-            {
-                dueDate:
-                    selectedDate
-            }
-        );
-
-
     if(
         isReportOverdue(
-            tempReport
+            report
         )
     ){
 
-        banner.classList.remove(
-            "hidden"
+        banner.classList.add(
+            "show"
         );
 
     }
+
     else{
 
-        banner.classList.add(
-            "hidden"
+        banner.classList.remove(
+            "show"
         );
 
     }
@@ -3393,12 +5561,146 @@ function updateCaseOverdue(
 }
 
 
-/* =====================================================
-   PHOTOS
-===================================================== */
+/* =========================================================
+   DRIVE FILE ID
+========================================================= */
 
-function renderPhotos(
-    photoValue
+function extractDriveFileId(
+    url
+){
+
+    if(!url){
+
+        return null;
+
+    }
+
+
+    const match =
+        String(url).match(
+            /[-\w]{25,}/
+        );
+
+
+    return match
+        ? match[0]
+        : null;
+
+}
+
+
+/* =========================================================
+   PHOTO LIST
+========================================================= */
+
+function getPhotoList(
+    report
+){
+
+    const value =
+        report.photos ||
+        report.photo ||
+        report.photoUrls ||
+        report.photoLinks ||
+        "";
+
+
+    if(
+        Array.isArray(value)
+    ){
+
+        return value.filter(
+            Boolean
+        );
+
+    }
+
+
+    if(!value){
+
+        return [];
+
+    }
+
+
+    const text =
+        String(
+            value
+        ).trim();
+
+
+    try{
+
+        const parsed =
+            JSON.parse(
+                text
+            );
+
+
+        if(
+            Array.isArray(
+                parsed
+            )
+        ){
+
+            return parsed.filter(
+                Boolean
+            );
+
+        }
+
+    }
+
+    catch(e){}
+
+
+    if(
+        text.includes("\n")
+    ){
+
+        return text
+            .split("\n")
+            .map(
+                x =>
+                    x.trim()
+            )
+            .filter(
+                Boolean
+            );
+
+    }
+
+
+    if(
+        text.includes(",")
+    ){
+
+        return text
+            .split(",")
+            .map(
+                x =>
+                    x.trim()
+            )
+            .filter(
+                Boolean
+            );
+
+    }
+
+
+    return [
+        text
+    ];
+
+}
+
+
+/* =========================================================
+   LOAD PHOTOS
+========================================================= */
+
+function loadPhotos(
+    report
 ){
 
     const container =
@@ -3407,137 +5709,86 @@ function renderPhotos(
         );
 
 
-    container.innerHTML = "";
-
-
-    if(!photoValue){
-
-        container.innerHTML =
-            '<span style="color:#6b7280">No photo evidence.</span>';
-
-        return;
-
-    }
-
-
-    let photos = [];
-
-
-    try{
-
-        if(
-            typeof photoValue ===
-            "string"
-        ){
-
-            const trimmed =
-                photoValue.trim();
-
-
-            if(
-                trimmed.startsWith("[")
-            ){
-
-                photos =
-                    JSON.parse(
-                        trimmed
-                    );
-
-            }
-            else{
-
-                photos =
-                    trimmed
-                    .split(",")
-                    .map(
-                        function(item){
-                            return item.trim();
-                        }
-                    )
-                    .filter(Boolean);
-
-            }
-
-        }
-        else if(
-            Array.isArray(photoValue)
-        ){
-
-            photos =
-                photoValue;
-
-        }
-
-    }
-    catch(error){
-
-        console.error(
-            "Photo parse error:",
-            error
+    const photos =
+        getPhotoList(
+            report
         );
 
-    }
 
+    if(
+        !photos.length
+    ){
 
-    if(!photos.length){
+        container.innerHTML = `
 
-        container.innerHTML =
-            '<span style="color:#6b7280">No photo evidence.</span>';
+            <div class="empty">
+                No photo evidence submitted.
+            </div>
+
+        `;
 
         return;
 
     }
 
 
-    photos.forEach(
-        function(photo){
+    container.innerHTML =
+        photos
+            .map(
+                function(url){
 
-            if(!photo){
-
-                return;
-
-            }
-
-
-            const img =
-                document.createElement(
-                    "img"
-                );
+                    const id =
+                        extractDriveFileId(
+                            url
+                        );
 
 
-            img.src =
-                String(photo);
+                    const src =
+                        id
+                        ?
+                        "https://drive.google.com/thumbnail?id=" +
+                        id +
+                        "&sz=w1000"
+                        :
+                        url;
 
 
-            img.alt =
-                "Photo evidence";
+                    return `
 
+                        <div
+                            class="photo-card"
+                        >
 
-            img.onerror =
-                function(){
+                            <img
+                                src="${escapeAttribute(src)}"
+                                alt="ESH Evidence"
+                                loading="lazy"
+                                onclick="
+                                    event.stopPropagation();
+                                    window.open(
+                                        '${escapeAttribute(url)}',
+                                        '_blank'
+                                    )
+                                "
+                            >
 
-                    img.style.display =
-                        "none";
+                        </div>
 
-                };
+                    `;
 
-
-            container.appendChild(
-                img
-            );
-
-        }
-    );
+                }
+            )
+            .join("");
 
 }
 
 
-/* =====================================================
+/* =========================================================
    VIDEO
-===================================================== */
+========================================================= */
 
-function renderVideo(
-    videoValue
+function loadVideo(
+    report
 ){
 
     const container =
@@ -3549,69 +5800,96 @@ function renderVideo(
     container.innerHTML = "";
 
 
-    if(!videoValue){
+    const url =
+        report.videoUrl ||
+        report.videoLink ||
+        report.video ||
+        "";
 
-        container.innerHTML =
-            '<span style="color:#6b7280">No video evidence.</span>';
+
+    if(!url){
 
         return;
 
     }
 
 
-    const link =
-        document.createElement(
-            "a"
+    let videoUrl =
+        String(
+            url
         );
 
 
-    link.href =
-        String(videoValue);
+    const id =
+        extractDriveFileId(
+            videoUrl
+        );
 
 
-    link.target =
-        "_blank";
+    if(
+        id &&
+        videoUrl.includes(
+            "drive.google.com"
+        )
+    ){
+
+        videoUrl =
+            "https://drive.google.com/uc?export=download&id=" +
+            id;
+
+    }
 
 
-    link.rel =
-        "noopener noreferrer";
+    container.innerHTML = `
 
+        <div class="video-card">
 
-    link.className =
-        "video-link";
+            <video
+                controls
+                preload="metadata"
+            >
 
+                <source
+                    src="${escapeAttribute(
+                        videoUrl
+                    )}"
+                >
 
-    link.textContent =
-        "Open Video Evidence";
+                Your browser does not support video playback.
 
+            </video>
 
-    container.appendChild(
-        link
-    );
+        </div>
+
+    `;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    SAVE REPORT
-===================================================== */
+========================================================= */
 
 async function saveReport(){
 
-    if(!selectedReport){
-
-        alert(
-            "No report selected."
-        );
+    if(
+        !selectedReport
+    ){
 
         return;
 
     }
 
 
-    const saveButton =
+    const button =
         document.getElementById(
             "saveButton"
+        );
+
+
+    const currentStatus =
+        normalizeStatus(
+            selectedReport.status
         );
 
 
@@ -3621,179 +5899,238 @@ async function saveReport(){
         ).value;
 
 
-    /*
-     * IMPORTANT BACKEND MAPPING
-     *
-     * Code.gs updateReport() expects:
-     *
-     * reportNumber
-     * targetDate
-     * eshAction
-     * rootCause
-     * correctiveAction
-     * responsiblePerson
-     * verification
-     * closedBy
-     * remarks
-     * completionDate
-     */
+    /* =====================================================
+       ROLE VALIDATION
+    ===================================================== */
 
-    const payload = {
+    if(
+        isHOD()
+    ){
+
+        if(
+            currentStatus === "Closed"
+        ){
+
+            showToast(
+                "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus !== "Verification"
+            &&
+            selectedStatus !== currentStatus
+        ){
+
+            showToast(
+                "HOD can only verify the solution."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        if(
+            currentStatus === "Closed"
+        ){
+
+            showToast(
+                "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus !== "Verification"
+            &&
+            selectedStatus !== currentStatus
+        ){
+
+            showToast(
+                "Maintenance can update corrective action and move the case to Verification."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        isESH()
+    ){
+
+        /* Full control */
+
+    }
+
+
+    const data = {
 
         action:
             "updateReport",
 
-
-        /*
-         * CRITICAL FIX
-         */
-
-        reportNumber:
-            selectedReport.reportNumber,
-
-
-        location:
-            selectedReport.location || "",
-
-
-        department:
-            selectedReport.department || "",
-
-
-        hazardCategory:
-            selectedReport.hazardCategory || "",
-
-
-        whatHappened:
-            selectedReport.whatHappened || "",
-
-
-        reporterName:
-            selectedReport.reporterName || "",
-
-
-        photos:
-            selectedReport.photos || "",
-
+        rowNumber:
+            selectedReport.rowNumber,
 
         status:
-            selectedStatus || "New",
+            selectedStatus,
 
-
-        /*
-         * CRITICAL FIX
-         * Dashboard field:
-         * investigationFindings
-         *
-         * Backend field:
-         * eshAction
-         */
-
-        eshAction:
+        investigationFindings:
             document.getElementById(
                 "investigationFindings"
             ).value,
-
 
         rootCause:
             document.getElementById(
                 "rootCause"
             ).value,
 
-
         correctiveAction:
             document.getElementById(
                 "correctiveAction"
             ).value,
 
-
-        /*
-         * CRITICAL FIX
-         */
-
-        responsiblePerson:
+        personResponsible:
             document.getElementById(
                 "personResponsible"
             ).value,
 
-
-        /*
-         * CRITICAL FIX
-         *
-         * Backend expects targetDate,
-         * NOT dueDate.
-         */
-
-        targetDate:
+        dueDate:
             document.getElementById(
                 "dueDate"
             ).value,
 
-
-        /*
-         * Backend expects verification
-         */
-
-        verification:
+        verificationRemarks:
             document.getElementById(
                 "verificationRemarks"
             ).value,
 
-
-        /*
-         * Backend expects closedBy
-         */
-
-        closedBy:
+        eshInvestigator:
             document.getElementById(
-                "closedBy"
+                "eshInvestigator"
             ).value,
 
+        eshRemarks:
+            document.getElementById(
+                "eshRemarks"
+            ).value,
 
-        /*
-         * Backend accepts completionDate
-         */
-
-        completionDate:
+        closedDate:
             document.getElementById(
                 "closedDate"
-            ).value,
-
-
-        /*
-         * Backend expects remarks
-         */
-
-        remarks:
-            document.getElementById(
-                "caseRemarks"
-            ).value,
-
-
-        video:
-            selectedReport.video || ""
+            ).value
 
     };
 
 
-    /*
-     * ESH INVESTIGATOR
-     *
-     * Your current Code.gs does not have a separate
-     * ESH Investigator column.
-     *
-     * Therefore we use closedBy as the available
-     * personnel field.
-     *
-     * If you want a separate ESH Investigator column,
-     * we can add a new Google Sheet column later.
-     */
+    /* =====================================================
+       HOD PROTECTION
+    ===================================================== */
+
+    if(
+        isHOD()
+    ){
+
+        data.status =
+            selectedStatus;
 
 
-    saveButton.disabled =
-        true;
+        data.investigationFindings =
+            selectedReport.investigationFindings ||
+            "";
 
-    saveButton.textContent =
+        data.rootCause =
+            selectedReport.rootCause ||
+            "";
+
+        data.correctiveAction =
+            selectedReport.correctiveAction ||
+            "";
+
+        data.personResponsible =
+            selectedReport.personResponsible ||
+            "";
+
+        data.dueDate =
+            formatDateInput(
+                selectedReport.dueDate
+            );
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator ||
+            "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks ||
+            "";
+
+        data.closedDate =
+            formatDateInput(
+                selectedReport.closedDate
+            );
+
+    }
+
+
+    /* =====================================================
+       MAINTENANCE PROTECTION
+    ===================================================== */
+
+    if(
+        isMaintenance()
+    ){
+
+        data.status =
+            selectedStatus;
+
+
+        data.investigationFindings =
+            selectedReport.investigationFindings ||
+            "";
+
+        data.rootCause =
+            selectedReport.rootCause ||
+            "";
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator ||
+            "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks ||
+            "";
+
+        data.closedDate =
+            formatDateInput(
+                selectedReport.closedDate
+            );
+
+    }
+
+
+    button.disabled = true;
+
+    const originalText =
+        button.textContent;
+
+
+    button.textContent =
         "Saving...";
 
 
@@ -3804,16 +6141,19 @@ async function saveReport(){
                 GOOGLE_SCRIPT_URL,
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
+
                         "Content-Type":
                             "text/plain;charset=utf-8"
+
                     },
 
                     body:
                         JSON.stringify(
-                            payload
+                            data
                         )
 
                 }
@@ -3825,108 +6165,74 @@ async function saveReport(){
 
 
         if(
-            result.status !==
-            "success"
+            result.status ===
+                "success"
+            ||
+            result.success === true
         ){
+
+            closeModal();
+
+
+            showToast(
+                isHOD()
+                ?
+                "Solution verification updated successfully."
+                :
+                isMaintenance()
+                ?
+                "Repair update saved successfully."
+                :
+                "Case updated successfully."
+            );
+
+
+            await loadReports();
+
+        }
+
+        else{
 
             throw new Error(
                 result.message ||
-                "Unable to update report."
+                "Unable to update case."
             );
 
         }
 
-
-        /*
-         * Update local report immediately
-         */
-
-        selectedReport.status =
-            payload.status;
-
-
-        selectedReport.eshAction =
-            payload.eshAction;
-
-
-        selectedReport.rootCause =
-            payload.rootCause;
-
-
-        selectedReport.correctiveAction =
-            payload.correctiveAction;
-
-
-        selectedReport.responsiblePerson =
-            payload.responsiblePerson;
-
-
-        selectedReport.dueDate =
-            payload.targetDate;
-
-
-        selectedReport.verification =
-            payload.verification;
-
-
-        selectedReport.closedBy =
-            payload.closedBy;
-
-
-        selectedReport.completionDate =
-            payload.completionDate;
-
-
-        selectedReport.remarks =
-            payload.remarks;
-
-
-        alert(
-            "Report updated successfully."
-        );
-
-
-        closeModal();
-
-
-        updateDashboard();
-
-        renderReports();
-
-        renderAnalytics();
-
-
     }
+
     catch(error){
 
         console.error(
-            "Save report error:",
             error
         );
 
 
-        alert(
-            "Unable to save report.\n\n" +
+        showToast(
+            "Error: " +
             error.message
         );
 
     }
+
     finally{
 
-        saveButton.disabled =
+        button.disabled =
             false;
 
-        saveButton.textContent =
-            "Save Changes";
+
+        button.textContent =
+            originalText;
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CLOSE MODAL
-===================================================== */
+========================================================= */
 
 function closeModal(){
 
@@ -3934,7 +6240,8 @@ function closeModal(){
         .getElementById(
             "caseModal"
         )
-        .classList.remove(
+        .classList
+        .remove(
             "show"
         );
 
@@ -3945,212 +6252,533 @@ function closeModal(){
 }
 
 
-/* =====================================================
-   RESET FILTERS
-===================================================== */
+document
+    .getElementById(
+        "caseModal"
+    )
+    .addEventListener(
+        "click",
+        function(event){
 
-function resetFilters(){
+            if(
+                event.target ===
+                this
+            ){
 
-    document.getElementById(
-        "searchInput"
-    ).value = "";
+                closeModal();
 
-
-    document.getElementById(
-        "statusFilter"
-    ).value = "";
-
-
-    document.getElementById(
-        "categoryFilter"
-    ).value = "";
-
-
-    renderReports();
-
-}
-
-
-/* =====================================================
-   ANALYTICS
-===================================================== */
-
-function renderAnalytics(){
-
-    const visible =
-        getVisibleReports();
-
-
-    renderCountBars(
-        "statusAnalytics",
-        groupCount(
-            visible,
-            function(report){
-                return normalizeStatus(
-                    report.status
-                );
             }
-        )
-    );
-
-
-    renderCountBars(
-        "categoryAnalytics",
-        groupCount(
-            visible,
-            function(report){
-                return report.hazardCategory ||
-                    "Unknown";
-            }
-        )
-    );
-
-
-    renderCountBars(
-        "departmentAnalytics",
-        groupCount(
-            visible,
-            function(report){
-                return report.department ||
-                    "Unknown";
-            }
-        )
-    );
-
-}
-
-
-/* =====================================================
-   GROUP COUNT
-===================================================== */
-
-function groupCount(
-    list,
-    callback
-){
-
-    const result = {};
-
-
-    list.forEach(
-        function(item){
-
-            const key =
-                callback(item);
-
-
-            result[key] =
-                (result[key] || 0) + 1;
 
         }
     );
 
 
-    return result;
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+function renderAnalytics(){
+
+    renderTrend();
+
+    renderCategory();
+
+    renderDepartment();
 
 }
 
 
-/* =====================================================
-   COUNT BARS
-===================================================== */
+/* =========================================================
+   TREND
+========================================================= */
 
-function renderCountBars(
-    elementId,
-    data
-){
+function renderTrend(){
 
-    const container =
+    const canvas =
         document.getElementById(
-            elementId
+            "trendChart"
         );
 
 
-    const entries =
-        Object.entries(data)
-        .sort(
-            function(a,b){
-                return b[1] - a[1];
-            }
-        );
-
-
-    if(!entries.length){
-
-        container.innerHTML =
-            '<div style="color:#6b7280;font-size:12px">No data.</div>';
+    if(!canvas){
 
         return;
 
     }
 
 
-    const max =
-        Math.max(
-            ...entries.map(
-                function(item){
-                    return item[1];
+    const visible =
+        getVisibleReports();
+
+
+    const now =
+        new Date();
+
+
+    const labels = [];
+
+    const values = [];
+
+
+    for(
+        let i=5;
+        i>=0;
+        i--
+    ){
+
+        const date =
+            new Date(
+                now.getFullYear(),
+                now.getMonth()-i,
+                1
+            );
+
+
+        labels.push(
+            date.toLocaleDateString(
+                "en-MY",
+                {
+                    month:"short",
+                    year:"numeric"
                 }
             )
         );
 
 
-    container.innerHTML =
-        entries.map(
-            function(item){
+        values.push(
 
-                const percentage =
-                    max
-                    ? (item[1] / max) * 100
-                    : 0;
+            visible.filter(
+                function(report){
+
+                    const d =
+                        parseDate(
+                            report.dateTime ||
+                            report.submittedAt
+                        );
 
 
-                return `
+                    return (
 
-                    <div class="bar-row">
+                        d &&
 
-                        <div class="bar-label">
+                        d.getFullYear() ===
+                            date.getFullYear()
 
-                            <span>
-                                ${escapeHtml(
-                                    item[0]
-                                )}
-                            </span>
+                        &&
 
-                            <strong>
-                                ${item[1]}
-                            </strong>
+                        d.getMonth() ===
+                            date.getMonth()
 
-                        </div>
+                    );
 
-                        <div class="bar">
+                }
+            ).length
 
-                            <div
-                                class="bar-fill"
-                                style="width:${percentage}%"
-                            ></div>
+        );
 
-                        </div>
+    }
 
-                    </div>
 
-                `;
+    if(
+        trendChart
+    ){
+
+        trendChart.destroy();
+
+    }
+
+
+    trendChart =
+        new Chart(
+            canvas,
+            {
+
+                type:
+                    "line",
+
+                data:{
+
+                    labels:
+                        labels,
+
+                    datasets:[
+
+                        {
+
+                            label:
+                                "Reports",
+
+                            data:
+                                values,
+
+                            tension:
+                                .35,
+
+                            fill:
+                                true
+
+                        }
+
+                    ]
+
+                },
+
+                options:{
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins:{
+
+                        legend:{
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+
+                            ticks:{
+
+                                color:
+                                    "#8fa4ba"
+
+                            },
+
+                            grid:{
+
+                                color:
+                                    "rgba(255,255,255,.05)"
+
+                            }
+
+                        },
+
+                        y:{
+
+                            beginAtZero:
+                                true,
+
+                            ticks:{
+
+                                color:
+                                    "#8fa4ba",
+
+                                precision:
+                                    0
+
+                            },
+
+                            grid:{
+
+                                color:
+                                    "rgba(255,255,255,.05)"
+
+                            }
+
+                        }
+
+                    }
+
+                }
 
             }
-        ).join("");
+        );
 
 }
 
 
-/* =====================================================
-   STATUS NORMALIZATION
-===================================================== */
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function renderCategory(){
+
+    const canvas =
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    if(!canvas){
+
+        return;
+
+    }
+
+
+    const map = {};
+
+
+    getVisibleReports().forEach(
+        function(report){
+
+            const category =
+                report.hazardCategory ||
+                "Other";
+
+
+            map[category] =
+                (
+                    map[category] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    if(
+        categoryChart
+    ){
+
+        categoryChart.destroy();
+
+    }
+
+
+    categoryChart =
+        new Chart(
+            canvas,
+            {
+
+                type:
+                    "doughnut",
+
+                data:{
+
+                    labels:
+                        Object.keys(
+                            map
+                        ),
+
+                    datasets:[
+
+                        {
+
+                            data:
+                                Object.values(
+                                    map
+                                )
+
+                        }
+
+                    ]
+
+                },
+
+                options:{
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins:{
+
+                        legend:{
+
+                            position:
+                                "bottom",
+
+                            labels:{
+
+                                color:
+                                    "#a9bbce",
+
+                                boxWidth:
+                                    12,
+
+                                padding:
+                                    12
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   DEPARTMENT
+========================================================= */
+
+function renderDepartment(){
+
+    const canvas =
+        document.getElementById(
+            "departmentChart"
+        );
+
+
+    if(!canvas){
+
+        return;
+
+    }
+
+
+    const map = {};
+
+
+    getVisibleReports().forEach(
+        function(report){
+
+            const department =
+                report.department ||
+                "Unknown";
+
+
+            map[department] =
+                (
+                    map[department] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    if(
+        departmentChart
+    ){
+
+        departmentChart.destroy();
+
+    }
+
+
+    departmentChart =
+        new Chart(
+            canvas,
+            {
+
+                type:
+                    "bar",
+
+                data:{
+
+                    labels:
+                        Object.keys(
+                            map
+                        ),
+
+                    datasets:[
+
+                        {
+
+                            label:
+                                "Reports",
+
+                            data:
+                                Object.values(
+                                    map
+                                )
+
+                        }
+
+                    ]
+
+                },
+
+                options:{
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins:{
+
+                        legend:{
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales:{
+
+                        x:{
+
+                            ticks:{
+
+                                color:
+                                    "#8fa4ba"
+
+                            },
+
+                            grid:{
+
+                                display:
+                                    false
+
+                            }
+
+                        },
+
+                        y:{
+
+                            beginAtZero:
+                                true,
+
+                            ticks:{
+
+                                color:
+                                    "#8fa4ba",
+
+                                precision:
+                                    0
+
+                            },
+
+                            grid:{
+
+                                color:
+                                    "rgba(255,255,255,.05)"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 function normalizeStatus(
     status
 ){
 
-    const text =
+    const value =
         String(
             status || ""
         )
@@ -4159,7 +6787,8 @@ function normalizeStatus(
 
 
     if(
-        text === "new"
+        value === "new" ||
+        value === "submitted"
     ){
 
         return "New";
@@ -4168,8 +6797,9 @@ function normalizeStatus(
 
 
     if(
-        text === "investigation" ||
-        text === "under investigation"
+        value.includes(
+            "investigation"
+        )
     ){
 
         return "Investigation";
@@ -4178,8 +6808,9 @@ function normalizeStatus(
 
 
     if(
-        text === "corrective action" ||
-        text === "corrective"
+        value.includes(
+            "corrective"
+        )
     ){
 
         return "Corrective Action";
@@ -4188,8 +6819,9 @@ function normalizeStatus(
 
 
     if(
-        text === "verification" ||
-        text === "verify"
+        value.includes(
+            "verification"
+        )
     ){
 
         return "Verification";
@@ -4198,8 +6830,8 @@ function normalizeStatus(
 
 
     if(
-        text === "closed" ||
-        text === "close"
+        value === "closed" ||
+        value === "close"
     ){
 
         return "Closed";
@@ -4207,51 +6839,62 @@ function normalizeStatus(
     }
 
 
-    return String(
-        status || "New"
-    );
+    return status || "New";
 
 }
 
 
-/* =====================================================
+/* =========================================================
    STATUS CLASS
-===================================================== */
+========================================================= */
 
 function getStatusClass(
     status
 ){
 
     switch(
-        normalizeStatus(status)
+        normalizeStatus(
+            status
+        )
     ){
 
         case "New":
-            return "status-new";
+
+            return "badge-new";
+
 
         case "Investigation":
-            return "status-investigation";
+
+            return "badge-investigation";
+
 
         case "Corrective Action":
-            return "status-corrective";
+
+            return "badge-corrective";
+
 
         case "Verification":
-            return "status-verification";
+
+            return "badge-verification";
+
 
         case "Closed":
-            return "status-closed";
+
+            return "badge-closed";
+
 
         default:
-            return "status-new";
+
+            return "badge-new";
 
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    DATE PARSER
-===================================================== */
+========================================================= */
 
 function parseDate(
     value
@@ -4271,8 +6914,10 @@ function parseDate(
         return isNaN(
             value.getTime()
         )
-        ? null
-        : new Date(value.getTime());
+        ?
+        null
+        :
+        value;
 
     }
 
@@ -4280,8 +6925,7 @@ function parseDate(
     const text =
         String(
             value
-        )
-        .trim();
+        ).trim();
 
 
     if(!text){
@@ -4291,140 +6935,19 @@ function parseDate(
     }
 
 
-    /*
-     * YYYY-MM-DD
-     */
-
-    let match =
-        text.match(
-            /^(\d{4})-(\d{2})-(\d{2})$/
+    const date =
+        new Date(
+            text
         );
-
-
-    if(match){
-
-        const year =
-            Number(match[1]);
-
-        const month =
-            Number(match[2]) - 1;
-
-        const day =
-            Number(match[3]);
-
-
-        const date =
-            new Date(
-                year,
-                month,
-                day
-            );
-
-
-        if(
-            !isNaN(
-                date.getTime()
-            )
-        ){
-
-            return date;
-
-        }
-
-    }
-
-
-    /*
-     * YYYY-MM-DD HH:mm:ss
-     */
-
-    match =
-        text.match(
-            /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/
-        );
-
-
-    if(match){
-
-        const date =
-            new Date(
-
-                Number(match[1]),
-
-                Number(match[2]) - 1,
-
-                Number(match[3]),
-
-                Number(match[4]),
-
-                Number(match[5]),
-
-                Number(match[6] || 0)
-
-            );
-
-
-        if(
-            !isNaN(
-                date.getTime()
-            )
-        ){
-
-            return date;
-
-        }
-
-    }
-
-
-    /*
-     * DD/MM/YYYY
-     */
-
-    match =
-        text.match(
-            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-        );
-
-
-    if(match){
-
-        const date =
-            new Date(
-
-                Number(match[3]),
-
-                Number(match[2]) - 1,
-
-                Number(match[1])
-
-            );
-
-
-        if(
-            !isNaN(
-                date.getTime()
-            )
-        ){
-
-            return date;
-
-        }
-
-    }
-
-
-    const parsed =
-        new Date(text);
 
 
     if(
         !isNaN(
-            parsed.getTime()
+            date.getTime()
         )
     ){
 
-        return parsed;
+        return date;
 
     }
 
@@ -4434,16 +6957,18 @@ function parseDate(
 }
 
 
-/* =====================================================
+/* =========================================================
    DATE INPUT
-===================================================== */
+========================================================= */
 
 function formatDateInput(
     value
 ){
 
     const date =
-        parseDate(value);
+        parseDate(
+            value
+        );
 
 
     if(!date){
@@ -4458,64 +6983,67 @@ function formatDateInput(
         date.getFullYear(),
 
         String(
-            date.getMonth() + 1
-        ).padStart(2,"0"),
+            date.getMonth()+1
+        ).padStart(
+            2,
+            "0"
+        ),
 
         String(
             date.getDate()
-        ).padStart(2,"0")
+        ).padStart(
+            2,
+            "0"
+        )
 
     ].join("-");
 
 }
 
 
-/* =====================================================
+/* =========================================================
    DISPLAY DATE
-===================================================== */
+========================================================= */
 
-function displayDate(
+function formatDisplayDate(
     value
 ){
 
-    if(!value){
-
-        return "";
-
-    }
-
-
     const date =
-        parseDate(value);
+        parseDate(
+            value
+        );
 
 
     if(!date){
 
-        return String(value);
+        return "-";
 
     }
 
 
-    return [
+    return date.toLocaleDateString(
+        "en-MY",
+        {
 
-        String(
-            date.getDate()
-        ).padStart(2,"0"),
+            day:
+                "2-digit",
 
-        String(
-            date.getMonth() + 1
-        ).padStart(2,"0"),
+            month:
+                "short",
 
-        date.getFullYear()
+            year:
+                "numeric"
 
-    ].join("/");
+        }
+    );
 
 }
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+/* =========================================================
+   SECURITY
+========================================================= */
 
 function escapeHtml(
     value
@@ -4548,44 +7076,117 @@ function escapeHtml(
 }
 
 
-/* =====================================================
-   SET TEXT
-===================================================== */
-
-function setText(
-    id,
+function escapeAttribute(
     value
 ){
 
-    const element =
-        document.getElementById(id);
-
-
-    if(element){
-
-        element.textContent =
-            value;
-
-    }
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    );
 
 }
 
 
-/* =====================================================
-   CLOSE MODAL WHEN CLICK OUTSIDE
-===================================================== */
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer = null;
+
+
+function showToast(
+    message
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function(){
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+/* =========================================================
+   STATUS CHANGE
+========================================================= */
 
 document
-    .getElementById("caseModal")
+    .getElementById(
+        "caseStatus"
+    )
     .addEventListener(
-        "click",
-        function(event){
+        "change",
+        function(){
+
+            updateTimeline(
+                this.value
+            );
+
 
             if(
-                event.target === this
+                selectedReport
             ){
 
-                closeModal();
+                updateCaseOverdue({
+
+                    ...selectedReport,
+
+                    status:
+                        this.value,
+
+                    dueDate:
+                        document.getElementById(
+                            "dueDate"
+                        ).value
+
+                });
 
             }
 
@@ -4593,9 +7194,66 @@ document
     );
 
 
-/* =====================================================
+/* =========================================================
+   DUE DATE CHANGE
+========================================================= */
+
+document
+    .getElementById(
+        "dueDate"
+    )
+    .addEventListener(
+        "change",
+        function(){
+
+            if(
+                selectedReport
+            ){
+
+                updateCaseOverdue({
+
+                    ...selectedReport,
+
+                    status:
+                        document.getElementById(
+                            "caseStatus"
+                        ).value,
+
+                    dueDate:
+                        this.value
+
+                });
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key ===
+            "Escape"
+        ){
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    AUTO REFRESH
-===================================================== */
+========================================================= */
 
 setInterval(
     function(){
@@ -4609,4 +7267,5 @@ setInterval(
 </script>
 
 </body>
+
 </html>
