@@ -3300,37 +3300,15 @@ function getVisibleReports(){
     }
 
 
+    /*
+       HOD can view ALL reports from ALL departments.
+    */
+
     if(
         isHOD()
     ){
 
-        const currentDepartment =
-            String(
-                CURRENT_DEPARTMENT
-            )
-            .trim()
-            .toLowerCase();
-
-
-        return reports.filter(
-            function(report){
-
-                const department =
-                    String(
-                        report.department ||
-                        ""
-                    )
-                    .trim()
-                    .toLowerCase();
-
-
-                return (
-                    department ===
-                    currentDepartment
-                );
-
-            }
-        );
+        return reports;
 
     }
 
@@ -5807,6 +5785,26 @@ async function saveReport(){
 
             showToast(
                 "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        /*
+           HOD is NOT allowed to close a case.
+           Only ESH can close the case.
+        */
+
+        if(
+            selectedStatus === "Closed"
+            &&
+            currentStatus !== "Closed"
+        ){
+
+            showToast(
+                "HOD cannot close the report. ESH must close the case."
             );
 
             return;
