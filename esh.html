@@ -5,19 +5,14 @@
 
 <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>ESH Management System</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
 
 *{
     box-sizing:border-box;
@@ -25,23 +20,19 @@
     padding:0;
 }
 
-
-html{
-    scroll-behavior:smooth;
-}
-
-
 body{
+
     font-family:
-        Inter,
         Arial,
         Helvetica,
         sans-serif;
 
-    background:#07111f;
-    color:#e8f0f8;
+    background:#0b1220;
+
+    color:#e8eef6;
 
     min-height:100vh;
+
 }
 
 
@@ -50,50 +41,74 @@ body{
 ========================================================= */
 
 #loginGuard{
+
     position:fixed;
+
     inset:0;
 
-    background:#07111f;
+    background:#0b1220;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
 
     z-index:99999;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
 }
-
 
 #loginGuard.hidden{
-    display:none;
-}
 
+    display:none;
+
+}
 
 .login-loading{
+
     text-align:center;
-    color:#9db0c4;
+
+    color:#9fb2c8;
+
 }
 
+.login-loading .loader{
 
-.login-loading-title{
-    font-size:18px;
-    font-weight:700;
-    color:#ffffff;
-    margin-bottom:8px;
+    width:42px;
+
+    height:42px;
+
+    border:4px solid rgba(255,255,255,.12);
+
+    border-top-color:#42d3ff;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin:0 auto 15px;
+
 }
 
+@keyframes spin{
 
-.login-loading-text{
-    font-size:13px;
+    to{
+        transform:rotate(360deg);
+    }
+
 }
 
 
 /* =========================================================
-   APP
+   LAYOUT
 ========================================================= */
 
 .app{
-    min-height:100vh;
+
     display:flex;
+
+    min-height:100vh;
+
 }
 
 
@@ -103,192 +118,204 @@ body{
 
 .sidebar{
 
-    width:250px;
+    width:245px;
 
-    background:
-        linear-gradient(
-            180deg,
-            #0b1929 0%,
-            #07111f 100%
-        );
+    background:#101a2b;
 
-    border-right:
-        1px solid
-        rgba(255,255,255,.07);
+    border-right:1px solid rgba(255,255,255,.07);
+
+    padding:22px 16px;
 
     position:fixed;
 
-    left:0;
     top:0;
+
+    left:0;
+
     bottom:0;
 
-    z-index:100;
-
-    padding:24px 16px;
-
     overflow-y:auto;
-}
 
+}
 
 .brand{
-    padding:
-        8px 12px
-        24px 12px;
 
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.06);
+    display:flex;
 
-    margin-bottom:20px;
+    align-items:center;
+
+    gap:12px;
+
+    padding:5px 8px 25px;
+
 }
 
+.brand-logo{
 
-.brand-small{
-    font-size:10px;
+    width:42px;
 
-    letter-spacing:2px;
+    height:42px;
 
-    color:#6f879e;
+    border-radius:10px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#17263b;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    font-size:20px;
+
+}
+
+.brand-text{
 
     font-weight:700;
 
-    margin-bottom:6px;
+    font-size:17px;
+
 }
-
-
-.brand-name{
-    font-size:18px;
-
-    font-weight:800;
-
-    color:#ffffff;
-
-    line-height:1.25;
-}
-
 
 .brand-sub{
+
     font-size:11px;
 
-    color:#7990a7;
+    color:#7f94aa;
 
-    margin-top:5px;
+    margin-top:3px;
+
 }
 
+.nav-title{
 
-.nav{
-    display:flex;
+    font-size:10px;
 
-    flex-direction:column;
+    color:#657b92;
 
-    gap:5px;
+    letter-spacing:1.4px;
+
+    margin:20px 10px 8px;
+
+    text-transform:uppercase;
+
 }
-
 
 .nav button{
 
     width:100%;
 
-    border:none;
+    border:0;
 
     background:transparent;
 
-    color:#8ea3b8;
-
-    padding:
-        12px
-        13px;
-
-    border-radius:9px;
+    color:#9cafc3;
 
     text-align:left;
 
-    cursor:pointer;
-
-    font-size:13px;
-
-    font-weight:600;
-
-    transition:.2s;
-}
-
-
-.nav button:hover{
-
-    background:
-        rgba(255,255,255,.05);
-
-    color:#ffffff;
-}
-
-
-.nav button.active{
-
-    background:
-        rgba(48,123,255,.13);
-
-    color:#67a5ff;
-
-    border:
-        1px solid
-        rgba(65,137,255,.18);
-}
-
-
-.sidebar-footer{
-
-    margin-top:30px;
-
-    padding:
-        16px 12px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.06);
-}
-
-
-.sidebar-footer-text{
-
-    font-size:10px;
-
-    color:#60758a;
-
-    line-height:1.6;
-}
-
-
-.logout-btn{
-
-    width:100%;
-
-    margin-top:12px;
-
-    padding:10px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        rgba(255,255,255,.03);
-
-    color:#91a5b9;
+    padding:11px 12px;
 
     border-radius:8px;
 
     cursor:pointer;
 
-    font-size:12px;
+    margin-bottom:3px;
+
+    font-size:13px;
+
 }
 
+.nav button:hover{
+
+    background:#17263b;
+
+    color:#fff;
+
+}
+
+.nav button.active{
+
+    background:#1c344b;
+
+    color:#fff;
+
+}
+
+.sidebar-footer{
+
+    position:absolute;
+
+    left:16px;
+
+    right:16px;
+
+    bottom:20px;
+
+}
+
+.user-box{
+
+    background:#121f31;
+
+    border:1px solid rgba(255,255,255,.07);
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:8px;
+
+}
+
+.user-role{
+
+    font-size:11px;
+
+    color:#42d3ff;
+
+    font-weight:700;
+
+    margin-bottom:4px;
+
+}
+
+.user-name{
+
+    font-size:12px;
+
+    color:#aabbd0;
+
+    word-break:break-word;
+
+}
+
+.logout-btn{
+
+    width:100%;
+
+    padding:10px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    background:#172334;
+
+    color:#b9c8d8;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
 
 .logout-btn:hover{
 
-    background:
-        rgba(255,255,255,.06);
+    background:#22334a;
 
-    color:#ffffff;
+    color:#fff;
+
 }
 
 
@@ -298,269 +325,123 @@ body{
 
 .main{
 
-    margin-left:250px;
+    margin-left:245px;
 
-    width:
-        calc(100% - 250px);
+    width:calc(100% - 245px);
 
-    min-height:100vh;
+    padding:28px;
+
 }
-
-
-/* =========================================================
-   TOPBAR
-========================================================= */
-
-.topbar{
-
-    height:68px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:
-        0 32px;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.06);
-
-    background:
-        rgba(7,17,31,.88);
-
-    backdrop-filter:
-        blur(12px);
-
-    position:sticky;
-
-    top:0;
-
-    z-index:50;
-}
-
-
-.topbar-title{
-
-    font-size:12px;
-
-    letter-spacing:1.5px;
-
-    color:#71869b;
-
-    font-weight:700;
-}
-
-
-.topbar-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-}
-
-
-.status-dot{
-
-    width:8px;
-
-    height:8px;
-
-    border-radius:50%;
-
-    background:#39d98a;
-
-    box-shadow:
-        0 0 10px
-        rgba(57,217,138,.6);
-}
-
-
-.status-text{
-
-    font-size:11px;
-
-    color:#7e96ab;
-}
-
-
-/* =========================================================
-   ROLE DISPLAY
-========================================================= */
-
-.role-display{
-
-    font-size:10px;
-
-    color:#78aaff;
-
-    background:
-        rgba(72,139,255,.10);
-
-    border:
-        1px solid
-        rgba(72,139,255,.18);
-
-    padding:
-        6px 9px;
-
-    border-radius:6px;
-
-    font-weight:800;
-
-    letter-spacing:.4px;
-}
-
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.content{
-
-    padding:
-        32px;
-
-    max-width:1600px;
-
-    margin:auto;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
 
 .hero{
 
     background:
+
         linear-gradient(
             135deg,
-            #10263e 0%,
-            #0b1829 60%,
-            #091422 100%
+            #14253b,
+            #102032
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius:18px;
+    border-radius:14px;
 
-    padding:30px;
+    padding:25px;
 
-    margin-bottom:28px;
+    margin-bottom:22px;
 
-    position:relative;
-
-    overflow:hidden;
 }
 
+.hero-top{
 
-.hero:after{
+    display:flex;
 
-    content:"";
+    justify-content:space-between;
 
-    position:absolute;
+    gap:20px;
 
-    width:300px;
+    align-items:flex-start;
 
-    height:300px;
-
-    border-radius:50%;
-
-    right:-100px;
-
-    top:-140px;
-
-    background:
-        rgba(42,116,255,.09);
-
-    pointer-events:none;
 }
 
+.hero h1{
 
-.hero-label{
+    font-size:25px;
 
-    font-size:10px;
+    margin-bottom:8px;
 
-    letter-spacing:2.5px;
-
-    color:#5f91cf;
-
-    font-weight:800;
-
-    margin-bottom:9px;
 }
 
+.hero p{
 
-.hero-title{
-
-    font-size:28px;
-
-    font-weight:800;
-
-    color:#ffffff;
-
-    letter-spacing:-.5px;
-}
-
-
-.hero-subtitle{
-
-    margin-top:8px;
+    color:#8fa4ba;
 
     font-size:13px;
 
-    color:#8096ab;
+    line-height:1.6;
+
+}
+
+.role-badge{
+
+    background:#172f42;
+
+    border:1px solid rgba(66,211,255,.2);
+
+    color:#42d3ff;
+
+    padding:8px 12px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+    white-space:nowrap;
+
 }
 
 
 /* =========================================================
-   SECTIONS
+   SECTION
 ========================================================= */
 
 .section{
 
-    margin-bottom:40px;
+    margin-bottom:28px;
 
-    scroll-margin-top:90px;
+    scroll-margin-top:20px;
+
 }
 
-
-.section-header{
+.section-head{
 
     display:flex;
 
-    align-items:flex-end;
+    align-items:center;
 
     justify-content:space-between;
 
-    margin-bottom:17px;
-}
+    margin-bottom:13px;
 
+}
 
 .section-title{
 
-    font-size:18px;
+    font-size:17px;
 
-    font-weight:800;
+    font-weight:700;
 
-    color:#ffffff;
 }
-
 
 .section-subtitle{
 
-    margin-top:5px;
+    color:#71869d;
 
     font-size:12px;
 
-    color:#70859a;
+    margin-top:4px;
+
 }
 
 
@@ -573,139 +454,76 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(7, minmax(0,1fr));
+        repeat(7, minmax(120px,1fr));
 
-    gap:13px;
+    gap:12px;
 
-    margin-bottom:30px;
 }
-
 
 .kpi{
 
-    min-height:128px;
+    background:#111d2d;
 
-    position:relative;
+    border:1px solid rgba(255,255,255,.07);
 
-    padding:20px;
+    border-radius:12px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,.045),
-            rgba(255,255,255,.018)
-        );
-
-    overflow:hidden;
+    padding:16px;
 
     cursor:pointer;
 
-    transition:
-        transform .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
+    transition:.2s;
 
+}
 
 .kpi:hover{
 
-    transform:
-        translateY(-3px);
+    transform:translateY(-2px);
 
-    border-color:
-        rgba(255,255,255,.20);
+    background:#162437;
 
-    box-shadow:
-        0 10px 30px
-        rgba(0,0,0,.25);
 }
-
-
-.kpi:active{
-
-    transform:
-        translateY(-1px);
-}
-
-
-.kpi.yellow{
-
-    border-color:
-        rgba(239,190,67,.12);
-}
-
-
-.kpi.orange{
-
-    border-color:
-        rgba(255,145,73,.12);
-}
-
-
-.kpi.purple{
-
-    border-color:
-        rgba(167,119,255,.12);
-}
-
-
-.kpi.green{
-
-    border-color:
-        rgba(57,217,138,.12);
-}
-
-
-.kpi.red{
-
-    border-color:
-        rgba(255,92,107,.14);
-}
-
 
 .kpi-label{
 
-    font-size:9px;
+    color:#8196ab;
 
-    letter-spacing:1.3px;
+    font-size:11px;
 
-    color:#7890a6;
+    margin-bottom:9px;
 
-    font-weight:800;
 }
-
 
 .kpi-value{
 
-    font-size:30px;
-
-    font-weight:800;
-
-    margin-top:15px;
-
-    color:#ffffff;
-}
-
-
-.kpi-icon{
-
-    position:absolute;
-
-    right:16px;
-
-    bottom:15px;
-
     font-size:25px;
 
-    color:#49657e;
+    font-weight:700;
 
-    opacity:.7;
+}
+
+.kpi-new .kpi-value{
+    color:#49c7ff;
+}
+
+.kpi-investigation .kpi-value{
+    color:#b78cff;
+}
+
+.kpi-corrective .kpi-value{
+    color:#ffbd5a;
+}
+
+.kpi-verification .kpi-value{
+    color:#55d6a5;
+}
+
+.kpi-closed .kpi-value{
+    color:#74d99d;
+}
+
+.kpi-overdue .kpi-value{
+    color:#ff7180;
 }
 
 
@@ -721,159 +539,51 @@ body{
         repeat(3,1fr);
 
     gap:14px;
-}
 
+}
 
 .action-card{
 
-    padding:20px;
+    background:#111d2d;
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius:14px;
+    border-radius:12px;
 
-    background:
-        rgba(255,255,255,.025);
+    padding:18px;
 
     cursor:pointer;
 
-    transition:.2s;
 }
-
 
 .action-card:hover{
 
-    transform:
-        translateY(-2px);
+    background:#162437;
 
-    border-color:
-        rgba(255,255,255,.15);
-
-    background:
-        rgba(255,255,255,.04);
 }
 
+.action-label{
 
-.action-top{
+    color:#8ba0b5;
 
-    display:flex;
+    font-size:12px;
 
-    justify-content:space-between;
+    margin-bottom:8px;
 
-    align-items:center;
 }
 
+.action-value{
 
-.action-name{
-
-    font-size:13px;
+    font-size:26px;
 
     font-weight:700;
 
-    color:#dce7f1;
 }
 
-
-.action-count{
-
-    font-size:32px;
-
-    font-weight:800;
-
-    margin-top:15px;
-
-    color:#ffffff;
-}
-
-
-.action-desc{
-
-    margin-top:5px;
-
-    color:#70869b;
-
-    font-size:11px;
-}
-
-
-/* =========================================================
-   BADGES
-========================================================= */
-
-.badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:
-        5px 8px;
-
-    border-radius:6px;
-
-    font-size:9px;
-
-    font-weight:800;
-
-    letter-spacing:.5px;
-}
-
-
-.badge-new{
-
-    color:#72aaff;
-
-    background:
-        rgba(72,139,255,.12);
-}
-
-
-.badge-investigation{
-
-    color:#f3cc55;
-
-    background:
-        rgba(243,204,85,.12);
-}
-
-
-.badge-corrective{
-
-    color:#ff9b5e;
-
-    background:
-        rgba(255,155,94,.12);
-}
-
-
-.badge-verification{
-
-    color:#bc91ff;
-
-    background:
-        rgba(188,145,255,.12);
-}
-
-
-.badge-closed{
-
-    color:#4be39a;
-
-    background:
-        rgba(75,227,154,.12);
-}
-
-
-.badge-overdue{
+.action-card.overdue .action-value{
 
     color:#ff7180;
 
-    background:
-        rgba(255,113,128,.12);
 }
 
 
@@ -886,26 +596,25 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        2fr 1fr 1fr;
 
-    gap:15px;
+    gap:14px;
+
 }
-
 
 .chart-card{
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+    background:#111d2d;
 
-    background:
-        rgba(255,255,255,.025);
+    border:1px solid rgba(255,255,255,.07);
 
-    border-radius:14px;
+    border-radius:12px;
 
-    padding:20px;
+    padding:17px;
+
+    min-height:280px;
+
 }
-
 
 .chart-title{
 
@@ -913,161 +622,87 @@ body{
 
     font-weight:700;
 
-    color:#e5edf5;
+    margin-bottom:12px;
+
 }
-
-
-.chart-subtitle{
-
-    font-size:11px;
-
-    color:#6f8498;
-
-    margin-top:4px;
-}
-
 
 .chart-wrap{
 
-    height:260px;
+    height:225px;
 
-    margin-top:18px;
+    position:relative;
+
 }
 
 
 /* =========================================================
-   TOOLBAR
+   REPORT TOOLBAR
 ========================================================= */
 
 .toolbar{
 
-    display:flex;
+    display:grid;
 
-    align-items:center;
+    grid-template-columns:
+        2fr 1fr 1fr auto auto auto;
 
-    gap:10px;
+    gap:8px;
 
-    flex-wrap:wrap;
+    margin-bottom:14px;
 
-    margin-bottom:18px;
 }
 
-
-.search{
-
-    flex:1;
-
-    min-width:230px;
-}
-
-
-.search input,
+.toolbar input,
 .toolbar select{
 
     width:100%;
 
-    height:40px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.08);
-
-    background:
-        #0b1929;
-
-    color:#dbe7f1;
+    padding:10px 11px;
 
     border-radius:8px;
 
-    padding:
-        0 12px;
+    border:1px solid rgba(255,255,255,.09);
+
+    background:#111d2d;
+
+    color:#dce7f2;
 
     outline:none;
 
-    font-size:12px;
 }
 
-
-.toolbar select{
-
-    width:auto;
-
-    min-width:150px;
-}
-
-
-.search input:focus,
+.toolbar input:focus,
 .toolbar select:focus{
 
-    border-color:
-        rgba(80,145,255,.5);
+    border-color:#42d3ff;
+
 }
 
+.toolbar button{
 
-.btn{
-
-    height:40px;
-
-    padding:
-        0 14px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.09);
-
-    background:
-        rgba(255,255,255,.035);
-
-    color:#9db0c2;
+    padding:10px 13px;
 
     border-radius:8px;
 
+    border:1px solid rgba(255,255,255,.09);
+
+    background:#18283b;
+
+    color:#c5d2df;
+
     cursor:pointer;
 
-    font-size:12px;
-
-    font-weight:700;
 }
 
+.toolbar button:hover{
 
-.btn:hover{
+    background:#23364d;
 
-    background:
-        rgba(255,255,255,.07);
-
-    color:#ffffff;
-}
-
-
-.btn-primary{
-
-    background:
-        #256ee8;
-
-    border-color:
-        #256ee8;
-
-    color:#ffffff;
-}
-
-
-.btn-primary:hover{
-
-    background:
-        #347cf0;
-}
-
-
-.btn:disabled{
-
-    opacity:.5;
-
-    cursor:not-allowed;
 }
 
 
 /* =========================================================
-   REPORTS
+   REPORT GRID
 ========================================================= */
 
 .reports-grid{
@@ -1075,44 +710,35 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(3, minmax(250px,1fr));
 
     gap:14px;
-}
 
+}
 
 .report-card{
 
-    border:
-        1px solid
-        rgba(255,255,255,.07);
+    background:#111d2d;
 
-    border-radius:14px;
+    border:1px solid rgba(255,255,255,.07);
 
-    background:
-        rgba(255,255,255,.025);
+    border-radius:12px;
 
     overflow:hidden;
 
     cursor:pointer;
 
     transition:.2s;
-}
 
+}
 
 .report-card:hover{
 
-    transform:
-        translateY(-2px);
+    transform:translateY(-2px);
 
-    border-color:
-        rgba(86,148,255,.25);
+    border-color:rgba(66,211,255,.25);
 
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.18);
 }
-
 
 .report-head{
 
@@ -1122,58 +748,97 @@ body{
 
     align-items:center;
 
-    padding:
-        15px 16px;
+    padding:14px;
 
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.055);
+    border-bottom:1px solid rgba(255,255,255,.06);
+
 }
-
 
 .report-number{
 
-    font-size:11px;
-
-    font-weight:800;
-
-    color:#78aaff;
-
-    letter-spacing:.4px;
-}
-
-
-.report-body{
-
-    padding:16px;
-}
-
-
-.report-title{
-
-    font-size:13px;
+    color:#42d3ff;
 
     font-weight:700;
 
-    color:#e5edf5;
+    font-size:12px;
 
-    line-height:1.45;
-
-    min-height:38px;
 }
 
+.badge{
+
+    font-size:10px;
+
+    padding:5px 8px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+}
+
+.badge-new{
+
+    background:#17374b;
+
+    color:#51ccff;
+
+}
+
+.badge-investigation{
+
+    background:#302344;
+
+    color:#c39cff;
+
+}
+
+.badge-corrective{
+
+    background:#44331c;
+
+    color:#ffc363;
+
+}
+
+.badge-verification{
+
+    background:#163b32;
+
+    color:#67ddb2;
+
+}
+
+.badge-closed{
+
+    background:#17392b;
+
+    color:#7be5a5;
+
+}
+
+.report-body{
+
+    padding:15px;
+
+}
+
+.report-title{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    line-height:1.5;
+
+    min-height:42px;
+
+}
 
 .report-meta{
 
-    margin-top:15px;
+    margin-top:13px;
 
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
 }
-
 
 .meta-row{
 
@@ -1183,77 +848,74 @@ body{
 
     gap:10px;
 
-    font-size:10px;
+    padding:6px 0;
 
-    color:#71869a;
+    border-bottom:1px solid rgba(255,255,255,.035);
+
+    font-size:11px;
+
 }
 
+.meta-row span{
+
+    color:#71869d;
+
+}
 
 .meta-row strong{
 
-    color:#aebdcb;
+    color:#c5d2df;
 
     text-align:right;
 
-    font-weight:600;
-}
+    font-weight:500;
 
+}
 
 .report-footer{
 
-    padding:
-        11px 16px;
+    padding:11px 14px;
 
-    border-top:
-        1px solid
-        rgba(255,255,255,.055);
+    color:#7e94a9;
 
-    color:#667c91;
+    background:#0e1928;
 
     font-size:10px;
+
 }
-
-
-/* =========================================================
-   EMPTY
-========================================================= */
 
 .empty{
 
-    grid-column:
-        1 / -1;
+    grid-column:1/-1;
 
-    padding:55px 20px;
+    padding:40px 20px;
 
     text-align:center;
 
-    border:
-        1px dashed
-        rgba(255,255,255,.08);
+    background:#111d2d;
 
-    border-radius:14px;
+    border:1px solid rgba(255,255,255,.07);
 
-    color:#70869a;
+    border-radius:12px;
+
+    color:#7e94a9;
+
 }
-
 
 .empty-icon{
 
-    font-size:26px;
+    font-size:25px;
 
-    color:#50677e;
+    margin-bottom:8px;
 
-    margin-bottom:10px;
 }
-
 
 .empty-title{
 
-    color:#a7b7c7;
-
-    font-size:13px;
+    color:#c7d4e0;
 
     font-weight:700;
+
 }
 
 
@@ -1267,13 +929,7 @@ body{
 
     inset:0;
 
-    background:
-        rgba(0,0,0,.72);
-
-    backdrop-filter:
-        blur(5px);
-
-    z-index:1000;
+    background:rgba(0,0,0,.72);
 
     display:none;
 
@@ -1282,222 +938,159 @@ body{
     justify-content:center;
 
     padding:20px;
-}
 
+    z-index:10000;
+
+}
 
 .modal.show{
 
     display:flex;
-}
 
+}
 
 .modal-box{
 
-    width:
-        min(1100px,100%);
+    width:min(1100px,100%);
 
-    max-height:
-        92vh;
+    max-height:94vh;
 
-    background:
-        #0a1726;
+    overflow-y:auto;
 
-    border:
-        1px solid
-        rgba(255,255,255,.09);
+    background:#101b2a;
 
-    border-radius:17px;
+    border:1px solid rgba(255,255,255,.09);
 
-    overflow:hidden;
+    border-radius:15px;
 
-    display:flex;
+    box-shadow:0 25px 70px rgba(0,0,0,.5);
 
-    flex-direction:column;
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,.5);
 }
 
-
-.modal-head{
-
-    padding:
-        20px 24px;
+.modal-header{
 
     display:flex;
 
     justify-content:space-between;
 
-    align-items:center;
+    align-items:flex-start;
 
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.07);
+    padding:20px;
+
+    border-bottom:1px solid rgba(255,255,255,.07);
+
+    position:sticky;
+
+    top:0;
+
+    background:#101b2a;
+
+    z-index:3;
+
 }
-
 
 .modal-title{
 
-    font-size:17px;
+    font-size:19px;
 
-    font-weight:800;
+    font-weight:700;
 
-    color:#ffffff;
 }
-
 
 .modal-subtitle{
 
+    color:#7f95aa;
+
     font-size:11px;
 
-    color:#70869a;
+    margin-top:5px;
 
-    margin-top:4px;
 }
 
+.close-btn{
 
-.close{
+    width:34px;
 
-    border:none;
+    height:34px;
 
-    background:transparent;
-
-    color:#8298ad;
-
-    font-size:27px;
-
-    cursor:pointer;
-
-    line-height:1;
-}
-
-
-.close:hover{
-
-    color:#ffffff;
-}
-
-
-.modal-body{
-
-    padding:24px;
-
-    overflow-y:auto;
-}
-
-
-.modal-footer{
-
-    padding:
-        15px 24px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.07);
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:10px;
-}
-
-
-/* =========================================================
-   OVERDUE BANNER
-========================================================= */
-
-.overdue-banner{
-
-    display:none;
-
-    background:
-        rgba(255,80,96,.10);
-
-    border:
-        1px solid
-        rgba(255,80,96,.2);
-
-    color:#ff7d89;
+    border:0;
 
     border-radius:8px;
 
-    padding:11px 14px;
+    background:#1a2a3e;
 
-    font-size:11px;
+    color:#b8c7d6;
 
-    font-weight:800;
+    cursor:pointer;
 
-    margin-bottom:18px;
+    font-size:18px;
+
 }
 
+.close-btn:hover{
 
-.overdue-banner.show{
+    background:#273a51;
 
-    display:block;
+    color:#fff;
+
 }
 
+.modal-body{
 
-/* =========================================================
-   CASE TOP
-========================================================= */
+    padding:20px;
 
-.case-top{
+}
+
+.case-grid{
 
     display:grid;
 
     grid-template-columns:
-        repeat(4,1fr);
+        repeat(2,1fr);
 
-    gap:10px;
+    gap:14px;
 
-    margin-bottom:20px;
 }
-
 
 .case-info{
 
-    background:
-        rgba(255,255,255,.025);
+    background:#111f30;
 
-    border:
-        1px solid
-        rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.06);
 
-    border-radius:9px;
+    border-radius:10px;
 
     padding:13px;
-}
 
+}
 
 .case-info-label{
 
-    font-size:8px;
+    color:#71869d;
 
-    letter-spacing:1px;
+    font-size:10px;
 
-    color:#647b91;
+    margin-bottom:5px;
 
-    font-weight:800;
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
 }
-
 
 .case-info-value{
 
-    font-size:12px;
+    color:#d7e2ec;
 
-    color:#dbe7f1;
+    font-size:13px;
 
-    font-weight:700;
-
-    margin-top:6px;
 }
 
+.full{
 
-/* =========================================================
-   TIMELINE
-========================================================= */
+    grid-column:1/-1;
+
+}
 
 .timeline{
 
@@ -1506,263 +1099,211 @@ body{
     grid-template-columns:
         repeat(5,1fr);
 
-    position:relative;
+    gap:6px;
 
-    margin-top:18px;
+    margin:20px 0;
+
 }
-
-
-.timeline:before{
-
-    content:"";
-
-    position:absolute;
-
-    left:10%;
-
-    right:10%;
-
-    top:11px;
-
-    height:2px;
-
-    background:
-        rgba(255,255,255,.08);
-}
-
 
 .timeline-item{
 
-    position:relative;
-
     text-align:center;
 
-    z-index:1;
+    padding:9px 4px;
+
+    background:#172334;
+
+    color:#637a91;
+
+    border-radius:7px;
+
+    font-size:10px;
+
 }
 
+.timeline-item.active{
 
-.timeline-dot{
+    background:#17374b;
 
-    width:23px;
+    color:#53ceff;
 
-    height:23px;
-
-    border-radius:50%;
-
-    background:
-        #15263a;
-
-    border:
-        2px solid
-        #41566b;
-
-    margin:auto;
 }
 
+.timeline-item.completed{
 
-.timeline-item.active .timeline-dot{
+    background:#18392f;
 
-    background:#2675ef;
+    color:#69dcb0;
 
-    border-color:#4b95ff;
-
-    box-shadow:
-        0 0 14px
-        rgba(75,149,255,.35);
 }
 
-
-.timeline-item.completed .timeline-dot{
-
-    background:#36cb87;
-
-    border-color:#36cb87;
-}
-
-
-.timeline-label{
-
-    font-size:9px;
-
-    color:#70869a;
-
-    margin-top:7px;
-}
-
-
-.timeline-item.active .timeline-label{
-
-    color:#75aaff;
-
-    font-weight:700;
-}
-
-
-.timeline-item.completed .timeline-label{
-
-    color:#54d99b;
-}
-
-
-/* =========================================================
-   MODAL GRID
-========================================================= */
-
-.modal-grid{
+.form-grid{
 
     display:grid;
 
     grid-template-columns:
         repeat(2,1fr);
 
-    gap:16px;
+    gap:14px;
+
+    margin-top:15px;
+
 }
-
-
-.modal-section{
-
-    border:
-        1px solid
-        rgba(255,255,255,.065);
-
-    border-radius:12px;
-
-    padding:17px;
-
-    background:
-        rgba(255,255,255,.018);
-}
-
-
-.modal-section.full{
-
-    grid-column:
-        1 / -1;
-}
-
-
-.modal-section-title{
-
-    font-size:11px;
-
-    text-transform:uppercase;
-
-    letter-spacing:1px;
-
-    color:#8ca2b7;
-
-    font-weight:800;
-
-    margin-bottom:13px;
-}
-
-
-/* =========================================================
-   INCIDENT
-========================================================= */
-
-.incident-box{
-
-    white-space:pre-line;
-
-    color:#b9c7d4;
-
-    font-size:12px;
-
-    line-height:1.7;
-}
-
-
-/* =========================================================
-   FORMS
-========================================================= */
 
 .form-group{
 
-    margin-bottom:13px;
+    display:flex;
+
+    flex-direction:column;
+
 }
 
+.form-group.full{
 
-.form-group:last-child{
+    grid-column:1/-1;
 
-    margin-bottom:0;
 }
-
 
 .form-group label{
 
-    display:block;
+    font-size:11px;
 
-    font-size:10px;
-
-    color:#71879c;
-
-    font-weight:700;
+    color:#8da2b6;
 
     margin-bottom:6px;
+
 }
 
-
 .form-group input,
-.form-group textarea,
-.form-group select{
+.form-group select,
+.form-group textarea{
 
     width:100%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.09);
 
-    background:
-        #081522;
+    background:#0e1928;
 
     color:#dbe6ef;
 
-    border-radius:7px;
+    border-radius:8px;
 
-    padding:
-        9px 10px;
+    padding:10px 11px;
 
     outline:none;
 
     font-family:inherit;
 
-    font-size:11px;
 }
 
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+
+    border-color:#42d3ff;
+
+}
 
 .form-group textarea{
 
-    min-height:90px;
+    min-height:100px;
 
     resize:vertical;
+
+    line-height:1.5;
+
 }
-
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus{
-
-    border-color:
-        rgba(73,139,255,.5);
-}
-
 
 .form-group input:disabled,
-.form-group textarea:disabled,
-.form-group select:disabled{
+.form-group select:disabled,
+.form-group textarea:disabled{
 
     opacity:.55;
 
     cursor:not-allowed;
 
-    background:#07111d;
+    background:#0b1522;
+
+}
+
+
+/* DATE INPUT FIX */
+
+.form-group input[type="date"]{
+
+    min-height:40px;
+
+    color-scheme:dark;
+
+    cursor:pointer;
+
+}
+
+.form-group input[type="date"]:not(:disabled){
+
+    cursor:pointer;
+
+}
+
+.form-group input[type="date"]:not(:disabled):hover{
+
+    border-color:#42d3ff;
+
 }
 
 
 /* =========================================================
-   PHOTOS
+   OVERDUE BANNER
 ========================================================= */
+
+.case-overdue{
+
+    display:none;
+
+    background:#3a1c23;
+
+    border:1px solid #75323d;
+
+    color:#ff8490;
+
+    padding:12px 14px;
+
+    border-radius:8px;
+
+    font-size:11px;
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.case-overdue.show{
+
+    display:block;
+
+}
+
+
+/* =========================================================
+   EVIDENCE
+========================================================= */
+
+.evidence{
+
+    margin-top:20px;
+
+}
+
+.evidence-title{
+
+    font-size:13px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+}
 
 .photo-grid{
 
@@ -1771,25 +1312,23 @@ body{
     grid-template-columns:
         repeat(4,1fr);
 
-    gap:10px;
-}
+    gap:9px;
 
+}
 
 .photo-card{
 
-    height:130px;
+    background:#0c1725;
 
-    border-radius:9px;
+    border:1px solid rgba(255,255,255,.06);
+
+    border-radius:8px;
 
     overflow:hidden;
 
-    background:#06101c;
+    aspect-ratio:1/1;
 
-    border:
-        1px solid
-        rgba(255,255,255,.06);
 }
-
 
 .photo-card img{
 
@@ -1801,37 +1340,93 @@ body{
 
     cursor:pointer;
 
-    transition:.2s;
 }
-
-
-.photo-card img:hover{
-
-    transform:scale(1.03);
-}
-
-
-/* =========================================================
-   VIDEO
-========================================================= */
 
 .video-card{
 
-    margin-top:15px;
+    background:#0c1725;
 
-    max-width:600px;
+    border-radius:8px;
+
+    overflow:hidden;
+
 }
-
 
 .video-card video{
 
     width:100%;
 
-    max-height:350px;
+    max-height:450px;
 
-    border-radius:10px;
+    display:block;
 
-    background:#000;
+}
+
+
+/* =========================================================
+   MODAL FOOTER
+========================================================= */
+
+.modal-footer{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:8px;
+
+    padding:16px 20px;
+
+    border-top:1px solid rgba(255,255,255,.07);
+
+    position:sticky;
+
+    bottom:0;
+
+    background:#101b2a;
+
+}
+
+.modal-footer button{
+
+    padding:10px 16px;
+
+    border-radius:8px;
+
+    border:1px solid rgba(255,255,255,.09);
+
+    cursor:pointer;
+
+}
+
+.btn-secondary{
+
+    background:#172334;
+
+    color:#b8c7d6;
+
+}
+
+.btn-primary{
+
+    background:#1b6880;
+
+    color:#fff;
+
+}
+
+.btn-primary:hover{
+
+    background:#21809c;
+
+}
+
+.btn-primary:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
 }
 
 
@@ -1839,36 +1434,29 @@ body{
    TOAST
 ========================================================= */
 
-.toast{
+#toast{
 
     position:fixed;
 
-    right:24px;
+    right:22px;
 
-    bottom:24px;
+    bottom:22px;
 
-    padding:
-        12px 17px;
+    background:#17283a;
 
-    background:
-        #122437;
+    border:1px solid rgba(66,211,255,.2);
 
-    border:
-        1px solid
-        rgba(255,255,255,.1);
+    color:#dbe8f2;
+
+    padding:12px 16px;
 
     border-radius:9px;
 
-    color:#dce8f2;
-
     font-size:12px;
 
-    box-shadow:
-        0 10px 35px
-        rgba(0,0,0,.3);
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
 
-    transform:
-        translateY(20px);
+    transform:translateY(20px);
 
     opacity:0;
 
@@ -1876,16 +1464,16 @@ body{
 
     transition:.25s;
 
-    z-index:3000;
+    z-index:20000;
+
 }
 
+#toast.show{
 
-.toast.show{
-
-    transform:
-        translateY(0);
+    transform:translateY(0);
 
     opacity:1;
+
 }
 
 
@@ -1893,7 +1481,7 @@ body{
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:1300px){
+@media(max-width:1200px){
 
     .kpi-grid{
 
@@ -1902,30 +1490,15 @@ body{
 
     }
 
-}
-
-
-@media(max-width:1050px){
-
-    .sidebar{
-
-        width:210px;
-
-    }
-
-    .main{
-
-        margin-left:210px;
-
-        width:
-            calc(100% - 210px);
-
-    }
-
     .analytics-grid{
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns:1fr 1fr;
+
+    }
+
+    .analytics-grid .chart-card:first-child{
+
+        grid-column:1/-1;
 
     }
 
@@ -1938,8 +1511,59 @@ body{
 
 }
 
-
 @media(max-width:800px){
+
+    .sidebar{
+
+        width:200px;
+
+    }
+
+    .main{
+
+        margin-left:200px;
+
+        width:calc(100% - 200px);
+
+        padding:16px;
+
+    }
+
+    .toolbar{
+
+        grid-template-columns:1fr 1fr;
+
+    }
+
+    .reports-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .case-grid,
+    .form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .full{
+
+        grid-column:auto;
+
+    }
+
+    .photo-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:600px){
 
     .sidebar{
 
@@ -1949,17 +1573,11 @@ body{
 
         height:auto;
 
-        border-right:none;
-
-        border-bottom:
-            1px solid
-            rgba(255,255,255,.07);
-
     }
 
     .app{
 
-        flex-direction:column;
+        display:block;
 
     }
 
@@ -1971,30 +1589,17 @@ body{
 
     }
 
-    .nav{
+    .sidebar-footer{
 
-        flex-direction:row;
+        position:relative;
 
-        overflow-x:auto;
+        left:auto;
 
-    }
+        right:auto;
 
-    .nav button{
+        bottom:auto;
 
-        white-space:nowrap;
-
-    }
-
-    .content{
-
-        padding:20px;
-
-    }
-
-    .topbar{
-
-        padding:
-            0 20px;
+        margin-top:20px;
 
     }
 
@@ -2007,67 +1612,63 @@ body{
 
     .action-grid{
 
-        grid-template-columns:
-            1fr;
+        grid-template-columns:1fr;
 
     }
 
-    .reports-grid{
+    .analytics-grid{
 
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .case-top{
-
-        grid-template-columns:
-            repeat(2,1fr);
+        grid-template-columns:1fr;
 
     }
 
-    .modal-grid{
-
-        grid-template-columns:
-            1fr;
-
-    }
-
-    .modal-section.full{
+    .analytics-grid .chart-card:first-child{
 
         grid-column:auto;
+
+    }
+
+    .hero-top{
+
+        flex-direction:column;
+
+    }
+
+    .toolbar{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .timeline{
+
+        grid-template-columns:1fr;
 
     }
 
 }
 
 
-@media(max-width:520px){
+/* =========================================================
+   PRINT
+========================================================= */
 
-    .kpi-grid{
+@media print{
 
-        grid-template-columns:
-            1fr 1fr;
+    .sidebar,
+    .toolbar,
+    .modal-footer,
+    .close-btn{
 
-    }
-
-    .hero-title{
-
-        font-size:22px;
-
-    }
-
-    .case-top{
-
-        grid-template-columns:
-            1fr;
+        display:none!important;
 
     }
 
-    .photo-grid{
+    .main{
 
-        grid-template-columns:
-            repeat(2,1fr);
+        margin:0;
+
+        width:100%;
 
     }
 
@@ -2081,20 +1682,18 @@ body{
 <body>
 
 
-<!-- ======================================================
+<!-- =======================================================
      LOGIN GUARD
-====================================================== -->
+======================================================= -->
 
 <div id="loginGuard">
 
     <div class="login-loading">
 
-        <div class="login-loading-title">
-            ESH MANAGEMENT SYSTEM
-        </div>
+        <div class="loader"></div>
 
-        <div class="login-loading-text">
-            Checking access...
+        <div>
+            Checking ESH access...
         </div>
 
     </div>
@@ -2102,76 +1701,95 @@ body{
 </div>
 
 
-<!-- ======================================================
-     APP
-====================================================== -->
-
 <div class="app">
 
 
-<!-- ======================================================
+<!-- =======================================================
      SIDEBAR
-====================================================== -->
+======================================================= -->
 
 <aside class="sidebar">
 
-
     <div class="brand">
 
-        <div class="brand-small">
-            ENVIRONMENT • SAFETY • HEALTH
+        <div class="brand-logo">
+            ESH
         </div>
 
-        <div class="brand-name">
-            ESH MANAGEMENT SYSTEM
-        </div>
+        <div>
 
-        <div class="brand-sub">
-            BIDOR KWONG HENG
+            <div class="brand-text">
+                ESH Management
+            </div>
+
+            <div class="brand-sub">
+                Bidor Kwong Heng
+            </div>
+
         </div>
 
     </div>
 
 
-    <nav class="nav">
+    <div class="nav">
+
+        <div class="nav-title">
+            Main
+        </div>
 
         <button
             class="active"
             onclick="showSection('overview',this)"
         >
-            Overview
+            ▣ &nbsp; Overview
         </button>
 
 
         <button
             onclick="showSection('analytics',this)"
         >
-            Analytics
+            ◈ &nbsp; Analytics
         </button>
 
 
         <button
-            onclick="showSection('actions',this)"
+            onclick="showSection('actionCenter',this)"
         >
-            Action Center
+            ⚠ &nbsp; Action Center
         </button>
+
+
+        <div class="nav-title">
+            Management
+        </div>
 
 
         <button
             onclick="showSection('reports',this)"
         >
-            Reports
+            ▤ &nbsp; Reports
         </button>
 
-    </nav>
+    </div>
 
 
     <div class="sidebar-footer">
 
-        <div class="sidebar-footer-text">
+        <div class="user-box">
 
-            ESH CONTROL CENTER<br>
-            Near Miss Management System
+            <div
+                id="userRoleDisplay"
+                class="user-role"
+            >
+                ESH
+            </div>
+
+            <div
+                id="usernameDisplay"
+                class="user-name"
+            >
+                Logged in user
+            </div>
 
         </div>
 
@@ -2188,86 +1806,58 @@ body{
 </aside>
 
 
-<!-- ======================================================
+<!-- =======================================================
      MAIN
-====================================================== -->
+======================================================= -->
 
 <main class="main">
 
 
-<!-- ======================================================
-     TOPBAR
-====================================================== -->
+<!-- =======================================================
+     HERO
+======================================================= -->
 
-<div class="topbar">
+<section class="hero">
 
-    <div class="topbar-title">
-        ESH CONTROL CENTER
-    </div>
+    <div class="hero-top">
 
+        <div>
 
-    <div class="topbar-right">
+            <h1>
+                ESH Management System
+            </h1>
+
+            <p id="heroSubtitle">
+                Near Miss reporting, investigation,
+                corrective action, verification and
+                case closure control center.
+            </p>
+
+        </div>
+
 
         <div
-            class="role-display"
-            id="userRoleDisplay"
+            id="heroRoleBadge"
+            class="role-badge"
         >
             ESH
         </div>
 
-        <div class="status-dot"></div>
-
-        <div class="status-text">
-            SYSTEM ONLINE
-        </div>
-
     </div>
 
-</div>
+</section>
 
 
-<!-- ======================================================
-     CONTENT
-====================================================== -->
-
-<div class="content">
-
-
-<!-- ======================================================
-     HERO
-====================================================== -->
-
-<div class="hero">
-
-    <div class="hero-label">
-        ENVIRONMENT • SAFETY • HEALTH
-    </div>
-
-    <div class="hero-title">
-        ESH Management Dashboard
-    </div>
-
-    <div
-        class="hero-subtitle"
-        id="heroSubtitle"
-    >
-        Near Miss reporting, investigation, corrective action and case closure control center.
-    </div>
-
-</div>
-
-
-<!-- ======================================================
+<!-- =======================================================
      OVERVIEW
-====================================================== -->
+======================================================= -->
 
 <section
-    class="section"
     id="overview"
+    class="section"
 >
 
-
-    <div class="section-header">
+    <div class="section-head">
 
         <div>
 
@@ -2293,156 +1883,128 @@ body{
         >
 
             <div class="kpi-label">
-                TOTAL REPORTS
+                Total Reports
             </div>
 
             <div
-                class="kpi-value"
                 id="totalReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ▤
             </div>
 
         </div>
 
 
         <div
-            class="kpi"
+            class="kpi kpi-new"
             onclick="filterKPI('New')"
         >
 
             <div class="kpi-label">
-                NEW
+                New
             </div>
 
             <div
-                class="kpi-value"
                 id="newReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ●
             </div>
 
         </div>
 
 
         <div
-            class="kpi yellow"
+            class="kpi kpi-investigation"
             onclick="filterKPI('Investigation')"
         >
 
             <div class="kpi-label">
-                INVESTIGATION
+                Investigation
             </div>
 
             <div
-                class="kpi-value"
                 id="investigationReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ⌕
             </div>
 
         </div>
 
 
         <div
-            class="kpi orange"
+            class="kpi kpi-corrective"
             onclick="filterKPI('Corrective Action')"
         >
 
             <div class="kpi-label">
-                CORRECTIVE ACTION
+                Corrective Action
             </div>
 
             <div
-                class="kpi-value"
                 id="correctiveReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ⚙
             </div>
 
         </div>
 
 
         <div
-            class="kpi purple"
+            class="kpi kpi-verification"
             onclick="filterKPI('Verification')"
         >
 
             <div class="kpi-label">
-                VERIFICATION
+                Verification
             </div>
 
             <div
-                class="kpi-value"
                 id="verificationReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ✓
             </div>
 
         </div>
 
 
         <div
-            class="kpi green"
+            class="kpi kpi-closed"
             onclick="filterKPI('Closed')"
         >
 
             <div class="kpi-label">
-                CLOSED
+                Closed
             </div>
 
             <div
-                class="kpi-value"
                 id="closedReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                ✓
             </div>
 
         </div>
 
 
         <div
-            class="kpi red"
+            class="kpi kpi-overdue"
             onclick="filterKPI('OVERDUE')"
         >
 
             <div class="kpi-label">
-                OVERDUE ACTIONS
+                Overdue Actions
             </div>
 
             <div
-                class="kpi-value"
                 id="overdueReports"
+                class="kpi-value"
             >
                 0
-            </div>
-
-            <div class="kpi-icon">
-                !
             </div>
 
         </div>
@@ -2450,21 +2012,19 @@ body{
 
     </div>
 
-
 </section>
 
 
-<!-- ======================================================
+<!-- =======================================================
      ACTION CENTER
-====================================================== -->
+======================================================= -->
 
 <section
+    id="actionCenter"
     class="section"
-    id="actions"
 >
 
-
-    <div class="section-header">
+    <div class="section-head">
 
         <div>
 
@@ -2489,27 +2049,15 @@ body{
             onclick="filterStatus('New')"
         >
 
-            <div class="action-top">
-
-                <div class="action-name">
-                    New Reports
-                </div>
-
-                <div class="badge badge-new">
-                    NEW
-                </div>
-
+            <div class="action-label">
+                New Reports
             </div>
 
             <div
-                class="action-count"
                 id="actionNew"
+                class="action-value"
             >
                 0
-            </div>
-
-            <div class="action-desc">
-                Reports awaiting investigation
             </div>
 
         </div>
@@ -2520,58 +2068,34 @@ body{
             onclick="filterStatus('Corrective Action')"
         >
 
-            <div class="action-top">
-
-                <div class="action-name">
-                    Corrective Actions
-                </div>
-
-                <div class="badge badge-corrective">
-                    ACTION
-                </div>
-
+            <div class="action-label">
+                Corrective Action
             </div>
 
             <div
-                class="action-count"
                 id="actionCorrective"
+                class="action-value"
             >
                 0
-            </div>
-
-            <div class="action-desc">
-                Actions currently in progress
             </div>
 
         </div>
 
 
         <div
-            class="action-card"
+            class="action-card overdue"
             onclick="goToOverdue()"
         >
 
-            <div class="action-top">
-
-                <div class="action-name">
-                    Overdue
-                </div>
-
-                <div class="badge badge-overdue">
-                    ATTENTION
-                </div>
-
+            <div class="action-label">
+                Overdue
             </div>
 
             <div
-                class="action-count"
                 id="actionOverdue"
+                class="action-value"
             >
                 0
-            </div>
-
-            <div class="action-desc">
-                Actions beyond target date
             </div>
 
         </div>
@@ -2582,25 +2106,25 @@ body{
 </section>
 
 
-<!-- ======================================================
+<!-- =======================================================
      ANALYTICS
-====================================================== -->
+======================================================= -->
 
 <section
-    class="section"
     id="analytics"
+    class="section"
 >
 
-    <div class="section-header">
+    <div class="section-head">
 
         <div>
 
             <div class="section-title">
-                ESH Analytics
+                Analytics
             </div>
 
             <div class="section-subtitle">
-                Report trends and ESH performance
+                ESH reporting trends and distribution
             </div>
 
         </div>
@@ -2614,11 +2138,7 @@ body{
         <div class="chart-card">
 
             <div class="chart-title">
-                Report Trend
-            </div>
-
-            <div class="chart-subtitle">
-                Reports by month
+                Monthly Reports
             </div>
 
             <div class="chart-wrap">
@@ -2636,10 +2156,6 @@ body{
                 Hazard Category
             </div>
 
-            <div class="chart-subtitle">
-                Distribution of reported hazards
-            </div>
-
             <div class="chart-wrap">
 
                 <canvas id="categoryChart"></canvas>
@@ -2653,10 +2169,6 @@ body{
 
             <div class="chart-title">
                 Department
-            </div>
-
-            <div class="chart-subtitle">
-                Reports by department
             </div>
 
             <div class="chart-wrap">
@@ -2673,28 +2185,28 @@ body{
 </section>
 
 
-<!-- ======================================================
+<!-- =======================================================
      REPORTS
-====================================================== -->
+======================================================= -->
 
 <section
-    class="section"
     id="reports"
+    class="section"
 >
 
-    <div class="section-header">
+    <div class="section-head">
 
         <div>
 
             <div class="section-title">
-                ESH Reports
+                Reports
             </div>
 
             <div
-                class="section-subtitle"
                 id="reportsSubtitle"
+                class="section-subtitle"
             >
-                ESH case management
+                ESH case management • Full access
             </div>
 
         </div>
@@ -2705,16 +2217,12 @@ body{
     <div class="toolbar">
 
 
-        <div class="search">
-
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search report, location, department..."
-                oninput="renderReports()"
-            >
-
-        </div>
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search report, location, department..."
+            oninput="renderReports()"
+        >
 
 
         <select
@@ -2762,7 +2270,6 @@ body{
 
 
         <button
-            class="btn"
             onclick="resetFilters()"
         >
             Reset
@@ -2770,10 +2277,9 @@ body{
 
 
         <button
-            class="btn btn-primary"
             onclick="loadReports()"
         >
-            ↻ Refresh
+            Refresh
         </button>
 
 
@@ -2781,18 +2287,18 @@ body{
 
 
     <div
-        class="reports-grid"
         id="reportsGrid"
+        class="reports-grid"
     >
 
         <div class="empty">
 
             <div class="empty-icon">
-                ◌
+                ...
             </div>
 
             <div class="empty-title">
-                Loading reports...
+                Loading reports
             </div>
 
         </div>
@@ -2802,462 +2308,415 @@ body{
 </section>
 
 
-</div>
-
 </main>
 
 </div>
 
 
-<!-- ======================================================
+<!-- =======================================================
      CASE MODAL
-====================================================== -->
+======================================================= -->
 
 <div
-    class="modal"
     id="caseModal"
+    class="modal"
 >
+
 
 <div class="modal-box">
 
 
-<div class="modal-head">
+    <div class="modal-header">
 
-    <div>
 
-        <div
-            class="modal-title"
-            id="modalTitle"
-        >
-            ESH Case
+        <div>
+
+            <div
+                id="modalTitle"
+                class="modal-title"
+            >
+                ESH Case
+            </div>
+
+            <div
+                id="modalSubtitle"
+                class="modal-subtitle"
+            >
+                ESH Case Management
+            </div>
+
         </div>
 
-        <div
-            class="modal-subtitle"
-            id="modalSubtitle"
+
+        <button
+            class="close-btn"
+            onclick="closeModal()"
         >
-            ESH Case Management
+            ×
+        </button>
+
+
+    </div>
+
+
+    <div class="modal-body">
+
+
+        <div
+            id="caseOverdue"
+            class="case-overdue"
+        >
+            OVERDUE ACTION — TARGET DATE HAS PASSED
         </div>
 
-    </div>
+
+        <div class="case-grid">
 
 
-    <button
-        class="close"
-        onclick="closeModal()"
-    >
-        ×
-    </button>
+            <div class="case-info">
 
-</div>
+                <div class="case-info-label">
+                    Report Number
+                </div>
 
+                <div
+                    id="caseNumber"
+                    class="case-info-value"
+                >
+                    -
+                </div>
 
-<div class="modal-body">
-
-
-<div
-    class="overdue-banner"
-    id="caseOverdue"
->
-    OVERDUE ACTION — TARGET DATE HAS PASSED
-</div>
+            </div>
 
 
-<div class="case-top">
+            <div class="case-info">
+
+                <div class="case-info-label">
+                    Location
+                </div>
+
+                <div
+                    id="caseLocation"
+                    class="case-info-value"
+                >
+                    -
+                </div>
+
+            </div>
 
 
-<div class="case-info">
+            <div class="case-info">
 
-    <div class="case-info-label">
-        REPORT NUMBER
-    </div>
+                <div class="case-info-label">
+                    Department
+                </div>
 
-    <div
-        class="case-info-value"
-        id="caseNumber"
-    >
-        -
-    </div>
+                <div
+                    id="caseDepartment"
+                    class="case-info-value"
+                >
+                    -
+                </div>
 
-</div>
-
-
-<div class="case-info">
-
-    <div class="case-info-label">
-        LOCATION
-    </div>
-
-    <div
-        class="case-info-value"
-        id="caseLocation"
-    >
-        -
-    </div>
-
-</div>
+            </div>
 
 
-<div class="case-info">
+            <div class="case-info">
 
-    <div class="case-info-label">
-        DEPARTMENT
-    </div>
+                <div class="case-info-label">
+                    Hazard Category
+                </div>
 
-    <div
-        class="case-info-value"
-        id="caseDepartment"
-    >
-        -
-    </div>
+                <div
+                    id="caseCategory"
+                    class="case-info-value"
+                >
+                    -
+                </div>
 
-</div>
-
-
-<div class="case-info">
-
-    <div class="case-info-label">
-        HAZARD CATEGORY
-    </div>
-
-    <div
-        class="case-info-value"
-        id="caseCategory"
-    >
-        -
-    </div>
-
-</div>
+            </div>
 
 
-</div>
+            <div class="case-info full">
+
+                <div class="case-info-label">
+                    Incident Information
+                </div>
+
+                <div
+                    id="incidentInfo"
+                    class="case-info-value"
+                    style="white-space:pre-line;line-height:1.7;"
+                >
+                    -
+                </div>
+
+            </div>
 
 
-<!-- TIMELINE -->
+            <div class="case-info full">
 
-<div class="modal-section">
+                <div class="case-info-label">
+                    What Happened
+                </div>
 
-    <div class="modal-section-title">
-        ESH Case Progress
-    </div>
+                <div
+                    id="caseNarrative"
+                    class="case-info-value"
+                    style="line-height:1.6;"
+                >
+                    -
+                </div>
+
+            </div>
 
 
-    <div
-        class="timeline"
-        id="timeline"
-    >
+        </div>
 
 
-        <div class="timeline-item">
+        <!-- TIMELINE -->
 
-            <div class="timeline-dot"></div>
+        <div
+            id="timeline"
+            class="timeline"
+        >
 
-            <div class="timeline-label">
+            <div class="timeline-item">
                 New
             </div>
 
-        </div>
-
-
-        <div class="timeline-item">
-
-            <div class="timeline-dot"></div>
-
-            <div class="timeline-label">
+            <div class="timeline-item">
                 Investigation
             </div>
 
-        </div>
-
-
-        <div class="timeline-item">
-
-            <div class="timeline-dot"></div>
-
-            <div class="timeline-label">
+            <div class="timeline-item">
                 Corrective Action
             </div>
 
-        </div>
-
-
-        <div class="timeline-item">
-
-            <div class="timeline-dot"></div>
-
-            <div class="timeline-label">
+            <div class="timeline-item">
                 Verification
             </div>
 
-        </div>
-
-
-        <div class="timeline-item">
-
-            <div class="timeline-dot"></div>
-
-            <div class="timeline-label">
+            <div class="timeline-item">
                 Closed
             </div>
 
         </div>
 
 
-    </div>
+        <!-- FORM -->
 
-</div>
+        <div class="form-grid">
 
 
-<div
-    class="modal-grid"
-    style="margin-top:20px;"
->
+            <div class="form-group full">
 
+                <label>
+                    Investigation Findings
+                </label>
 
-<!-- INCIDENT -->
+                <textarea
+                    id="investigationFindings"
+                    placeholder="Enter investigation findings..."
+                ></textarea>
 
-<div class="modal-section">
+            </div>
 
-    <div class="modal-section-title">
-        Incident Information
-    </div>
 
-    <div
-        class="incident-box"
-        id="incidentInfo"
-    >
-        -
-    </div>
+            <div class="form-group full">
 
-</div>
+                <label>
+                    Root Cause
+                </label>
 
+                <textarea
+                    id="rootCause"
+                    placeholder="Enter root cause..."
+                ></textarea>
 
-<!-- NARRATIVE -->
+            </div>
 
-<div class="modal-section">
 
-    <div class="modal-section-title">
-        Incident Narrative
-    </div>
+            <div class="form-group">
 
-    <div
-        class="incident-box"
-        id="caseNarrative"
-    >
-        -
-    </div>
+                <label>
+                    ESH Investigator
+                </label>
 
-</div>
+                <input
+                    type="text"
+                    id="eshInvestigator"
+                    placeholder="Name of ESH investigator"
+                >
 
+            </div>
 
-<!-- PHOTO -->
 
-<div class="modal-section full">
+            <div class="form-group">
 
-    <div class="modal-section-title">
-        Photo Evidence
-    </div>
+                <label>
+                    ESH Remarks
+                </label>
 
-    <div
-        class="photo-grid"
-        id="photoEvidence"
-    >
-    </div>
+                <input
+                    type="text"
+                    id="eshRemarks"
+                    placeholder="ESH remarks"
+                >
 
-    <div id="videoEvidence"></div>
+            </div>
 
-</div>
 
+            <div class="form-group full">
 
-<!-- INVESTIGATION -->
-
-<div class="modal-section">
-
-    <div class="modal-section-title">
-        Investigation
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Investigation Findings
-        </label>
-
-        <textarea
-            id="investigationFindings"
-        ></textarea>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Root Cause
-        </label>
-
-        <textarea
-            id="rootCause"
-        ></textarea>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            ESH Investigator
-        </label>
-
-        <input
-            id="eshInvestigator"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            ESH Remarks
-        </label>
-
-        <textarea
-            id="eshRemarks"
-        ></textarea>
-
-    </div>
-
-</div>
-
-
-<!-- CORRECTIVE -->
-
-<div class="modal-section">
-
-    <div class="modal-section-title">
-        Corrective Action
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Corrective Action
-        </label>
-
-        <textarea
-            id="correctiveAction"
-        ></textarea>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Responsible Person
-        </label>
-
-        <input
-            id="personResponsible"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Target Date
-        </label>
-
-        <input
-            type="date"
-            id="dueDate"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label id="verificationRemarksLabel">
-            Verification Remarks
-        </label>
-
-        <textarea
-            id="verificationRemarks"
-        ></textarea>
-
-    </div>
-
-</div>
-
-
-<!-- CLOSURE -->
-
-<div class="modal-section full">
-
-    <div class="modal-section-title">
-        Case Closure
-    </div>
-
-
-    <div class="modal-grid">
-
-
-        <div class="form-group">
-
-            <label>
-                Case Status
-            </label>
-
-            <select id="caseStatus">
-
-                <option value="New">
-                    New
-                </option>
-
-                <option value="Investigation">
-                    Investigation
-                </option>
-
-                <option value="Corrective Action">
+                <label>
                     Corrective Action
-                </option>
+                </label>
 
-                <option value="Verification">
-                    Verification
-                </option>
+                <textarea
+                    id="correctiveAction"
+                    placeholder="Enter corrective action..."
+                ></textarea>
 
-                <option value="Closed">
-                    Closed
-                </option>
+            </div>
 
-            </select>
+
+            <div class="form-group">
+
+                <label>
+                    Person Responsible
+                </label>
+
+                <input
+                    type="text"
+                    id="personResponsible"
+                    placeholder="Person responsible"
+                >
+
+            </div>
+
+
+            <!-- =================================================
+                 TARGET DATE
+                 IMPORTANT DATE INPUT
+            ================================================== -->
+
+            <div class="form-group">
+
+                <label>
+                    Target Date
+                </label>
+
+                <input
+                    type="date"
+                    id="dueDate"
+                    title="Select Target Date"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label id="verificationRemarksLabel">
+                    Verification Remarks
+                </label>
+
+                <textarea
+                    id="verificationRemarks"
+                    placeholder="Verification / completion remarks..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Case Status
+                </label>
+
+                <select id="caseStatus">
+                    <option value="New">
+                        New
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Closed Date
+                </label>
+
+                <input
+                    type="date"
+                    id="closedDate"
+                >
+
+            </div>
+
 
         </div>
 
 
-        <div class="form-group">
+        <!-- PHOTO EVIDENCE -->
 
-            <label>
-                Closed Date
-            </label>
+        <div class="evidence">
 
-            <input
-                type="date"
-                id="closedDate"
-            >
+            <div class="evidence-title">
+                Photo Evidence
+            </div>
+
+            <div
+                id="photoEvidence"
+                class="photo-grid"
+            ></div>
+
+        </div>
+
+
+        <!-- VIDEO EVIDENCE -->
+
+        <div class="evidence">
+
+            <div class="evidence-title">
+                Video Evidence
+            </div>
+
+            <div
+                id="videoEvidence"
+            ></div>
 
         </div>
 
 
     </div>
 
-</div>
+
+    <div class="modal-footer">
+
+
+        <button
+            class="btn-secondary"
+            onclick="closeModal()"
+        >
+            Close
+        </button>
+
+
+        <button
+            id="saveButton"
+            class="btn-primary"
+            onclick="saveReport()"
+        >
+            Save Case
+        </button>
+
+
+    </div>
 
 
 </div>
@@ -3265,53 +2724,22 @@ body{
 </div>
 
 
-<div class="modal-footer">
-
-    <button
-        class="btn"
-        onclick="closeModal()"
-    >
-        Cancel
-    </button>
-
-
-    <button
-        class="btn btn-primary"
-        id="saveButton"
-        onclick="saveReport()"
-    >
-        Save Case
-    </button>
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<div
-    class="toast"
-    id="toast"
-></div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="toast"></div>
 
 
 <script>
+
 
 /* =========================================================
    GOOGLE APPS SCRIPT
 ========================================================= */
 
 const GOOGLE_SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
+"https://script.google.com/macros/s/AKfycbyvYd4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
 /* =========================================================
-   GLOBAL
+   GLOBAL VARIABLES
 ========================================================= */
 
 let reports = [];
@@ -3324,10 +2752,6 @@ let categoryChart = null;
 
 let departmentChart = null;
 
-
-/* =========================================================
-   CURRENT USER / ROLE
-========================================================= */
 
 const CURRENT_ROLE =
     sessionStorage.getItem("userRole") || "";
@@ -3346,16 +2770,10 @@ const CURRENT_DEPARTMENT =
 (function(){
 
     const loggedIn =
-        sessionStorage.getItem(
-            "loggedIn"
-        );
-
+        sessionStorage.getItem("loggedIn");
 
     const role =
-        sessionStorage.getItem(
-            "userRole"
-        );
-
+        sessionStorage.getItem("userRole");
 
     const validRoles = [
         "ESH",
@@ -3379,11 +2797,10 @@ const CURRENT_DEPARTMENT =
 
 
     document
-        .getElementById(
-            "loginGuard"
-        )
+        .getElementById("loginGuard")
         .classList
         .add("hidden");
+
 
 })();
 
@@ -3419,22 +2836,18 @@ function isMaintenance(){
 
 function getVisibleReports(){
 
-    if(
-        isESH()
-    ){
+    if(isESH()){
 
         return reports;
 
     }
 
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
         const currentDepartment =
             String(
-                CURRENT_DEPARTMENT
+                CURRENT_DEPARTMENT || ""
             )
             .trim()
             .toLowerCase();
@@ -3445,17 +2858,14 @@ function getVisibleReports(){
 
                 const department =
                     String(
-                        report.department ||
-                        ""
+                        report.department || ""
                     )
                     .trim()
                     .toLowerCase();
 
 
-                return (
-                    department ===
-                    currentDepartment
-                );
+                return department ===
+                       currentDepartment;
 
             }
         );
@@ -3463,9 +2873,7 @@ function getVisibleReports(){
     }
 
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
         return reports.filter(
             function(report){
@@ -3477,11 +2885,8 @@ function getVisibleReports(){
 
 
                 return (
-                    status ===
-                        "Corrective Action"
-                    ||
-                    status ===
-                        "Verification"
+                    status === "Corrective Action" ||
+                    status === "Verification"
                 );
 
             }
@@ -3507,6 +2912,12 @@ function setupRoleDisplay(){
         );
 
 
+    const usernameDisplay =
+        document.getElementById(
+            "usernameDisplay"
+        );
+
+
     const hero =
         document.getElementById(
             "heroSubtitle"
@@ -3519,9 +2930,22 @@ function setupRoleDisplay(){
         );
 
 
-    if(
-        isESH()
-    ){
+    const heroRoleBadge =
+        document.getElementById(
+            "heroRoleBadge"
+        );
+
+
+    if(usernameDisplay){
+
+        usernameDisplay.textContent =
+            CURRENT_USERNAME ||
+            "Logged in user";
+
+    }
+
+
+    if(isESH()){
 
         if(display){
 
@@ -3546,20 +2970,28 @@ function setupRoleDisplay(){
 
         }
 
+
+        if(heroRoleBadge){
+
+            heroRoleBadge.textContent =
+                "ESH • FULL CONTROL";
+
+        }
+
+
         return;
 
     }
 
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
         if(display){
 
             display.textContent =
                 "HOD • " +
                 CURRENT_DEPARTMENT;
+
         }
 
 
@@ -3580,14 +3012,22 @@ function setupRoleDisplay(){
 
         }
 
+
+        if(heroRoleBadge){
+
+            heroRoleBadge.textContent =
+                "HOD • " +
+                CURRENT_DEPARTMENT;
+
+        }
+
+
         return;
 
     }
 
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
         if(display){
 
@@ -3612,6 +3052,14 @@ function setupRoleDisplay(){
 
         }
 
+
+        if(heroRoleBadge){
+
+            heroRoleBadge.textContent =
+                "MAINTENANCE • ENGINEERING";
+
+        }
+
     }
 
 }
@@ -3624,7 +3072,6 @@ function setupRoleDisplay(){
 function logout(){
 
     sessionStorage.clear();
-
 
     window.location.replace(
         "esh-login.html"
@@ -3689,9 +3136,7 @@ async function loadReports(){
 
         else if(
             data &&
-            Array.isArray(
-                data.reports
-            )
+            Array.isArray(data.reports)
         ){
 
             reports =
@@ -3701,9 +3146,7 @@ async function loadReports(){
 
         else if(
             data &&
-            Array.isArray(
-                data.data
-            )
+            Array.isArray(data.data)
         ){
 
             reports =
@@ -3775,33 +3218,23 @@ function updateDashboard(){
 
 
     const newCount =
-        countStatus(
-            "New"
-        );
+        countStatus("New");
 
 
     const investigation =
-        countStatus(
-            "Investigation"
-        );
+        countStatus("Investigation");
 
 
     const corrective =
-        countStatus(
-            "Corrective Action"
-        );
+        countStatus("Corrective Action");
 
 
     const verification =
-        countStatus(
-            "Verification"
-        );
+        countStatus("Verification");
 
 
     const closed =
-        countStatus(
-            "Closed"
-        );
+        countStatus("Closed");
 
 
     const overdue =
@@ -3874,9 +3307,7 @@ function updateDashboard(){
    COUNT STATUS
 ========================================================= */
 
-function countStatus(
-    status
-){
+function countStatus(status){
 
     return getVisibleReports().filter(
         function(report){
@@ -3898,9 +3329,7 @@ function countStatus(
    OVERDUE
 ========================================================= */
 
-function isReportOverdue(
-    report
-){
+function isReportOverdue(report){
 
     if(
         normalizeStatus(
@@ -4054,9 +3483,7 @@ function goToReports(){
    KPI FILTER
 ========================================================= */
 
-function filterKPI(
-    filter
-){
+function filterKPI(filter){
 
     document.getElementById(
         "searchInput"
@@ -4068,9 +3495,7 @@ function filterKPI(
     ).value = "";
 
 
-    if(
-        filter === "ALL"
-    ){
+    if(filter === "ALL"){
 
         document.getElementById(
             "statusFilter"
@@ -4086,9 +3511,7 @@ function filterKPI(
     }
 
 
-    if(
-        filter === "OVERDUE"
-    ){
+    if(filter === "OVERDUE"){
 
         document.getElementById(
             "statusFilter"
@@ -4121,9 +3544,7 @@ function filterKPI(
    ACTION CENTER FILTER
 ========================================================= */
 
-function filterStatus(
-    status
-){
+function filterStatus(status){
 
     document.getElementById(
         "searchInput"
@@ -4149,7 +3570,7 @@ function filterStatus(
 
 
 /* =========================================================
-   OVERDUE
+   GO TO OVERDUE
 ========================================================= */
 
 function goToOverdue(){
@@ -4177,7 +3598,7 @@ function goToOverdue(){
 
 
 /* =========================================================
-   RENDER OVERDUE REPORTS
+   RENDER OVERDUE
 ========================================================= */
 
 function renderOverdueReports(){
@@ -4200,9 +3621,7 @@ function renderOverdueReports(){
         );
 
 
-    if(
-        !filtered.length
-    ){
+    if(!filtered.length){
 
         container.innerHTML = `
 
@@ -4254,9 +3673,7 @@ function renderOverdueReports(){
 
     container.innerHTML =
         filtered
-            .map(
-                createReportCard
-            )
+            .map(createReportCard)
             .join("");
 
 }
@@ -4312,10 +3729,7 @@ function populateCategoryFilter(){
                                 ""
                             ).trim()
                     )
-
-                    .filter(
-                        Boolean
-                    )
+                    .filter(Boolean)
 
             )
 
@@ -4374,7 +3788,8 @@ function renderReports(){
     const search =
         document.getElementById(
             "searchInput"
-        ).value
+        )
+        .value
         .toLowerCase()
         .trim();
 
@@ -4382,13 +3797,15 @@ function renderReports(){
     const status =
         document.getElementById(
             "statusFilter"
-        ).value;
+        )
+        .value;
 
 
     const category =
         document.getElementById(
             "categoryFilter"
-        ).value;
+        )
+        .value;
 
 
     const filtered =
@@ -4418,9 +3835,7 @@ function renderReports(){
 
                 const searchMatch =
                     !search ||
-                    text.includes(
-                        search
-                    );
+                    text.includes(search);
 
 
                 const statusMatch =
@@ -4451,9 +3866,7 @@ function renderReports(){
         );
 
 
-    if(
-        !filtered.length
-    ){
+    if(!filtered.length){
 
         container.innerHTML = `
 
@@ -4507,9 +3920,7 @@ function renderReports(){
 
     container.innerHTML =
         filtered
-            .map(
-                createReportCard
-            )
+            .map(createReportCard)
             .join("");
 
 }
@@ -4519,9 +3930,7 @@ function renderReports(){
    REPORT CARD
 ========================================================= */
 
-function createReportCard(
-    report
-){
+function createReportCard(report){
 
     const index =
         reports.indexOf(
@@ -4555,9 +3964,7 @@ function createReportCard(
             onclick="openReport(${index})"
         >
 
-
             <div class="report-head">
-
 
                 <div class="report-number">
 
@@ -4568,23 +3975,18 @@ function createReportCard(
 
                 </div>
 
-
                 <div
                     class="badge ${statusClass}"
                 >
 
-                    ${escapeHtml(
-                        status
-                    )}
+                    ${escapeHtml(status)}
 
                 </div>
-
 
             </div>
 
 
             <div class="report-body">
-
 
                 <div class="report-title">
 
@@ -4731,7 +4133,6 @@ function createReportCard(
 
             </div>
 
-
         </div>
 
     `;
@@ -4740,20 +4141,44 @@ function createReportCard(
 
 
 /* =========================================================
+   TODAY DATE
+   IMPORTANT TARGET DATE FIX
+========================================================= */
+
+function getTodayDateInput(){
+
+    const now =
+        new Date();
+
+
+    return [
+
+        now.getFullYear(),
+
+        String(
+            now.getMonth() + 1
+        ).padStart(2,"0"),
+
+        String(
+            now.getDate()
+        ).padStart(2,"0")
+
+    ].join("-");
+
+}
+
+
+/* =========================================================
    OPEN REPORT
 ========================================================= */
 
-function openReport(
-    index
-){
+function openReport(index){
 
     const report =
         reports[index];
 
 
-    if(
-        !report
-    ){
+    if(!report){
 
         return;
 
@@ -4765,9 +4190,7 @@ function openReport(
 
 
     if(
-        !visibleReports.includes(
-            report
-        )
+        !visibleReports.includes(report)
     ){
 
         showToast(
@@ -4826,28 +4249,26 @@ function openReport(
 
     document.getElementById(
         "incidentInfo"
-    ).textContent =
+    ).textContent = [
 
-        [
+        "Date: " +
+        formatDisplayDate(
+            report.dateTime ||
+            report.submittedAt
+        ),
 
-            "Date: " +
-            formatDisplayDate(
-                report.dateTime ||
-                report.submittedAt
-            ),
+        "Reporter: " +
+        (
+            report.reporterName ||
+            "-"
+        ),
 
-            "Reporter: " +
-            (
-                report.reporterName ||
-                "-"
-            ),
+        "Submitted: " +
+        formatDisplayDate(
+            report.submittedAt
+        )
 
-            "Submitted: " +
-            formatDisplayDate(
-                report.submittedAt
-            )
-
-        ].join("\n");
+    ].join("\n");
 
 
     document.getElementById(
@@ -4899,12 +4320,55 @@ function openReport(
         "";
 
 
-    document.getElementById(
-        "dueDate"
-    ).value =
+    /* =====================================================
+       TARGET DATE FIX
+    ===================================================== */
+
+    const dueDateInput =
+        document.getElementById(
+            "dueDate"
+        );
+
+
+    const existingDueDate =
         formatDateInput(
             report.dueDate
         );
+
+
+    if(existingDueDate){
+
+        /*
+         Existing Target Date is preserved.
+        */
+
+        dueDateInput.value =
+            existingDueDate;
+
+    }
+
+    else if(isESH()){
+
+        /*
+         No Target Date exists.
+         ESH gets today's date automatically.
+        */
+
+        dueDateInput.value =
+            getTodayDateInput();
+
+    }
+
+    else{
+
+        /*
+         HOD / Maintenance cannot create
+         a new Target Date.
+        */
+
+        dueDateInput.value = "";
+
+    }
 
 
     document.getElementById(
@@ -4945,9 +4409,17 @@ function openReport(
     );
 
 
-    updateCaseOverdue(
-        report
-    );
+    updateCaseOverdue({
+
+        ...report,
+
+        status:status,
+
+        dueDate:
+            dueDateInput.value ||
+            report.dueDate
+
+    });
 
 
     loadPhotos(
@@ -4981,18 +4453,14 @@ function openReport(
 
 function getModalSubtitle(){
 
-    if(
-        isESH()
-    ){
+    if(isESH()){
 
         return "ESH Case Management • Full Control";
 
     }
 
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
         return (
             "HOD Verification • " +
@@ -5002,9 +4470,7 @@ function getModalSubtitle(){
     }
 
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
         return (
             "Maintenance / Engineering • " +
@@ -5023,9 +4489,7 @@ function getModalSubtitle(){
    CASE STATUS OPTIONS
 ========================================================= */
 
-function setupCaseStatusOptions(
-    currentStatus
-){
+function setupCaseStatusOptions(currentStatus){
 
     const select =
         document.getElementById(
@@ -5033,13 +4497,13 @@ function setupCaseStatusOptions(
         );
 
 
-    if(
-        isESH()
-    ){
+    if(isESH()){
 
         select.innerHTML = `
 
-            <option value="New">New</option>
+            <option value="New">
+                New
+            </option>
 
             <option value="Investigation">
                 Investigation
@@ -5064,14 +4528,9 @@ function setupCaseStatusOptions(
     }
 
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             select.innerHTML = `
 
@@ -5123,14 +4582,9 @@ function setupCaseStatusOptions(
     }
 
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             select.innerHTML = `
 
@@ -5186,9 +4640,7 @@ function setupCaseStatusOptions(
    ROLE PERMISSIONS
 ========================================================= */
 
-function applyRolePermissions(
-    status
-){
+function applyRolePermissions(status){
 
     const investigationFields = [
 
@@ -5242,13 +4694,7 @@ function applyRolePermissions(
         );
 
 
-    /* =====================================================
-       ESH
-    ===================================================== */
-
-    if(
-        isESH()
-    ){
+    if(isESH()){
 
         investigationFields.forEach(
             function(id){
@@ -5281,11 +4727,14 @@ function applyRolePermissions(
 
         caseStatus.disabled = false;
 
+
         saveButton.style.display =
             "inline-flex";
 
+
         saveButton.disabled =
             false;
+
 
         saveButton.textContent =
             "Save Case";
@@ -5294,18 +4743,13 @@ function applyRolePermissions(
         verificationLabel.textContent =
             "Verification Remarks";
 
+
         return;
 
     }
 
 
-    /* =====================================================
-       HOD
-    ===================================================== */
-
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
         investigationFields.forEach(
             function(id){
@@ -5346,9 +4790,7 @@ function applyRolePermissions(
             "Verification Remarks";
 
 
-        if(
-            status === "Closed"
-        ){
+        if(status === "Closed"){
 
             saveButton.style.display =
                 "none";
@@ -5373,13 +4815,7 @@ function applyRolePermissions(
     }
 
 
-    /* =====================================================
-       MAINTENANCE
-    ===================================================== */
-
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
         investigationFields.forEach(
             function(id){
@@ -5421,9 +4857,7 @@ function applyRolePermissions(
             "Repair / Completion Remarks";
 
 
-        if(
-            status === "Closed"
-        ){
+        if(status === "Closed"){
 
             saveButton.style.display =
                 "none";
@@ -5452,9 +4886,7 @@ function applyRolePermissions(
    TIMELINE
 ========================================================= */
 
-function updateTimeline(
-    status
-){
+function updateTimeline(status){
 
     const steps = [
 
@@ -5474,12 +4906,8 @@ function updateTimeline(
     const current =
         steps.findIndex(
             step =>
-                normalizeStatus(
-                    step
-                ) ===
-                normalizeStatus(
-                    status
-                )
+                normalizeStatus(step) ===
+                normalizeStatus(status)
         );
 
 
@@ -5496,10 +4924,7 @@ function updateTimeline(
                 );
 
 
-                if(
-                    index <
-                    current
-                ){
+                if(index < current){
 
                     item.classList.add(
                         "completed"
@@ -5507,10 +4932,7 @@ function updateTimeline(
 
                 }
 
-                else if(
-                    index ===
-                    current
-                ){
+                else if(index === current){
 
                     item.classList.add(
                         "active"
@@ -5528,9 +4950,7 @@ function updateTimeline(
    OVERDUE MODAL
 ========================================================= */
 
-function updateCaseOverdue(
-    report
-){
+function updateCaseOverdue(report){
 
     const banner =
         document.getElementById(
@@ -5539,9 +4959,7 @@ function updateCaseOverdue(
 
 
     if(
-        isReportOverdue(
-            report
-        )
+        isReportOverdue(report)
     ){
 
         banner.classList.add(
@@ -5565,9 +4983,7 @@ function updateCaseOverdue(
    DRIVE FILE ID
 ========================================================= */
 
-function extractDriveFileId(
-    url
-){
+function extractDriveFileId(url){
 
     if(!url){
 
@@ -5593,9 +5009,7 @@ function extractDriveFileId(
    PHOTO LIST
 ========================================================= */
 
-function getPhotoList(
-    report
-){
+function getPhotoList(report){
 
     const value =
         report.photos ||
@@ -5605,13 +5019,9 @@ function getPhotoList(
         "";
 
 
-    if(
-        Array.isArray(value)
-    ){
+    if(Array.isArray(value)){
 
-        return value.filter(
-            Boolean
-        );
+        return value.filter(Boolean);
 
     }
 
@@ -5624,28 +5034,18 @@ function getPhotoList(
 
 
     const text =
-        String(
-            value
-        ).trim();
+        String(value).trim();
 
 
     try{
 
         const parsed =
-            JSON.parse(
-                text
-            );
+            JSON.parse(text);
 
 
-        if(
-            Array.isArray(
-                parsed
-            )
-        ){
+        if(Array.isArray(parsed)){
 
-            return parsed.filter(
-                Boolean
-            );
+            return parsed.filter(Boolean);
 
         }
 
@@ -5654,43 +5054,31 @@ function getPhotoList(
     catch(e){}
 
 
-    if(
-        text.includes("\n")
-    ){
+    if(text.includes("\n")){
 
         return text
             .split("\n")
             .map(
-                x =>
-                    x.trim()
+                x => x.trim()
             )
-            .filter(
-                Boolean
-            );
+            .filter(Boolean);
 
     }
 
 
-    if(
-        text.includes(",")
-    ){
+    if(text.includes(",")){
 
         return text
             .split(",")
             .map(
-                x =>
-                    x.trim()
+                x => x.trim()
             )
-            .filter(
-                Boolean
-            );
+            .filter(Boolean);
 
     }
 
 
-    return [
-        text
-    ];
+    return [text];
 
 }
 
@@ -5699,9 +5087,7 @@ function getPhotoList(
    LOAD PHOTOS
 ========================================================= */
 
-function loadPhotos(
-    report
-){
+function loadPhotos(report){
 
     const container =
         document.getElementById(
@@ -5710,14 +5096,10 @@ function loadPhotos(
 
 
     const photos =
-        getPhotoList(
-            report
-        );
+        getPhotoList(report);
 
 
-    if(
-        !photos.length
-    ){
+    if(!photos.length){
 
         container.innerHTML = `
 
@@ -5787,9 +5169,7 @@ function loadPhotos(
    VIDEO
 ========================================================= */
 
-function loadVideo(
-    report
-){
+function loadVideo(report){
 
     const container =
         document.getElementById(
@@ -5815,9 +5195,7 @@ function loadVideo(
 
 
     let videoUrl =
-        String(
-            url
-        );
+        String(url);
 
 
     const id =
@@ -5872,9 +5250,7 @@ function loadVideo(
 
 async function saveReport(){
 
-    if(
-        !selectedReport
-    ){
+    if(!selectedReport){
 
         return;
 
@@ -5903,13 +5279,9 @@ async function saveReport(){
        ROLE VALIDATION
     ===================================================== */
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
-        if(
-            currentStatus === "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             showToast(
                 "Closed cases cannot be modified."
@@ -5921,9 +5293,11 @@ async function saveReport(){
 
 
         if(
-            selectedStatus !== "Verification"
+            selectedStatus !==
+            "Verification"
             &&
-            selectedStatus !== currentStatus
+            selectedStatus !==
+            currentStatus
         ){
 
             showToast(
@@ -5937,13 +5311,9 @@ async function saveReport(){
     }
 
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
-        if(
-            currentStatus === "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             showToast(
                 "Closed cases cannot be modified."
@@ -5955,9 +5325,11 @@ async function saveReport(){
 
 
         if(
-            selectedStatus !== "Verification"
+            selectedStatus !==
+            "Verification"
             &&
-            selectedStatus !== currentStatus
+            selectedStatus !==
+            currentStatus
         ){
 
             showToast(
@@ -5971,11 +5343,30 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       TARGET DATE VALIDATION
+    ===================================================== */
+
+    const dueDateValue =
+        document.getElementById(
+            "dueDate"
+        ).value;
+
+
     if(
-        isESH()
+        isESH() &&
+        !dueDateValue
     ){
 
-        /* Full control */
+        showToast(
+            "Please select a Target Date."
+        );
+
+        document.getElementById(
+            "dueDate"
+        ).focus();
+
+        return;
 
     }
 
@@ -6012,9 +5403,7 @@ async function saveReport(){
             ).value,
 
         dueDate:
-            document.getElementById(
-                "dueDate"
-            ).value,
+            dueDateValue,
 
         verificationRemarks:
             document.getElementById(
@@ -6043,9 +5432,7 @@ async function saveReport(){
        HOD PROTECTION
     ===================================================== */
 
-    if(
-        isHOD()
-    ){
+    if(isHOD()){
 
         data.status =
             selectedStatus;
@@ -6055,30 +5442,37 @@ async function saveReport(){
             selectedReport.investigationFindings ||
             "";
 
+
         data.rootCause =
             selectedReport.rootCause ||
             "";
+
 
         data.correctiveAction =
             selectedReport.correctiveAction ||
             "";
 
+
         data.personResponsible =
             selectedReport.personResponsible ||
             "";
+
 
         data.dueDate =
             formatDateInput(
                 selectedReport.dueDate
             );
 
+
         data.eshInvestigator =
             selectedReport.eshInvestigator ||
             "";
 
+
         data.eshRemarks =
             selectedReport.eshRemarks ||
             "";
+
 
         data.closedDate =
             formatDateInput(
@@ -6092,9 +5486,7 @@ async function saveReport(){
        MAINTENANCE PROTECTION
     ===================================================== */
 
-    if(
-        isMaintenance()
-    ){
+    if(isMaintenance()){
 
         data.status =
             selectedStatus;
@@ -6104,27 +5496,42 @@ async function saveReport(){
             selectedReport.investigationFindings ||
             "";
 
+
         data.rootCause =
             selectedReport.rootCause ||
             "";
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator ||
             "";
 
+
         data.eshRemarks =
             selectedReport.eshRemarks ||
             "";
+
 
         data.closedDate =
             formatDateInput(
                 selectedReport.closedDate
             );
 
+
+        /*
+         * Maintenance keeps the existing Target Date.
+         */
+
+        data.dueDate =
+            formatDateInput(
+                selectedReport.dueDate
+            );
+
     }
 
 
     button.disabled = true;
+
 
     const originalText =
         button.textContent;
@@ -6152,9 +5559,7 @@ async function saveReport(){
                     },
 
                     body:
-                        JSON.stringify(
-                            data
-                        )
+                        JSON.stringify(data)
 
                 }
             );
@@ -6165,8 +5570,7 @@ async function saveReport(){
 
 
         if(
-            result.status ===
-                "success"
+            result.status === "success"
             ||
             result.success === true
         ){
@@ -6175,6 +5579,7 @@ async function saveReport(){
 
 
             showToast(
+
                 isHOD()
                 ?
                 "Solution verification updated successfully."
@@ -6184,6 +5589,7 @@ async function saveReport(){
                 "Repair update saved successfully."
                 :
                 "Case updated successfully."
+
             );
 
 
@@ -6204,9 +5610,7 @@ async function saveReport(){
 
     catch(error){
 
-        console.error(
-            error
-        );
+        console.error(error);
 
 
         showToast(
@@ -6241,9 +5645,7 @@ function closeModal(){
             "caseModal"
         )
         .classList
-        .remove(
-            "show"
-        );
+        .remove("show");
 
 
     selectedReport =
@@ -6251,6 +5653,10 @@ function closeModal(){
 
 }
 
+
+/* =========================================================
+   MODAL BACKGROUND CLICK
+========================================================= */
 
 document
     .getElementById(
@@ -6261,8 +5667,7 @@ document
         function(event){
 
             if(
-                event.target ===
-                this
+                event.target === this
             ){
 
                 closeModal();
@@ -6321,15 +5726,15 @@ function renderTrend(){
 
 
     for(
-        let i=5;
-        i>=0;
+        let i = 5;
+        i >= 0;
         i--
     ){
 
         const date =
             new Date(
                 now.getFullYear(),
-                now.getMonth()-i,
+                now.getMonth() - i,
                 1
             );
 
@@ -6362,12 +5767,12 @@ function renderTrend(){
                         d &&
 
                         d.getFullYear() ===
-                            date.getFullYear()
+                        date.getFullYear()
 
                         &&
 
                         d.getMonth() ===
-                            date.getMonth()
+                        date.getMonth()
 
                     );
 
@@ -6379,9 +5784,7 @@ function renderTrend(){
     }
 
 
-    if(
-        trendChart
-    ){
+    if(trendChart){
 
         trendChart.destroy();
 
@@ -6393,29 +5796,23 @@ function renderTrend(){
             canvas,
             {
 
-                type:
-                    "line",
+                type:"line",
 
                 data:{
 
-                    labels:
-                        labels,
+                    labels:labels,
 
                     datasets:[
 
                         {
 
-                            label:
-                                "Reports",
+                            label:"Reports",
 
-                            data:
-                                values,
+                            data:values,
 
-                            tension:
-                                .35,
+                            tension:.35,
 
-                            fill:
-                                true
+                            fill:true
 
                         }
 
@@ -6425,18 +5822,15 @@ function renderTrend(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            display:
-                                false
+                            display:false
 
                         }
 
@@ -6448,8 +5842,7 @@ function renderTrend(){
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba"
+                                color:"#8fa4ba"
 
                             },
 
@@ -6464,16 +5857,13 @@ function renderTrend(){
 
                         y:{
 
-                            beginAtZero:
-                                true,
+                            beginAtZero:true,
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba",
+                                color:"#8fa4ba",
 
-                                precision:
-                                    0
+                                precision:0
 
                             },
 
@@ -6536,9 +5926,7 @@ function renderCategory(){
     );
 
 
-    if(
-        categoryChart
-    ){
+    if(categoryChart){
 
         categoryChart.destroy();
 
@@ -6550,24 +5938,19 @@ function renderCategory(){
             canvas,
             {
 
-                type:
-                    "doughnut",
+                type:"doughnut",
 
                 data:{
 
                     labels:
-                        Object.keys(
-                            map
-                        ),
+                        Object.keys(map),
 
                     datasets:[
 
                         {
 
                             data:
-                                Object.values(
-                                    map
-                                )
+                                Object.values(map)
 
                         }
 
@@ -6577,29 +5960,23 @@ function renderCategory(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            position:
-                                "bottom",
+                            position:"bottom",
 
                             labels:{
 
-                                color:
-                                    "#a9bbce",
+                                color:"#a9bbce",
 
-                                boxWidth:
-                                    12,
+                                boxWidth:12,
 
-                                padding:
-                                    12
+                                padding:12
 
                             }
 
@@ -6655,9 +6032,7 @@ function renderDepartment(){
     );
 
 
-    if(
-        departmentChart
-    ){
+    if(departmentChart){
 
         departmentChart.destroy();
 
@@ -6669,27 +6044,21 @@ function renderDepartment(){
             canvas,
             {
 
-                type:
-                    "bar",
+                type:"bar",
 
                 data:{
 
                     labels:
-                        Object.keys(
-                            map
-                        ),
+                        Object.keys(map),
 
                     datasets:[
 
                         {
 
-                            label:
-                                "Reports",
+                            label:"Reports",
 
                             data:
-                                Object.values(
-                                    map
-                                )
+                                Object.values(map)
 
                         }
 
@@ -6699,18 +6068,15 @@ function renderDepartment(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            display:
-                                false
+                            display:false
 
                         }
 
@@ -6722,15 +6088,13 @@ function renderDepartment(){
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba"
+                                color:"#8fa4ba"
 
                             },
 
                             grid:{
 
-                                display:
-                                    false
+                                display:false
 
                             }
 
@@ -6738,16 +6102,13 @@ function renderDepartment(){
 
                         y:{
 
-                            beginAtZero:
-                                true,
+                            beginAtZero:true,
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba",
+                                color:"#8fa4ba",
 
-                                precision:
-                                    0
+                                precision:0
 
                             },
 
@@ -6774,9 +6135,7 @@ function renderDepartment(){
    STATUS
 ========================================================= */
 
-function normalizeStatus(
-    status
-){
+function normalizeStatus(status){
 
     const value =
         String(
@@ -6797,9 +6156,7 @@ function normalizeStatus(
 
 
     if(
-        value.includes(
-            "investigation"
-        )
+        value.includes("investigation")
     ){
 
         return "Investigation";
@@ -6808,9 +6165,7 @@ function normalizeStatus(
 
 
     if(
-        value.includes(
-            "corrective"
-        )
+        value.includes("corrective")
     ){
 
         return "Corrective Action";
@@ -6819,9 +6174,7 @@ function normalizeStatus(
 
 
     if(
-        value.includes(
-            "verification"
-        )
+        value.includes("verification")
     ){
 
         return "Verification";
@@ -6848,14 +6201,10 @@ function normalizeStatus(
    STATUS CLASS
 ========================================================= */
 
-function getStatusClass(
-    status
-){
+function getStatusClass(status){
 
     switch(
-        normalizeStatus(
-            status
-        )
+        normalizeStatus(status)
     ){
 
         case "New":
@@ -6894,11 +6243,10 @@ function getStatusClass(
 
 /* =========================================================
    DATE PARSER
+   IMPROVED FOR GOOGLE SHEETS
 ========================================================= */
 
-function parseDate(
-    value
-){
+function parseDate(value){
 
     if(!value){
 
@@ -6907,9 +6255,7 @@ function parseDate(
     }
 
 
-    if(
-        value instanceof Date
-    ){
+    if(value instanceof Date){
 
         return isNaN(
             value.getTime()
@@ -6923,9 +6269,7 @@ function parseDate(
 
 
     const text =
-        String(
-            value
-        ).trim();
+        String(value).trim();
 
 
     if(!text){
@@ -6935,10 +6279,74 @@ function parseDate(
     }
 
 
-    const date =
-        new Date(
-            text
+    /*
+     * YYYY-MM-DD
+     */
+
+    let match =
+        text.match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
         );
+
+
+    if(match){
+
+        const d =
+            new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            );
+
+
+        return isNaN(
+            d.getTime()
+        )
+        ?
+        null
+        :
+        d;
+
+    }
+
+
+    /*
+     * DD/MM/YYYY
+     */
+
+    match =
+        text.match(
+            /^(\d{1,2})\/(\d{1,2})\/(\d{4})/
+        );
+
+
+    if(match){
+
+        const d =
+            new Date(
+                Number(match[3]),
+                Number(match[2]) - 1,
+                Number(match[1])
+            );
+
+
+        return isNaN(
+            d.getTime()
+        )
+        ?
+        null
+        :
+        d;
+
+    }
+
+
+    /*
+     * Google Apps Script date strings
+     */
+
+    const date =
+        new Date(text);
 
 
     if(
@@ -6961,14 +6369,34 @@ function parseDate(
    DATE INPUT
 ========================================================= */
 
-function formatDateInput(
-    value
-){
+function formatDateInput(value){
+
+    if(!value){
+
+        return "";
+
+    }
+
+
+    /*
+     * Already YYYY-MM-DD
+     */
+
+    const text =
+        String(value).trim();
+
+
+    if(
+        /^\d{4}-\d{2}-\d{2}$/.test(text)
+    ){
+
+        return text;
+
+    }
+
 
     const date =
-        parseDate(
-            value
-        );
+        parseDate(value);
 
 
     if(!date){
@@ -6983,18 +6411,12 @@ function formatDateInput(
         date.getFullYear(),
 
         String(
-            date.getMonth()+1
-        ).padStart(
-            2,
-            "0"
-        ),
+            date.getMonth() + 1
+        ).padStart(2,"0"),
 
         String(
             date.getDate()
-        ).padStart(
-            2,
-            "0"
-        )
+        ).padStart(2,"0")
 
     ].join("-");
 
@@ -7005,14 +6427,10 @@ function formatDateInput(
    DISPLAY DATE
 ========================================================= */
 
-function formatDisplayDate(
-    value
-){
+function formatDisplayDate(value){
 
     const date =
-        parseDate(
-            value
-        );
+        parseDate(value);
 
 
     if(!date){
@@ -7026,14 +6444,11 @@ function formatDisplayDate(
         "en-MY",
         {
 
-            day:
-                "2-digit",
+            day:"2-digit",
 
-            month:
-                "short",
+            month:"short",
 
-            year:
-                "numeric"
+            year:"numeric"
 
         }
     );
@@ -7045,9 +6460,7 @@ function formatDisplayDate(
    SECURITY
 ========================================================= */
 
-function escapeHtml(
-    value
-){
+function escapeHtml(value){
 
     return String(
         value ?? ""
@@ -7076,9 +6489,7 @@ function escapeHtml(
 }
 
 
-function escapeAttribute(
-    value
-){
+function escapeAttribute(value){
 
     return String(
         value ?? ""
@@ -7114,9 +6525,7 @@ function escapeAttribute(
 let toastTimer = null;
 
 
-function showToast(
-    message
-){
+function showToast(message){
 
     const toast =
         document.getElementById(
@@ -7170,9 +6579,7 @@ document
             );
 
 
-            if(
-                selectedReport
-            ){
+            if(selectedReport){
 
                 updateCaseOverdue({
 
@@ -7195,7 +6602,7 @@ document
 
 
 /* =========================================================
-   DUE DATE CHANGE
+   TARGET DATE CHANGE
 ========================================================= */
 
 document
@@ -7206,9 +6613,7 @@ document
         "change",
         function(){
 
-            if(
-                selectedReport
-            ){
+            if(selectedReport){
 
                 updateCaseOverdue({
 
@@ -7231,7 +6636,7 @@ document
 
 
 /* =========================================================
-   ESCAPE
+   ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
@@ -7239,8 +6644,7 @@ document.addEventListener(
     function(event){
 
         if(
-            event.key ===
-            "Escape"
+            event.key === "Escape"
         ){
 
             closeModal();
@@ -7263,6 +6667,7 @@ setInterval(
     },
     30000
 );
+
 
 </script>
 
