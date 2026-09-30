@@ -14,10 +14,6 @@
 
 <style>
 
-/* =========================================================
-   RESET
-========================================================= */
-
 *{
     box-sizing:border-box;
     margin:0;
@@ -6247,12 +6243,66 @@ function loadVideo(report){
 
 
 /* =========================================================
+   GET SELECTED REPORT NUMBER
+   FIX FOR "REPORT NUMBER REQUIRED"
+========================================================= */
+
+function getSelectedReportNumber(){
+
+    if(!selectedReport){
+
+        return "";
+
+    }
+
+
+    return String(
+
+        selectedReport.reportNumber ||
+
+        selectedReport.reportNo ||
+
+        selectedReport.report_number ||
+
+        ""
+
+    ).trim();
+
+}
+
+
+/* =========================================================
    SAVE REPORT
+   UPDATED
 ========================================================= */
 
 async function saveReport(){
 
     if(!selectedReport){
+
+        showToast(
+            "Please open a report first."
+        );
+
+        return;
+
+    }
+
+
+    const reportNumber =
+        getSelectedReportNumber();
+
+
+    if(!reportNumber){
+
+        console.error(
+            "UPDATE ERROR: selectedReport has no report number:",
+            selectedReport
+        );
+
+        showToast(
+            "Report Number Required"
+        );
 
         return;
 
@@ -6353,8 +6403,11 @@ async function saveReport(){
 
         action:"updateReport",
 
+        reportNumber:
+            reportNumber,
+
         rowNumber:
-            selectedReport.rowNumber,
+            selectedReport.rowNumber || "",
 
         status:
             selectedStatus,
@@ -6570,11 +6623,32 @@ async function saveReport(){
 
 /* =========================================================
    AUTO SAVE DATE FIELD
+   UPDATED
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
 
     if(!selectedReport){
+
+        return;
+
+    }
+
+
+    const reportNumber =
+        getSelectedReportNumber();
+
+
+    if(!reportNumber){
+
+        console.error(
+            "DATE UPDATE ERROR: selectedReport has no report number:",
+            selectedReport
+        );
+
+        showToast(
+            "Report Number Required"
+        );
 
         return;
 
@@ -6651,8 +6725,11 @@ async function autoSaveDateField(fieldType){
 
         action:"updateReport",
 
+        reportNumber:
+            reportNumber,
+
         rowNumber:
-            selectedReport.rowNumber,
+            selectedReport.rowNumber || "",
 
         status:
             document.getElementById(
@@ -6796,6 +6873,10 @@ async function autoSaveDateField(fieldType){
                 data.closedDate;
 
 
+            const oldRowNumber =
+                selectedReport.rowNumber;
+
+
             await loadReports();
 
 
@@ -6804,10 +6885,23 @@ async function autoSaveDateField(fieldType){
                     function(report){
 
                         return String(
-                            report.rowNumber
+                            report.reportNumber ||
+                            ""
+                        ).trim() ===
+                        reportNumber;
+
+                    }
+                ) ||
+                reports.find(
+                    function(report){
+
+                        return String(
+                            report.rowNumber ||
+                            ""
                         ) ===
                         String(
-                            selectedReport.rowNumber
+                            oldRowNumber ||
+                            ""
                         );
 
                     }
