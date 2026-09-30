@@ -389,6 +389,34 @@ body{
 
 
 /* =========================================================
+   ROLE DISPLAY
+========================================================= */
+
+.role-display{
+
+    font-size:10px;
+
+    color:#78aaff;
+
+    background:
+        rgba(72,139,255,.10);
+
+    border:
+        1px solid
+        rgba(72,139,255,.18);
+
+    padding:
+        6px 9px;
+
+    border-radius:6px;
+
+    font-weight:800;
+
+    letter-spacing:.4px;
+}
+
+
+/* =========================================================
    CONTENT
 ========================================================= */
 
@@ -1027,6 +1055,14 @@ body{
 
     background:
         #347cf0;
+}
+
+
+.btn:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
 }
 
 
@@ -1712,6 +1748,18 @@ body{
 }
 
 
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+    background:#07111d;
+}
+
+
 /* =========================================================
    PHOTOS
 ========================================================= */
@@ -2160,6 +2208,13 @@ body{
 
     <div class="topbar-right">
 
+        <div
+            class="role-display"
+            id="userRoleDisplay"
+        >
+            ESH
+        </div>
+
         <div class="status-dot"></div>
 
         <div class="status-text">
@@ -2192,7 +2247,10 @@ body{
         ESH Management Dashboard
     </div>
 
-    <div class="hero-subtitle">
+    <div
+        class="hero-subtitle"
+        id="heroSubtitle"
+    >
         Near Miss reporting, investigation, corrective action and case closure control center.
     </div>
 
@@ -2226,12 +2284,8 @@ body{
     </div>
 
 
-    <!-- KPI -->
-
     <div class="kpi-grid">
 
-
-        <!-- TOTAL -->
 
         <div
             class="kpi"
@@ -2256,8 +2310,6 @@ body{
         </div>
 
 
-        <!-- NEW -->
-
         <div
             class="kpi"
             onclick="filterKPI('New')"
@@ -2280,8 +2332,6 @@ body{
 
         </div>
 
-
-        <!-- INVESTIGATION -->
 
         <div
             class="kpi yellow"
@@ -2306,8 +2356,6 @@ body{
         </div>
 
 
-        <!-- CORRECTIVE -->
-
         <div
             class="kpi orange"
             onclick="filterKPI('Corrective Action')"
@@ -2330,8 +2378,6 @@ body{
 
         </div>
 
-
-        <!-- VERIFICATION -->
 
         <div
             class="kpi purple"
@@ -2356,8 +2402,6 @@ body{
         </div>
 
 
-        <!-- CLOSED -->
-
         <div
             class="kpi green"
             onclick="filterKPI('Closed')"
@@ -2380,8 +2424,6 @@ body{
 
         </div>
 
-
-        <!-- OVERDUE -->
 
         <div
             class="kpi red"
@@ -2431,7 +2473,7 @@ body{
             </div>
 
             <div class="section-subtitle">
-                Cases requiring ESH attention
+                Cases requiring attention
             </div>
 
         </div>
@@ -2648,7 +2690,10 @@ body{
                 ESH Reports
             </div>
 
-            <div class="section-subtitle">
+            <div
+                class="section-subtitle"
+                id="reportsSubtitle"
+            >
                 ESH case management
             </div>
 
@@ -3138,7 +3183,7 @@ body{
 
     <div class="form-group">
 
-        <label>
+        <label id="verificationRemarksLabel">
             Verification Remarks
         </label>
 
@@ -3281,15 +3326,47 @@ let departmentChart = null;
 
 
 /* =========================================================
-   LOGIN
+   CURRENT USER / ROLE
+========================================================= */
+
+const CURRENT_ROLE =
+    sessionStorage.getItem("userRole") || "";
+
+const CURRENT_USERNAME =
+    sessionStorage.getItem("username") || "";
+
+const CURRENT_DEPARTMENT =
+    sessionStorage.getItem("department") || "";
+
+
+/* =========================================================
+   LOGIN GUARD
 ========================================================= */
 
 (function(){
 
-    if(
+    const loggedIn =
         sessionStorage.getItem(
-            "eshLoggedIn"
-        ) !== "true"
+            "loggedIn"
+        );
+
+
+    const role =
+        sessionStorage.getItem(
+            "userRole"
+        );
+
+
+    const validRoles = [
+        "ESH",
+        "HOD",
+        "MAINTENANCE"
+    ];
+
+
+    if(
+        loggedIn !== "true" ||
+        !validRoles.includes(role)
     ){
 
         window.location.replace(
@@ -3312,14 +3389,241 @@ let departmentChart = null;
 
 
 /* =========================================================
+   ROLE HELPERS
+========================================================= */
+
+function isESH(){
+
+    return CURRENT_ROLE === "ESH";
+
+}
+
+
+function isHOD(){
+
+    return CURRENT_ROLE === "HOD";
+
+}
+
+
+function isMaintenance(){
+
+    return CURRENT_ROLE === "MAINTENANCE";
+
+}
+
+
+/* =========================================================
+   VISIBLE REPORTS
+========================================================= */
+
+function getVisibleReports(){
+
+    if(
+        isESH()
+    ){
+
+        return reports;
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        const currentDepartment =
+            String(
+                CURRENT_DEPARTMENT
+            )
+            .trim()
+            .toLowerCase();
+
+
+        return reports.filter(
+            function(report){
+
+                const department =
+                    String(
+                        report.department ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                return (
+                    department ===
+                    currentDepartment
+                );
+
+            }
+        );
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        return reports.filter(
+            function(report){
+
+                const status =
+                    normalizeStatus(
+                        report.status
+                    );
+
+
+                return (
+                    status ===
+                        "Corrective Action"
+                    ||
+                    status ===
+                        "Verification"
+                );
+
+            }
+        );
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
+   ROLE DISPLAY
+========================================================= */
+
+function setupRoleDisplay(){
+
+    const display =
+        document.getElementById(
+            "userRoleDisplay"
+        );
+
+
+    const hero =
+        document.getElementById(
+            "heroSubtitle"
+        );
+
+
+    const reportsSubtitle =
+        document.getElementById(
+            "reportsSubtitle"
+        );
+
+
+    if(
+        isESH()
+    ){
+
+        if(display){
+
+            display.textContent =
+                "ESH • FULL CONTROL";
+
+        }
+
+
+        if(hero){
+
+            hero.textContent =
+                "Near Miss reporting, investigation, corrective action, verification and case closure control center.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "ESH case management • Full access";
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        if(display){
+
+            display.textContent =
+                "HOD • " +
+                CURRENT_DEPARTMENT;
+        }
+
+
+        if(hero){
+
+            hero.textContent =
+                "Department near miss monitoring and corrective action verification.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "Reports for " +
+                CURRENT_DEPARTMENT +
+                " • Verification access";
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        if(display){
+
+            display.textContent =
+                "MAINTENANCE • ENGINEERING";
+
+        }
+
+
+        if(hero){
+
+            hero.textContent =
+                "Corrective action and repair completion management.";
+
+        }
+
+
+        if(reportsSubtitle){
+
+            reportsSubtitle.textContent =
+                "Corrective action reports • Repair update access";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
    LOGOUT
 ========================================================= */
 
 function logout(){
 
-    sessionStorage.removeItem(
-        "eshLoggedIn"
-    );
+    sessionStorage.clear();
 
 
     window.location.replace(
@@ -3336,6 +3640,8 @@ function logout(){
 document.addEventListener(
     "DOMContentLoaded",
     function(){
+
+        setupRoleDisplay();
 
         loadReports();
 
@@ -3460,8 +3766,12 @@ async function loadReports(){
 
 function updateDashboard(){
 
+    const visible =
+        getVisibleReports();
+
+
     const total =
-        reports.length;
+        visible.length;
 
 
     const newCount =
@@ -3568,7 +3878,7 @@ function countStatus(
     status
 ){
 
-    return reports.filter(
+    return getVisibleReports().filter(
         function(report){
 
             return normalizeStatus(
@@ -3652,7 +3962,7 @@ function isReportOverdue(
 
 function calculateOverdue(){
 
-    return reports.filter(
+    return getVisibleReports().filter(
         isReportOverdue
     ).length;
 
@@ -3758,8 +4068,6 @@ function filterKPI(
     ).value = "";
 
 
-    /* TOTAL */
-
     if(
         filter === "ALL"
     ){
@@ -3778,8 +4086,6 @@ function filterKPI(
     }
 
 
-    /* OVERDUE */
-
     if(
         filter === "OVERDUE"
     ){
@@ -3797,8 +4103,6 @@ function filterKPI(
 
     }
 
-
-    /* STATUS */
 
     document.getElementById(
         "statusFilter"
@@ -3885,7 +4189,7 @@ function renderOverdueReports(){
 
 
     const filtered =
-        reports.filter(
+        getVisibleReports().filter(
             function(report){
 
                 return isReportOverdue(
@@ -4000,7 +4304,7 @@ function populateCategoryFilter(){
         [
             ...new Set(
 
-                reports
+                getVisibleReports()
                     .map(
                         r =>
                             String(
@@ -4088,7 +4392,7 @@ function renderReports(){
 
 
     const filtered =
-        reports.filter(
+        getVisibleReports().filter(
             function(report){
 
                 const text = [
@@ -4414,7 +4718,15 @@ function createReportCard(
                     ?
                     "⚠ OVERDUE ACTION"
                     :
+                    isESH()
+                    ?
                     "Open case for ESH management"
+                    :
+                    isHOD()
+                    ?
+                    "Open case for verification"
+                    :
+                    "Open case for corrective action update"
                 }
 
             </div>
@@ -4435,12 +4747,12 @@ function openReport(
     index
 ){
 
-    selectedReport =
+    const report =
         reports[index];
 
 
     if(
-        !selectedReport
+        !report
     ){
 
         return;
@@ -4448,8 +4760,27 @@ function openReport(
     }
 
 
-    const report =
-        selectedReport;
+    const visibleReports =
+        getVisibleReports();
+
+
+    if(
+        !visibleReports.includes(
+            report
+        )
+    ){
+
+        showToast(
+            "You do not have access to this report."
+        );
+
+        return;
+
+    }
+
+
+    selectedReport =
+        report;
 
 
     document.getElementById(
@@ -4462,7 +4793,7 @@ function openReport(
     document.getElementById(
         "modalSubtitle"
     ).textContent =
-        "ESH Case Management";
+        getModalSubtitle();
 
 
     document.getElementById(
@@ -4598,6 +4929,11 @@ function openReport(
         "New";
 
 
+    setupCaseStatusOptions(
+        status
+    );
+
+
     document.getElementById(
         "caseStatus"
     ).value =
@@ -4624,12 +4960,490 @@ function openReport(
     );
 
 
+    applyRolePermissions(
+        status
+    );
+
+
     document
         .getElementById(
             "caseModal"
         )
         .classList
         .add("show");
+
+}
+
+
+/* =========================================================
+   MODAL SUBTITLE
+========================================================= */
+
+function getModalSubtitle(){
+
+    if(
+        isESH()
+    ){
+
+        return "ESH Case Management • Full Control";
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        return (
+            "HOD Verification • " +
+            CURRENT_DEPARTMENT
+        );
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        return (
+            "Maintenance / Engineering • " +
+            "Corrective Action Update"
+        );
+
+    }
+
+
+    return "ESH Case Management";
+
+}
+
+
+/* =========================================================
+   CASE STATUS OPTIONS
+========================================================= */
+
+function setupCaseStatusOptions(
+    currentStatus
+){
+
+    const select =
+        document.getElementById(
+            "caseStatus"
+        );
+
+
+    if(
+        isESH()
+    ){
+
+        select.innerHTML = `
+
+            <option value="New">New</option>
+
+            <option value="Investigation">
+                Investigation
+            </option>
+
+            <option value="Corrective Action">
+                Corrective Action
+            </option>
+
+            <option value="Verification">
+                Verification
+            </option>
+
+            <option value="Closed">
+                Closed
+            </option>
+
+        `;
+
+        return;
+
+    }
+
+
+    if(
+        isHOD()
+    ){
+
+        if(
+            currentStatus ===
+            "Closed"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+            `;
+
+        }
+
+        else if(
+            currentStatus ===
+            "Verification"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        else{
+
+            select.innerHTML = `
+
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
+                    ${escapeHtml(
+                        currentStatus
+                    )}
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        return;
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        if(
+            currentStatus ===
+            "Closed"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+            `;
+
+        }
+
+        else if(
+            currentStatus ===
+            "Verification"
+        ){
+
+            select.innerHTML = `
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        else{
+
+            select.innerHTML = `
+
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
+                    ${escapeHtml(
+                        currentStatus
+                    )}
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   ROLE PERMISSIONS
+========================================================= */
+
+function applyRolePermissions(
+    status
+){
+
+    const investigationFields = [
+
+        "investigationFindings",
+
+        "rootCause",
+
+        "eshInvestigator",
+
+        "eshRemarks"
+
+    ];
+
+
+    const correctiveFields = [
+
+        "correctiveAction",
+
+        "personResponsible",
+
+        "dueDate"
+
+    ];
+
+
+    const verificationField =
+        "verificationRemarks";
+
+
+    const closedDate =
+        document.getElementById(
+            "closedDate"
+        );
+
+
+    const caseStatus =
+        document.getElementById(
+            "caseStatus"
+        );
+
+
+    const saveButton =
+        document.getElementById(
+            "saveButton"
+        );
+
+
+    const verificationLabel =
+        document.getElementById(
+            "verificationRemarksLabel"
+        );
+
+
+    /* =====================================================
+       ESH
+    ===================================================== */
+
+    if(
+        isESH()
+    ){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = false;
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = false;
+
+            }
+        );
+
+
+        document.getElementById(
+            verificationField
+        ).disabled = false;
+
+
+        closedDate.disabled = false;
+
+        caseStatus.disabled = false;
+
+        saveButton.style.display =
+            "inline-flex";
+
+        saveButton.disabled =
+            false;
+
+        saveButton.textContent =
+            "Save Case";
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       HOD
+    ===================================================== */
+
+    if(
+        isHOD()
+    ){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        closedDate.disabled = true;
+
+
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
+
+
+        caseStatus.disabled =
+            status === "Closed";
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        if(
+            status === "Closed"
+        ){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Verify Solution";
+
+        }
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       MAINTENANCE
+    ===================================================== */
+
+    if(
+        isMaintenance()
+    ){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
+        );
+
+
+        closedDate.disabled = true;
+
+
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
+
+
+        caseStatus.disabled =
+            status === "Closed";
+
+
+        verificationLabel.textContent =
+            "Repair / Completion Remarks";
+
+
+        if(
+            status === "Closed"
+        ){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+            saveButton.disabled =
+                false;
+
+            saveButton.textContent =
+                "Save Repair Update";
+
+        }
+
+    }
 
 }
 
@@ -5073,6 +5887,99 @@ async function saveReport(){
         );
 
 
+    const currentStatus =
+        normalizeStatus(
+            selectedReport.status
+        );
+
+
+    const selectedStatus =
+        document.getElementById(
+            "caseStatus"
+        ).value;
+
+
+    /* =====================================================
+       ROLE VALIDATION
+    ===================================================== */
+
+    if(
+        isHOD()
+    ){
+
+        if(
+            currentStatus === "Closed"
+        ){
+
+            showToast(
+                "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus !== "Verification"
+            &&
+            selectedStatus !== currentStatus
+        ){
+
+            showToast(
+                "HOD can only verify the solution."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        isMaintenance()
+    ){
+
+        if(
+            currentStatus === "Closed"
+        ){
+
+            showToast(
+                "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus !== "Verification"
+            &&
+            selectedStatus !== currentStatus
+        ){
+
+            showToast(
+                "Maintenance can update corrective action and move the case to Verification."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(
+        isESH()
+    ){
+
+        /* Full control */
+
+    }
+
+
     const data = {
 
         action:
@@ -5082,9 +5989,7 @@ async function saveReport(){
             selectedReport.rowNumber,
 
         status:
-            document.getElementById(
-                "caseStatus"
-            ).value,
+            selectedStatus,
 
         investigationFindings:
             document.getElementById(
@@ -5134,7 +6039,96 @@ async function saveReport(){
     };
 
 
+    /* =====================================================
+       HOD PROTECTION
+    ===================================================== */
+
+    if(
+        isHOD()
+    ){
+
+        data.status =
+            selectedStatus;
+
+
+        data.investigationFindings =
+            selectedReport.investigationFindings ||
+            "";
+
+        data.rootCause =
+            selectedReport.rootCause ||
+            "";
+
+        data.correctiveAction =
+            selectedReport.correctiveAction ||
+            "";
+
+        data.personResponsible =
+            selectedReport.personResponsible ||
+            "";
+
+        data.dueDate =
+            formatDateInput(
+                selectedReport.dueDate
+            );
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator ||
+            "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks ||
+            "";
+
+        data.closedDate =
+            formatDateInput(
+                selectedReport.closedDate
+            );
+
+    }
+
+
+    /* =====================================================
+       MAINTENANCE PROTECTION
+    ===================================================== */
+
+    if(
+        isMaintenance()
+    ){
+
+        data.status =
+            selectedStatus;
+
+
+        data.investigationFindings =
+            selectedReport.investigationFindings ||
+            "";
+
+        data.rootCause =
+            selectedReport.rootCause ||
+            "";
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator ||
+            "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks ||
+            "";
+
+        data.closedDate =
+            formatDateInput(
+                selectedReport.closedDate
+            );
+
+    }
+
+
     button.disabled = true;
+
+    const originalText =
+        button.textContent;
+
 
     button.textContent =
         "Saving...";
@@ -5181,6 +6175,14 @@ async function saveReport(){
 
 
             showToast(
+                isHOD()
+                ?
+                "Solution verification updated successfully."
+                :
+                isMaintenance()
+                ?
+                "Repair update saved successfully."
+                :
                 "Case updated successfully."
             );
 
@@ -5221,7 +6223,7 @@ async function saveReport(){
 
 
         button.textContent =
-            "Save Case";
+            originalText;
 
     }
 
@@ -5305,6 +6307,10 @@ function renderTrend(){
     }
 
 
+    const visible =
+        getVisibleReports();
+
+
     const now =
         new Date();
 
@@ -5341,7 +6347,7 @@ function renderTrend(){
 
         values.push(
 
-            reports.filter(
+            visible.filter(
                 function(report){
 
                     const d =
@@ -5512,7 +6518,7 @@ function renderCategory(){
     const map = {};
 
 
-    reports.forEach(
+    getVisibleReports().forEach(
         function(report){
 
             const category =
@@ -5631,7 +6637,7 @@ function renderDepartment(){
     const map = {};
 
 
-    reports.forEach(
+    getVisibleReports().forEach(
         function(report){
 
             const department =
