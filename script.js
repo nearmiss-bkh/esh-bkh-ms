@@ -583,18 +583,6 @@ function readVideo(file) {
                         );
 
 
-                    // =========================================
-                    // IMPORTANT FIX
-                    //
-                    // Backend expects:
-                    //
-                    // video.base64
-                    // video.type
-                    // video.name
-                    //
-                    // NOT video.data
-                    // =========================================
-
                     resolve({
 
                         base64:
@@ -682,10 +670,6 @@ else {
         "submit",
         async function (event) {
 
-            // =============================================
-            // STOP NORMAL HTML FORM SUBMISSION
-            // =============================================
-
             event.preventDefault();
 
             event.stopPropagation();
@@ -697,10 +681,6 @@ else {
                 "SUBMIT EVENT DETECTED"
             );
 
-
-            // =============================================
-            // BUTTON
-            // =============================================
 
             const submitButton =
                 form.querySelector(
@@ -718,10 +698,6 @@ else {
 
             }
 
-
-            // =============================================
-            // STATUS MESSAGE
-            // =============================================
 
             if (successMessage) {
 
@@ -754,10 +730,6 @@ else {
                     selectedFiles.length
                 );
 
-
-                // =========================================
-                // CHECK PHOTO LIMIT
-                // =========================================
 
                 if (
                     selectedFiles.length >
@@ -794,10 +766,6 @@ else {
                     );
 
 
-                    // =====================================
-                    // CHECK PHOTO SIZE
-                    // =====================================
-
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -812,10 +780,6 @@ else {
                     }
 
 
-                    // =====================================
-                    // STATUS
-                    // =====================================
-
                     if (successMessage) {
 
                         successMessage.innerHTML =
@@ -828,19 +792,11 @@ else {
                     }
 
 
-                    // =====================================
-                    // COMPRESS
-                    // =====================================
-
                     const compressed =
                         await compressPhoto(
                             photo
                         );
 
-
-                    // =====================================
-                    // PHOTO OBJECT
-                    // =====================================
 
                     photos.push({
 
@@ -866,35 +822,10 @@ else {
                 }
 
 
-                // =========================================
-                // PHOTO DEBUG INFORMATION
-                // =========================================
-
                 console.log(
                     "TOTAL PHOTOS PROCESSED:",
                     photos.length
                 );
-
-
-                if (photos.length > 0) {
-
-                    console.log(
-                        "FIRST PHOTO DATA:",
-                        {
-                            name:
-                                photos[0].name,
-
-                            type:
-                                photos[0].type,
-
-                            base64Length:
-                                photos[0].base64
-                                    ? photos[0].base64.length
-                                    : 0
-                        }
-                    );
-
-                }
 
 
                 // =========================================
@@ -922,10 +853,6 @@ else {
                     );
 
 
-                    // =====================================
-                    // CHECK VIDEO TYPE
-                    // =====================================
-
                     if (
                         !selectedVideo.type.startsWith(
                             "video/"
@@ -939,10 +866,6 @@ else {
                     }
 
 
-                    // =====================================
-                    // CHECK VIDEO SIZE
-                    // =====================================
-
                     if (
                         selectedVideo.size >
                         MAX_VIDEO_SIZE
@@ -955,10 +878,6 @@ else {
                     }
 
 
-                    // =====================================
-                    // STATUS
-                    // =====================================
-
                     if (successMessage) {
 
                         successMessage.innerHTML =
@@ -966,10 +885,6 @@ else {
 
                     }
 
-
-                    // =====================================
-                    // READ VIDEO
-                    // =====================================
 
                     video =
                         await readVideo(
@@ -982,38 +897,11 @@ else {
                     );
 
 
-                    // =====================================
-                    // IMPORTANT FIX
-                    // Backend expects video.base64
-                    // =====================================
-
                     console.log(
                         "Video Base64 length:",
                         video && video.base64
                             ? video.base64.length
                             : 0
-                    );
-
-
-                    console.log(
-                        "Video object:",
-                        {
-                            name:
-                                video
-                                    ? video.name
-                                    : "",
-
-                            type:
-                                video
-                                    ? video.type
-                                    : "",
-
-                            base64Length:
-                                video &&
-                                video.base64
-                                    ? video.base64.length
-                                    : 0
-                        }
                     );
 
                 }
@@ -1025,29 +913,13 @@ else {
 
                 const report = {
 
-                    // =====================================
-                    // ACTION
-                    // =====================================
-
                     action:
                         "saveReport",
-
-
-                    // =====================================
-                    // FORM DATA
-                    // =====================================
 
                     dateTime:
                         getValue(
                             "dateTime"
                         ),
-
-
-                    // =====================================
-                    // LOCATION
-                    //
-                    // Maximum 500 characters
-                    // =====================================
 
                     location:
                         getValue(
@@ -1057,68 +929,40 @@ else {
                             MAX_LOCATION_LENGTH
                         ),
 
-
                     department:
                         getValue(
                             "department"
                         ),
-
 
                     hazardCategory:
                         getValue(
                             "hazardCategory"
                         ),
 
-
                     whatHappened:
                         getValue(
                             "whatHappened"
                         ),
-
 
                     reporterName:
                         getValue(
                             "reporterName"
                         ),
 
-
-                    // =====================================
-                    // PHOTOS
-                    // =====================================
-
                     photos:
                         photos,
-
-
-                    // =====================================
-                    // VIDEO
-                    // =====================================
 
                     video:
                         video,
 
-
-                    // =====================================
-                    // STATUS
-                    // =====================================
-
                     status:
                         "New",
-
-
-                    // =====================================
-                    // SUBMISSION TIME
-                    // =====================================
 
                     submittedAt:
                         new Date().toISOString()
 
                 };
 
-
-                // =========================================
-                // IMPORTANT DEBUG
-                // =========================================
 
                 console.log(
                     "REPORT READY FULL:",
@@ -1128,76 +972,8 @@ else {
                 );
 
 
-                console.log(
-                    "REPORT PHOTO COUNT:",
-                    report.photos.length
-                );
-
-
-                console.log(
-                    "REPORT LOCATION LENGTH:",
-                    report.location.length
-                );
-
-
-                if (
-                    report.photos.length > 0
-                ) {
-
-                    console.log(
-                        "REPORT FIRST PHOTO:",
-                        {
-                            name:
-                                report.photos[0].name,
-
-                            type:
-                                report.photos[0].type,
-
-                            base64Length:
-                                report.photos[0].base64
-                                    ? report.photos[0].base64.length
-                                    : 0
-                        }
-                    );
-
-                }
-
-
                 // =========================================
-                // VIDEO DEBUG
-                // =========================================
-
-                if (report.video) {
-
-                    console.log(
-                        "REPORT VIDEO:",
-                        {
-                            name:
-                                report.video.name,
-
-                            type:
-                                report.video.type,
-
-                            base64Length:
-                                report.video.base64
-                                    ? report.video.base64.length
-                                    : 0
-                        }
-                    );
-
-                }
-
-                else {
-
-                    console.log(
-                        "REPORT VIDEO: NONE"
-                    );
-
-                }
-
-
-                // =========================================
-                // SEND TO GOOGLE APPS SCRIPT
+                // SEND REPORT
                 // =========================================
 
                 if (successMessage) {
@@ -1206,11 +982,6 @@ else {
                         "<strong>☁️ Sending report...</strong>";
 
                 }
-
-
-                console.log(
-                    "Sending report to Google Apps Script..."
-                );
 
 
                 const response =
@@ -1240,19 +1011,11 @@ else {
                     );
 
 
-                // =========================================
-                // SERVER STATUS
-                // =========================================
-
                 console.log(
                     "SERVER STATUS:",
                     response.status
                 );
 
-
-                // =========================================
-                // READ RESPONSE
-                // =========================================
 
                 const responseText =
                     await response.text();
@@ -1263,10 +1026,6 @@ else {
                     responseText
                 );
 
-
-                // =========================================
-                // PARSE JSON
-                // =========================================
 
                 let result;
 
@@ -1295,10 +1054,6 @@ else {
                 }
 
 
-                // =========================================
-                // CHECK SERVER SUCCESS
-                // =========================================
-
                 if (
                     !result ||
                     result.success !== true
@@ -1313,10 +1068,6 @@ else {
                 }
 
 
-                // =========================================
-                // GET PERMANENT REPORT NUMBER
-                // =========================================
-
                 const assignedReportNumber =
                     result.reportNumber;
 
@@ -1327,29 +1078,17 @@ else {
                 );
 
 
-                // =========================================
-                // PHOTO RESULT
-                // =========================================
-
                 console.log(
                     "SERVER SAVED PHOTOS:",
                     result.photos
                 );
 
 
-                // =========================================
-                // VIDEO RESULT
-                // =========================================
-
                 console.log(
                     "SERVER SAVED VIDEO:",
                     result.video
                 );
 
-
-                // =========================================
-                // SUCCESS MESSAGE
-                // =========================================
 
                 if (successMessage) {
 
@@ -1386,16 +1125,8 @@ else {
                 );
 
 
-                // =========================================
-                // CLEAR FORM ONLY AFTER SUCCESS
-                // =========================================
-
                 form.reset();
 
-
-                // =========================================
-                // RESET PHOTO INFORMATION
-                // =========================================
 
                 if (photoCount) {
 
@@ -1405,10 +1136,6 @@ else {
                 }
 
 
-                // =========================================
-                // RESET VIDEO INFORMATION
-                // =========================================
-
                 if (videoInfo) {
 
                     videoInfo.textContent =
@@ -1417,18 +1144,10 @@ else {
                 }
 
 
-                // =========================================
-                // RESET DATE/TIME
-                // =========================================
-
                 setMalaysiaDateTime();
 
             }
 
-
-            // =============================================
-            // ERROR
-            // =============================================
 
             catch (error) {
 
@@ -1453,10 +1172,6 @@ else {
             }
 
 
-            // =============================================
-            // FINALLY
-            // =============================================
-
             finally {
 
                 if (submitButton) {
@@ -1478,9 +1193,498 @@ else {
 
 
 // =====================================================
+// CORRECTIVE ACTION PHOTO UPLOAD
+// =====================================================
+//
+// IMPORTANT
+//
+// This function matches the current Code.gs:
+//
+// uploadCorrectivePhoto(data)
+//
+// Backend expects:
+//
+// {
+//     action: "uploadCorrectivePhoto",
+//     reportNumber: "...",
+//     photo: {
+//         base64: "...",
+//         type: "...",
+//         name: "..."
+//     }
+// }
+//
+// =====================================================
+
+async function uploadCorrectiveActionPhoto(
+    reportNumber,
+    file
+) {
+
+    console.log(
+        "=========================================="
+    );
+
+    console.log(
+        "CORRECTIVE ACTION PHOTO UPLOAD START"
+    );
+
+    console.log(
+        "Report Number:",
+        reportNumber
+    );
+
+    console.log(
+        "File:",
+        file
+    );
+
+
+    // =================================================
+    // CHECK REPORT NUMBER
+    // =================================================
+
+    if (
+        !reportNumber ||
+        String(reportNumber).trim() === ""
+    ) {
+
+        throw new Error(
+            "Report Number Required."
+        );
+
+    }
+
+
+    reportNumber =
+        String(
+            reportNumber
+        ).trim();
+
+
+    // =================================================
+    // CHECK FILE
+    // =================================================
+
+    if (!file) {
+
+        throw new Error(
+            "Please select a corrective action photo."
+        );
+
+    }
+
+
+    // =================================================
+    // CHECK IMAGE TYPE
+    // =================================================
+
+    if (
+        !file.type ||
+        !file.type.startsWith("image/")
+    ) {
+
+        throw new Error(
+            "Please select an image file."
+        );
+
+    }
+
+
+    // =================================================
+    // CHECK FILE SIZE
+    // =================================================
+
+    if (
+        file.size >
+        MAX_PHOTO_SIZE
+    ) {
+
+        throw new Error(
+            "Corrective action photo is larger than 10 MB."
+        );
+
+    }
+
+
+    console.log(
+        "Corrective photo selected:",
+        file.name,
+        file.size,
+        file.type
+    );
+
+
+    // =================================================
+    // COMPRESS PHOTO
+    // =================================================
+
+    console.log(
+        "Compressing corrective action photo..."
+    );
+
+
+    const compressed =
+        await compressPhoto(
+            file
+        );
+
+
+    console.log(
+        "Corrective photo compressed."
+    );
+
+
+    console.log(
+        "Base64 length:",
+        compressed.data
+            ? compressed.data.length
+            : 0
+    );
+
+
+    // =================================================
+    // IMPORTANT
+    //
+    // Code.gs expects:
+    //
+    // data.photo.base64
+    //
+    // NOT:
+    //
+    // data.photo.data
+    //
+    // =================================================
+
+    const payload = {
+
+        action:
+            "uploadCorrectivePhoto",
+
+        reportNumber:
+            reportNumber,
+
+        photo: {
+
+            base64:
+                compressed.data,
+
+            type:
+                compressed.type,
+
+            name:
+                compressed.name
+
+        }
+
+    };
+
+
+    // =================================================
+    // DEBUG
+    // =================================================
+
+    console.log(
+        "CORRECTIVE PHOTO PAYLOAD:",
+        {
+
+            action:
+                payload.action,
+
+            reportNumber:
+                payload.reportNumber,
+
+            photoName:
+                payload.photo.name,
+
+            photoType:
+                payload.photo.type,
+
+            base64Length:
+                payload.photo.base64
+                    ? payload.photo.base64.length
+                    : 0
+
+        }
+    );
+
+
+    // =================================================
+    // CHECK BASE64 BEFORE SENDING
+    // =================================================
+
+    if (
+        !payload.photo ||
+        !payload.photo.base64
+    ) {
+
+        throw new Error(
+            "Corrective photo Base64 data is empty."
+        );
+
+    }
+
+
+    // =================================================
+    // SEND TO GOOGLE APPS SCRIPT
+    // =================================================
+
+    console.log(
+        "Sending corrective action photo..."
+    );
+
+
+    const response =
+        await fetch(
+            GOOGLE_SCRIPT_URL,
+            {
+
+                method:
+                    "POST",
+
+                redirect:
+                    "follow",
+
+                headers: {
+
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+
+                },
+
+                body:
+                    JSON.stringify(
+                        payload
+                    )
+
+            }
+        );
+
+
+    console.log(
+        "CORRECTIVE PHOTO SERVER STATUS:",
+        response.status
+    );
+
+
+    // =================================================
+    // READ RESPONSE
+    // =================================================
+
+    const responseText =
+        await response.text();
+
+
+    console.log(
+        "CORRECTIVE PHOTO SERVER RESPONSE:",
+        responseText
+    );
+
+
+    // =================================================
+    // PARSE RESPONSE
+    // =================================================
+
+    let result;
+
+
+    try {
+
+        result =
+            JSON.parse(
+                responseText
+            );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Corrective photo JSON error:",
+            error
+        );
+
+
+        throw new Error(
+            "Server did not return valid JSON."
+        );
+
+    }
+
+
+    // =================================================
+    // CHECK RESULT
+    // =================================================
+
+    if (
+        !result ||
+        result.success !== true
+    ) {
+
+        throw new Error(
+            result.error ||
+            result.message ||
+            "Corrective action photo upload failed."
+        );
+
+    }
+
+
+    // =================================================
+    // SUCCESS
+    // =================================================
+
+    console.log(
+        "=========================================="
+    );
+
+    console.log(
+        "CORRECTIVE ACTION PHOTO UPLOADED"
+    );
+
+    console.log(
+        "Report Number:",
+        reportNumber
+    );
+
+    console.log(
+        "Photo URL:",
+        result.photoUrl
+    );
+
+    console.log(
+        "Row Number:",
+        result.rowNumber
+    );
+
+    console.log(
+        "=========================================="
+    );
+
+
+    return result;
+
+}
+
+
+// =====================================================
+// ALIAS
+// =====================================================
+//
+// This allows your Dashboard to call either:
+//
+// uploadCorrectiveActionPhoto()
+// or
+// uploadCorrectivePhoto()
+//
+// =====================================================
+
+async function uploadCorrectivePhoto(
+    reportNumber,
+    file
+) {
+
+    return await uploadCorrectiveActionPhoto(
+        reportNumber,
+        file
+    );
+
+}
+
+
+// =====================================================
+// HELPER:
+// UPLOAD CORRECTIVE PHOTO FROM INPUT
+// =====================================================
+//
+// Example:
+//
+// uploadCorrectivePhotoFromInput(
+//     "NM-2026-0001",
+//     "correctivePhoto"
+// );
+//
+// =====================================================
+
+async function uploadCorrectivePhotoFromInput(
+    reportNumber,
+    inputId
+) {
+
+    try {
+
+        const input =
+            document.getElementById(
+                inputId
+            );
+
+
+        if (!input) {
+
+            throw new Error(
+                "Corrective action photo input was not found."
+            );
+
+        }
+
+
+        if (
+            !input.files ||
+            input.files.length === 0
+        ) {
+
+            throw new Error(
+                "Please select a corrective action photo."
+            );
+
+        }
+
+
+        const file =
+            input.files[0];
+
+
+        const result =
+            await uploadCorrectiveActionPhoto(
+                reportNumber,
+                file
+            );
+
+
+        console.log(
+            "Corrective action photo uploaded successfully:",
+            result
+        );
+
+
+        return result;
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "CORRECTIVE PHOTO UPLOAD ERROR:",
+            error
+        );
+
+
+        throw error;
+
+    }
+
+}
+
+
+// =====================================================
 // END OF SCRIPT
 // =====================================================
 
 console.log(
     "NEAR MISS REPORTING SYSTEM READY"
+);
+
+console.log(
+    "Corrective action photo uploader ready."
 );
