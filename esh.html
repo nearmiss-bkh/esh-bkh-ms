@@ -1697,6 +1697,42 @@ input[type="date"]:disabled{
 
 
 /* =========================================================
+   CORRECTIVE ACTION PHOTO UPLOAD
+========================================================= */
+
+.corrective-photo-upload{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    margin-bottom:14px;
+}
+
+.corrective-photo-upload input[type="file"]{
+
+    flex:1;
+
+    min-width:220px;
+}
+
+.corrective-photo-note{
+
+    width:100%;
+
+    font-size:12px;
+
+    color:#8fa4ba;
+
+    margin-top:-4px;
+}
+
+
+/* =========================================================
    VIDEO
 ========================================================= */
 
@@ -2937,6 +2973,46 @@ input[type="date"]:disabled{
     </div>
 
     <div id="videoEvidence"></div>
+
+</div>
+
+
+<!-- CORRECTIVE ACTION PHOTO EVIDENCE -->
+
+<div class="modal-section full">
+
+    <div class="modal-section-title">
+        Corrective Action Photo Evidence
+    </div>
+
+    <div class="corrective-photo-upload">
+
+        <input
+            type="file"
+            id="correctivePhotoInput"
+            accept="image/*"
+            multiple
+        >
+
+        <button
+            type="button"
+            class="btn btn-primary"
+            id="uploadCorrectivePhotosBtn"
+            onclick="uploadCorrectivePhotos()"
+        >
+            Upload Photos
+        </button>
+
+        <div class="corrective-photo-note">
+            Multiple photos are allowed. These photos are stored as corrective-action evidence for this report.
+        </div>
+
+    </div>
+
+    <div
+        class="photo-grid"
+        id="correctivePhotoEvidence"
+    ></div>
 
 </div>
 
@@ -4801,6 +4877,11 @@ function openReport(
     );
 
 
+    loadCorrectiveActionPhotos(
+        report
+    );
+
+
     loadVideo(
         report
     );
@@ -5088,10 +5169,6 @@ function applyRolePermissions(
         );
 
 
-    /* =====================================================
-       ESH
-    ===================================================== */
-
     if(
         isESH()
     ){
@@ -5151,10 +5228,6 @@ function applyRolePermissions(
     }
 
 
-    /* =====================================================
-       HOD
-    ===================================================== */
-
     if(
         isHOD()
     ){
@@ -5180,11 +5253,6 @@ function applyRolePermissions(
             }
         );
 
-
-        /*
-           HOD can edit Target Date and Closed Date
-           while case is not Closed.
-        */
 
         targetDate.disabled =
             status === "Closed";
@@ -5235,10 +5303,6 @@ function applyRolePermissions(
     }
 
 
-    /* =====================================================
-       MAINTENANCE
-    ===================================================== */
-
     if(
         isMaintenance()
     ){
@@ -5265,11 +5329,6 @@ function applyRolePermissions(
             }
         );
 
-
-        /*
-           Maintenance can edit Target Date and Closed Date
-           while case is not Closed.
-        */
 
         targetDate.disabled =
             status === "Closed";
@@ -5656,6 +5715,573 @@ function loadPhotos(
 
 
 /* =========================================================
+   CORRECTIVE ACTION PHOTO LIST
+========================================================= */
+
+function getCorrectivePhotoList(
+    report
+){
+
+    const value =
+        report.correctiveActionPhotos ||
+        "";
+
+
+    if(
+        Array.isArray(value)
+    ){
+
+        return value.filter(Boolean);
+
+    }
+
+
+    if(!value){
+
+        return [];
+
+    }
+
+
+    const text =
+        String(
+            value
+        ).trim();
+
+
+    try{
+
+        const parsed =
+            JSON.parse(
+                text
+            );
+
+
+        if(
+            Array.isArray(
+                parsed
+            )
+        ){
+
+            return parsed.filter(
+                Boolean
+            );
+
+        }
+
+    }
+
+    catch(e){}
+
+
+    return text
+        .split(/\r?\n/)
+        .map(
+            function(x){
+                return x.trim();
+            }
+        )
+        .filter(Boolean);
+
+}
+
+
+/* =========================================================
+   LOAD CORRECTIVE ACTION PHOTOS
+========================================================= */
+
+function loadCorrectiveActionPhotos(
+    report
+){
+
+    const container =
+        document.getElementById(
+            "correctivePhotoEvidence"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    const photos =
+        getCorrectivePhotoList(
+            report
+        );
+
+
+    if(
+        !photos.length
+    ){
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No corrective action photos uploaded.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        photos
+            .map(
+                function(url){
+
+                    const id =
+                        extractDriveFileId(
+                            url
+                        );
+
+
+                    const src =
+                        id
+                        ?
+                        "https://drive.google.com/thumbnail?id=" +
+                        id +
+                        "&sz=w1000"
+                        :
+                        url;
+
+
+                    return `
+
+                        <div
+                            class="photo-card"
+                        >
+
+                            <img
+                                src="${escapeAttribute(src)}"
+                                alt="Corrective Action Evidence"
+                                loading="lazy"
+                                onclick="
+                                    event.stopPropagation();
+                                    window.open(
+                                        '${escapeAttribute(url)}',
+                                        '_blank'
+                                    )
+                                "
+                            >
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   COMPRESS IMAGE
+========================================================= */
+
+function compressImageForUpload(
+    file,
+    maxSize = 1600,
+    quality = 0.82
+){
+
+    return new Promise(
+        function(resolve,reject){
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function(event){
+
+                    const img =
+                        new Image();
+
+
+                    img.onload =
+                        function(){
+
+                            let width =
+                                img.width;
+
+                            let height =
+                                img.height;
+
+
+                            const scale =
+                                Math.min(
+                                    1,
+                                    maxSize /
+                                    Math.max(
+                                        width,
+                                        height
+                                    )
+                                );
+
+
+                            width =
+                                Math.round(
+                                    width *
+                                    scale
+                                );
+
+
+                            height =
+                                Math.round(
+                                    height *
+                                    scale
+                                );
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            canvas.width =
+                                width;
+
+
+                            canvas.height =
+                                height;
+
+
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+
+                            const dataUrl =
+                                canvas.toDataURL(
+                                    "image/jpeg",
+                                    quality
+                                );
+
+
+                            const originalName =
+                                String(
+                                    file.name ||
+                                    "corrective-action-photo"
+                                )
+                                .replace(
+                                    /\.[^.]+$/,
+                                    ""
+                                );
+
+
+                            resolve({
+
+                                base64:
+                                    dataUrl,
+
+                                mimeType:
+                                    "image/jpeg",
+
+                                fileName:
+                                    originalName +
+                                    ".jpg"
+
+                            });
+
+                        };
+
+
+                    img.onerror =
+                        reject;
+
+
+                    img.src =
+                        event.target.result;
+
+                };
+
+
+            reader.onerror =
+                reject;
+
+
+            reader.readAsDataURL(
+                file
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   UPLOAD CORRECTIVE ACTION PHOTOS
+========================================================= */
+
+async function uploadCorrectivePhotos(){
+
+    if(
+        !selectedReport
+    ){
+
+        showToast(
+            "Please open a report first."
+        );
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "correctivePhotoInput"
+        );
+
+
+    const button =
+        document.getElementById(
+            "uploadCorrectivePhotosBtn"
+        );
+
+
+    if(
+        !input ||
+        !input.files ||
+        !input.files.length
+    ){
+
+        showToast(
+            "Please select at least one photo."
+        );
+
+        return;
+
+    }
+
+
+    const files =
+        Array.from(
+            input.files
+        );
+
+
+    const reportNumber =
+        selectedReport.reportNumber;
+
+
+    if(!reportNumber){
+
+        showToast(
+            "Report number is missing."
+        );
+
+        return;
+
+    }
+
+
+    const originalText =
+        button.textContent;
+
+
+    button.disabled =
+        true;
+
+
+    let uploaded =
+        0;
+
+
+    try{
+
+        for(
+            let i = 0;
+            i < files.length;
+            i++
+        ){
+
+            button.textContent =
+                "Uploading " +
+                (i + 1) +
+                " of " +
+                files.length +
+                "...";
+
+
+            const prepared =
+                await compressImageForUpload(
+                    files[i]
+                );
+
+
+            const response =
+                await fetch(
+                    GOOGLE_SCRIPT_URL,
+                    {
+
+                        method:
+                            "POST",
+
+                        headers:{
+
+                            "Content-Type":
+                                "text/plain;charset=utf-8"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                action:
+                                    "uploadCorrectivePhoto",
+
+                                reportNumber:
+                                    reportNumber,
+
+                                fileName:
+                                    prepared.fileName,
+
+                                mimeType:
+                                    prepared.mimeType,
+
+                                base64:
+                                    prepared.base64
+
+                            })
+
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if(
+                result.status ===
+                    "success"
+                ||
+                result.success === true
+            ){
+
+                uploaded++;
+
+            }
+
+            else{
+
+                throw new Error(
+                    result.message ||
+                    "Upload failed."
+                );
+
+            }
+
+        }
+
+
+        input.value = "";
+
+
+        await loadReports();
+
+
+        const refreshed =
+            reports.find(
+                function(report){
+
+                    return String(
+                        report.reportNumber
+                    ) ===
+                    String(
+                        reportNumber
+                    );
+
+                }
+            );
+
+
+        if(refreshed){
+
+            selectedReport =
+                refreshed;
+
+
+            loadCorrectiveActionPhotos(
+                refreshed
+            );
+
+        }
+
+
+        showToast(
+            uploaded +
+            " corrective action photo(s) uploaded successfully."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        if(
+            uploaded > 0
+        ){
+
+            showToast(
+                uploaded +
+                " photo(s) uploaded. " +
+                "The remaining upload failed: " +
+                error.message
+            );
+
+        }
+
+        else{
+
+            showToast(
+                "Photo upload failed: " +
+                error.message
+            );
+
+        }
+
+    }
+
+    finally{
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            originalText;
+
+    }
+
+}
+
+
+/* =========================================================
    VIDEO
 ========================================================= */
 
@@ -5791,11 +6417,6 @@ async function saveReport(){
 
         }
 
-
-        /*
-           HOD is NOT allowed to close a case.
-           Only ESH can close the case.
-        */
 
         if(
             selectedStatus === "Closed"
@@ -5954,9 +6575,6 @@ async function saveReport(){
             selectedReport.personResponsible ||
             "";
 
-        /*
-           Keep current Target Date.
-        */
 
         data.dueDate =
             document.getElementById(
@@ -5972,9 +6590,6 @@ async function saveReport(){
             selectedReport.eshRemarks ||
             "";
 
-        /*
-           Keep selected Closed Date.
-        */
 
         data.closedDate =
             document.getElementById(
@@ -6012,19 +6627,12 @@ async function saveReport(){
             selectedReport.eshRemarks ||
             "";
 
-        /*
-           Keep current Target Date.
-        */
 
         data.dueDate =
             document.getElementById(
                 "dueDate"
             ).value;
 
-
-        /*
-           Keep selected Closed Date.
-        */
 
         data.closedDate =
             document.getElementById(
@@ -6350,11 +6958,6 @@ async function autoSaveDateField(
     }
 
 
-    /*
-       Explicitly keep BOTH date values selected
-       in the form.
-    */
-
     data.dueDate =
         document.getElementById(
             "dueDate"
@@ -6404,10 +7007,6 @@ async function autoSaveDateField(
             result.success === true
         ){
 
-            /*
-               Update local object.
-            */
-
             selectedReport.dueDate =
                 data.dueDate;
 
@@ -6416,17 +7015,8 @@ async function autoSaveDateField(
                 data.closedDate;
 
 
-            /*
-               Refresh dashboard.
-            */
-
             await loadReports();
 
-
-            /*
-               Re-select the same report after refresh
-               so the modal stays open.
-            */
 
             const refreshed =
                 reports.find(
@@ -6448,6 +7038,7 @@ async function autoSaveDateField(
                 selectedReport =
                     refreshed;
 
+
                 document.getElementById(
                     "dueDate"
                 ).value =
@@ -6455,12 +7046,14 @@ async function autoSaveDateField(
                         refreshed.dueDate
                     );
 
+
                 document.getElementById(
                     "closedDate"
                 ).value =
                     formatDateInput(
                         refreshed.closedDate
                     );
+
 
                 updateCaseOverdue(
                     refreshed
