@@ -27,7 +27,6 @@ body {
     overflow: hidden;
 }
 
-/* Background grid */
 body::before {
     content: "";
     position: fixed;
@@ -39,7 +38,6 @@ body::before {
     pointer-events: none;
 }
 
-/* Glow */
 .glow {
     position: fixed;
     width: 350px;
@@ -62,7 +60,6 @@ body::before {
     right: -100px;
 }
 
-/* Main */
 .container {
     width: 100%;
     max-width: 460px;
@@ -71,7 +68,6 @@ body::before {
     z-index: 2;
 }
 
-/* Logo area */
 .logo-area {
     text-align: center;
     margin-bottom: 25px;
@@ -133,7 +129,6 @@ body::before {
     margin-top: 7px;
 }
 
-/* Login card */
 .card {
     background: rgba(8, 22, 38, 0.82);
     border: 1px solid rgba(92, 190, 220, 0.20);
@@ -164,7 +159,6 @@ body::before {
     box-shadow: 0 0 12px #00e6a0;
 }
 
-/* Labels */
 label {
     display: block;
     color: #a9bbca;
@@ -174,7 +168,6 @@ label {
     letter-spacing: 0.8px;
 }
 
-/* Inputs */
 .input-group {
     position: relative;
     margin-bottom: 20px;
@@ -203,7 +196,6 @@ input::placeholder {
     color: #536b7d;
 }
 
-/* Password button */
 .password-wrap input {
     padding-right: 55px;
 }
@@ -221,7 +213,6 @@ input::placeholder {
     font-weight: 700;
 }
 
-/* Login button */
 .login-btn {
     width: 100%;
     height: 54px;
@@ -246,7 +237,6 @@ input::placeholder {
     transform: translateY(0);
 }
 
-/* Error */
 .error {
     display: none;
     margin-top: 15px;
@@ -259,7 +249,6 @@ input::placeholder {
     font-size: 12px;
 }
 
-/* Footer */
 .footer {
     text-align: center;
     margin-top: 22px;
@@ -272,7 +261,6 @@ input::placeholder {
     color: #6f899b;
 }
 
-/* Security line */
 .security {
     margin-top: 20px;
     padding-top: 18px;
@@ -337,18 +325,26 @@ input::placeholder {
         <form id="loginForm">
 
             <div class="input-group">
-                <label for="username">USERNAME</label>
+
+                <label for="username">
+                    USERNAME
+                </label>
+
                 <input
                     type="text"
                     id="username"
-                    placeholder="Enter ESH username"
+                    placeholder="Enter username"
                     autocomplete="username"
                     required
                 >
+
             </div>
 
             <div class="input-group password-wrap">
-                <label for="password">PASSWORD</label>
+
+                <label for="password">
+                    PASSWORD
+                </label>
 
                 <input
                     type="password"
@@ -365,6 +361,7 @@ input::placeholder {
                 >
                     SHOW
                 </button>
+
             </div>
 
             <button
@@ -391,16 +388,69 @@ input::placeholder {
     </div>
 
     <div class="footer">
-        <strong>NEAR MISS MANAGEMENT SYSTEM</strong><br>
+
+        <strong>
+            NEAR MISS MANAGEMENT SYSTEM
+        </strong>
+
+        <br>
+
         Bidor Kwong Heng • ESH Department
+
     </div>
 
 </div>
 
+
 <script>
 
-const USERNAME = "ESHadminbkh";
-const PASSWORD = "ESHbkh@2026";
+/* ==========================================
+   USER ACCOUNTS
+   ========================================== */
+
+const USERS = {
+
+    /* ESH ADMIN */
+
+    eshadmin: {
+        password: "esh@bkh2026",
+        role: "ESH",
+        department: "ESH"
+    },
+
+
+    /* PRODUCTION OP HOD */
+
+    prodadminop: {
+        password: "op@bkh2026",
+        role: "HOD",
+        department: "Production OP"
+    },
+
+
+    /* PRODUCTION NP HOD */
+
+    prodadminnp: {
+        password: "np@bkh2026",
+        role: "HOD",
+        department: "Production NP"
+    },
+
+
+    /* MAINTENANCE / ENGINEERING */
+
+    engineeringadmin: {
+        password: "eng@bkh2026",
+        role: "MAINTENANCE",
+        department: "Maintenance / Engineering"
+    }
+
+};
+
+
+/* ==========================================
+   SHOW / HIDE PASSWORD
+   ========================================== */
 
 function togglePassword() {
 
@@ -410,63 +460,158 @@ function togglePassword() {
     const button =
         document.querySelector(".show-password");
 
+
     if (password.type === "password") {
 
         password.type = "text";
+
         button.textContent = "HIDE";
 
-    } else {
+    }
+
+    else {
 
         password.type = "password";
+
         button.textContent = "SHOW";
 
     }
+
 }
+
+
+/* ==========================================
+   LOGIN
+   ========================================== */
 
 document
     .getElementById("loginForm")
-    .addEventListener("submit", function(event) {
+    .addEventListener(
+        "submit",
+        function(event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const username =
-            document
-                .getElementById("username")
-                .value
-                .trim();
 
-        const password =
-            document
-                .getElementById("password")
-                .value;
+            /* Get username */
 
-        const error =
-            document.getElementById("errorMessage");
+            const username =
+                document
+                    .getElementById("username")
+                    .value
+                    .trim()
+                    .toLowerCase();
 
-        if (
-            username === USERNAME &&
-            password === PASSWORD
-        ) {
+
+            /* Get password */
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            /* Error message */
+
+            const error =
+                document
+                    .getElementById("errorMessage");
+
+
+            /* Find user */
+
+            const user =
+                USERS[username];
+
+
+            /* Check login */
+
+            if (
+                !user ||
+                user.password !== password
+            ) {
+
+                error.textContent =
+                    "Invalid username or password.";
+
+                error.style.display =
+                    "block";
+
+
+                setTimeout(
+                    function() {
+
+                        error.style.display =
+                            "none";
+
+                    },
+                    3000
+                );
+
+
+                return;
+
+            }
+
+
+            /* ======================================
+               LOGIN SUCCESS
+               ====================================== */
+
+            sessionStorage.clear();
+
+
+            /* Login status */
 
             sessionStorage.setItem(
-                "eshLoggedIn",
+                "loggedIn",
                 "true"
             );
+
+
+            /* Username */
+
+            sessionStorage.setItem(
+                "username",
+                username
+            );
+
+
+            /* User role */
+
+            sessionStorage.setItem(
+                "userRole",
+                user.role
+            );
+
+
+            /* Department */
+
+            sessionStorage.setItem(
+                "department",
+                user.department
+            );
+
+
+            /* Compatibility with existing ESH dashboard */
+
+            if (user.role === "ESH") {
+
+                sessionStorage.setItem(
+                    "eshLoggedIn",
+                    "true"
+                );
+
+            }
+
+
+            /* Open dashboard */
 
             window.location.href =
                 "esh.html";
 
-        } else {
-
-            error.style.display = "block";
-
-            setTimeout(function() {
-                error.style.display = "none";
-            }, 3000);
-
         }
-
-    });
+    );
 
 </script>
 
