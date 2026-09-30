@@ -3479,6 +3479,7 @@ document.addEventListener(
 
 /* =========================================================
    LOAD REPORTS
+   FIXED - PRESERVE ALL CASE DETAILS
 ========================================================= */
 
 async function loadReports(){
@@ -3492,7 +3493,6 @@ async function loadReports(){
                 Date.now()
             );
 
-
         if(!response.ok){
 
             throw new Error(
@@ -3502,14 +3502,19 @@ async function loadReports(){
 
         }
 
-
         const data =
             await response.json();
 
 
+        /* =====================================================
+           GET REPORT ARRAY
+        ===================================================== */
+
+        let rawReports = [];
+
         if(Array.isArray(data)){
 
-            reports = data;
+            rawReports = data;
 
         }
 
@@ -3518,7 +3523,7 @@ async function loadReports(){
             Array.isArray(data.reports)
         ){
 
-            reports = data.reports;
+            rawReports = data.reports;
 
         }
 
@@ -3527,16 +3532,217 @@ async function loadReports(){
             Array.isArray(data.data)
         ){
 
-            reports = data.data;
+            rawReports = data.data;
 
         }
 
-        else{
 
-            reports = [];
+        /* =====================================================
+           NORMALIZE REPORT DATA
+           KEEP ALL FIELDS FROM GOOGLE SHEET
+        ===================================================== */
 
-        }
+        reports =
+            rawReports.map(function(report){
 
+                return {
+
+                    /* ================================
+                       BASIC REPORT INFORMATION
+                    ================================= */
+
+                    reportNumber:
+                        report.reportNumber ||
+                        report.reportNo ||
+                        "",
+
+                    rowNumber:
+                        report.rowNumber ||
+                        "",
+
+                    dateTime:
+                        report.dateTime ||
+                        "",
+
+                    location:
+                        report.location ||
+                        "",
+
+                    department:
+                        report.department ||
+                        "",
+
+                    hazardCategory:
+                        report.hazardCategory ||
+                        report.category ||
+                        "",
+
+                    whatHappened:
+                        report.whatHappened ||
+                        "",
+
+                    reporterName:
+                        report.reporterName ||
+                        "",
+
+
+                    /* ================================
+                       ORIGINAL PHOTOS / VIDEO
+                    ================================= */
+
+                    photos:
+                        report.photos ||
+                        "",
+
+                    video:
+                        report.video ||
+                        "",
+
+
+                    /* ================================
+                       STATUS
+                    ================================= */
+
+                    status:
+                        report.status ||
+                        "New",
+
+
+                    /* ================================
+                       ESH INVESTIGATION
+                    ================================= */
+
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
+
+                    rootCause:
+                        report.rootCause ||
+                        "",
+
+                    eshInvestigator:
+                        report.eshInvestigator ||
+                        "",
+
+                    eshRemarks:
+                        report.eshRemarks ||
+                        "",
+
+
+                    /* ================================
+                       CORRECTIVE ACTION
+                    ================================= */
+
+                    correctiveAction:
+                        report.correctiveAction ||
+                        "",
+
+                    personResponsible:
+                        report.personResponsible ||
+                        report.responsiblePerson ||
+                        "",
+
+                    dueDate:
+                        report.dueDate ||
+                        report.targetDate ||
+                        "",
+
+
+                    /* ================================
+                       VERIFICATION
+                    ================================= */
+
+                    verificationRemarks:
+                        report.verificationRemarks ||
+                        report.verification ||
+                        "",
+
+
+                    /* ================================
+                       CLOSURE
+                    ================================= */
+
+                    closedDate:
+                        report.closedDate ||
+                        report.completionDate ||
+                        "",
+
+                    closedBy:
+                        report.closedBy ||
+                        "",
+
+                    remarks:
+                        report.remarks ||
+                        "",
+
+
+                    /* ================================
+                       SUBMISSION
+                    ================================= */
+
+                    submittedAt:
+                        report.submittedAt ||
+                        "",
+
+
+                    /* ================================
+                       CORRECTIVE ACTION PHOTOS
+                    ================================= */
+
+                    correctiveActionPhotos:
+                        report.correctiveActionPhotos ||
+                        "",
+
+
+                    /* ================================
+                       KEEP ALIASES TOO
+                       FOR EXISTING FUNCTIONS
+                    ================================= */
+
+                    eshAction:
+                        report.eshAction ||
+                        report.investigationFindings ||
+                        "",
+
+                    responsiblePerson:
+                        report.responsiblePerson ||
+                        report.personResponsible ||
+                        "",
+
+                    targetDate:
+                        report.targetDate ||
+                        report.dueDate ||
+                        "",
+
+                    completionDate:
+                        report.completionDate ||
+                        report.closedDate ||
+                        "",
+
+                    verification:
+                        report.verification ||
+                        report.verificationRemarks ||
+                        ""
+
+                };
+
+            });
+
+
+        /* =====================================================
+           DEBUG
+        ===================================================== */
+
+        console.log(
+            "REPORTS LOADED:",
+            reports
+        );
+
+
+        /* =====================================================
+           UPDATE DASHBOARD
+        ===================================================== */
 
         updateDashboard();
 
@@ -3546,11 +3752,15 @@ async function loadReports(){
 
         renderAnalytics();
 
+
     }
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "LOAD REPORTS ERROR:",
+            error
+        );
 
         document.getElementById(
             "reportsGrid"
@@ -3577,7 +3787,6 @@ async function loadReports(){
     }
 
 }
-
 
 /* =========================================================
    DASHBOARD
