@@ -49,6 +49,8 @@ const MAX_PHOTO_SIZE =
 const MAX_VIDEO_SIZE =
     20 * 1024 * 1024;
 
+const MAX_LOCATION_LENGTH = 500;
+
 const MAX_WIDTH = 1200;
 
 const MAX_HEIGHT = 1200;
@@ -581,9 +583,21 @@ function readVideo(file) {
                         );
 
 
+                    // =========================================
+                    // IMPORTANT FIX
+                    //
+                    // Backend expects:
+                    //
+                    // video.base64
+                    // video.type
+                    // video.name
+                    //
+                    // NOT video.data
+                    // =========================================
+
                     resolve({
 
-                        data:
+                        base64:
                             base64,
 
                         type:
@@ -825,14 +839,7 @@ else {
 
 
                     // =====================================
-                    // IMPORTANT FIX
-                    //
-                    // These property names MUST match
-                    // the Google Apps Script backend:
-                    //
-                    // base64
-                    // name
-                    // type
+                    // PHOTO OBJECT
                     // =====================================
 
                     photos.push({
@@ -975,11 +982,38 @@ else {
                     );
 
 
+                    // =====================================
+                    // IMPORTANT FIX
+                    // Backend expects video.base64
+                    // =====================================
+
                     console.log(
                         "Video Base64 length:",
-                        video && video.data
-                            ? video.data.length
+                        video && video.base64
+                            ? video.base64.length
                             : 0
+                    );
+
+
+                    console.log(
+                        "Video object:",
+                        {
+                            name:
+                                video
+                                    ? video.name
+                                    : "",
+
+                            type:
+                                video
+                                    ? video.type
+                                    : "",
+
+                            base64Length:
+                                video &&
+                                video.base64
+                                    ? video.base64.length
+                                    : 0
+                        }
                     );
 
                 }
@@ -1009,9 +1043,18 @@ else {
                         ),
 
 
+                    // =====================================
+                    // LOCATION
+                    //
+                    // Maximum 500 characters
+                    // =====================================
+
                     location:
                         getValue(
                             "location"
+                        ).substring(
+                            0,
+                            MAX_LOCATION_LENGTH
                         ),
 
 
@@ -1091,6 +1134,12 @@ else {
                 );
 
 
+                console.log(
+                    "REPORT LOCATION LENGTH:",
+                    report.location.length
+                );
+
+
                 if (
                     report.photos.length > 0
                 ) {
@@ -1109,6 +1158,39 @@ else {
                                     ? report.photos[0].base64.length
                                     : 0
                         }
+                    );
+
+                }
+
+
+                // =========================================
+                // VIDEO DEBUG
+                // =========================================
+
+                if (report.video) {
+
+                    console.log(
+                        "REPORT VIDEO:",
+                        {
+                            name:
+                                report.video.name,
+
+                            type:
+                                report.video.type,
+
+                            base64Length:
+                                report.video.base64
+                                    ? report.video.base64.length
+                                    : 0
+                        }
+                    );
+
+                }
+
+                else {
+
+                    console.log(
+                        "REPORT VIDEO: NONE"
                     );
 
                 }
