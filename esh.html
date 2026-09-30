@@ -5203,19 +5203,30 @@ function applyRolePermissions(
     ];
 
 
+    /* =====================================================
+       CORRECTIVE FIELDS
+       
+       Target Date is intentionally NOT included here.
+       It is controlled separately below.
+    ===================================================== */
+
     const correctiveFields = [
 
         "correctiveAction",
 
-        "personResponsible",
-
-        "dueDate"
+        "personResponsible"
 
     ];
 
 
     const verificationField =
         "verificationRemarks";
+
+
+    const targetDate =
+        document.getElementById(
+            "dueDate"
+        );
 
 
     const closedDate =
@@ -5270,6 +5281,14 @@ function applyRolePermissions(
 
             }
         );
+
+
+        /* =================================================
+           TARGET DATE
+           ESH CAN ALWAYS EDIT
+        ================================================= */
+
+        targetDate.disabled = false;
 
 
         document.getElementById(
@@ -5327,6 +5346,15 @@ function applyRolePermissions(
 
             }
         );
+
+
+        /* =================================================
+           TARGET DATE
+           HOD CAN EDIT UNTIL CASE IS CLOSED
+        ================================================= */
+
+        targetDate.disabled =
+            status === "Closed";
 
 
         closedDate.disabled = true;
@@ -5402,6 +5430,15 @@ function applyRolePermissions(
 
             }
         );
+
+
+        /* =================================================
+           TARGET DATE
+           MAINTENANCE CAN EDIT UNTIL CASE IS CLOSED
+        ================================================= */
+
+        targetDate.disabled =
+            status === "Closed";
 
 
         closedDate.disabled = true;
