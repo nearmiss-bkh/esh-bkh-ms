@@ -68,46 +68,50 @@ body::before {
     z-index: 2;
 }
 
+/* ==========================================
+   LOGO / TITLE AREA
+   ========================================== */
+
 .logo-area {
     text-align: center;
     margin-bottom: 25px;
 }
 
-.shield {
-    width: 78px;
-    height: 88px;
-    margin: 0 auto 16px;
-    position: relative;
+/* Modern ESH symbol */
+
+.esh-mark {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 18px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,217,255,0.20),
+            rgba(0,119,255,0.12)
+        );
+
+    border: 1px solid rgba(0,217,255,0.35);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    box-shadow:
+        0 0 30px rgba(0,210,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-.shield::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(145deg, #00d9ff, #0077ff);
-    clip-path: polygon(
-        50% 0%,
-        90% 14%,
-        90% 55%,
-        75% 78%,
-        50% 100%,
-        25% 78%,
-        10% 55%,
-        10% 14%
-    );
-    filter: drop-shadow(0 0 20px rgba(0,210,255,0.45));
-}
-
-.shield span {
-    position: relative;
-    z-index: 2;
-    font-size: 32px;
+.esh-mark span {
+    font-size: 20px;
     font-weight: 900;
-    color: white;
+    letter-spacing: 1px;
+    color: #ffffff;
 }
+
+/* Company */
 
 .company {
     font-size: 13px;
@@ -117,11 +121,15 @@ body::before {
     margin-bottom: 8px;
 }
 
+/* Main title */
+
 .title {
     font-size: 28px;
     font-weight: 800;
     letter-spacing: 1px;
 }
+
+/* Subtitle */
 
 .subtitle {
     color: #7f9aae;
@@ -129,22 +137,31 @@ body::before {
     margin-top: 7px;
 }
 
+/* ==========================================
+   LOGIN CARD
+   ========================================== */
+
 .card {
     background: rgba(8, 22, 38, 0.82);
     border: 1px solid rgba(92, 190, 220, 0.20);
     border-radius: 22px;
     padding: 34px 30px;
+
     box-shadow:
         0 25px 70px rgba(0,0,0,0.45),
         inset 0 1px 0 rgba(255,255,255,0.04);
+
     backdrop-filter: blur(18px);
 }
+
+/* Access title */
 
 .access {
     display: flex;
     align-items: center;
     gap: 9px;
     margin-bottom: 25px;
+
     color: #7fffd4;
     font-size: 11px;
     font-weight: 700;
@@ -155,9 +172,16 @@ body::before {
     width: 8px;
     height: 8px;
     border-radius: 50%;
+
     background: #00e6a0;
-    box-shadow: 0 0 12px #00e6a0;
+
+    box-shadow:
+        0 0 12px #00e6a0;
 }
+
+/* ==========================================
+   FORM
+   ========================================== */
 
 label {
     display: block;
@@ -176,25 +200,39 @@ label {
 input {
     width: 100%;
     height: 52px;
+
     padding: 0 16px;
+
     border-radius: 12px;
+
     border: 1px solid rgba(150,190,210,0.18);
+
     background: rgba(255,255,255,0.045);
+
     color: white;
+
     outline: none;
+
     font-size: 14px;
+
     transition: 0.25s;
 }
 
 input:focus {
     border-color: #00cfff;
-    box-shadow: 0 0 0 3px rgba(0,207,255,0.08);
-    background: rgba(255,255,255,0.065);
+
+    box-shadow:
+        0 0 0 3px rgba(0,207,255,0.08);
+
+    background:
+        rgba(255,255,255,0.065);
 }
 
 input::placeholder {
     color: #536b7d;
 }
+
+/* Password */
 
 .password-wrap input {
     padding-right: 55px;
@@ -202,58 +240,137 @@ input::placeholder {
 
 .show-password {
     position: absolute;
+
     right: 12px;
     top: 50%;
+
     transform: translateY(-50%);
+
     border: none;
+
     background: transparent;
+
     color: #7690a3;
+
     cursor: pointer;
+
     font-size: 12px;
+
     font-weight: 700;
 }
+
+.show-password:hover {
+    color: #00cfff;
+}
+
+/* ==========================================
+   LOGIN BUTTON
+   ========================================== */
 
 .login-btn {
     width: 100%;
     height: 54px;
+
     border: none;
+
     border-radius: 12px;
-    background: linear-gradient(135deg, #00cfff, #007cff);
+
+    background:
+        linear-gradient(
+            135deg,
+            #00cfff,
+            #007cff
+        );
+
     color: white;
+
     font-size: 14px;
+
     font-weight: 800;
+
     letter-spacing: 1px;
+
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(0,150,255,0.22);
+
+    box-shadow:
+        0 10px 25px rgba(0,150,255,0.22);
+
     transition: 0.25s;
 }
 
 .login-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(0,170,255,0.30);
+
+    box-shadow:
+        0 15px 30px rgba(0,170,255,0.30);
 }
 
 .login-btn:active {
     transform: translateY(0);
 }
 
+/* ==========================================
+   ERROR
+   ========================================== */
+
 .error {
     display: none;
+
     margin-top: 15px;
+
     padding: 12px;
+
     border-radius: 10px;
-    background: rgba(255,60,80,0.08);
-    border: 1px solid rgba(255,80,100,0.20);
+
+    background:
+        rgba(255,60,80,0.08);
+
+    border:
+        1px solid rgba(255,80,100,0.20);
+
     color: #ff8290;
+
     text-align: center;
+
     font-size: 12px;
 }
 
+/* ==========================================
+   SECURITY
+   ========================================== */
+
+.security {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid rgba(255,255,255,0.06);
+
+    text-align: center;
+
+    color: #526b7c;
+
+    font-size: 10px;
+}
+
+.security strong {
+    color: #71899c;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
 .footer {
     text-align: center;
+
     margin-top: 22px;
+
     color: #50687a;
+
     font-size: 10px;
+
     line-height: 1.6;
 }
 
@@ -261,14 +378,9 @@ input::placeholder {
     color: #6f899b;
 }
 
-.security {
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    text-align: center;
-    color: #526b7c;
-    font-size: 10px;
-}
+/* ==========================================
+   MOBILE
+   ========================================== */
 
 @media (max-width: 480px) {
 
@@ -284,6 +396,11 @@ input::placeholder {
     .title {
         font-size: 24px;
     }
+
+    .esh-mark {
+        width: 62px;
+        height: 62px;
+    }
 }
 </style>
 </head>
@@ -295,10 +412,14 @@ input::placeholder {
 
 <div class="container">
 
+    <!-- ======================================
+         BRANDING
+         ====================================== -->
+
     <div class="logo-area">
 
-        <div class="shield">
-            <span>✓</span>
+        <div class="esh-mark">
+            <span>ESH</span>
         </div>
 
         <div class="company">
@@ -315,14 +436,25 @@ input::placeholder {
 
     </div>
 
+
+    <!-- ======================================
+         LOGIN CARD
+         ====================================== -->
+
     <div class="card">
 
         <div class="access">
+
             <div class="status-dot"></div>
+
             SECURE ESH ACCESS
+
         </div>
 
+
         <form id="loginForm">
+
+            <!-- USERNAME -->
 
             <div class="input-group">
 
@@ -339,6 +471,9 @@ input::placeholder {
                 >
 
             </div>
+
+
+            <!-- PASSWORD -->
 
             <div class="input-group password-wrap">
 
@@ -364,12 +499,18 @@ input::placeholder {
 
             </div>
 
+
+            <!-- LOGIN BUTTON -->
+
             <button
                 type="submit"
                 class="login-btn"
             >
                 SIGN IN TO ESH
             </button>
+
+
+            <!-- ERROR -->
 
             <div
                 id="errorMessage"
@@ -380,12 +521,25 @@ input::placeholder {
 
         </form>
 
+
+        <!-- SECURITY MESSAGE -->
+
         <div class="security">
-            🔒 ESH MANAGEMENT ACCESS<br>
+
+            🔒 <strong>ESH MANAGEMENT ACCESS</strong>
+
+            <br>
+
             Authorized personnel only
+
         </div>
 
     </div>
+
+
+    <!-- ======================================
+         FOOTER
+         ====================================== -->
 
     <div class="footer">
 
