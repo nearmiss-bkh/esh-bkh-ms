@@ -1675,6 +1675,8 @@ input[type="date"]:disabled{
     border:
         1px solid
         rgba(255,255,255,.06);
+
+    position:relative;
 }
 
 .photo-card img{
@@ -1688,11 +1690,38 @@ input[type="date"]:disabled{
     cursor:pointer;
 
     transition:.2s;
+
+    display:block;
 }
 
 .photo-card img:hover{
 
     transform:scale(1.03);
+}
+
+.photo-fallback{
+
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:15px;
+
+    color:#9fb3c8;
+
+    font-size:13px;
+
+    cursor:pointer;
+
+    line-height:1.5;
 }
 
 
@@ -3115,8 +3144,6 @@ input[type="date"]:disabled{
     </div>
 
 
-    <!-- TARGET DATE -->
-
     <div class="form-group">
 
         <label for="dueDate">
@@ -3191,8 +3218,6 @@ input[type="date"]:disabled{
 
         </div>
 
-
-        <!-- CLOSED DATE -->
 
         <div class="form-group">
 
@@ -3375,10 +3400,6 @@ function getVisibleReports(){
 
     }
 
-
-    /*
-       HOD can view ALL reports from ALL departments.
-    */
 
     if(
         isHOD()
@@ -3701,33 +3722,23 @@ function updateDashboard(){
 
 
     const newCount =
-        countStatus(
-            "New"
-        );
+        countStatus("New");
 
 
     const investigation =
-        countStatus(
-            "Investigation"
-        );
+        countStatus("Investigation");
 
 
     const corrective =
-        countStatus(
-            "Corrective Action"
-        );
+        countStatus("Corrective Action");
 
 
     const verification =
-        countStatus(
-            "Verification"
-        );
+        countStatus("Verification");
 
 
     const closed =
-        countStatus(
-            "Closed"
-        );
+        countStatus("Closed");
 
 
     const overdue =
@@ -3736,62 +3747,52 @@ function updateDashboard(){
 
     document.getElementById(
         "totalReports"
-    ).textContent =
-        total;
+    ).textContent = total;
 
 
     document.getElementById(
         "newReports"
-    ).textContent =
-        newCount;
+    ).textContent = newCount;
 
 
     document.getElementById(
         "investigationReports"
-    ).textContent =
-        investigation;
+    ).textContent = investigation;
 
 
     document.getElementById(
         "correctiveReports"
-    ).textContent =
-        corrective;
+    ).textContent = corrective;
 
 
     document.getElementById(
         "verificationReports"
-    ).textContent =
-        verification;
+    ).textContent = verification;
 
 
     document.getElementById(
         "closedReports"
-    ).textContent =
-        closed;
+    ).textContent = closed;
 
 
     document.getElementById(
         "overdueReports"
-    ).textContent =
-        overdue;
+    ).textContent = overdue;
 
 
     document.getElementById(
         "actionNew"
-    ).textContent =
-        newCount;
+    ).textContent = newCount;
 
 
     document.getElementById(
         "actionCorrective"
-    ).textContent =
-        corrective;
+    ).textContent = corrective;
 
 
     document.getElementById(
         "actionOverdue"
-    ).textContent =
-        overdue;
+    ).textContent = overdue;
 
 }
 
@@ -3800,9 +3801,7 @@ function updateDashboard(){
    COUNT STATUS
 ========================================================= */
 
-function countStatus(
-    status
-){
+function countStatus(status){
 
     return getVisibleReports().filter(
         function(report){
@@ -3824,9 +3823,7 @@ function countStatus(
    OVERDUE
 ========================================================= */
 
-function isReportOverdue(
-    report
-){
+function isReportOverdue(report){
 
     if(
         normalizeStatus(
@@ -3980,9 +3977,7 @@ function goToReports(){
    KPI FILTER
 ========================================================= */
 
-function filterKPI(
-    filter
-){
+function filterKPI(filter){
 
     document.getElementById(
         "searchInput"
@@ -4047,9 +4042,7 @@ function filterKPI(
    ACTION FILTER
 ========================================================= */
 
-function filterStatus(
-    status
-){
+function filterStatus(status){
 
     document.getElementById(
         "searchInput"
@@ -4238,10 +4231,7 @@ function populateCategoryFilter(){
                                 ""
                             ).trim()
                     )
-
-                    .filter(
-                        Boolean
-                    )
+                    .filter(Boolean)
 
             )
 
@@ -4445,9 +4435,7 @@ function renderReports(){
    REPORT CARD
 ========================================================= */
 
-function createReportCard(
-    report
-){
+function createReportCard(report){
 
     const index =
         reports.indexOf(
@@ -4665,17 +4653,13 @@ function createReportCard(
    OPEN REPORT
 ========================================================= */
 
-function openReport(
-    index
-){
+function openReport(index){
 
     const report =
         reports[index];
 
 
-    if(
-        !report
-    ){
+    if(!report){
 
         return;
 
@@ -4748,28 +4732,26 @@ function openReport(
 
     document.getElementById(
         "incidentInfo"
-    ).textContent =
+    ).textContent = [
 
-        [
+        "Date: " +
+        formatDisplayDate(
+            report.dateTime ||
+            report.submittedAt
+        ),
 
-            "Date: " +
-            formatDisplayDate(
-                report.dateTime ||
-                report.submittedAt
-            ),
+        "Reporter: " +
+        (
+            report.reporterName ||
+            "-"
+        ),
 
-            "Reporter: " +
-            (
-                report.reporterName ||
-                "-"
-            ),
+        "Submitted: " +
+        formatDisplayDate(
+            report.submittedAt
+        )
 
-            "Submitted: " +
-            formatDisplayDate(
-                report.submittedAt
-            )
-
-        ].join("\n");
+    ].join("\n");
 
 
     document.getElementById(
@@ -4950,9 +4932,7 @@ function getModalSubtitle(){
    STATUS OPTIONS
 ========================================================= */
 
-function setupCaseStatusOptions(
-    currentStatus
-){
+function setupCaseStatusOptions(currentStatus){
 
     const select =
         document.getElementById(
@@ -5109,9 +5089,7 @@ function setupCaseStatusOptions(
    ROLE PERMISSIONS
 ========================================================= */
 
-function applyRolePermissions(
-    status
-){
+function applyRolePermissions(status){
 
     const investigationFields = [
 
@@ -5383,9 +5361,7 @@ function applyRolePermissions(
    TIMELINE
 ========================================================= */
 
-function updateTimeline(
-    status
-){
+function updateTimeline(status){
 
     const steps = [
 
@@ -5459,9 +5435,7 @@ function updateTimeline(
    OVERDUE DISPLAY
 ========================================================= */
 
-function updateCaseOverdue(
-    report
-){
+function updateCaseOverdue(report){
 
     const banner =
         document.getElementById(
@@ -5496,9 +5470,7 @@ function updateCaseOverdue(
    DRIVE FILE ID
 ========================================================= */
 
-function extractDriveFileId(
-    url
-){
+function extractDriveFileId(url){
 
     if(!url){
 
@@ -5507,8 +5479,53 @@ function extractDriveFileId(
     }
 
 
-    const match =
-        String(url).match(
+    const text =
+        String(
+            url
+        ).trim();
+
+
+    let match =
+        text.match(
+            /\/file\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+    if(match){
+
+        return match[1];
+
+    }
+
+
+    match =
+        text.match(
+            /[?&]id=([a-zA-Z0-9_-]+)/
+        );
+
+
+    if(match){
+
+        return match[1];
+
+    }
+
+
+    match =
+        text.match(
+            /\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+    if(match){
+
+        return match[1];
+
+    }
+
+
+    match =
+        text.match(
             /[-\w]{25,}/
         );
 
@@ -5524,9 +5541,7 @@ function extractDriveFileId(
    PHOTO LIST
 ========================================================= */
 
-function getPhotoList(
-    report
-){
+function getPhotoList(report){
 
     const value =
         report.photos ||
@@ -5590,14 +5605,15 @@ function getPhotoList(
     ){
 
         return text
-            .split("\n")
+            .split(/\r?\n/)
             .map(
-                x =>
-                    x.trim()
+                function(x){
+
+                    return x.trim();
+
+                }
             )
-            .filter(
-                Boolean
-            );
+            .filter(Boolean);
 
     }
 
@@ -5609,12 +5625,13 @@ function getPhotoList(
         return text
             .split(",")
             .map(
-                x =>
-                    x.trim()
+                function(x){
+
+                    return x.trim();
+
+                }
             )
-            .filter(
-                Boolean
-            );
+            .filter(Boolean);
 
     }
 
@@ -5627,12 +5644,57 @@ function getPhotoList(
 
 
 /* =========================================================
+   PHOTO URL NORMALIZER
+========================================================= */
+
+function normalizePhotoUrl(value){
+
+    if(!value){
+
+        return "";
+
+    }
+
+
+    const text =
+        String(
+            value
+        ).trim();
+
+
+    if(!text){
+
+        return "";
+
+    }
+
+
+    /*
+       If Google Sheets returned a displayed label,
+       there is no usable URL to display.
+    */
+
+    if(
+        text === "View Photo" ||
+        text === "View Corrective Photo" ||
+        text === "View Corrective Photos"
+    ){
+
+        return "";
+
+    }
+
+
+    return text;
+
+}
+
+
+/* =========================================================
    LOAD PHOTOS
 ========================================================= */
 
-function loadPhotos(
-    report
-){
+function loadPhotos(report){
 
     const container =
         document.getElementById(
@@ -5640,10 +5702,21 @@ function loadPhotos(
         );
 
 
+    if(!container){
+
+        return;
+
+    }
+
+
     const photos =
         getPhotoList(
             report
-        );
+        )
+        .map(
+            normalizePhotoUrl
+        )
+        .filter(Boolean);
 
 
     if(
@@ -5663,53 +5736,145 @@ function loadPhotos(
     }
 
 
-    container.innerHTML =
-        photos
-            .map(
-                function(url){
+    container.innerHTML = "";
 
-                    const id =
-                        extractDriveFileId(
-                            url
+
+    photos.forEach(
+        function(url){
+
+            const originalUrl =
+                String(
+                    url
+                ).trim();
+
+
+            const id =
+                extractDriveFileId(
+                    originalUrl
+                );
+
+
+            let src =
+                originalUrl;
+
+
+            let openUrl =
+                originalUrl;
+
+
+            if(id){
+
+                src =
+                    "https://drive.google.com/thumbnail?id=" +
+                    encodeURIComponent(
+                        id
+                    ) +
+                    "&sz=w1200";
+
+
+                openUrl =
+                    "https://drive.google.com/file/d/" +
+                    encodeURIComponent(
+                        id
+                    ) +
+                    "/view";
+
+            }
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "photo-card";
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+
+            img.src =
+                src;
+
+
+            img.alt =
+                "ESH Evidence";
+
+
+            img.loading =
+                "lazy";
+
+
+            img.onerror =
+                function(){
+
+                    img.style.display =
+                        "none";
+
+
+                    const fallback =
+                        document.createElement(
+                            "div"
                         );
 
 
-                    const src =
-                        id
-                        ?
-                        "https://drive.google.com/thumbnail?id=" +
-                        id +
-                        "&sz=w1000"
-                        :
-                        url;
+                    fallback.className =
+                        "photo-fallback";
 
 
-                    return `
+                    fallback.innerHTML =
+                        "📷<br>Open Photo";
 
-                        <div
-                            class="photo-card"
-                        >
 
-                            <img
-                                src="${escapeAttribute(src)}"
-                                alt="ESH Evidence"
-                                loading="lazy"
-                                onclick="
-                                    event.stopPropagation();
-                                    window.open(
-                                        '${escapeAttribute(url)}',
-                                        '_blank'
-                                    )
-                                "
-                            >
+                    fallback.onclick =
+                        function(event){
 
-                        </div>
+                            event.stopPropagation();
 
-                    `;
+                            window.open(
+                                openUrl,
+                                "_blank"
+                            );
 
-                }
-            )
-            .join("");
+                        };
+
+
+                    card.appendChild(
+                        fallback
+                    );
+
+                };
+
+
+            img.onclick =
+                function(event){
+
+                    event.stopPropagation();
+
+                    window.open(
+                        openUrl,
+                        "_blank"
+                    );
+
+                };
+
+
+            card.appendChild(
+                img
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
 
 }
 
@@ -5718,9 +5883,7 @@ function loadPhotos(
    CORRECTIVE ACTION PHOTO LIST
 ========================================================= */
 
-function getCorrectivePhotoList(
-    report
-){
+function getCorrectivePhotoList(report){
 
     const value =
         report.correctiveActionPhotos ||
@@ -5731,7 +5894,9 @@ function getCorrectivePhotoList(
         Array.isArray(value)
     ){
 
-        return value.filter(Boolean);
+        return value.filter(
+            Boolean
+        );
 
     }
 
@@ -5778,7 +5943,9 @@ function getCorrectivePhotoList(
         .split(/\r?\n/)
         .map(
             function(x){
+
                 return x.trim();
+
             }
         )
         .filter(Boolean);
@@ -5790,9 +5957,7 @@ function getCorrectivePhotoList(
    LOAD CORRECTIVE ACTION PHOTOS
 ========================================================= */
 
-function loadCorrectiveActionPhotos(
-    report
-){
+function loadCorrectiveActionPhotos(report){
 
     const container =
         document.getElementById(
@@ -5810,7 +5975,11 @@ function loadCorrectiveActionPhotos(
     const photos =
         getCorrectivePhotoList(
             report
-        );
+        )
+        .map(
+            normalizePhotoUrl
+        )
+        .filter(Boolean);
 
 
     if(
@@ -5830,53 +5999,145 @@ function loadCorrectiveActionPhotos(
     }
 
 
-    container.innerHTML =
-        photos
-            .map(
-                function(url){
+    container.innerHTML = "";
 
-                    const id =
-                        extractDriveFileId(
-                            url
+
+    photos.forEach(
+        function(url){
+
+            const originalUrl =
+                String(
+                    url
+                ).trim();
+
+
+            const id =
+                extractDriveFileId(
+                    originalUrl
+                );
+
+
+            let src =
+                originalUrl;
+
+
+            let openUrl =
+                originalUrl;
+
+
+            if(id){
+
+                src =
+                    "https://drive.google.com/thumbnail?id=" +
+                    encodeURIComponent(
+                        id
+                    ) +
+                    "&sz=w1200";
+
+
+                openUrl =
+                    "https://drive.google.com/file/d/" +
+                    encodeURIComponent(
+                        id
+                    ) +
+                    "/view";
+
+            }
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "photo-card";
+
+
+            const img =
+                document.createElement(
+                    "img"
+                );
+
+
+            img.src =
+                src;
+
+
+            img.alt =
+                "Corrective Action Evidence";
+
+
+            img.loading =
+                "lazy";
+
+
+            img.onerror =
+                function(){
+
+                    img.style.display =
+                        "none";
+
+
+                    const fallback =
+                        document.createElement(
+                            "div"
                         );
 
 
-                    const src =
-                        id
-                        ?
-                        "https://drive.google.com/thumbnail?id=" +
-                        id +
-                        "&sz=w1000"
-                        :
-                        url;
+                    fallback.className =
+                        "photo-fallback";
 
 
-                    return `
+                    fallback.innerHTML =
+                        "📷<br>Open Corrective Photo";
 
-                        <div
-                            class="photo-card"
-                        >
 
-                            <img
-                                src="${escapeAttribute(src)}"
-                                alt="Corrective Action Evidence"
-                                loading="lazy"
-                                onclick="
-                                    event.stopPropagation();
-                                    window.open(
-                                        '${escapeAttribute(url)}',
-                                        '_blank'
-                                    )
-                                "
-                            >
+                    fallback.onclick =
+                        function(event){
 
-                        </div>
+                            event.stopPropagation();
 
-                    `;
+                            window.open(
+                                openUrl,
+                                "_blank"
+                            );
 
-                }
-            )
-            .join("");
+                        };
+
+
+                    card.appendChild(
+                        fallback
+                    );
+
+                };
+
+
+            img.onclick =
+                function(event){
+
+                    event.stopPropagation();
+
+                    window.open(
+                        openUrl,
+                        "_blank"
+                    );
+
+                };
+
+
+            card.appendChild(
+                img
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
 
 }
 
@@ -6285,14 +6546,19 @@ async function uploadCorrectivePhotos(){
    VIDEO
 ========================================================= */
 
-function loadVideo(
-    report
-){
+function loadVideo(report){
 
     const container =
         document.getElementById(
             "videoEvidence"
         );
+
+
+    if(!container){
+
+        return;
+
+    }
 
 
     container.innerHTML = "";
@@ -6397,10 +6663,6 @@ async function saveReport(){
         ).value;
 
 
-    /* =====================================================
-       HOD VALIDATION
-    ===================================================== */
-
     if(
         isHOD()
     ){
@@ -6449,10 +6711,6 @@ async function saveReport(){
 
     }
 
-
-    /* =====================================================
-       MAINTENANCE VALIDATION
-    ===================================================== */
 
     if(
         isMaintenance()
@@ -6547,10 +6805,6 @@ async function saveReport(){
     };
 
 
-    /* =====================================================
-       HOD PROTECTION
-    ===================================================== */
-
     if(
         isHOD()
     ){
@@ -6598,10 +6852,6 @@ async function saveReport(){
 
     }
 
-
-    /* =====================================================
-       MAINTENANCE PROTECTION
-    ===================================================== */
 
     if(
         isMaintenance()
@@ -6752,9 +7002,7 @@ async function saveReport(){
    AUTO SAVE DATE FIELD
 ========================================================= */
 
-async function autoSaveDateField(
-    fieldType
-){
+async function autoSaveDateField(fieldType){
 
     if(
         !selectedReport
@@ -6896,10 +7144,6 @@ async function autoSaveDateField(
     };
 
 
-    /* =====================================================
-       HOD PROTECTION
-    ===================================================== */
-
     if(
         isHOD()
     ){
@@ -6930,10 +7174,6 @@ async function autoSaveDateField(
 
     }
 
-
-    /* =====================================================
-       MAINTENANCE PROTECTION
-    ===================================================== */
 
     if(
         isMaintenance()
@@ -7783,9 +8023,7 @@ function renderDepartment(){
    NORMALIZE STATUS
 ========================================================= */
 
-function normalizeStatus(
-    status
-){
+function normalizeStatus(status){
 
     const value =
         String(
@@ -7857,9 +8095,7 @@ function normalizeStatus(
    STATUS CLASS
 ========================================================= */
 
-function getStatusClass(
-    status
-){
+function getStatusClass(status){
 
     switch(
         normalizeStatus(
@@ -7905,9 +8141,7 @@ function getStatusClass(
    DATE PARSER
 ========================================================= */
 
-function parseDate(
-    value
-){
+function parseDate(value){
 
     if(!value){
 
@@ -7970,9 +8204,7 @@ function parseDate(
    DATE INPUT
 ========================================================= */
 
-function formatDateInput(
-    value
-){
+function formatDateInput(value){
 
     const date =
         parseDate(
@@ -8014,9 +8246,7 @@ function formatDateInput(
    DISPLAY DATE
 ========================================================= */
 
-function formatDisplayDate(
-    value
-){
+function formatDisplayDate(value){
 
     const date =
         parseDate(
@@ -8054,9 +8284,7 @@ function formatDisplayDate(
    SECURITY
 ========================================================= */
 
-function escapeHtml(
-    value
-){
+function escapeHtml(value){
 
     return String(
         value ?? ""
@@ -8085,9 +8313,7 @@ function escapeHtml(
 }
 
 
-function escapeAttribute(
-    value
-){
+function escapeAttribute(value){
 
     return String(
         value ?? ""
@@ -8123,9 +8349,7 @@ function escapeAttribute(
 let toastTimer = null;
 
 
-function showToast(
-    message
-){
+function showToast(message){
 
     const toast =
         document.getElementById(
