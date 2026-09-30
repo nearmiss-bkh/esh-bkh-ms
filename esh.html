@@ -3169,13 +3169,14 @@ body{
 
     <div class="form-group">
 
-        <label>
+        <label for="dueDate">
             Target Date
         </label>
 
         <input
             type="date"
             id="dueDate"
+            onclick="if(this.showPicker) this.showPicker();"
         >
 
     </div>
@@ -5205,9 +5206,8 @@ function applyRolePermissions(
 
     /* =====================================================
        CORRECTIVE FIELDS
-       
-       Target Date is intentionally NOT included here.
-       It is controlled separately below.
+
+       Target Date is controlled separately.
     ===================================================== */
 
     const correctiveFields = [
@@ -5283,11 +5283,6 @@ function applyRolePermissions(
         );
 
 
-        /* =================================================
-           TARGET DATE
-           ESH CAN ALWAYS EDIT
-        ================================================= */
-
         targetDate.disabled = false;
 
 
@@ -5347,11 +5342,6 @@ function applyRolePermissions(
             }
         );
 
-
-        /* =================================================
-           TARGET DATE
-           HOD CAN EDIT UNTIL CASE IS CLOSED
-        ================================================= */
 
         targetDate.disabled =
             status === "Closed";
@@ -5431,11 +5421,6 @@ function applyRolePermissions(
             }
         );
 
-
-        /* =================================================
-           TARGET DATE
-           MAINTENANCE CAN EDIT UNTIL CASE IS CLOSED
-        ================================================= */
 
         targetDate.disabled =
             status === "Closed";
@@ -6104,10 +6089,16 @@ async function saveReport(){
             selectedReport.personResponsible ||
             "";
 
+        /*
+           Keep the Target Date selected in the form.
+           Do NOT restore the old Target Date.
+        */
+
         data.dueDate =
-            formatDateInput(
-                selectedReport.dueDate
-            );
+            document.getElementById(
+                "dueDate"
+            ).value;
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator ||
@@ -6157,6 +6148,15 @@ async function saveReport(){
             formatDateInput(
                 selectedReport.closedDate
             );
+
+        /*
+           Keep the Target Date selected in the form.
+        */
+
+        data.dueDate =
+            document.getElementById(
+                "dueDate"
+            ).value;
 
     }
 
@@ -7241,7 +7241,15 @@ document
     )
     .addEventListener(
         "change",
-        function(){
+        async function(){
+
+            const selectedDate =
+                this.value;
+
+
+            /* =============================================
+               UPDATE OVERDUE DISPLAY IMMEDIATELY
+            ============================================= */
 
             if(
                 selectedReport
@@ -7257,9 +7265,285 @@ document
                         ).value,
 
                     dueDate:
-                        this.value
+                        selectedDate
 
                 });
+
+            }
+
+
+            /* =============================================
+               NO REPORT SELECTED
+            ============================================= */
+
+            if(
+                !selectedReport ||
+                !selectedReport.rowNumber
+            ){
+
+                return;
+
+            }
+
+
+            /* =============================================
+               SAVE TARGET DATE IMMEDIATELY
+            ============================================= */
+
+            const button =
+                document.getElementById(
+                    "saveButton"
+                );
+
+
+            const originalText =
+                button.textContent;
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Updating Date...";
+
+
+            const data = {
+
+                action:
+                    "updateReport",
+
+                rowNumber:
+                    selectedReport.rowNumber,
+
+                status:
+                    document.getElementById(
+                        "caseStatus"
+                    ).value,
+
+                investigationFindings:
+                    document.getElementById(
+                        "investigationFindings"
+                    ).value,
+
+                rootCause:
+                    document.getElementById(
+                        "rootCause"
+                    ).value,
+
+                correctiveAction:
+                    document.getElementById(
+                        "correctiveAction"
+                    ).value,
+
+                personResponsible:
+                    document.getElementById(
+                        "personResponsible"
+                    ).value,
+
+                dueDate:
+                    selectedDate,
+
+                verificationRemarks:
+                    document.getElementById(
+                        "verificationRemarks"
+                    ).value,
+
+                eshInvestigator:
+                    document.getElementById(
+                        "eshInvestigator"
+                    ).value,
+
+                eshRemarks:
+                    document.getElementById(
+                        "eshRemarks"
+                    ).value,
+
+                closedDate:
+                    document.getElementById(
+                        "closedDate"
+                    ).value
+
+            };
+
+
+            /* =============================================
+               HOD PROTECTION
+            ============================================= */
+
+            if(
+                isHOD()
+            ){
+
+                data.investigationFindings =
+                    selectedReport.investigationFindings ||
+                    "";
+
+                data.rootCause =
+                    selectedReport.rootCause ||
+                    "";
+
+                data.correctiveAction =
+                    selectedReport.correctiveAction ||
+                    "";
+
+                data.personResponsible =
+                    selectedReport.personResponsible ||
+                    "";
+
+                /*
+                   IMPORTANT:
+                   Keep the newly selected Target Date.
+                */
+
+                data.dueDate =
+                    selectedDate;
+
+
+                data.eshInvestigator =
+                    selectedReport.eshInvestigator ||
+                    "";
+
+                data.eshRemarks =
+                    selectedReport.eshRemarks ||
+                    "";
+
+                data.closedDate =
+                    formatDateInput(
+                        selectedReport.closedDate
+                    );
+
+            }
+
+
+            /* =============================================
+               MAINTENANCE PROTECTION
+            ============================================= */
+
+            if(
+                isMaintenance()
+            ){
+
+                data.investigationFindings =
+                    selectedReport.investigationFindings ||
+                    "";
+
+                data.rootCause =
+                    selectedReport.rootCause ||
+                    "";
+
+                data.eshInvestigator =
+                    selectedReport.eshInvestigator ||
+                    "";
+
+                data.eshRemarks =
+                    selectedReport.eshRemarks ||
+                    "";
+
+                data.closedDate =
+                    formatDateInput(
+                        selectedReport.closedDate
+                    );
+
+                /*
+                   Keep the newly selected Target Date.
+                */
+
+                data.dueDate =
+                    selectedDate;
+
+            }
+
+
+            try{
+
+                const response =
+                    await fetch(
+                        GOOGLE_SCRIPT_URL,
+                        {
+
+                            method:
+                                "POST",
+
+                            headers:{
+
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
+
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    data
+                                )
+
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if(
+                    result.status ===
+                        "success"
+                    ||
+                    result.success === true
+                ){
+
+                    /*
+                       Update local report immediately.
+                    */
+
+                    selectedReport.dueDate =
+                        selectedDate;
+
+
+                    showToast(
+                        "Target Date updated successfully."
+                    );
+
+
+                    /*
+                       Refresh dashboard data.
+                    */
+
+                    await loadReports();
+
+                }
+
+                else{
+
+                    throw new Error(
+                        result.message ||
+                        "Unable to update Target Date."
+                    );
+
+                }
+
+            }
+
+            catch(error){
+
+                console.error(
+                    error
+                );
+
+
+                showToast(
+                    "Target Date update failed: " +
+                    error.message
+                );
+
+            }
+
+            finally{
+
+                button.disabled =
+                    false;
+
+
+                button.textContent =
+                    originalText;
 
             }
 
