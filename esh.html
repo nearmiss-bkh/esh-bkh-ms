@@ -5969,7 +5969,12 @@ async function uploadCorrectivePhotos(){
 
 
     const reportNumber =
-        selectedReport.reportNumber;
+        String(
+            selectedReport.reportNumber ||
+            selectedReport.reportNo ||
+            selectedReport.report_number ||
+            ""
+        ).trim();
 
 
     if(!reportNumber){
@@ -6017,6 +6022,34 @@ async function uploadCorrectivePhotos(){
                 );
 
 
+            /* =================================================
+               CORRECT PAYLOAD FORMAT
+            ================================================= */
+
+            const payload = {
+
+                action:
+                    "uploadCorrectivePhoto",
+
+                reportNumber:
+                    reportNumber,
+
+                photo: {
+
+                    base64:
+                        prepared.base64,
+
+                    type:
+                        prepared.mimeType,
+
+                    name:
+                        prepared.fileName
+
+                }
+
+            };
+
+
             const response =
                 await fetch(
                     GOOGLE_SCRIPT_URL,
@@ -6030,31 +6063,42 @@ async function uploadCorrectivePhotos(){
                         },
 
                         body:
-                            JSON.stringify({
-
-                                action:
-                                    "uploadCorrectivePhoto",
-
-                                reportNumber:
-                                    reportNumber,
-
-                                fileName:
-                                    prepared.fileName,
-
-                                mimeType:
-                                    prepared.mimeType,
-
-                                base64:
-                                    prepared.base64
-
-                            })
+                            JSON.stringify(
+                                payload
+                            )
 
                     }
                 );
 
 
-            const result =
-                await response.json();
+            const responseText =
+                await response.text();
+
+
+            let result;
+
+
+            try{
+
+                result =
+                    JSON.parse(
+                        responseText
+                    );
+
+            }
+
+            catch(parseError){
+
+                console.error(
+                    "Invalid server response:",
+                    responseText
+                );
+
+                throw new Error(
+                    "Server returned an invalid response."
+                );
+
+            }
 
 
             if(
@@ -6089,11 +6133,14 @@ async function uploadCorrectivePhotos(){
                 function(report){
 
                     return String(
-                        report.reportNumber
-                    ) ===
+                        report.reportNumber ||
+                        report.reportNo ||
+                        report.report_number ||
+                        ""
+                    ).trim() ===
                     String(
                         reportNumber
-                    );
+                    ).trim();
 
                 }
             );
@@ -6108,6 +6155,7 @@ async function uploadCorrectivePhotos(){
             loadCorrectiveActionPhotos(
                 refreshed
             );
+
 
             loadPhotos(
                 refreshed
@@ -6125,7 +6173,10 @@ async function uploadCorrectivePhotos(){
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "Corrective photo upload error:",
+            error
+        );
 
 
         if(uploaded > 0){
@@ -6154,6 +6205,7 @@ async function uploadCorrectivePhotos(){
 
         button.disabled =
             false;
+
 
         button.textContent =
             originalText;
