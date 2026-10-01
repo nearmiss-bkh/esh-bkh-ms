@@ -6,29 +6,35 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #f3f6f9;
-    color: #1f2937;
+    background: #eef4fb;
+    color: #172033;
     padding: 30px 15px;
 }
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    background: white;
+    background: #ffffff;
     padding: 30px;
     border-radius: 14px;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 25px rgba(37, 99, 235, 0.12);
 }
+
+
+/* =========================
+   HEADINGS
+========================= */
 
 h1 {
     text-align: center;
     font-size: 30px;
     margin-bottom: 8px;
+    color: #12305b;
 }
 
 .subtitle {
     text-align: center;
-    color: #6b7280;
+    color: #64748b;
     margin-bottom: 30px;
 }
 
@@ -46,6 +52,7 @@ label {
     font-weight: bold;
     margin-top: 18px;
     margin-bottom: 8px;
+    color: #26364d;
 }
 
 input,
@@ -53,11 +60,12 @@ textarea,
 select {
     width: 100%;
     padding: 13px;
-    border: 1px solid #d1d5db;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
     font-size: 15px;
     font-family: inherit;
-    background: white;
+    background: #ffffff;
+    color: #172033;
 }
 
 input:focus,
@@ -65,6 +73,7 @@ textarea:focus,
 select:focus {
     outline: none;
     border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 textarea {
@@ -96,12 +105,12 @@ button {
 }
 
 .reset-button {
-    background: #e5e7eb;
-    color: #374151;
+    background: #e2e8f0;
+    color: #334155;
 }
 
 .reset-button:hover {
-    background: #d1d5db;
+    background: #cbd5e1;
 }
 
 
@@ -115,6 +124,7 @@ button {
     padding: 15px;
     background: #dcfce7;
     color: #166534;
+    border: 1px solid #86efac;
     border-radius: 8px;
     text-align: center;
     font-weight: bold;
@@ -127,40 +137,61 @@ button {
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns:
-        repeat(4, 1fr);
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 15px;
-
     margin-bottom: 30px;
 }
 
 .dashboard-card {
-    background: #f8fafc;
-
-    border: 1px solid #e5e7eb;
-
+    background: #ffffff;
+    border: 1px solid #dbe5f1;
     border-radius: 12px;
-
     padding: 20px;
-
     text-align: center;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+    transition: 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(37, 99, 235, 0.14);
 }
 
 .dashboard-card h3 {
     font-size: 15px;
-
-    color: #6b7280;
-
+    color: #64748b;
     margin-bottom: 10px;
 }
 
 .dashboard-card p {
     font-size: 32px;
-
     font-weight: bold;
-
     color: #2563eb;
+}
+
+
+/* =========================
+   COLOUR VARIATIONS
+========================= */
+
+/* Green */
+.dashboard-card.green p {
+    color: #16a34a;
+}
+
+/* Orange */
+.dashboard-card.orange p {
+    color: #ea580c;
+}
+
+/* Red */
+.dashboard-card.red p {
+    color: #dc2626;
+}
+
+/* Purple */
+.dashboard-card.purple p {
+    color: #7c3aed;
 }
 
 
@@ -171,6 +202,7 @@ button {
 .section-title {
     margin-top: 30px;
     margin-bottom: 15px;
+    color: #12305b;
 }
 
 
@@ -179,27 +211,23 @@ button {
 ========================= */
 
 .report-card {
-    border: 1px solid #e5e7eb;
-
+    border: 1px solid #dbe5f1;
     border-radius: 12px;
-
     padding: 20px;
-
     margin-bottom: 15px;
-
     background: #ffffff;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
 }
 
 .report-card h3 {
     color: #2563eb;
-
     margin-bottom: 15px;
 }
 
 .report-card p {
     margin-bottom: 9px;
-
     line-height: 1.5;
+    color: #334155;
 }
 
 
@@ -209,26 +237,53 @@ button {
 
 .report-header {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     margin-bottom: 15px;
 }
 
 .status {
     background: #fef3c7;
-
     color: #92400e;
-
     padding: 5px 10px;
-
     border-radius: 20px;
-
     font-size: 13px;
-
     font-weight: bold;
+}
+
+
+/* =========================
+   STATUS COLOURS
+========================= */
+
+.status-new {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-investigation {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.status-corrective {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.status-verification {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.status-closed {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-overdue {
+    background: #fee2e2;
+    color: #b91c1c;
 }
 
 
@@ -238,10 +293,10 @@ button {
 
 .empty-message {
     text-align: center;
-
     padding: 30px;
-
-    color: #6b7280;
+    color: #64748b;
+    background: #f8fafc;
+    border-radius: 10px;
 }
 
 
@@ -252,8 +307,7 @@ button {
 @media (max-width: 700px) {
 
     .dashboard-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .container {
@@ -265,8 +319,7 @@ button {
 @media (max-width: 450px) {
 
     .dashboard-grid {
-        grid-template-columns:
-            1fr;
+        grid-template-columns: 1fr;
     }
 
 }
