@@ -3529,8 +3529,6 @@ const GOOGLE_SCRIPT_URL =
 
 let reports = [];
 
-let archivedReports = [];
-
 let selectedReport = null;
 
 let trendChart = null;
@@ -3776,74 +3774,70 @@ document.addEventListener(
     }
 );
 
+
 /* =========================================================
    LOAD REPORTS
-   LOAD ACTIVE + ARCHIVED REPORTS
+   FIXED - PRESERVE ALL CASE DETAILS
 ========================================================= */
 
 async function loadReports(){
 
     try{
 
-        /* =====================================================
-           LOAD ACTIVE REPORTS
-        ===================================================== */
-
-        const activeResponse =
+        const response =
             await fetch(
                 GOOGLE_SCRIPT_URL +
                 "?test=reports&ts=" +
                 Date.now()
             );
 
-
-        if(!activeResponse.ok){
+        if(!response.ok){
 
             throw new Error(
-                "Active reports server error " +
-                activeResponse.status
+                "Server error " +
+                response.status
             );
 
         }
 
-
-        const activeData =
-            await activeResponse.json();
+        const data =
+            await response.json();
 
 
         /* =====================================================
-           GET ACTIVE REPORT ARRAY
+           GET REPORT ARRAY
         ===================================================== */
 
         let rawReports = [];
 
-        if(Array.isArray(activeData)){
+        if(Array.isArray(data)){
 
-            rawReports = activeData;
-
-        }
-
-        else if(
-            activeData &&
-            Array.isArray(activeData.reports)
-        ){
-
-            rawReports = activeData.reports;
+            rawReports = data;
 
         }
 
         else if(
-            activeData &&
-            Array.isArray(activeData.data)
+            data &&
+            Array.isArray(data.reports)
         ){
 
-            rawReports = activeData.data;
+            rawReports = data.reports;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.data)
+        ){
+
+            rawReports = data.data;
 
         }
 
 
         /* =====================================================
-           NORMALIZE ACTIVE REPORTS
+           NORMALIZE REPORT DATA
+           KEEP ALL FIELDS FROM GOOGLE SHEET
         ===================================================== */
 
         reports =
@@ -3851,6 +3845,10 @@ async function loadReports(){
 
                 return {
 
+                    /* ================================
+                       BASIC REPORT INFORMATION
+                    ================================= */
+
                     reportNumber:
                         report.reportNumber ||
                         report.reportNo ||
@@ -3885,6 +3883,11 @@ async function loadReports(){
                         report.reporterName ||
                         "",
 
+
+                    /* ================================
+                       ORIGINAL PHOTOS / VIDEO
+                    ================================= */
+
                     photos:
                         report.photos ||
                         "",
@@ -3892,11 +3895,21 @@ async function loadReports(){
                     video:
                         report.video ||
                         "",
+
+
+                    /* ================================
+                       STATUS
+                    ================================= */
 
                     status:
                         report.status ||
                         "New",
 
+
+                    /* ================================
+                       ESH INVESTIGATION
+                    ================================= */
+
                     investigationFindings:
                         report.investigationFindings ||
                         report.eshAction ||
@@ -3914,6 +3927,11 @@ async function loadReports(){
                         report.eshRemarks ||
                         "",
 
+
+                    /* ================================
+                       CORRECTIVE ACTION
+                    ================================= */
+
                     correctiveAction:
                         report.correctiveAction ||
                         "",
@@ -3928,10 +3946,20 @@ async function loadReports(){
                         report.targetDate ||
                         "",
 
+
+                    /* ================================
+                       VERIFICATION
+                    ================================= */
+
                     verificationRemarks:
                         report.verificationRemarks ||
                         report.verification ||
                         "",
+
+
+                    /* ================================
+                       CLOSURE
+                    ================================= */
 
                     closedDate:
                         report.closedDate ||
@@ -3946,13 +3974,29 @@ async function loadReports(){
                         report.remarks ||
                         "",
 
+
+                    /* ================================
+                       SUBMISSION
+                    ================================= */
+
                     submittedAt:
                         report.submittedAt ||
                         "",
 
+
+                    /* ================================
+                       CORRECTIVE ACTION PHOTOS
+                    ================================= */
+
                     correctiveActionPhotos:
                         report.correctiveActionPhotos ||
                         "",
+
+
+                    /* ================================
+                       KEEP ALIASES TOO
+                       FOR EXISTING FUNCTIONS
+                    ================================= */
 
                     eshAction:
                         report.eshAction ||
@@ -3977,223 +4021,6 @@ async function loadReports(){
                     verification:
                         report.verification ||
                         report.verificationRemarks ||
-                        "",
-
-                    /* ACTIVE CASE */
-                    sourceSheet: "Sheet1",
-
-                    isArchived: false
-
-                };
-
-            });
-
-
-        /* =====================================================
-           LOAD ARCHIVED REPORTS
-        ===================================================== */
-
-        const archiveResponse =
-            await fetch(
-                GOOGLE_SCRIPT_URL +
-                "?test=archivedReports&ts=" +
-                Date.now()
-            );
-
-
-        if(!archiveResponse.ok){
-
-            throw new Error(
-                "Archive server error " +
-                archiveResponse.status
-            );
-
-        }
-
-
-        const archiveData =
-            await archiveResponse.json();
-
-
-        /* =====================================================
-           GET ARCHIVED REPORT ARRAY
-        ===================================================== */
-
-        let rawArchivedReports = [];
-
-        if(Array.isArray(archiveData)){
-
-            rawArchivedReports = archiveData;
-
-        }
-
-        else if(
-            archiveData &&
-            Array.isArray(archiveData.reports)
-        ){
-
-            rawArchivedReports =
-                archiveData.reports;
-
-        }
-
-        else if(
-            archiveData &&
-            Array.isArray(archiveData.data)
-        ){
-
-            rawArchivedReports =
-                archiveData.data;
-
-        }
-
-
-        /* =====================================================
-           NORMALIZE ARCHIVED REPORTS
-        ===================================================== */
-
-        archivedReports =
-            rawArchivedReports.map(function(report){
-
-                return {
-
-                    reportNumber:
-                        report.reportNumber ||
-                        report.reportNo ||
-                        "",
-
-                    rowNumber:
-                        report.rowNumber ||
-                        "",
-
-                    dateTime:
-                        report.dateTime ||
-                        "",
-
-                    location:
-                        report.location ||
-                        "",
-
-                    department:
-                        report.department ||
-                        "",
-
-                    hazardCategory:
-                        report.hazardCategory ||
-                        report.category ||
-                        "",
-
-                    whatHappened:
-                        report.whatHappened ||
-                        "",
-
-                    reporterName:
-                        report.reporterName ||
-                        "",
-
-                    photos:
-                        report.photos ||
-                        "",
-
-                    video:
-                        report.video ||
-                        "",
-
-                    status:
-                        report.status ||
-                        "Closed",
-
-                    investigationFindings:
-                        report.investigationFindings ||
-                        report.eshAction ||
-                        "",
-
-                    rootCause:
-                        report.rootCause ||
-                        "",
-
-                    eshInvestigator:
-                        report.eshInvestigator ||
-                        "",
-
-                    eshRemarks:
-                        report.eshRemarks ||
-                        "",
-
-                    correctiveAction:
-                        report.correctiveAction ||
-                        "",
-
-                    personResponsible:
-                        report.personResponsible ||
-                        report.responsiblePerson ||
-                        "",
-
-                    dueDate:
-                        report.dueDate ||
-                        report.targetDate ||
-                        "",
-
-                    verificationRemarks:
-                        report.verificationRemarks ||
-                        report.verification ||
-                        "",
-
-                    closedDate:
-                        report.closedDate ||
-                        report.completionDate ||
-                        "",
-
-                    closedBy:
-                        report.closedBy ||
-                        "",
-
-                    remarks:
-                        report.remarks ||
-                        "",
-
-                    submittedAt:
-                        report.submittedAt ||
-                        "",
-
-                    correctiveActionPhotos:
-                        report.correctiveActionPhotos ||
-                        "",
-
-                    eshAction:
-                        report.eshAction ||
-                        report.investigationFindings ||
-                        "",
-
-                    responsiblePerson:
-                        report.responsiblePerson ||
-                        report.personResponsible ||
-                        "",
-
-                    targetDate:
-                        report.targetDate ||
-                        report.dueDate ||
-                        "",
-
-                    completionDate:
-                        report.completionDate ||
-                        report.closedDate ||
-                        "",
-
-                    verification:
-                        report.verification ||
-                        report.verificationRemarks ||
-                        "",
-
-                    /* ARCHIVED CASE */
-                    sourceSheet:
-                        report.sourceSheet ||
-                        "Archive",
-
-                    isArchived: true,
-
-                    archivedDate:
-                        report.archivedDate ||
                         ""
 
                 };
@@ -4206,13 +4033,8 @@ async function loadReports(){
         ===================================================== */
 
         console.log(
-            "ACTIVE REPORTS LOADED:",
+            "REPORTS LOADED:",
             reports
-        );
-
-        console.log(
-            "ARCHIVED REPORTS LOADED:",
-            archivedReports
         );
 
 
@@ -4227,6 +4049,7 @@ async function loadReports(){
         renderReports();
 
         renderAnalytics();
+
 
     }
 
@@ -4269,22 +4092,11 @@ async function loadReports(){
 
 function updateDashboard(){
 
-    const dashboardReports =
-        getDashboardReports();
-
-
-    /* =====================================================
-       TOTAL REPORTS
-       ACTIVE + ARCHIVED
-    ===================================================== */
+    const visible =
+        getVisibleReports();
 
     const total =
-        dashboardReports.length;
-
-
-    /* =====================================================
-       ACTIVE WORKFLOW COUNTS
-    ===================================================== */
+        visible.length;
 
     const newCount =
         countStatus("New");
@@ -4298,40 +4110,12 @@ function updateDashboard(){
     const verification =
         countStatus("Verification");
 
-
-    /* =====================================================
-       CLOSED COUNT
-       ARCHIVED CASES ONLY
-    ===================================================== */
-
-    let closed = 0;
-
-    if(!isMaintenance()){
-
-        closed =
-            archivedReports.filter(function(report){
-
-                return normalizeStatus(
-                    report.status
-                ) === "Closed";
-
-            }).length;
-
-    }
-
-
-    /* =====================================================
-       OVERDUE
-       ACTIVE CASES ONLY
-    ===================================================== */
+    const closed =
+        countStatus("Closed");
 
     const overdue =
         calculateOverdue();
 
-
-    /* =====================================================
-       UPDATE KPI CARDS
-    ===================================================== */
 
     document.getElementById(
         "totalReports"
@@ -4361,11 +4145,6 @@ function updateDashboard(){
         "overdueReports"
     ).textContent = overdue;
 
-
-    /* =====================================================
-       ACTION CENTER
-    ===================================================== */
-
     document.getElementById(
         "actionNew"
     ).textContent = newCount;
@@ -4379,6 +4158,7 @@ function updateDashboard(){
     ).textContent = overdue;
 
 }
+
 
 /* =========================================================
    COUNT STATUS
@@ -4745,7 +4525,6 @@ function resetFilters(){
 
 /* =========================================================
    CATEGORY FILTER
-   ACTIVE + ARCHIVED SUPPORT
 ========================================================= */
 
 function populateCategoryFilter(){
@@ -4760,16 +4539,13 @@ function populateCategoryFilter(){
         [
             ...new Set(
 
-                getDashboardReports()
+                getVisibleReports()
                     .map(
-                        function(report){
-
-                            return String(
-                                report.hazardCategory ||
+                        r =>
+                            String(
+                                r.hazardCategory ||
                                 ""
-                            ).trim();
-
-                        }
+                            ).trim()
                     )
                     .filter(Boolean)
 
@@ -4810,9 +4586,9 @@ function populateCategoryFilter(){
 
 }
 
+
 /* =========================================================
    RENDER REPORTS
-   ACTIVE + ARCHIVED
 ========================================================= */
 
 function renderReports(){
@@ -4843,16 +4619,8 @@ function renderReports(){
         ).value;
 
 
-    /* =====================================================
-       GET ACTIVE + ARCHIVED REPORTS
-    ===================================================== */
-
-    const dashboardReports =
-        getDashboardReports();
-
-
     const filtered =
-        dashboardReports.filter(
+        getVisibleReports().filter(
             function(report){
 
                 const text = [
@@ -4909,45 +4677,6 @@ function renderReports(){
         );
 
 
-    /* =====================================================
-       SORT NEWEST FIRST
-    ===================================================== */
-
-    filtered.sort(
-        function(a,b){
-
-            const da =
-                parseDate(
-                    a.dateTime ||
-                    a.submittedAt
-                ) ||
-                new Date(0);
-
-            const db =
-                parseDate(
-                    b.dateTime ||
-                    b.submittedAt
-                ) ||
-                new Date(0);
-
-            return db - da;
-
-        }
-    );
-
-
-    /* =====================================================
-       SAVE DISPLAYED REPORTS
-    ===================================================== */
-
-    displayedReports =
-        filtered;
-
-
-    /* =====================================================
-       NO REPORTS
-    ===================================================== */
-
     if(!filtered.length){
 
         container.innerHTML = `
@@ -4975,9 +4704,28 @@ function renderReports(){
     }
 
 
-    /* =====================================================
-       DISPLAY REPORT CARDS
-    ===================================================== */
+    filtered.sort(
+        function(a,b){
+
+            const da =
+                parseDate(
+                    a.dateTime ||
+                    a.submittedAt
+                ) ||
+                new Date(0);
+
+            const db =
+                parseDate(
+                    b.dateTime ||
+                    b.submittedAt
+                ) ||
+                new Date(0);
+
+            return db - da;
+
+        }
+    );
+
 
     container.innerHTML =
         filtered
@@ -4989,13 +4737,12 @@ function renderReports(){
 
 /* =========================================================
    REPORT CARD
-   ACTIVE + ARCHIVED SUPPORT
 ========================================================= */
 
 function createReportCard(report){
 
     const index =
-        displayedReports.indexOf(report);
+        reports.indexOf(report);
 
 
     const status =
@@ -5174,10 +4921,6 @@ function createReportCard(report){
             <div class="report-footer">
 
                 ${
-                    report.isArchived
-                    ?
-                    "Archived closed case • Read-only"
-                    :
                     overdue
                     ?
                     "⚠ OVERDUE ACTION"
@@ -5200,6 +4943,526 @@ function createReportCard(report){
     `;
 
 }
+
+
+/* =========================================================
+   OPEN REPORT
+   LOAD LATEST DATA FROM GOOGLE SHEET
+========================================================= */
+
+async function openReport(index){
+
+    const report =
+        reports[index];
+
+
+    if(!report){
+
+        return;
+
+    }
+
+
+    const visibleReports =
+        getVisibleReports();
+
+
+    if(
+        !visibleReports.includes(report)
+    ){
+
+        showToast(
+            "You do not have access to this report."
+        );
+
+        return;
+
+    }
+
+
+    const reportNumber =
+        report.reportNumber;
+
+
+    if(!reportNumber){
+
+        showToast(
+            "Report Number not found."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       SHOW LOADING MODAL
+    ===================================================== */
+
+    selectedReport =
+        report;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        getModalSubtitle();
+
+
+    document.getElementById(
+        "caseModal"
+    ).classList.add("show");
+
+
+    document.getElementById(
+        "caseNumber"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "caseLocation"
+    ).textContent =
+        report.location ||
+        "-";
+
+
+    document.getElementById(
+        "caseDepartment"
+    ).textContent =
+        report.department ||
+        "-";
+
+
+    document.getElementById(
+        "caseCategory"
+    ).textContent =
+        report.hazardCategory ||
+        "-";
+
+
+    /* =====================================================
+       LOAD LATEST RECORD
+    ===================================================== */
+
+    try{
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL +
+                "?test=singleReport" +
+                "&reportNumber=" +
+                encodeURIComponent(
+                    reportNumber
+                ) +
+                "&ts=" +
+                Date.now()
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server error " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "LATEST REPORT FROM SHEET:",
+            result
+        );
+
+
+        /*
+         * Apps Script may return:
+         *
+         * {status:"success", report:{...}}
+         *
+         * or
+         *
+         * {success:true, data:{...}}
+         *
+         * or the report object directly.
+         */
+
+        let latestReport = null;
+
+
+        if(
+            result &&
+            result.report
+        ){
+
+            latestReport =
+                result.report;
+
+        }
+
+        else if(
+            result &&
+            result.data &&
+            !Array.isArray(result.data)
+        ){
+
+            latestReport =
+                result.data;
+
+        }
+
+        else if(
+            result &&
+            result.reportNumber
+        ){
+
+            latestReport =
+                result;
+
+        }
+
+
+        if(!latestReport){
+
+            throw new Error(
+                "Unable to retrieve the latest report data."
+            );
+
+        }
+
+
+        /* =================================================
+           REPLACE OLD DASHBOARD OBJECT
+        ================================================= */
+
+        selectedReport =
+            latestReport;
+
+
+        const reportIndex =
+            reports.findIndex(
+                function(item){
+
+                    return String(
+                        item.reportNumber
+                    ).trim() ===
+                    String(
+                        reportNumber
+                    ).trim();
+
+                }
+            );
+
+
+        if(reportIndex !== -1){
+
+            reports[reportIndex] =
+                latestReport;
+
+        }
+
+
+        /* =================================================
+           BASIC INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            latestReport.reportNumber ||
+            reportNumber;
+
+
+        document.getElementById(
+            "caseNumber"
+        ).textContent =
+            latestReport.reportNumber ||
+            "-";
+
+
+        document.getElementById(
+            "caseLocation"
+        ).textContent =
+            latestReport.location ||
+            "-";
+
+
+        document.getElementById(
+            "caseDepartment"
+        ).textContent =
+            latestReport.department ||
+            "-";
+
+
+        document.getElementById(
+            "caseCategory"
+        ).textContent =
+            latestReport.hazardCategory ||
+            "-";
+
+
+        /* =================================================
+           INCIDENT INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "incidentInfo"
+        ).textContent = [
+
+            "Date: " +
+            formatDisplayDate(
+                latestReport.dateTime ||
+                latestReport.submittedAt
+            ),
+
+            "Reporter: " +
+            (
+                latestReport.reporterName ||
+                "-"
+            ),
+
+            "Submitted: " +
+            formatDisplayDate(
+                latestReport.submittedAt
+            )
+
+        ].join("\n");
+
+
+        document.getElementById(
+            "caseNarrative"
+        ).textContent =
+            latestReport.whatHappened ||
+            "-";
+
+
+        /* =================================================
+           INVESTIGATION
+        ================================================= */
+
+        document.getElementById(
+            "investigationFindings"
+        ).value =
+            latestReport.investigationFindings ||
+            "";
+
+
+        document.getElementById(
+            "rootCause"
+        ).value =
+            latestReport.rootCause ||
+            "";
+
+
+        document.getElementById(
+            "eshInvestigator"
+        ).value =
+            latestReport.eshInvestigator ||
+            "";
+
+
+        document.getElementById(
+            "eshRemarks"
+        ).value =
+            latestReport.eshRemarks ||
+            "";
+
+
+        /* =================================================
+           CORRECTIVE ACTION
+        ================================================= */
+
+        document.getElementById(
+            "correctiveAction"
+        ).value =
+            latestReport.correctiveAction ||
+            "";
+
+
+        document.getElementById(
+            "personResponsible"
+        ).value =
+            latestReport.personResponsible ||
+            "";
+
+
+        document.getElementById(
+            "dueDate"
+        ).value =
+            formatDateInput(
+                latestReport.dueDate
+            );
+
+
+        /* =================================================
+           VERIFICATION
+        ================================================= */
+
+        document.getElementById(
+            "verificationRemarks"
+        ).value =
+            latestReport.verificationRemarks ||
+            "";
+
+
+        /* =================================================
+           CLOSURE
+        ================================================= */
+
+        document.getElementById(
+            "closedDate"
+        ).value =
+            formatDateInput(
+                latestReport.closedDate
+            );
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        const status =
+            normalizeStatus(
+                latestReport.status
+            ) ||
+            "New";
+
+
+        setupCaseStatusOptions(
+            status
+        );
+
+
+        document.getElementById(
+            "caseStatus"
+        ).value =
+            status;
+
+
+        /* =================================================
+           TIMELINE
+        ================================================= */
+
+        updateTimeline(
+            status
+        );
+
+
+        /* =================================================
+           OVERDUE
+        ================================================= */
+
+        updateCaseOverdue(
+            latestReport
+        );
+
+
+        /* =================================================
+           PHOTOS
+        ================================================= */
+
+        loadPhotos(
+            latestReport
+        );
+
+
+        loadCorrectiveActionPhotos(
+            latestReport
+        );
+
+
+        loadVideo(
+            latestReport
+        );
+
+
+        /* =================================================
+           ROLE PERMISSIONS
+        ================================================= */
+
+        applyRolePermissions(
+            status
+        );
+
+
+        /* =================================================
+           DEBUG
+        ================================================= */
+
+        console.log(
+            "Investigation Findings:",
+            latestReport.investigationFindings
+        );
+
+        console.log(
+            "Root Cause:",
+            latestReport.rootCause
+        );
+
+        console.log(
+            "ESH Investigator:",
+            latestReport.eshInvestigator
+        );
+
+        console.log(
+            "ESH Remarks:",
+            latestReport.eshRemarks
+        );
+
+        console.log(
+            "Corrective Action:",
+            latestReport.correctiveAction
+        );
+
+        console.log(
+            "Responsible Person:",
+            latestReport.personResponsible
+        );
+
+        console.log(
+            "Target Date:",
+            latestReport.dueDate
+        );
+
+        console.log(
+            "Verification Remarks:",
+            latestReport.verificationRemarks
+        );
+
+        console.log(
+            "Closed Date:",
+            latestReport.closedDate
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "OPEN REPORT ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Unable to load latest case data."
+        );
+
+    }
+
+}
+
 /* =========================================================
    MODAL SUBTITLE
 ========================================================= */
@@ -5380,13 +5643,9 @@ function setupCaseStatusOptions(currentStatus){
 
 /* =========================================================
    ROLE PERMISSIONS
-   ACTIVE + ARCHIVED SUPPORT
 ========================================================= */
 
-function applyRolePermissions(
-    status,
-    isArchived = false
-){
+function applyRolePermissions(status){
 
     const investigationFields = [
 
@@ -5440,66 +5699,6 @@ function applyRolePermissions(
         );
 
 
-    /* =====================================================
-       ARCHIVED CASE
-       COMPLETELY READ-ONLY
-    ===================================================== */
-
-    if(isArchived){
-
-        investigationFields.forEach(
-            function(id){
-
-                document.getElementById(
-                    id
-                ).disabled = true;
-
-            }
-        );
-
-
-        correctiveFields.forEach(
-            function(id){
-
-                document.getElementById(
-                    id
-                ).disabled = true;
-
-            }
-        );
-
-
-        targetDate.disabled = true;
-
-        closedDate.disabled = true;
-
-        document.getElementById(
-            verificationField
-        ).disabled = true;
-
-        caseStatus.disabled = true;
-
-
-        saveButton.style.display =
-            "none";
-
-        saveButton.disabled =
-            true;
-
-
-        verificationLabel.textContent =
-            "Verification Remarks";
-
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       ESH
-    ===================================================== */
-
     if(isESH()){
 
         investigationFields.forEach(
@@ -5550,10 +5749,6 @@ function applyRolePermissions(
 
     }
 
-
-    /* =====================================================
-       HOD
-    ===================================================== */
 
     if(isHOD()){
 
@@ -5625,10 +5820,6 @@ function applyRolePermissions(
 
     }
 
-
-    /* =====================================================
-       MAINTENANCE
-    ===================================================== */
 
     if(isMaintenance()){
 
@@ -6538,7 +6729,6 @@ function compressImageForUpload(
 
 /* =========================================================
    UPLOAD CORRECTIVE ACTION PHOTOS
-   ACTIVE CASES ONLY
 ========================================================= */
 
 async function uploadCorrectivePhotos(){
@@ -6547,22 +6737,6 @@ async function uploadCorrectivePhotos(){
 
         showToast(
             "Please open a report first."
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       ARCHIVED CASE PROTECTION
-       ARCHIVED CASES ARE READ-ONLY
-    ===================================================== */
-
-    if(selectedReport.isArchived){
-
-        showToast(
-            "Archived closed cases cannot be modified."
         );
 
         return;
@@ -6849,6 +7023,7 @@ async function uploadCorrectivePhotos(){
 
 }
 
+
 /* =========================================================
    VIDEO
 ========================================================= */
@@ -6990,14 +7165,10 @@ function getSelectedReportNumber(){
 
 /* =========================================================
    SAVE REPORT
-   ACTIVE CASES ONLY
+   UPDATED
 ========================================================= */
 
 async function saveReport(){
-
-    /* =====================================================
-       CHECK SELECTED REPORT
-    ===================================================== */
 
     if(!selectedReport){
 
@@ -7009,26 +7180,6 @@ async function saveReport(){
 
     }
 
-
-    /* =====================================================
-       ARCHIVED CASE PROTECTION
-       ARCHIVED CASES ARE READ-ONLY
-    ===================================================== */
-
-    if(selectedReport.isArchived){
-
-        showToast(
-            "Archived closed cases cannot be modified."
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       REPORT NUMBER
-    ===================================================== */
 
     const reportNumber =
         getSelectedReportNumber();
@@ -7050,19 +7201,11 @@ async function saveReport(){
     }
 
 
-    /* =====================================================
-       SAVE BUTTON
-    ===================================================== */
-
     const button =
         document.getElementById(
             "saveButton"
         );
 
-
-    /* =====================================================
-       CURRENT STATUS
-    ===================================================== */
 
     const currentStatus =
         normalizeStatus(
@@ -7075,10 +7218,6 @@ async function saveReport(){
             "caseStatus"
         ).value;
 
-
-    /* =====================================================
-       HOD PERMISSIONS
-    ===================================================== */
 
     if(isHOD()){
 
@@ -7123,10 +7262,6 @@ async function saveReport(){
     }
 
 
-    /* =====================================================
-       MAINTENANCE PERMISSIONS
-    ===================================================== */
-
     if(isMaintenance()){
 
         if(currentStatus === "Closed"){
@@ -7155,10 +7290,6 @@ async function saveReport(){
 
     }
 
-
-    /* =====================================================
-       PREPARE UPDATE DATA
-    ===================================================== */
 
     const data = {
 
@@ -7221,10 +7352,6 @@ async function saveReport(){
     };
 
 
-    /* =====================================================
-       HOD UPDATE DATA
-    ===================================================== */
-
     if(isHOD()){
 
         data.status =
@@ -7261,10 +7388,6 @@ async function saveReport(){
     }
 
 
-    /* =====================================================
-       MAINTENANCE UPDATE DATA
-    ===================================================== */
-
     if(isMaintenance()){
 
         data.status =
@@ -7294,10 +7417,6 @@ async function saveReport(){
 
     }
 
-
-    /* =====================================================
-       START SAVING
-    ===================================================== */
 
     button.disabled = true;
 
@@ -7334,10 +7453,6 @@ async function saveReport(){
         const result =
             await response.json();
 
-
-        /* =================================================
-           SAVE SUCCESS
-        ================================================= */
 
         if(
             result.status === "success" ||
@@ -7397,30 +7512,15 @@ async function saveReport(){
 
 }
 
+
 /* =========================================================
    AUTO SAVE DATE FIELD
-   ACTIVE CASES ONLY
+   UPDATED
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
 
     if(!selectedReport){
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       ARCHIVED CASE PROTECTION
-       ARCHIVED CASES ARE READ-ONLY
-    ===================================================== */
-
-    if(selectedReport.isArchived){
-
-        showToast(
-            "Archived closed cases cannot be modified."
-        );
 
         return;
 
@@ -7576,10 +7676,6 @@ async function autoSaveDateField(fieldType){
     };
 
 
-    /* =====================================================
-       HOD DATA PROTECTION
-    ===================================================== */
-
     if(isHOD()){
 
         data.investigationFindings =
@@ -7602,10 +7698,6 @@ async function autoSaveDateField(fieldType){
 
     }
 
-
-    /* =====================================================
-       MAINTENANCE DATA PROTECTION
-    ===================================================== */
 
     if(isMaintenance()){
 
@@ -7951,12 +8043,8 @@ function renderTrend(){
     }
 
 
-    /*
-       Include active + archived reports
-       for historical analytics.
-    */
     const visible =
-        getDashboardReports();
+        getVisibleReports();
 
 
     const now =
@@ -8147,11 +8235,7 @@ function renderCategory(){
     const map = {};
 
 
-    /*
-       Include active + archived reports
-       for category analytics.
-    */
-    getDashboardReports().forEach(
+    getVisibleReports().forEach(
         function(report){
 
             const category =
@@ -8253,11 +8337,7 @@ function renderDepartment(){
     const map = {};
 
 
-    /*
-       Include active + archived reports
-       for department analytics.
-    */
-    getDashboardReports().forEach(
+    getVisibleReports().forEach(
         function(report){
 
             const department =
@@ -8372,6 +8452,7 @@ function renderDepartment(){
         );
 
 }
+
 
 /* =========================================================
    NORMALIZE STATUS
