@@ -4269,11 +4269,22 @@ async function loadReports(){
 
 function updateDashboard(){
 
-    const visible =
-        getVisibleReports();
+    const dashboardReports =
+        getDashboardReports();
+
+
+    /* =====================================================
+       TOTAL REPORTS
+       ACTIVE + ARCHIVED
+    ===================================================== */
 
     const total =
-        visible.length;
+        dashboardReports.length;
+
+
+    /* =====================================================
+       ACTIVE WORKFLOW COUNTS
+    ===================================================== */
 
     const newCount =
         countStatus("New");
@@ -4287,12 +4298,40 @@ function updateDashboard(){
     const verification =
         countStatus("Verification");
 
-    const closed =
-        countStatus("Closed");
+
+    /* =====================================================
+       CLOSED COUNT
+       ARCHIVED CASES ONLY
+    ===================================================== */
+
+    let closed = 0;
+
+    if(!isMaintenance()){
+
+        closed =
+            archivedReports.filter(function(report){
+
+                return normalizeStatus(
+                    report.status
+                ) === "Closed";
+
+            }).length;
+
+    }
+
+
+    /* =====================================================
+       OVERDUE
+       ACTIVE CASES ONLY
+    ===================================================== */
 
     const overdue =
         calculateOverdue();
 
+
+    /* =====================================================
+       UPDATE KPI CARDS
+    ===================================================== */
 
     document.getElementById(
         "totalReports"
@@ -4322,6 +4361,11 @@ function updateDashboard(){
         "overdueReports"
     ).textContent = overdue;
 
+
+    /* =====================================================
+       ACTION CENTER
+    ===================================================== */
+
     document.getElementById(
         "actionNew"
     ).textContent = newCount;
@@ -4335,7 +4379,6 @@ function updateDashboard(){
     ).textContent = overdue;
 
 }
-
 
 /* =========================================================
    COUNT STATUS
@@ -4766,6 +4809,7 @@ function populateCategoryFilter(){
 
 /* =========================================================
    RENDER REPORTS
+   ACTIVE + ARCHIVED
 ========================================================= */
 
 function renderReports(){
@@ -4796,8 +4840,16 @@ function renderReports(){
         ).value;
 
 
+    /* =====================================================
+       GET ACTIVE + ARCHIVED REPORTS
+    ===================================================== */
+
+    const dashboardReports =
+        getDashboardReports();
+
+
     const filtered =
-        getVisibleReports().filter(
+        dashboardReports.filter(
             function(report){
 
                 const text = [
@@ -4854,6 +4906,45 @@ function renderReports(){
         );
 
 
+    /* =====================================================
+       SORT NEWEST FIRST
+    ===================================================== */
+
+    filtered.sort(
+        function(a,b){
+
+            const da =
+                parseDate(
+                    a.dateTime ||
+                    a.submittedAt
+                ) ||
+                new Date(0);
+
+            const db =
+                parseDate(
+                    b.dateTime ||
+                    b.submittedAt
+                ) ||
+                new Date(0);
+
+            return db - da;
+
+        }
+    );
+
+
+    /* =====================================================
+       SAVE DISPLAYED REPORTS
+    ===================================================== */
+
+    displayedReports =
+        filtered;
+
+
+    /* =====================================================
+       NO REPORTS
+    ===================================================== */
+
     if(!filtered.length){
 
         container.innerHTML = `
@@ -4881,28 +4972,9 @@ function renderReports(){
     }
 
 
-    filtered.sort(
-        function(a,b){
-
-            const da =
-                parseDate(
-                    a.dateTime ||
-                    a.submittedAt
-                ) ||
-                new Date(0);
-
-            const db =
-                parseDate(
-                    b.dateTime ||
-                    b.submittedAt
-                ) ||
-                new Date(0);
-
-            return db - da;
-
-        }
-    );
-
+    /* =====================================================
+       DISPLAY REPORT CARDS
+    ===================================================== */
 
     container.innerHTML =
         filtered
