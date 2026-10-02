@@ -7601,197 +7601,222 @@ function getPhotoList(report){
 }
 
 
-/* =========================================================
-   IMPROVED PHOTO EVIDENCE
-========================================================= */
+ /* =========================================================
+    INCIDENT / REPORT PHOTO EVIDENCE
+    SAME DISPLAY BEHAVIOUR AS CORRECTIVE ACTION PHOTOS
+ ========================================================= */
 
-function loadPhotos(report){
+ function loadPhotos(report){
 
-    const container =
-        document.getElementById(
-            "photoEvidence"
-        );
+     const container =
+         document.getElementById(
+             "photoEvidence"
+         );
 
 
-    if(!container){
+     if(!container){
 
-        return;
+         return;
 
-    }
+     }
 
 
-    const photos =
-        getPhotoList(report);
+     const photos =
+         getPhotoList(report);
 
 
-    if(!photos.length){
+     if(!photos.length){
 
-        container.innerHTML = `
+         container.innerHTML = `
 
-            <div class="empty">
+             <div class="empty">
 
-                No photo evidence submitted.
+                 No photo evidence submitted.
 
-            </div>
+             </div>
 
-        `;
+         `;
 
-        return;
+         return;
 
-    }
+     }
 
 
-    container.innerHTML = "";
+     container.innerHTML =
+         "";
 
 
-    photos.forEach(function(url){
+     photos.forEach(
+         function(url){
 
-        const originalUrl =
-            String(
-                url || ""
-            ).trim();
+             const originalUrl =
+                 String(
+                     url || ""
+                 ).trim();
 
 
-        if(!originalUrl){
+             if(!originalUrl){
 
-            return;
+                 return;
 
-        }
+             }
 
 
-        const fileId =
-            extractDriveFileId(
-                originalUrl
-            );
+             const fileId =
+                 extractDriveFileId(
+                     originalUrl
+                 );
 
 
-        let imageUrl =
-            originalUrl;
+             let imageUrl =
+                 originalUrl;
 
 
-        let openUrl =
-            originalUrl;
+             let openUrl =
+                 originalUrl;
 
 
-        if(fileId){
+             /* =================================================
+                GOOGLE DRIVE PHOTO
+             ================================================= */
 
-            imageUrl =
-                "https://drive.google.com/thumbnail?id=" +
-                encodeURIComponent(
-                    fileId
-                ) +
-                "&sz=w1200";
+             if(fileId){
 
+                 imageUrl =
+                     "https://drive.google.com/thumbnail?id=" +
+                     encodeURIComponent(
+                         fileId
+                     ) +
+                     "&sz=w1200";
 
-            openUrl =
-                "https://drive.google.com/file/d/" +
-                encodeURIComponent(
-                    fileId
-                ) +
-                "/view";
 
-        }
+                 openUrl =
+                     "https://drive.google.com/file/d/" +
+                     encodeURIComponent(
+                         fileId
+                     ) +
+                     "/view";
 
+             }
 
-        const card =
-            document.createElement(
-                "div"
-            );
 
+             /* =================================================
+                PHOTO CARD
+             ================================================= */
 
-        card.className =
-            "photo-card";
+             const card =
+                 document.createElement(
+                     "div"
+                 );
 
 
-        const img =
-            document.createElement(
-                "img"
-            );
+             card.className =
+                 "photo-card";
 
 
-        img.src =
-            imageUrl;
+             /* =================================================
+                PHOTO IMAGE
+             ================================================= */
 
+             const img =
+                 document.createElement(
+                     "img"
+                 );
 
-        img.alt =
-            "ESH Evidence";
 
+             img.src =
+                 imageUrl;
 
-        img.loading =
-            "lazy";
 
+             img.alt =
+                 "Incident Photo";
 
-        img.referrerPolicy =
-            "no-referrer";
 
+             img.loading =
+                 "lazy";
 
-        img.onclick =
-            function(event){
 
-                event.stopPropagation();
+             img.referrerPolicy =
+                 "no-referrer";
 
-                window.open(
-                    openUrl,
-                    "_blank"
-                );
 
-            };
+             /* =================================================
+                CLICK PHOTO TO VIEW
+             ================================================= */
 
+             img.onclick =
+                 function(event){
 
-        img.onerror =
-            function(){
+                     event.stopPropagation();
 
-                img.style.display =
-                    "none";
 
+                     window.open(
+                         openUrl,
+                         "_blank"
+                     );
 
-                const fallback =
-                    document.createElement(
-                        "div"
-                    );
+                 };
 
 
-                fallback.className =
-                    "photo-fallback";
+             /* =================================================
+                FALLBACK IF IMAGE CANNOT LOAD
+             ================================================= */
 
+             img.onerror =
+                 function(){
 
-                fallback.innerHTML =
-                    "📷<br>Open Photo";
+                     img.style.display =
+                         "none";
 
 
-                fallback.onclick =
-                    function(event){
+                     const fallback =
+                         document.createElement(
+                             "div"
+                         );
 
-                        event.stopPropagation();
 
-                        window.open(
-                            openUrl,
-                            "_blank"
-                        );
+                     fallback.className =
+                         "photo-fallback";
 
-                    };
 
+                     fallback.innerHTML =
+                         "📷<br>Open Photo";
 
-                card.appendChild(
-                    fallback
-                );
 
-            };
+                     fallback.onclick =
+                         function(event){
 
+                             event.stopPropagation();
 
-        card.appendChild(
-            img
-        );
 
+                             window.open(
+                                 openUrl,
+                                 "_blank"
+                             );
 
-        container.appendChild(
-            card
-        );
+                         };
 
-    });
 
-}
+                     card.appendChild(
+                         fallback
+                     );
 
+                 };
+
+
+             card.appendChild(
+                 img
+             );
+
+
+             container.appendChild(
+                 card
+             );
+
+         }
+     );
+
+ }
 
 /* =========================================================
    CORRECTIVE ACTION PHOTO LIST
