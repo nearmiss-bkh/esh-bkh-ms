@@ -2370,34 +2370,40 @@ input[type="date"]:disabled{
     </div>
 
 
-    <nav class="nav">
+  <nav class="nav">
 
-        <button
-            class="active"
-            onclick="showSection('overview',this)"
-        >
-            Overview
-        </button>
+    <button
+        class="active"
+        onclick="showSection('overview',this)"
+    >
+        Overview
+    </button>
 
-        <button
-            onclick="showSection('analytics',this)"
-        >
-            Analytics
-        </button>
+    <button
+        onclick="showSection('analytics',this)"
+    >
+        Analytics
+    </button>
 
-        <button
-            onclick="showSection('actions',this)"
-        >
-            Action Center
-        </button>
+    <button
+        onclick="showSection('actions',this)"
+    >
+        Action Center
+    </button>
 
-        <button
-            onclick="showSection('reports',this)"
-        >
-            Reports
-        </button>
+    <button
+        onclick="showSection('reports',this)"
+    >
+        Reports
+    </button>
 
-    </nav>
+    <button
+        onclick="showSection('archive',this)"
+    >
+        Archive Cases
+    </button>
+
+</nav>
 
 
     <div class="sidebar-footer">
@@ -2891,7 +2897,7 @@ input[type="date"]:disabled{
                 class="section-subtitle"
                 id="reportsSubtitle"
             >
-                ESH case management
+                Active ESH case management
             </div>
 
         </div>
@@ -2937,10 +2943,6 @@ input[type="date"]:disabled{
 
             <option value="Verification">
                 Verification
-            </option>
-
-            <option value="Closed">
-                Closed
             </option>
 
         </select>
@@ -2998,7 +3000,125 @@ input[type="date"]:disabled{
 
 </section>
 
+<!-- =====================================================
+     ARCHIVE CASES
+===================================================== -->
 
+<section
+    class="section"
+    id="archive"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Archive Cases
+            </div>
+
+            <div
+                class="section-subtitle"
+                id="archiveSubtitle"
+            >
+                Closed cases archived from active reports
+            </div>
+
+        </div>
+
+
+        <div
+            class="section-subtitle"
+            id="archiveCount"
+        >
+            Archive Cases: 0
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="archiveSearchInput"
+                placeholder="Search archive, location, department..."
+                oninput="renderArchiveReports()"
+            >
+
+        </div>
+
+
+        <select
+            id="archiveStatusFilter"
+            onchange="renderArchiveReports()"
+        >
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Closed">
+                Closed
+            </option>
+
+        </select>
+
+
+        <select
+            id="archiveCategoryFilter"
+            onchange="renderArchiveReports()"
+        >
+
+            <option value="">
+                All Categories
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn"
+            onclick="resetArchiveFilters()"
+        >
+            Reset
+        </button>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="loadArchiveReports()"
+        >
+            ↻ Refresh
+        </button>
+
+
+    </div>
+
+
+    <div
+        class="reports-grid"
+        id="archiveReportsGrid"
+    >
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ◌
+            </div>
+
+            <div class="empty-title">
+                Loading archive cases...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 </div>
 
 </main>
@@ -3529,7 +3649,11 @@ const GOOGLE_SCRIPT_URL =
 
 let reports = [];
 
+let archiveReports = [];
+
 let selectedReport = null;
+
+let selectedReportIsArchived = false;
 
 let trendChart = null;
 
@@ -3770,6 +3894,8 @@ document.addEventListener(
         setupRoleDisplay();
 
         loadReports();
+
+        loadArchiveReports();
 
     }
 );
