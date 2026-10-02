@@ -4617,7 +4617,31 @@ function updateDashboard(){
 
 }
 
+/* =========================================================
+   UPDATE ARCHIVE COUNT
+========================================================= */
 
+function updateArchiveCount(){
+
+    const countElement =
+        document.getElementById(
+            "archiveCount"
+        );
+
+
+    if(!countElement){
+
+        return;
+
+    }
+
+
+    countElement.textContent =
+        "Archive Cases: " +
+        archiveReports.length;
+
+}
+    
 /* =========================================================
    COUNT STATUS
 ========================================================= */
@@ -5044,6 +5068,78 @@ function populateCategoryFilter(){
 
 }
 
+/* =========================================================
+   ARCHIVE CATEGORY FILTER
+========================================================= */
+
+function populateArchiveCategoryFilter(){
+
+    const select =
+        document.getElementById(
+            "archiveCategoryFilter"
+        );
+
+
+    if(!select){
+
+        return;
+
+    }
+
+
+    const categories =
+        [
+            ...new Set(
+
+                archiveReports
+                    .map(
+                        function(report){
+
+                            return String(
+                                report.hazardCategory ||
+                                ""
+                            ).trim();
+
+                        }
+                    )
+                    .filter(Boolean)
+
+            )
+        ]
+        .sort();
+
+
+    select.innerHTML = `
+
+        <option value="">
+            All Categories
+        </option>
+
+    `;
+
+
+    categories.forEach(
+        function(category){
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                category;
+
+            option.textContent =
+                category;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
 
 /* =========================================================
    RENDER REPORTS
@@ -5192,7 +5288,386 @@ function renderReports(){
 
 }
 
+/* =========================================================
+   RENDER ARCHIVE REPORTS
+========================================================= */
 
+function renderArchiveReports(){
+
+    const container =
+        document.getElementById(
+            "archiveReportsGrid"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    const searchInput =
+        document.getElementById(
+            "archiveSearchInput"
+        );
+
+
+    const statusInput =
+        document.getElementById(
+            "archiveStatusFilter"
+        );
+
+
+    const categoryInput =
+        document.getElementById(
+            "archiveCategoryFilter"
+        );
+
+
+    const search =
+        searchInput
+        ?
+        searchInput.value
+            .toLowerCase()
+            .trim()
+        :
+        "";
+
+
+    const status =
+        statusInput
+        ?
+        statusInput.value
+        :
+        "";
+
+
+    const category =
+        categoryInput
+        ?
+        categoryInput.value
+        :
+        "";
+
+
+    const filtered =
+        archiveReports.filter(
+            function(report){
+
+                const text = [
+
+                    report.reportNumber,
+
+                    report.location,
+
+                    report.department,
+
+                    report.hazardCategory,
+
+                    report.whatHappened,
+
+                    report.reporterName,
+
+                    report.status
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+
+                const searchMatch =
+                    !search ||
+                    text.includes(search);
+
+
+                const statusMatch =
+                    !status ||
+                    normalizeStatus(
+                        report.status
+                    ) ===
+                    normalizeStatus(
+                        status
+                    );
+
+
+                const categoryMatch =
+                    !category ||
+                    String(
+                        report.hazardCategory ||
+                        ""
+                    ) === category;
+
+
+                return (
+                    searchMatch &&
+                    statusMatch &&
+                    categoryMatch
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       NO ARCHIVE CASES
+    ===================================================== */
+
+    if(!filtered.length){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ◌
+                </div>
+
+                <div class="empty-title">
+                    No archive cases found
+                </div>
+
+                <p style="margin-top:8px;">
+                    Try changing your search or filter.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       SORT NEWEST FIRST
+    ===================================================== */
+
+    filtered.sort(
+        function(a,b){
+
+            const da =
+                parseDate(
+                    a.archivedDate ||
+                    a.closedDate ||
+                    a.dateTime ||
+                    a.submittedAt
+                ) ||
+                new Date(0);
+
+
+            const db =
+                parseDate(
+                    b.archivedDate ||
+                    b.closedDate ||
+                    b.dateTime ||
+                    b.submittedAt
+                ) ||
+                new Date(0);
+
+
+            return db - da;
+
+        }
+    );
+
+
+    /* =====================================================
+       CREATE ARCHIVE CARDS
+    ===================================================== */
+
+    container.innerHTML =
+        filtered
+            .map(
+                createArchiveReportCard
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   ARCHIVE REPORT CARD
+========================================================= */
+
+function createArchiveReportCard(report){
+
+    const index =
+        archiveReports.indexOf(
+            report
+        );
+
+
+    const status =
+        normalizeStatus(
+            report.status
+        ) ||
+        "Closed";
+
+
+    const statusClass =
+        getStatusClass(
+            status
+        );
+
+
+    return `
+
+        <div
+            class="report-card"
+            onclick="openArchiveReport(${index})"
+        >
+
+            <div class="report-head">
+
+                <div class="report-number">
+
+                    ${escapeHtml(
+                        report.reportNumber ||
+                        "ARCHIVE CASE"
+                    )}
+
+                </div>
+
+
+                <div
+                    class="badge ${statusClass}"
+                >
+
+                    ${escapeHtml(
+                        status
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div class="report-body">
+
+                <div class="report-title">
+
+                    ${escapeHtml(
+                        report.whatHappened ||
+                        "Archived ESH case"
+                    )}
+
+                </div>
+
+
+                <div class="report-meta">
+
+                    <div class="meta-row">
+
+                        <span>
+                            Date
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                formatDisplayDate(
+                                    report.dateTime ||
+                                    report.submittedAt
+                                )
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Location
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.location ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Department
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.department ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                report.hazardCategory ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="meta-row">
+
+                        <span>
+                            Archived
+                        </span>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                formatDisplayDate(
+                                    report.archivedDate
+                                ) ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-footer">
+
+                Archived Case • Read Only
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+    
 /* =========================================================
    REPORT CARD
 ========================================================= */
@@ -5922,6 +6397,440 @@ async function openReport(index){
 }
 
 /* =========================================================
+   OPEN ARCHIVE REPORT
+   READ ONLY
+========================================================= */
+
+async function openArchiveReport(index){
+
+    const report =
+        archiveReports[index];
+
+
+    if(!report){
+
+        return;
+
+    }
+
+
+    const reportNumber =
+        report.reportNumber;
+
+
+    if(!reportNumber){
+
+        showToast(
+            "Archive Report Number not found."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       MARK AS ARCHIVED
+    ===================================================== */
+
+    selectedReportIsArchived =
+        true;
+
+
+    selectedReport =
+        report;
+
+
+    /* =====================================================
+       SHOW MODAL
+    ===================================================== */
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        "Archived Case • Read Only";
+
+
+    document.getElementById(
+        "caseModal"
+    ).classList.add("show");
+
+
+    document.getElementById(
+        "caseNumber"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "caseLocation"
+    ).textContent =
+        report.location ||
+        "-";
+
+
+    document.getElementById(
+        "caseDepartment"
+    ).textContent =
+        report.department ||
+        "-";
+
+
+    document.getElementById(
+        "caseCategory"
+    ).textContent =
+        report.hazardCategory ||
+        "-";
+
+
+    /* =====================================================
+       LOAD LATEST ARCHIVED RECORD
+    ===================================================== */
+
+    try{
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL +
+                "?test=singleReport" +
+                "&reportNumber=" +
+                encodeURIComponent(
+                    reportNumber
+                ) +
+                "&ts=" +
+                Date.now()
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server error " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        let latestReport = null;
+
+
+        if(
+            result &&
+            result.report
+        ){
+
+            latestReport =
+                result.report;
+
+        }
+
+        else if(
+            result &&
+            result.data &&
+            !Array.isArray(result.data)
+        ){
+
+            latestReport =
+                result.data;
+
+        }
+
+        else if(
+            result &&
+            result.reportNumber
+        ){
+
+            latestReport =
+                result;
+
+        }
+
+
+        if(!latestReport){
+
+            throw new Error(
+                "Unable to retrieve archived case."
+            );
+
+        }
+
+
+        /* =================================================
+           KEEP ARCHIVED FLAG
+        ================================================= */
+
+        latestReport.isArchived =
+            true;
+
+
+        selectedReport =
+            latestReport;
+
+
+        /* =================================================
+           BASIC INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "modalTitle"
+        ).textContent =
+            latestReport.reportNumber ||
+            reportNumber;
+
+
+        document.getElementById(
+            "caseNumber"
+        ).textContent =
+            latestReport.reportNumber ||
+            "-";
+
+
+        document.getElementById(
+            "caseLocation"
+        ).textContent =
+            latestReport.location ||
+            "-";
+
+
+        document.getElementById(
+            "caseDepartment"
+        ).textContent =
+            latestReport.department ||
+            "-";
+
+
+        document.getElementById(
+            "caseCategory"
+        ).textContent =
+            latestReport.hazardCategory ||
+            "-";
+
+
+        /* =================================================
+           INCIDENT INFORMATION
+        ================================================= */
+
+        document.getElementById(
+            "incidentInfo"
+        ).textContent = [
+
+            "Date: " +
+            formatDisplayDate(
+                latestReport.dateTime ||
+                latestReport.submittedAt
+            ),
+
+            "Reporter: " +
+            (
+                latestReport.reporterName ||
+                "-"
+            ),
+
+            "Submitted: " +
+            formatDisplayDate(
+                latestReport.submittedAt
+            ),
+
+            "Archived: " +
+            (
+                formatDisplayDate(
+                    latestReport.archivedDate
+                ) ||
+                "-"
+            )
+
+        ].join("\n");
+
+
+        document.getElementById(
+            "caseNarrative"
+        ).textContent =
+            latestReport.whatHappened ||
+            "-";
+
+
+        /* =================================================
+           INVESTIGATION
+        ================================================= */
+
+        document.getElementById(
+            "investigationFindings"
+        ).value =
+            latestReport.investigationFindings ||
+            "";
+
+
+        document.getElementById(
+            "rootCause"
+        ).value =
+            latestReport.rootCause ||
+            "";
+
+
+        document.getElementById(
+            "eshInvestigator"
+        ).value =
+            latestReport.eshInvestigator ||
+            "";
+
+
+        document.getElementById(
+            "eshRemarks"
+        ).value =
+            latestReport.eshRemarks ||
+            "";
+
+
+        /* =================================================
+           CORRECTIVE ACTION
+        ================================================= */
+
+        document.getElementById(
+            "correctiveAction"
+        ).value =
+            latestReport.correctiveAction ||
+            "";
+
+
+        document.getElementById(
+            "personResponsible"
+        ).value =
+            latestReport.personResponsible ||
+            "";
+
+
+        document.getElementById(
+            "dueDate"
+        ).value =
+            formatDateInput(
+                latestReport.dueDate
+            );
+
+
+        /* =================================================
+           VERIFICATION
+        ================================================= */
+
+        document.getElementById(
+            "verificationRemarks"
+        ).value =
+            latestReport.verificationRemarks ||
+            "";
+
+
+        /* =================================================
+           CLOSURE
+        ================================================= */
+
+        document.getElementById(
+            "closedDate"
+        ).value =
+            formatDateInput(
+                latestReport.closedDate
+            );
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        const status =
+            normalizeStatus(
+                latestReport.status
+            ) ||
+            "Closed";
+
+
+        setupCaseStatusOptions(
+            status
+        );
+
+
+        document.getElementById(
+            "caseStatus"
+        ).value =
+            status;
+
+
+        /* =================================================
+           TIMELINE
+        ================================================= */
+
+        updateTimeline(
+            status
+        );
+
+
+        /* =================================================
+           OVERDUE
+        ================================================= */
+
+        updateCaseOverdue(
+            latestReport
+        );
+
+
+        /* =================================================
+           PHOTOS
+        ================================================= */
+
+        loadPhotos(
+            latestReport
+        );
+
+
+        loadCorrectiveActionPhotos(
+            latestReport
+        );
+
+
+        loadVideo(
+            latestReport
+        );
+
+
+        /* =================================================
+           APPLY ARCHIVE READ-ONLY MODE
+        ================================================= */
+
+        applyArchiveReadOnly();
+
+
+        console.log(
+            "ARCHIVED CASE OPENED:",
+            latestReport
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "OPEN ARCHIVE REPORT ERROR:",
+            error
+        );
+
+
+        showToast(
+            "Unable to load archived case data."
+        );
+
+    }
+
+}
+
+/* =========================================================
    MODAL SUBTITLE
 ========================================================= */
 
@@ -5955,6 +6864,102 @@ function getModalSubtitle(){
 
 }
 
+
+/* =========================================================
+   ARCHIVE READ ONLY
+========================================================= */
+
+function applyArchiveReadOnly(){
+
+    const fields = [
+
+        "investigationFindings",
+        "rootCause",
+        "eshInvestigator",
+        "eshRemarks",
+        "correctiveAction",
+        "personResponsible",
+        "dueDate",
+        "verificationRemarks",
+        "closedDate",
+        "caseStatus"
+
+    ];
+
+
+    fields.forEach(
+        function(id){
+
+            const element =
+                document.getElementById(id);
+
+            if(element){
+
+                element.disabled =
+                    true;
+
+            }
+
+        }
+    );
+
+
+    const saveButton =
+        document.getElementById(
+            "saveCaseBtn"
+        );
+
+
+    if(saveButton){
+
+        saveButton.style.display =
+            "none";
+
+    }
+
+
+    const photoInput =
+        document.getElementById(
+            "correctivePhotoInput"
+        );
+
+
+    if(photoInput){
+
+        photoInput.style.display =
+            "none";
+
+    }
+
+
+    const uploadButton =
+        document.getElementById(
+            "uploadCorrectivePhotosBtn"
+        );
+
+
+    if(uploadButton){
+
+        uploadButton.style.display =
+            "none";
+
+    }
+
+
+    const modalSubtitle =
+        document.getElementById(
+            "modalSubtitle"
+        );
+
+
+    if(modalSubtitle){
+
+        modalSubtitle.textContent =
+            "Archived Case • Read Only";
+
+    }
+
+}
 
 /* =========================================================
    STATUS OPTIONS
@@ -7628,6 +8633,21 @@ function getSelectedReportNumber(){
 
 async function saveReport(){
 
+    /* =====================================================
+       ARCHIVE CASES ARE READ ONLY
+    ===================================================== */
+
+    if(selectedReportIsArchived){
+
+        showToast(
+            "Archived cases are read-only."
+        );
+
+        return;
+
+    }
+
+
     if(!selectedReport){
 
         showToast(
@@ -7677,6 +8697,10 @@ async function saveReport(){
         ).value;
 
 
+    /* =====================================================
+       HOD PERMISSION
+    ===================================================== */
+
     if(isHOD()){
 
         if(currentStatus === "Closed"){
@@ -7720,6 +8744,10 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       MAINTENANCE PERMISSION
+    ===================================================== */
+
     if(isMaintenance()){
 
         if(currentStatus === "Closed"){
@@ -7749,9 +8777,14 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       PREPARE UPDATE DATA
+    ===================================================== */
+
     const data = {
 
-        action:"updateReport",
+        action:
+            "updateReport",
 
         reportNumber:
             reportNumber,
@@ -7810,22 +8843,30 @@ async function saveReport(){
     };
 
 
+    /* =====================================================
+       HOD UPDATE LIMITS
+    ===================================================== */
+
     if(isHOD()){
 
         data.status =
             selectedStatus;
 
         data.investigationFindings =
-            selectedReport.investigationFindings || "";
+            selectedReport.investigationFindings ||
+            "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            selectedReport.rootCause ||
+            "";
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            selectedReport.correctiveAction ||
+            "";
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            selectedReport.personResponsible ||
+            "";
 
         data.dueDate =
             document.getElementById(
@@ -7833,10 +8874,12 @@ async function saveReport(){
             ).value;
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+            selectedReport.eshInvestigator ||
+            "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks || "";
+            selectedReport.eshRemarks ||
+            "";
 
         data.closedDate =
             document.getElementById(
@@ -7845,6 +8888,10 @@ async function saveReport(){
 
     }
 
+
+    /* =====================================================
+       MAINTENANCE UPDATE LIMITS
+    ===================================================== */
 
     if(isMaintenance()){
 
@@ -7852,16 +8899,20 @@ async function saveReport(){
             selectedStatus;
 
         data.investigationFindings =
-            selectedReport.investigationFindings || "";
+            selectedReport.investigationFindings ||
+            "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            selectedReport.rootCause ||
+            "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+            selectedReport.eshInvestigator ||
+            "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks || "";
+            selectedReport.eshRemarks ||
+            "";
 
         data.dueDate =
             document.getElementById(
@@ -7876,7 +8927,23 @@ async function saveReport(){
     }
 
 
-    button.disabled = true;
+    /* =====================================================
+       DISABLE SAVE BUTTON
+    ===================================================== */
+
+    if(!button){
+
+        showToast(
+            "Save button not found."
+        );
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
 
 
     const originalText =
@@ -7887,6 +8954,10 @@ async function saveReport(){
         "Saving...";
 
 
+    /* =====================================================
+       SEND UPDATE
+    ===================================================== */
+
     try{
 
         const response =
@@ -7894,7 +8965,8 @@ async function saveReport(){
                 GOOGLE_SCRIPT_URL,
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -7902,7 +8974,9 @@ async function saveReport(){
                     },
 
                     body:
-                        JSON.stringify(data)
+                        JSON.stringify(
+                            data
+                        )
 
                 }
             );
@@ -7912,12 +8986,17 @@ async function saveReport(){
             await response.json();
 
 
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
         if(
             result.status === "success" ||
             result.success === true
         ){
 
             closeModal();
+
 
             showToast(
                 isHOD()
@@ -7934,7 +9013,14 @@ async function saveReport(){
 
             await loadReports();
 
+            await loadArchiveReports();
+
         }
+
+
+        /* =================================================
+           ERROR
+        ================================================= */
 
         else{
 
@@ -7947,9 +9033,14 @@ async function saveReport(){
 
     }
 
+
     catch(error){
 
-        console.error(error);
+        console.error(
+            "SAVE REPORT ERROR:",
+            error
+        );
+
 
         showToast(
             "Error: " +
@@ -7958,10 +9049,12 @@ async function saveReport(){
 
     }
 
+
     finally{
 
         button.disabled =
             false;
+
 
         button.textContent =
             originalText;
@@ -7970,13 +9063,27 @@ async function saveReport(){
 
 }
 
-
 /* =========================================================
    AUTO SAVE DATE FIELD
    UPDATED
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
+
+    /* =====================================================
+       ARCHIVE CASES ARE READ ONLY
+    ===================================================== */
+
+    if(selectedReportIsArchived){
+
+        showToast(
+            "Archived cases are read-only."
+        );
+
+        return;
+
+    }
+
 
     if(!selectedReport){
 
@@ -8055,6 +9162,17 @@ async function autoSaveDateField(fieldType){
         );
 
 
+    if(!button){
+
+        showToast(
+            "Save button not found."
+        );
+
+        return;
+
+    }
+
+
     const originalText =
         button.textContent;
 
@@ -8073,7 +9191,8 @@ async function autoSaveDateField(fieldType){
 
     const data = {
 
-        action:"updateReport",
+        action:
+            "updateReport",
 
         reportNumber:
             reportNumber,
@@ -8134,42 +9253,60 @@ async function autoSaveDateField(fieldType){
     };
 
 
+    /* =====================================================
+       HOD DATA PROTECTION
+    ===================================================== */
+
     if(isHOD()){
 
         data.investigationFindings =
-            selectedReport.investigationFindings || "";
+            selectedReport.investigationFindings ||
+            "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            selectedReport.rootCause ||
+            "";
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            selectedReport.correctiveAction ||
+            "";
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            selectedReport.personResponsible ||
+            "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+            selectedReport.eshInvestigator ||
+            "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks || "";
+            selectedReport.eshRemarks ||
+            "";
 
     }
 
 
+    /* =====================================================
+       MAINTENANCE DATA PROTECTION
+    ===================================================== */
+
     if(isMaintenance()){
 
         data.investigationFindings =
-            selectedReport.investigationFindings || "";
+            selectedReport.investigationFindings ||
+            "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            selectedReport.rootCause ||
+            "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+            selectedReport.eshInvestigator ||
+            "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks || "";
+            selectedReport.eshRemarks ||
+            "";
 
     }
 
@@ -8186,6 +9323,10 @@ async function autoSaveDateField(fieldType){
         ).value;
 
 
+    /* =====================================================
+       SEND DATE UPDATE
+    ===================================================== */
+
     try{
 
         const response =
@@ -8193,7 +9334,8 @@ async function autoSaveDateField(fieldType){
                 GOOGLE_SCRIPT_URL,
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -8201,7 +9343,9 @@ async function autoSaveDateField(fieldType){
                     },
 
                     body:
-                        JSON.stringify(data)
+                        JSON.stringify(
+                            data
+                        )
 
                 }
             );
@@ -8210,6 +9354,10 @@ async function autoSaveDateField(fieldType){
         const result =
             await response.json();
 
+
+        /* =================================================
+           SUCCESS
+        ================================================= */
 
         if(
             result.status === "success" ||
@@ -8297,6 +9445,11 @@ async function autoSaveDateField(fieldType){
 
         }
 
+
+        /* =================================================
+           ERROR
+        ================================================= */
+
         else{
 
             throw new Error(
@@ -8308,9 +9461,14 @@ async function autoSaveDateField(fieldType){
 
     }
 
+
     catch(error){
 
-        console.error(error);
+        console.error(
+            "DATE UPDATE ERROR:",
+            error
+        );
+
 
         showToast(
             fieldType === "dueDate"
@@ -8324,6 +9482,7 @@ async function autoSaveDateField(fieldType){
 
     }
 
+
     finally{
 
         button.disabled =
@@ -8335,7 +9494,6 @@ async function autoSaveDateField(fieldType){
     }
 
 }
-
 
 /* =========================================================
    DATE EVENTS
@@ -8436,20 +9594,46 @@ function closeModal(){
     selectedReport =
         null;
 
-}
+
+    /* =====================================================
+       RESET ARCHIVE MODE
+    ===================================================== */
+
+    selectedReportIsArchived =
+        false;
 
 
-document
-    .getElementById("caseModal")
-    .addEventListener(
-        "click",
-        function(event){
+    /* =====================================================
+       RESTORE EDITABLE FIELDS
+    ===================================================== */
 
-            if(
-                event.target === this
-            ){
+    const fields = [
 
-                closeModal();
+        "investigationFindings",
+        "rootCause",
+        "eshInvestigator",
+        "eshRemarks",
+        "correctiveAction",
+        "personResponsible",
+        "dueDate",
+        "verificationRemarks",
+        "closedDate",
+        "caseStatus"
+
+    ];
+
+
+    fields.forEach(
+        function(id){
+
+            const element =
+                document.getElementById(id);
+
+
+            if(element){
+
+                element.disabled =
+                    false;
 
             }
 
@@ -8457,18 +9641,56 @@ document
     );
 
 
-document.addEventListener(
-    "keydown",
-    function(event){
+    /* =====================================================
+       RESTORE SAVE BUTTON
+    ===================================================== */
 
-        if(event.key === "Escape"){
+    const saveButton =
+        document.getElementById(
+            "saveCaseBtn"
+        );
 
-            closeModal();
 
-        }
+    if(saveButton){
+
+        saveButton.style.display =
+            "";
 
     }
-);
+
+
+    /* =====================================================
+       RESTORE CORRECTIVE PHOTO UPLOAD
+    ===================================================== */
+
+    const photoInput =
+        document.getElementById(
+            "correctivePhotoInput"
+        );
+
+
+    if(photoInput){
+
+        photoInput.style.display =
+            "";
+
+    }
+
+
+    const uploadButton =
+        document.getElementById(
+            "uploadCorrectivePhotosBtn"
+        );
+
+
+    if(uploadButton){
+
+        uploadButton.style.display =
+            "";
+
+    }
+
+}
 
 
 /* =========================================================
