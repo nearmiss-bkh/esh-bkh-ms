@@ -4745,6 +4745,7 @@ function resetFilters(){
 
 /* =========================================================
    CATEGORY FILTER
+   ACTIVE + ARCHIVED SUPPORT
 ========================================================= */
 
 function populateCategoryFilter(){
@@ -4759,13 +4760,16 @@ function populateCategoryFilter(){
         [
             ...new Set(
 
-                getVisibleReports()
+                getDashboardReports()
                     .map(
-                        r =>
-                            String(
-                                r.hazardCategory ||
+                        function(report){
+
+                            return String(
+                                report.hazardCategory ||
                                 ""
-                            ).trim()
+                            ).trim();
+
+                        }
                     )
                     .filter(Boolean)
 
@@ -4805,7 +4809,6 @@ function populateCategoryFilter(){
     );
 
 }
-
 
 /* =========================================================
    RENDER REPORTS
@@ -6535,6 +6538,7 @@ function compressImageForUpload(
 
 /* =========================================================
    UPLOAD CORRECTIVE ACTION PHOTOS
+   ACTIVE CASES ONLY
 ========================================================= */
 
 async function uploadCorrectivePhotos(){
@@ -6543,6 +6547,22 @@ async function uploadCorrectivePhotos(){
 
         showToast(
             "Please open a report first."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ARCHIVED CASE PROTECTION
+       ARCHIVED CASES ARE READ-ONLY
+    ===================================================== */
+
+    if(selectedReport.isArchived){
+
+        showToast(
+            "Archived closed cases cannot be modified."
         );
 
         return;
@@ -6828,7 +6848,6 @@ async function uploadCorrectivePhotos(){
     }
 
 }
-
 
 /* =========================================================
    VIDEO
@@ -7380,12 +7399,28 @@ async function saveReport(){
 
 /* =========================================================
    AUTO SAVE DATE FIELD
-   UPDATED
+   ACTIVE CASES ONLY
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
 
     if(!selectedReport){
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ARCHIVED CASE PROTECTION
+       ARCHIVED CASES ARE READ-ONLY
+    ===================================================== */
+
+    if(selectedReport.isArchived){
+
+        showToast(
+            "Archived closed cases cannot be modified."
+        );
 
         return;
 
@@ -7541,6 +7576,10 @@ async function autoSaveDateField(fieldType){
     };
 
 
+    /* =====================================================
+       HOD DATA PROTECTION
+    ===================================================== */
+
     if(isHOD()){
 
         data.investigationFindings =
@@ -7563,6 +7602,10 @@ async function autoSaveDateField(fieldType){
 
     }
 
+
+    /* =====================================================
+       MAINTENANCE DATA PROTECTION
+    ===================================================== */
 
     if(isMaintenance()){
 
