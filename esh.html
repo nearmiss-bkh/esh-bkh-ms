@@ -6971,10 +6971,14 @@ function getSelectedReportNumber(){
 
 /* =========================================================
    SAVE REPORT
-   UPDATED
+   ACTIVE CASES ONLY
 ========================================================= */
 
 async function saveReport(){
+
+    /* =====================================================
+       CHECK SELECTED REPORT
+    ===================================================== */
 
     if(!selectedReport){
 
@@ -6986,6 +6990,26 @@ async function saveReport(){
 
     }
 
+
+    /* =====================================================
+       ARCHIVED CASE PROTECTION
+       ARCHIVED CASES ARE READ-ONLY
+    ===================================================== */
+
+    if(selectedReport.isArchived){
+
+        showToast(
+            "Archived closed cases cannot be modified."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       REPORT NUMBER
+    ===================================================== */
 
     const reportNumber =
         getSelectedReportNumber();
@@ -7007,11 +7031,19 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       SAVE BUTTON
+    ===================================================== */
+
     const button =
         document.getElementById(
             "saveButton"
         );
 
+
+    /* =====================================================
+       CURRENT STATUS
+    ===================================================== */
 
     const currentStatus =
         normalizeStatus(
@@ -7024,6 +7056,10 @@ async function saveReport(){
             "caseStatus"
         ).value;
 
+
+    /* =====================================================
+       HOD PERMISSIONS
+    ===================================================== */
 
     if(isHOD()){
 
@@ -7068,6 +7104,10 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       MAINTENANCE PERMISSIONS
+    ===================================================== */
+
     if(isMaintenance()){
 
         if(currentStatus === "Closed"){
@@ -7096,6 +7136,10 @@ async function saveReport(){
 
     }
 
+
+    /* =====================================================
+       PREPARE UPDATE DATA
+    ===================================================== */
 
     const data = {
 
@@ -7158,6 +7202,10 @@ async function saveReport(){
     };
 
 
+    /* =====================================================
+       HOD UPDATE DATA
+    ===================================================== */
+
     if(isHOD()){
 
         data.status =
@@ -7194,6 +7242,10 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       MAINTENANCE UPDATE DATA
+    ===================================================== */
+
     if(isMaintenance()){
 
         data.status =
@@ -7223,6 +7275,10 @@ async function saveReport(){
 
     }
 
+
+    /* =====================================================
+       START SAVING
+    ===================================================== */
 
     button.disabled = true;
 
@@ -7259,6 +7315,10 @@ async function saveReport(){
         const result =
             await response.json();
 
+
+        /* =================================================
+           SAVE SUCCESS
+        ================================================= */
 
         if(
             result.status === "success" ||
@@ -7317,7 +7377,6 @@ async function saveReport(){
     }
 
 }
-
 
 /* =========================================================
    AUTO SAVE DATE FIELD
