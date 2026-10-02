@@ -8196,6 +8196,21 @@ function compressImageForUpload(
 
 async function uploadCorrectivePhotos(){
 
+    /* =====================================================
+       ARCHIVE CASES ARE READ ONLY
+    ===================================================== */
+
+    if(selectedReportIsArchived){
+
+        showToast(
+            "Archived cases are read-only."
+        );
+
+        return;
+
+    }
+
+
     if(!selectedReport){
 
         showToast(
@@ -9585,11 +9600,28 @@ document
 
 function closeModal(){
 
-    document
-        .getElementById("caseModal")
-        .classList
-        .remove("show");
+    /* =====================================================
+       CLOSE MODAL
+    ===================================================== */
 
+    const modal =
+        document.getElementById(
+            "caseModal"
+        );
+
+
+    if(modal){
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /* =====================================================
+       CLEAR SELECTED REPORT
+    ===================================================== */
 
     selectedReport =
         null;
@@ -9627,7 +9659,9 @@ function closeModal(){
         function(id){
 
             const element =
-                document.getElementById(id);
+                document.getElementById(
+                    id
+                );
 
 
             if(element){
@@ -9647,7 +9681,7 @@ function closeModal(){
 
     const saveButton =
         document.getElementById(
-            "saveCaseBtn"
+            "saveButton"
         );
 
 
@@ -9660,7 +9694,7 @@ function closeModal(){
 
 
     /* =====================================================
-       RESTORE CORRECTIVE PHOTO UPLOAD
+       RESTORE CORRECTIVE PHOTO INPUT
     ===================================================== */
 
     const photoInput =
@@ -9677,6 +9711,10 @@ function closeModal(){
     }
 
 
+    /* =====================================================
+       RESTORE CORRECTIVE PHOTO UPLOAD BUTTON
+    ===================================================== */
+
     const uploadButton =
         document.getElementById(
             "uploadCorrectivePhotosBtn"
@@ -9691,7 +9729,6 @@ function closeModal(){
     }
 
 }
-
 
 /* =========================================================
    ANALYTICS
