@@ -4212,6 +4212,338 @@ async function loadReports(){
 
 }
 
+
+/* =========================================================
+   LOAD ARCHIVE REPORTS
+========================================================= */
+
+async function loadArchiveReports(){
+
+    try{
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL +
+                "?test=archiveReports&ts=" +
+                Date.now()
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server error " +
+                response.status
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+
+        /* =====================================================
+           GET ARCHIVE ARRAY
+        ===================================================== */
+
+        let rawArchiveReports = [];
+
+        if(Array.isArray(data)){
+
+            rawArchiveReports = data;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.reports)
+        ){
+
+            rawArchiveReports = data.reports;
+
+        }
+
+        else if(
+            data &&
+            Array.isArray(data.data)
+        ){
+
+            rawArchiveReports = data.data;
+
+        }
+
+
+        /* =====================================================
+           NORMALIZE ARCHIVE REPORT DATA
+        ===================================================== */
+
+        archiveReports =
+            rawArchiveReports.map(function(report){
+
+                return {
+
+                    /* ================================
+                       BASIC REPORT INFORMATION
+                    ================================= */
+
+                    reportNumber:
+                        report.reportNumber ||
+                        report.reportNo ||
+                        "",
+
+                    rowNumber:
+                        report.rowNumber ||
+                        "",
+
+                    dateTime:
+                        report.dateTime ||
+                        "",
+
+                    location:
+                        report.location ||
+                        "",
+
+                    department:
+                        report.department ||
+                        "",
+
+                    hazardCategory:
+                        report.hazardCategory ||
+                        report.category ||
+                        "",
+
+                    whatHappened:
+                        report.whatHappened ||
+                        "",
+
+                    reporterName:
+                        report.reporterName ||
+                        "",
+
+
+                    /* ================================
+                       ORIGINAL PHOTOS / VIDEO
+                    ================================= */
+
+                    photos:
+                        report.photos ||
+                        "",
+
+                    video:
+                        report.video ||
+                        "",
+
+
+                    /* ================================
+                       STATUS
+                    ================================= */
+
+                    status:
+                        report.status ||
+                        "Closed",
+
+
+                    /* ================================
+                       ESH INVESTIGATION
+                    ================================= */
+
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
+
+                    rootCause:
+                        report.rootCause ||
+                        "",
+
+                    eshInvestigator:
+                        report.eshInvestigator ||
+                        "",
+
+                    eshRemarks:
+                        report.eshRemarks ||
+                        "",
+
+
+                    /* ================================
+                       CORRECTIVE ACTION
+                    ================================= */
+
+                    correctiveAction:
+                        report.correctiveAction ||
+                        "",
+
+                    personResponsible:
+                        report.personResponsible ||
+                        report.responsiblePerson ||
+                        "",
+
+                    dueDate:
+                        report.dueDate ||
+                        report.targetDate ||
+                        "",
+
+
+                    /* ================================
+                       VERIFICATION
+                    ================================= */
+
+                    verificationRemarks:
+                        report.verificationRemarks ||
+                        report.verification ||
+                        "",
+
+
+                    /* ================================
+                       CLOSURE
+                    ================================= */
+
+                    closedDate:
+                        report.closedDate ||
+                        report.completionDate ||
+                        "",
+
+                    closedBy:
+                        report.closedBy ||
+                        "",
+
+                    remarks:
+                        report.remarks ||
+                        "",
+
+
+                    /* ================================
+                       SUBMISSION
+                    ================================= */
+
+                    submittedAt:
+                        report.submittedAt ||
+                        "",
+
+
+                    /* ================================
+                       CORRECTIVE ACTION PHOTOS
+                    ================================= */
+
+                    correctiveActionPhotos:
+                        report.correctiveActionPhotos ||
+                        "",
+
+
+                    /* ================================
+                       ARCHIVE DATE
+                    ================================= */
+
+                    archivedDate:
+                        report.archivedDate ||
+                        report.archiveDate ||
+                        "",
+
+
+                    /* ================================
+                       ARCHIVE FLAG
+                    ================================= */
+
+                    isArchived:
+                        true,
+
+
+                    /* ================================
+                       KEEP ALIASES
+                    ================================= */
+
+                    eshAction:
+                        report.eshAction ||
+                        report.investigationFindings ||
+                        "",
+
+                    responsiblePerson:
+                        report.responsiblePerson ||
+                        report.personResponsible ||
+                        "",
+
+                    targetDate:
+                        report.targetDate ||
+                        report.dueDate ||
+                        "",
+
+                    completionDate:
+                        report.completionDate ||
+                        report.closedDate ||
+                        "",
+
+                    verification:
+                        report.verification ||
+                        report.verificationRemarks ||
+                        ""
+
+                };
+
+            });
+
+
+        /* =====================================================
+           DEBUG
+        ===================================================== */
+
+        console.log(
+            "ARCHIVE REPORTS LOADED:",
+            archiveReports
+        );
+
+
+        /* =====================================================
+           UPDATE ARCHIVE DISPLAY
+        ===================================================== */
+
+        populateArchiveCategoryFilter();
+
+        renderArchiveReports();
+
+        updateArchiveCount();
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "LOAD ARCHIVE REPORTS ERROR:",
+            error
+        );
+
+        const archiveGrid =
+            document.getElementById(
+                "archiveReportsGrid"
+            );
+
+        if(archiveGrid){
+
+            archiveGrid.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        !
+                    </div>
+
+                    <div class="empty-title">
+                        Unable to load archive cases
+                    </div>
+
+                    <p style="margin-top:8px;">
+                        Please check the Apps Script deployment.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+    
 /* =========================================================
    DASHBOARD
 ========================================================= */
