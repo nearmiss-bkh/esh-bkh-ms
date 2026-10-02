@@ -7951,8 +7951,12 @@ function renderTrend(){
     }
 
 
+    /*
+       Include active + archived reports
+       for historical analytics.
+    */
     const visible =
-        getVisibleReports();
+        getDashboardReports();
 
 
     const now =
@@ -8143,7 +8147,11 @@ function renderCategory(){
     const map = {};
 
 
-    getVisibleReports().forEach(
+    /*
+       Include active + archived reports
+       for category analytics.
+    */
+    getDashboardReports().forEach(
         function(report){
 
             const category =
@@ -8245,7 +8253,11 @@ function renderDepartment(){
     const map = {};
 
 
-    getVisibleReports().forEach(
+    /*
+       Include active + archived reports
+       for department analytics.
+    */
+    getDashboardReports().forEach(
         function(report){
 
             const department =
@@ -8360,7 +8372,6 @@ function renderDepartment(){
         );
 
 }
-
 
 /* =========================================================
    NORMALIZE STATUS
