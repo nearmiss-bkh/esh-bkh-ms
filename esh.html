@@ -5377,9 +5377,13 @@ function setupCaseStatusOptions(currentStatus){
 
 /* =========================================================
    ROLE PERMISSIONS
+   ACTIVE + ARCHIVED SUPPORT
 ========================================================= */
 
-function applyRolePermissions(status){
+function applyRolePermissions(
+    status,
+    isArchived = false
+){
 
     const investigationFields = [
 
@@ -5433,6 +5437,66 @@ function applyRolePermissions(status){
         );
 
 
+    /* =====================================================
+       ARCHIVED CASE
+       COMPLETELY READ-ONLY
+    ===================================================== */
+
+    if(isArchived){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        targetDate.disabled = true;
+
+        closedDate.disabled = true;
+
+        document.getElementById(
+            verificationField
+        ).disabled = true;
+
+        caseStatus.disabled = true;
+
+
+        saveButton.style.display =
+            "none";
+
+        saveButton.disabled =
+            true;
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ESH
+    ===================================================== */
+
     if(isESH()){
 
         investigationFields.forEach(
@@ -5483,6 +5547,10 @@ function applyRolePermissions(status){
 
     }
 
+
+    /* =====================================================
+       HOD
+    ===================================================== */
 
     if(isHOD()){
 
@@ -5554,6 +5622,10 @@ function applyRolePermissions(status){
 
     }
 
+
+    /* =====================================================
+       MAINTENANCE
+    ===================================================== */
 
     if(isMaintenance()){
 
