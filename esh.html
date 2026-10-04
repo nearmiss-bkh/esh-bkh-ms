@@ -4991,6 +4991,268 @@ function renderReports(){
 
 }
 
+/* =========================================================
+   RENDER ARCHIVE REPORTS
+========================================================= */
+
+function renderArchiveReports(){
+
+    const grid =
+        document.getElementById("archiveReportsGrid");
+
+    const count =
+        document.getElementById("archiveCasesCount");
+
+    const searchInput =
+        document.getElementById("archiveSearchInput");
+
+
+    if(!grid){
+        return;
+    }
+
+
+    if(!Array.isArray(archiveReports)){
+        archiveReports = [];
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    const search =
+        searchInput
+            ? searchInput.value.trim().toLowerCase()
+            : "";
+
+
+    const filtered =
+        archiveReports.filter(function(report){
+
+            const text = [
+
+                report.reportNumber,
+                report.location,
+                report.department,
+                report.hazardCategory,
+                report.whatHappened,
+                report.reporterName,
+                report.status,
+                report.closedDate,
+                report.closedBy
+
+            ]
+            .join(" ")
+            .toLowerCase();
+
+
+            return text.includes(search);
+
+        });
+
+
+    /* =====================================================
+       UPDATE COUNT
+    ===================================================== */
+
+    if(count){
+
+        count.textContent =
+            archiveReports.length +
+            " ARCHIVED";
+
+    }
+
+
+    /* =====================================================
+       NO ARCHIVED CASES
+    ===================================================== */
+
+    if(filtered.length === 0){
+
+        grid.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <div class="empty-title">
+                    ${
+                        archiveReports.length === 0
+                        ? "No archived cases"
+                        : "No matching archived cases"
+                    }
+                </div>
+
+                <p style="margin-top:8px;">
+                    ${
+                        archiveReports.length === 0
+                        ? "Closed cases moved to archive will appear here."
+                        : "Try another search."
+                    }
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       CREATE ARCHIVE CARDS
+    ===================================================== */
+
+    grid.innerHTML =
+        filtered.map(function(report){
+
+            const reportNumber =
+                report.reportNumber ||
+                "No Report Number";
+
+
+            const location =
+                report.location ||
+                "Not specified";
+
+
+            const department =
+                report.department ||
+                "Not specified";
+
+
+            const category =
+                report.hazardCategory ||
+                "Not specified";
+
+
+            const description =
+                report.whatHappened ||
+                "No description provided";
+
+
+            const closedDate =
+                report.closedDate ||
+                report.completionDate ||
+                "Not available";
+
+
+            const closedBy =
+                report.closedBy ||
+                "Not available";
+
+
+            return `
+
+                <div class="report-card archive-card">
+
+                    <div class="report-card-header">
+
+                        <div>
+
+                            <div class="report-number">
+                                ${escapeHtml(reportNumber)}
+                            </div>
+
+                            <div class="report-date">
+                                Closed:
+                                ${escapeHtml(closedDate)}
+                            </div>
+
+                        </div>
+
+                        <div class="status-badge status-closed">
+                            CLOSED
+                        </div>
+
+                    </div>
+
+
+                    <div class="report-card-body">
+
+                        <div class="report-info">
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Location
+                                </span>
+
+                                <span class="info-value">
+                                    ${escapeHtml(location)}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Department
+                                </span>
+
+                                <span class="info-value">
+                                    ${escapeHtml(department)}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Hazard / Category
+                                </span>
+
+                                <span class="info-value">
+                                    ${escapeHtml(category)}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <span class="info-label">
+                                    Closed By
+                                </span>
+
+                                <span class="info-value">
+                                    ${escapeHtml(closedBy)}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-description">
+
+                            <div class="info-label">
+                                What Happened
+                            </div>
+
+                            <div class="description-text">
+                                ${escapeHtml(description)}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        })
+        .join("");
+
+}
 
 /* =========================================================
    REPORT CARD
