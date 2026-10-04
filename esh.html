@@ -9313,6 +9313,25 @@ function showToast(message){
 
 }
 
+/* =========================================================
+   RESET ARCHIVE SEARCH
+========================================================= */
+
+function resetArchiveSearch(){
+
+    const input =
+        document.getElementById(
+            "archiveSearchInput"
+        );
+
+    if(input){
+        input.value = "";
+    }
+
+    renderArchiveReports();
+
+}
+
 
 /* =========================================================
    AUTO REFRESH
