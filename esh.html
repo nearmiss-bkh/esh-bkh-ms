@@ -7079,6 +7079,7 @@ function extractDriveFileId(url){
 
 /* =========================================================
    PHOTO LIST
+   FILTER INVALID PHOTO VALUES
 ========================================================= */
 
 function getPhotoList(report){
@@ -7091,21 +7092,6 @@ function getPhotoList(report){
         "";
 
 
-    if(Array.isArray(value)){
-
-        return value
-            .map(function(item){
-
-                return String(
-                    item || ""
-                ).trim();
-
-            })
-            .filter(Boolean);
-
-    }
-
-
     if(!value){
 
         return [];
@@ -7113,58 +7099,169 @@ function getPhotoList(report){
     }
 
 
-    const text =
-        String(value).trim();
+    let items = [];
 
 
-    if(!text){
+    /*
+     * ARRAY
+     */
+    if(Array.isArray(value)){
 
-        return [];
-
-    }
-
-
-    try{
-
-        const parsed =
-            JSON.parse(text);
-
-
-        if(Array.isArray(parsed)){
-
-            return parsed
+        items =
+            value
                 .map(function(item){
 
                     return String(
                         item || ""
                     ).trim();
 
-                })
-                .filter(Boolean);
+                });
+
+    }
+
+
+    /*
+     * TEXT / JSON
+     */
+    else{
+
+        const text =
+            String(value).trim();
+
+
+        if(!text){
+
+            return [];
+
+        }
+
+
+        /*
+         * TRY JSON ARRAY
+         */
+        try{
+
+            const parsed =
+                JSON.parse(text);
+
+
+            if(Array.isArray(parsed)){
+
+                items =
+                    parsed
+                        .map(function(item){
+
+                            return String(
+                                item || ""
+                            ).trim();
+
+                        });
+
+            }
+            else{
+
+                items =
+                    text
+                        .split(/\r?\n/)
+                        .flatMap(
+                            function(line){
+
+                                return line.split(",");
+
+                            }
+                        )
+                        .map(
+                            function(item){
+
+                                return item.trim();
+
+                            }
+                        );
+
+            }
+
+        }
+
+        catch(error){
+
+            items =
+                text
+                    .split(/\r?\n/)
+                    .flatMap(
+                        function(line){
+
+                            return line.split(",");
+
+                        }
+                    )
+                    .map(
+                        function(item){
+
+                            return item.trim();
+
+                        }
+                    );
 
         }
 
     }
 
-    catch(error){}
+
+    /*
+     * REMOVE EMPTY / INVALID VALUES
+     */
+    return items
+        .filter(function(item){
+
+            if(!item){
+
+                return false;
+
+            }
 
 
-    return text
-        .split(/\r?\n/)
-        .flatMap(function(line){
+            const lower =
+                item.toLowerCase();
 
-            return line.split(",");
 
-        })
-        .map(function(item){
+            /*
+             * IGNORE BUTTON / LABEL TEXT
+             */
+            if(
+                lower === "view photo" ||
+                lower === "open photo" ||
+                lower === "photo" ||
+                lower === "view" ||
+                lower === "open"
+            ){
 
-            return item.trim();
+                return false;
 
-        })
-        .filter(Boolean);
+            }
+
+
+            /*
+             * ONLY ACCEPT ACTUAL URLS
+             */
+            if(
+                !lower.startsWith(
+                    "http://"
+                ) &&
+                !lower.startsWith(
+                    "https://"
+                )
+            ){
+
+                return false;
+
+            }
+
+
+            return true;
+
+        });
 
 }
-
 
 /* =========================================================
    IMPROVED PHOTO EVIDENCE
