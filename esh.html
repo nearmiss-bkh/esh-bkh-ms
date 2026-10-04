@@ -5970,6 +5970,26 @@ async function openReport(index){
             latestReport
         );
 
+        /* =================================================
+           ENABLE FIELDS FOR ACTIVE CASE
+        ================================================= */
+
+        const archiveInputs =
+            document.querySelectorAll(
+                "#caseModal input, " +
+                "#caseModal textarea, " +
+                "#caseModal select"
+            );
+
+
+        archiveInputs.forEach(
+            function(input){
+
+                input.disabled = false;
+
+            }
+        );
+
 
         /* =================================================
            ROLE PERMISSIONS
