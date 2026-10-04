@@ -3625,23 +3625,15 @@ const GOOGLE_SCRIPT_URL =
 
 let reports = [];
 
+let archiveReports = [];
+
 let selectedReport = null;
 
 let trendChart = null;
 
 let categoryChart = null;
 
-let departmentChart = null;
-
-
-const CURRENT_ROLE =
-    sessionStorage.getItem("userRole") || "";
-
-const CURRENT_USERNAME =
-    sessionStorage.getItem("username") || "";
-
-const CURRENT_DEPARTMENT =
-    sessionStorage.getItem("department") || "";
+let departmentChart = [];
 
 
 /* =========================================================
