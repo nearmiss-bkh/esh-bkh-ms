@@ -8255,6 +8255,11 @@ function loadVideo(report){
         );
 
 
+    /* =====================================================
+       GOOGLE DRIVE VIDEO
+       DO NOT USE IFRAME
+    ===================================================== */
+
     if(
         id &&
         videoUrl.includes(
@@ -8262,22 +8267,70 @@ function loadVideo(report){
         )
     ){
 
+        const openUrl =
+            "https://drive.google.com/file/d/" +
+            encodeURIComponent(id) +
+            "/view";
+
+
         container.innerHTML = `
 
-            <div class="video-card">
+            <div
+                class="video-card"
+                style="
+                    padding:20px;
+                    text-align:center;
+                    background:#f8fafc;
+                    border-radius:12px;
+                    border:1px solid #e2e8f0;
+                "
+            >
 
-                <iframe
-                    src="https://drive.google.com/file/d/${id}/preview"
-                    width="100%"
-                    height="400"
-                    allow="autoplay"
-                    allowfullscreen
+                <div
                     style="
-                        border:none;
-                        border-radius:12px;
-                        background:#000;
+                        font-size:42px;
+                        margin-bottom:10px;
                     "
-                ></iframe>
+                >
+                    🎥
+                </div>
+
+
+                <div
+                    style="
+                        font-size:15px;
+                        font-weight:700;
+                        margin-bottom:6px;
+                    "
+                >
+                    Video Evidence
+                </div>
+
+
+                <div
+                    style="
+                        font-size:12px;
+                        color:#64748b;
+                        margin-bottom:15px;
+                    "
+                >
+                    Video stored in Google Drive
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="
+                        window.open(
+                            '${escapeAttribute(openUrl)}',
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+                    "
+                >
+                    ▶ Open Video
+                </button>
 
             </div>
 
@@ -8287,6 +8340,10 @@ function loadVideo(report){
 
     }
 
+
+    /* =====================================================
+       NORMAL VIDEO FILE
+    ===================================================== */
 
     container.innerHTML = `
 
@@ -8310,7 +8367,8 @@ function loadVideo(report){
                     )}"
                 >
 
-                Your browser does not support video playback.
+                Your browser does not support
+                video playback.
 
             </video>
 
@@ -8319,6 +8377,7 @@ function loadVideo(report){
     `;
 
 }
+
 /* =========================================================
    GET SELECTED REPORT NUMBER
    FIX FOR "REPORT NUMBER REQUIRED"
