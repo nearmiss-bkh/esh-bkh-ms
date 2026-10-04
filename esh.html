@@ -6076,7 +6076,7 @@ async function openReport(index){
 
 /* =========================================================
    OPEN ARCHIVED REPORT
-   VIEW ARCHIVED CASE
+   ROLE-BASED ACCESS
 ========================================================= */
 
 function openArchiveReport(index){
@@ -6330,7 +6330,7 @@ function openArchiveReport(index){
 
 
     /* =====================================================
-       ARCHIVE VIEW-ONLY
+       RESET ALL FIELDS FIRST
     ===================================================== */
 
     const inputs =
@@ -6350,9 +6350,86 @@ function openArchiveReport(index){
     );
 
 
-    showToast(
-        "Archived case opened in view-only mode."
-    );
+    /* =====================================================
+       HOD / MAINTENANCE
+       ARCHIVE = VIEW ONLY
+    ===================================================== */
+
+    if(
+        isHOD() ||
+        isMaintenance()
+    ){
+
+        const saveButton =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+        if(saveButton){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+
+        showToast(
+            "Archived case opened in view-only mode."
+        );
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ESH
+       ARCHIVE = FULL CONTROL
+    ===================================================== */
+
+    if(isESH()){
+
+        inputs.forEach(
+            function(input){
+
+                input.disabled = false;
+
+            }
+        );
+
+
+        const saveButton =
+            document.getElementById(
+                "saveButton"
+            );
+
+
+        if(saveButton){
+
+            saveButton.style.display =
+                "inline-flex";
+
+
+            saveButton.disabled =
+                false;
+
+
+            saveButton.textContent =
+                "Save Case";
+
+        }
+
+
+        showToast(
+            "Archived case opened with full ESH control."
+        );
+
+
+        return;
+
+    }
 
 }
 
@@ -6535,7 +6612,7 @@ function setupCaseStatusOptions(currentStatus){
 
 
 /* =========================================================
-   ROLE PERMISSIONS
+   ROLE PERMISSIONS - ACTIVE REPORTS
 ========================================================= */
 
 function applyRolePermissions(status){
@@ -6543,8 +6620,11 @@ function applyRolePermissions(status){
     const investigationFields = [
 
         "investigationFindings",
+
         "rootCause",
+
         "eshInvestigator",
+
         "eshRemarks"
 
     ];
@@ -6553,13 +6633,16 @@ function applyRolePermissions(status){
     const correctiveFields = [
 
         "correctiveAction",
+
         "personResponsible"
 
     ];
 
 
     const verificationField =
-        "verificationRemarks";
+        document.getElementById(
+            "verificationRemarks"
+        );
 
 
     const targetDate =
@@ -6592,6 +6675,11 @@ function applyRolePermissions(status){
         );
 
 
+    /* =====================================================
+       ESH
+       FULL CONTROL
+    ===================================================== */
+
     if(isESH()){
 
         investigationFields.forEach(
@@ -6616,32 +6704,47 @@ function applyRolePermissions(status){
         );
 
 
-        targetDate.disabled = false;
+        verificationField.disabled =
+            false;
 
-        closedDate.disabled = false;
 
-        document.getElementById(
-            verificationField
-        ).disabled = false;
+        targetDate.disabled =
+            false;
 
-        caseStatus.disabled = false;
+
+        closedDate.disabled =
+            false;
+
+
+        caseStatus.disabled =
+            false;
+
 
         saveButton.style.display =
             "inline-flex";
 
+
         saveButton.disabled =
             false;
+
 
         saveButton.textContent =
             "Save Case";
 
+
         verificationLabel.textContent =
             "Verification Remarks";
+
 
         return;
 
     }
 
+
+    /* =====================================================
+       HOD
+       CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
 
     if(isHOD()){
 
@@ -6661,28 +6764,27 @@ function applyRolePermissions(status){
 
                 document.getElementById(
                     id
-                ).disabled = true;
+                ).disabled =
+                    status === "Closed";
 
             }
         );
 
 
-        targetDate.disabled =
+        verificationField.disabled =
             status === "Closed";
+
+
+        targetDate.disabled =
+            true;
 
 
         closedDate.disabled =
-            status === "Closed";
-
-
-        document.getElementById(
-            verificationField
-        ).disabled =
-            status === "Closed";
+            true;
 
 
         caseStatus.disabled =
-            status === "Closed";
+            true;
 
 
         verificationLabel.textContent =
@@ -6701,18 +6803,26 @@ function applyRolePermissions(status){
             saveButton.style.display =
                 "inline-flex";
 
+
             saveButton.disabled =
                 false;
 
+
             saveButton.textContent =
-                "Verify Solution";
+                "Save Verification";
 
         }
+
 
         return;
 
     }
 
+
+    /* =====================================================
+       MAINTENANCE
+       CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
 
     if(isMaintenance()){
 
@@ -6739,26 +6849,24 @@ function applyRolePermissions(status){
         );
 
 
-        targetDate.disabled =
+        verificationField.disabled =
             status === "Closed";
+
+
+        targetDate.disabled =
+            true;
 
 
         closedDate.disabled =
-            status === "Closed";
-
-
-        document.getElementById(
-            verificationField
-        ).disabled =
-            status === "Closed";
+            true;
 
 
         caseStatus.disabled =
-            status === "Closed";
+            true;
 
 
         verificationLabel.textContent =
-            "Repair / Completion Remarks";
+            "Verification Remarks";
 
 
         if(status === "Closed"){
@@ -6773,18 +6881,22 @@ function applyRolePermissions(status){
             saveButton.style.display =
                 "inline-flex";
 
+
             saveButton.disabled =
                 false;
+
 
             saveButton.textContent =
                 "Save Repair Update";
 
         }
 
+
+        return;
+
     }
 
 }
-
 
 /* =========================================================
    TIMELINE
