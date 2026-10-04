@@ -8242,7 +8242,15 @@ function loadVideo(report){
 
         container.innerHTML = `
             <div class="empty">
-                No video evidence submitted.
+
+                <div class="empty-icon">
+                    🎥
+                </div>
+
+                <div class="empty-title">
+                    No video evidence submitted.
+                </div>
+
             </div>
         `;
 
@@ -8272,11 +8280,6 @@ function loadVideo(report){
         )
     ){
 
-        const directUrl =
-            "https://drive.google.com/uc?export=download&id=" +
-            encodeURIComponent(id);
-
-
         const openUrl =
             "https://drive.google.com/file/d/" +
             encodeURIComponent(id) +
@@ -8285,109 +8288,69 @@ function loadVideo(report){
 
         container.innerHTML = `
 
-            <div class="video-card">
+            <div
+                class="video-card"
+                style="
+                    padding:20px;
+                    border:1px solid #e5e7eb;
+                    border-radius:14px;
+                    background:#f8fafc;
+                    text-align:center;
+                "
+            >
 
-                <video
-                    id="driveVideoPlayer"
-                    controls
-                    preload="metadata"
-                    playsinline
+                <div
                     style="
-                        width:100%;
-                        max-height:500px;
-                        border-radius:12px;
-                        background:#000;
+                        font-size:44px;
+                        margin-bottom:10px;
                     "
                 >
-
-                    <source
-                        src="${escapeAttribute(
-                            directUrl
-                        )}"
-                    >
-
-                    Your browser does not support
-                    video playback.
-
-                </video>
+                    🎥
+                </div>
 
 
                 <div
-                    id="videoOpenFallback"
                     style="
-                        display:none;
-                        margin-top:12px;
-                        text-align:center;
+                        font-size:15px;
+                        font-weight:700;
+                        color:#1f2937;
+                        margin-bottom:6px;
                     "
                 >
-
-                    <div
-                        style="
-                            color:#64748b;
-                            font-size:12px;
-                            margin-bottom:8px;
-                        "
-                    >
-                        The video cannot be played
-                        directly in the dashboard.
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        onclick="
-                            window.open(
-                                '${escapeAttribute(openUrl)}',
-                                '_blank',
-                                'noopener,noreferrer'
-                            );
-                        "
-                    >
-                        ▶ Open Video in Google Drive
-                    </button>
-
+                    Video Evidence
                 </div>
+
+
+                <div
+                    style="
+                        font-size:12px;
+                        color:#64748b;
+                        margin-bottom:16px;
+                    "
+                >
+                    Video evidence is stored securely
+                    in Google Drive.
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="
+                        window.open(
+                            '${escapeAttribute(openUrl)}',
+                            '_blank',
+                            'noopener,noreferrer'
+                        );
+                    "
+                >
+                    ▶ Open Video
+                </button>
+
 
             </div>
 
         `;
-
-
-        const player =
-            document.getElementById(
-                "driveVideoPlayer"
-            );
-
-
-        const fallback =
-            document.getElementById(
-                "videoOpenFallback"
-            );
-
-
-        if(player){
-
-            player.addEventListener(
-                "error",
-                function(){
-
-                    console.warn(
-                        "Google Drive video could not be played directly."
-                    );
-
-
-                    if(fallback){
-
-                        fallback.style.display =
-                            "block";
-
-                    }
-
-                }
-            );
-
-        }
 
 
         return;
