@@ -2356,60 +2356,70 @@ input[type="date"]:disabled{
     <div class="brand">
 
         <div class="brand-small">
-            ENVIRONMENT • SAFETY • HEALTH
+            BKH
         </div>
 
         <div class="brand-name">
-            ESH MANAGEMENT SYSTEM
+            ESH Management
         </div>
 
         <div class="brand-sub">
-            BIDOR KWONG HENG
+            Near Miss Reporting System
         </div>
 
     </div>
 
-
-    <nav class="nav">
+    <div class="nav">
 
         <button
-            class="active"
-            onclick="showSection('overview',this)"
+            type="button"
+            onclick="showSection('overview')"
         >
             Overview
         </button>
 
         <button
-            onclick="showSection('analytics',this)"
+            type="button"
+            onclick="showSection('analytics')"
         >
             Analytics
         </button>
 
         <button
-            onclick="showSection('actions',this)"
+            type="button"
+            onclick="showSection('actionCenter')"
         >
             Action Center
         </button>
 
         <button
-            onclick="showSection('reports',this)"
+            type="button"
+            onclick="showSection('reports')"
         >
             Reports
         </button>
 
-    </nav>
+        <button
+            type="button"
+            onclick="showSection('archiveCases')"
+        >
+            Archive Cases
+        </button>
 
+    </div>
 
     <div class="sidebar-footer">
 
         <div class="sidebar-footer-text">
 
-            ESH CONTROL CENTER<br>
-            Near Miss Management System
+            ESH Management System<br>
+
+            Bidor Kwong Heng Sdn. Bhd.
 
         </div>
 
         <button
+            type="button"
             class="logout-btn"
             onclick="logout()"
         >
@@ -2419,7 +2429,6 @@ input[type="date"]:disabled{
     </div>
 
 </aside>
-
 
 <main class="main">
 
