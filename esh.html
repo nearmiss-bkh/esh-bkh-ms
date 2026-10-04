@@ -7168,6 +7168,7 @@ function getPhotoList(report){
 
 /* =========================================================
    IMPROVED PHOTO EVIDENCE
+   AUTO DISPLAY + DRIVE THUMBNAIL
 ========================================================= */
 
 function loadPhotos(report){
@@ -7238,14 +7239,18 @@ function loadPhotos(report){
             originalUrl;
 
 
+        /*
+         * GOOGLE DRIVE FILE
+         */
         if(fileId){
 
             imageUrl =
-                "https://drive.google.com/thumbnail?id=" +
+                "https://drive.google.com/thumbnail" +
+                "?id=" +
                 encodeURIComponent(
                     fileId
                 ) +
-                "&sz=w1200";
+                "&sz=w1600";
 
 
             openUrl =
@@ -7274,38 +7279,73 @@ function loadPhotos(report){
             );
 
 
-        img.src =
-            imageUrl;
-
-
-        img.alt =
-            "ESH Evidence";
-
-
-        /* LOAD PHOTO IMMEDIATELY */
+        /*
+         * IMPORTANT
+         * Load immediately.
+         */
         img.loading =
             "eager";
+
+
+        img.decoding =
+            "async";
 
 
         img.referrerPolicy =
             "no-referrer";
 
 
+        img.alt =
+            "ESH Evidence";
+
+
+        img.src =
+            imageUrl;
+
+
+        /*
+         * CLICK PHOTO
+         * Opens the original Drive file.
+         */
         img.onclick =
             function(event){
 
                 event.stopPropagation();
 
-                window.open(
-                    openUrl,
-                    "_blank"
-                );
+
+                if(fileId){
+
+                    window.open(
+                        openUrl,
+                        "_blank",
+                        "noopener,noreferrer"
+                    );
+
+                }
+                else{
+
+                    window.open(
+                        originalUrl,
+                        "_blank",
+                        "noopener,noreferrer"
+                    );
+
+                }
 
             };
 
 
+        /*
+         * IF THUMBNAIL FAILS
+         */
         img.onerror =
             function(){
+
+                console.warn(
+                    "Photo failed to load:",
+                    originalUrl
+                );
+
 
                 img.style.display =
                     "none";
@@ -7321,8 +7361,13 @@ function loadPhotos(report){
                     "photo-fallback";
 
 
-                fallback.innerHTML =
-                    "📷<br>Open Photo";
+                fallback.innerHTML = `
+                    📷
+                    <br>
+                    <span>
+                        Open Photo
+                    </span>
+                `;
 
 
                 fallback.onclick =
@@ -7330,10 +7375,25 @@ function loadPhotos(report){
 
                         event.stopPropagation();
 
-                        window.open(
-                            openUrl,
-                            "_blank"
-                        );
+
+                        if(fileId){
+
+                            window.open(
+                                openUrl,
+                                "_blank",
+                                "noopener,noreferrer"
+                            );
+
+                        }
+                        else{
+
+                            window.open(
+                                originalUrl,
+                                "_blank",
+                                "noopener,noreferrer"
+                            );
+
+                        }
 
                     };
 
@@ -7357,7 +7417,6 @@ function loadPhotos(report){
     });
 
 }
-
 
 /* =========================================================
    CORRECTIVE ACTION PHOTO LIST
