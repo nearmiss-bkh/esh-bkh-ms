@@ -3520,23 +3520,12 @@ input[type="date"]:disabled{
 <script>
 
 /* =========================================================
-   NEAR MISS / ESH MANAGEMENT SYSTEM
-   FULL DASHBOARD SCRIPT
-   WITH ARCHIVE SUPPORT
-========================================================= */
-
-
-/* =========================================================
-   GOOGLE APPS SCRIPT URL
+   GOOGLE APPS SCRIPT
 ========================================================= */
 
 const GOOGLE_SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
-
-/* =========================================================
-   GLOBAL VARIABLES
-========================================================= */
 
 let reports = [];
 
@@ -3549,10 +3538,6 @@ let categoryChart = null;
 let departmentChart = null;
 
 
-/* =========================================================
-   SESSION
-========================================================= */
-
 const CURRENT_ROLE =
     sessionStorage.getItem("userRole") || "";
 
@@ -3564,7 +3549,46 @@ const CURRENT_DEPARTMENT =
 
 
 /* =========================================================
-   ROLE CHECK
+   LOGIN GUARD
+========================================================= */
+
+(function(){
+
+    const loggedIn =
+        sessionStorage.getItem("loggedIn");
+
+    const role =
+        sessionStorage.getItem("userRole");
+
+    const validRoles = [
+        "ESH",
+        "HOD",
+        "MAINTENANCE"
+    ];
+
+    if(
+        loggedIn !== "true" ||
+        !validRoles.includes(role)
+    ){
+
+        window.location.replace(
+            "esh-login.html"
+        );
+
+        return;
+
+    }
+
+    document
+        .getElementById("loginGuard")
+        .classList
+        .add("hidden");
+
+})();
+
+
+/* =========================================================
+   ROLE HELPERS
 ========================================================= */
 
 function isESH(){
@@ -3573,13 +3597,11 @@ function isESH(){
 
 }
 
-
 function isHOD(){
 
     return CURRENT_ROLE === "HOD";
 
 }
-
 
 function isMaintenance(){
 
@@ -3589,59 +3611,46 @@ function isMaintenance(){
 
 
 /* =========================================================
-   LOGIN GUARD
+   VISIBLE REPORTS
 ========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function(){
+function getVisibleReports(){
 
-        const guard =
-            document.getElementById(
-                "loginGuard"
-            );
+    if(isESH()){
 
-
-        const validRoles = [
-            "ESH",
-            "HOD",
-            "MAINTENANCE"
-        ];
-
-
-        if(
-            !CURRENT_ROLE ||
-            !validRoles.includes(
-                CURRENT_ROLE
-            )
-        ){
-
-            if(guard){
-
-                guard.style.display =
-                    "flex";
-
-            }
-
-            return;
-
-        }
-
-
-        if(guard){
-
-            guard.style.display =
-                "none";
-
-        }
-
-
-        setupRoleDisplay();
-
-        loadReports();
+        return reports;
 
     }
-);
+
+    if(isHOD()){
+
+        return reports;
+
+    }
+
+    if(isMaintenance()){
+
+        return reports.filter(
+            function(report){
+
+                const status =
+                    normalizeStatus(
+                        report.status
+                    );
+
+                return (
+                    status === "Corrective Action" ||
+                    status === "Verification"
+                );
+
+            }
+        );
+
+    }
+
+    return [];
+
+}
 
 
 /* =========================================================
@@ -3650,81 +3659,85 @@ document.addEventListener(
 
 function setupRoleDisplay(){
 
-    const roleElements =
-        document.querySelectorAll(
-            "[data-role-display]"
-        );
-
-
-    roleElements.forEach(
-        function(element){
-
-            element.textContent =
-                CURRENT_ROLE;
-
-        }
-    );
-
-
-    const usernameElements =
-        document.querySelectorAll(
-            "[data-username]"
-        );
-
-
-    usernameElements.forEach(
-        function(element){
-
-            element.textContent =
-                CURRENT_USERNAME ||
-                CURRENT_ROLE;
-
-        }
-    );
-
-
-    const departmentElements =
-        document.querySelectorAll(
-            "[data-department]"
-        );
-
-
-    departmentElements.forEach(
-        function(element){
-
-            element.textContent =
-                CURRENT_DEPARTMENT ||
-                "-";
-
-        }
-    );
-
-
-    const roleText =
+    const display =
         document.getElementById(
-            "roleDisplay"
+            "userRoleDisplay"
+        );
+
+    const hero =
+        document.getElementById(
+            "heroSubtitle"
+        );
+
+    const reportsSubtitle =
+        document.getElementById(
+            "reportsSubtitle"
         );
 
 
-    if(roleText){
+    if(isESH()){
 
-        roleText.textContent =
-            CURRENT_ROLE;
+        if(display){
+            display.textContent =
+                "ESH • FULL CONTROL";
+        }
+
+        if(hero){
+            hero.textContent =
+                "Near Miss reporting, investigation, corrective action, verification and case closure control center.";
+        }
+
+        if(reportsSubtitle){
+            reportsSubtitle.textContent =
+                "ESH case management • Full access";
+        }
+
+        return;
 
     }
 
 
-    const userText =
-        document.getElementById(
-            "usernameDisplay"
-        );
+    if(isHOD()){
+
+        if(display){
+            display.textContent =
+                "HOD • " +
+                CURRENT_DEPARTMENT;
+        }
+
+        if(hero){
+            hero.textContent =
+                "Department near miss monitoring and corrective action verification.";
+        }
+
+        if(reportsSubtitle){
+            reportsSubtitle.textContent =
+                "Reports for " +
+                CURRENT_DEPARTMENT +
+                " • Verification access";
+        }
+
+        return;
+
+    }
 
 
-    if(userText){
+    if(isMaintenance()){
 
-        userText.textContent =
-            CURRENT_USERNAME ||
-            CURRENT_ROLE;
+        if(display){
+            display.textContent =
+                "MAINTENANCE • ENGINEERING";
+        }
+
+        if(hero){
+            hero.textContent =
+                "Corrective action and repair completion management.";
+        }
+
+        if(reportsSubtitle){
+            reportsSubtitle.textContent =
+                "Corrective action reports • Repair update access";
+        }
 
     }
 
@@ -3737,123 +3750,34 @@ function setupRoleDisplay(){
 
 function logout(){
 
-    sessionStorage.removeItem(
-        "userRole"
-    );
+    sessionStorage.clear();
 
-    sessionStorage.removeItem(
-        "username"
-    );
-
-    sessionStorage.removeItem(
-        "department"
-    );
-
-
-    window.location.href =
-        "index.html";
-
-}
-
-
-/* =========================================================
-   ACTIVE REPORTS
-   ARCHIVED CASES ARE EXCLUDED
-========================================================= */
-
-function getVisibleReports(){
-
-    let visible = [];
-
-
-    if(
-        isESH() ||
-        isHOD()
-    ){
-
-        visible =
-            reports;
-
-    }
-
-    else if(
-        isMaintenance()
-    ){
-
-        visible =
-            reports.filter(
-                function(report){
-
-                    const status =
-                        normalizeStatus(
-                            report.status
-                        );
-
-
-                    return (
-
-                        status ===
-                            "Corrective Action"
-
-                        ||
-
-                        status ===
-                            "Verification"
-
-                    );
-
-                }
-            );
-
-    }
-
-
-    /*
-     * IMPORTANT:
-     * Archived cases must not appear
-     * in the normal dashboard.
-     */
-
-    return visible.filter(
-        function(report){
-
-            return !report.isArchived;
-
-        }
+    window.location.replace(
+        "esh-login.html"
     );
 
 }
 
 
 /* =========================================================
-   ARCHIVE REPORTS
+   START
 ========================================================= */
 
-function getArchiveReports(){
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
 
-    if(
-        !isESH() &&
-        !isHOD()
-    ){
+        setupRoleDisplay();
 
-        return [];
+        loadReports();
 
     }
-
-
-    return reports.filter(
-        function(report){
-
-            return report.isArchived === true;
-
-        }
-    );
-
-}
+);
 
 
 /* =========================================================
    LOAD REPORTS
+   FIXED - PRESERVE ALL CASE DETAILS
 ========================================================= */
 
 async function loadReports(){
@@ -3863,11 +3787,9 @@ async function loadReports(){
         const response =
             await fetch(
                 GOOGLE_SCRIPT_URL +
-                "?test=reports" +
-                "&ts=" +
+                "?test=reports&ts=" +
                 Date.now()
             );
-
 
         if(!response.ok){
 
@@ -3878,297 +3800,253 @@ async function loadReports(){
 
         }
 
-
-        const result =
+        const data =
             await response.json();
 
 
-        console.log(
-            "REPORT DATA:",
-            result
-        );
-
+        /* =====================================================
+           GET REPORT ARRAY
+        ===================================================== */
 
         let rawReports = [];
 
+        if(Array.isArray(data)){
 
-        if(
-            Array.isArray(result)
-        ){
-
-            rawReports =
-                result;
+            rawReports = data;
 
         }
 
         else if(
-            result &&
-            Array.isArray(
-                result.reports
-            )
+            data &&
+            Array.isArray(data.reports)
         ){
 
-            rawReports =
-                result.reports;
+            rawReports = data.reports;
 
         }
 
         else if(
-            result &&
-            Array.isArray(
-                result.data
-            )
+            data &&
+            Array.isArray(data.data)
         ){
 
-            rawReports =
-                result.data;
+            rawReports = data.data;
 
         }
 
+
+        /* =====================================================
+           NORMALIZE REPORT DATA
+           KEEP ALL FIELDS FROM GOOGLE SHEET
+        ===================================================== */
 
         reports =
-            rawReports.map(
-                function(report){
+            rawReports.map(function(report){
 
-                    const sourceSheet =
-                        report.sourceSheet ||
-                        report.sheetName ||
-                        report.sheet ||
-                        "";
+                return {
 
+                    /* ================================
+                       BASIC REPORT INFORMATION
+                    ================================= */
 
-                    const archivedFlag =
-                        report.isArchived === true ||
-                        String(
-                            report.isArchived ||
-                            ""
-                        ).toLowerCase() ===
-                            "true" ||
-                        String(
-                            sourceSheet
-                        ).trim().toLowerCase() ===
-                            "archive";
+                    reportNumber:
+                        report.reportNumber ||
+                        report.reportNo ||
+                        "",
 
+                    rowNumber:
+                        report.rowNumber ||
+                        "",
 
-                    return {
+                    dateTime:
+                        report.dateTime ||
+                        "",
 
-                        ...report,
+                    location:
+                        report.location ||
+                        "",
 
+                    department:
+                        report.department ||
+                        "",
 
-                        reportNumber:
-                            report.reportNumber ||
-                            report.reportNo ||
-                            report.report_number ||
-                            "",
+                    hazardCategory:
+                        report.hazardCategory ||
+                        report.category ||
+                        "",
 
+                    whatHappened:
+                        report.whatHappened ||
+                        "",
 
-                        rowNumber:
-                            report.rowNumber ||
-                            report.row ||
-                            "",
+                    reporterName:
+                        report.reporterName ||
+                        "",
 
 
-                        dateTime:
-                            report.dateTime ||
-                            report.observationDateTime ||
-                            report.observationDate ||
-                            "",
+                    /* ================================
+                       ORIGINAL PHOTOS / VIDEO
+                    ================================= */
 
+                    photos:
+                        report.photos ||
+                        "",
 
-                        location:
-                            report.location ||
-                            "",
+                    video:
+                        report.video ||
+                        "",
 
 
-                        department:
-                            report.department ||
-                            "",
+                    /* ================================
+                       STATUS
+                    ================================= */
 
+                    status:
+                        report.status ||
+                        "New",
 
-                        hazardCategory:
-                            report.hazardCategory ||
-                            report.category ||
-                            "",
 
+                    /* ================================
+                       ESH INVESTIGATION
+                    ================================= */
 
-                        whatHappened:
-                            report.whatHappened ||
-                            report.description ||
-                            report.issueDescription ||
-                            "",
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
 
+                    rootCause:
+                        report.rootCause ||
+                        "",
 
-                        reporterName:
-                            report.reporterName ||
-                            report.reporter ||
-                            "",
+                    eshInvestigator:
+                        report.eshInvestigator ||
+                        "",
 
+                    eshRemarks:
+                        report.eshRemarks ||
+                        "",
 
-                        photos:
-                            report.photos ||
-                            report.photo ||
-                            report.photoUrls ||
-                            report.photoLinks ||
-                            "",
 
+                    /* ================================
+                       CORRECTIVE ACTION
+                    ================================= */
 
-                        video:
-                            report.video ||
-                            report.videoUrl ||
-                            report.videoLink ||
-                            "",
+                    correctiveAction:
+                        report.correctiveAction ||
+                        "",
 
+                    personResponsible:
+                        report.personResponsible ||
+                        report.responsiblePerson ||
+                        "",
 
-                        videoUrl:
-                            report.videoUrl ||
-                            report.videoLink ||
-                            report.video ||
-                            "",
+                    dueDate:
+                        report.dueDate ||
+                        report.targetDate ||
+                        "",
 
 
-                        status:
-                            report.status ||
-                            "New",
+                    /* ================================
+                       VERIFICATION
+                    ================================= */
 
+                    verificationRemarks:
+                        report.verificationRemarks ||
+                        report.verification ||
+                        "",
 
-                        investigationFindings:
-                            report.investigationFindings ||
-                            "",
 
+                    /* ================================
+                       CLOSURE
+                    ================================= */
 
-                        eshAction:
-                            report.eshAction ||
-                            report.investigationFindings ||
-                            "",
+                    closedDate:
+                        report.closedDate ||
+                        report.completionDate ||
+                        "",
 
+                    closedBy:
+                        report.closedBy ||
+                        "",
 
-                        rootCause:
-                            report.rootCause ||
-                            "",
+                    remarks:
+                        report.remarks ||
+                        "",
 
 
-                        eshInvestigator:
-                            report.eshInvestigator ||
-                            "",
+                    /* ================================
+                       SUBMISSION
+                    ================================= */
 
+                    submittedAt:
+                        report.submittedAt ||
+                        "",
 
-                        eshRemarks:
-                            report.eshRemarks ||
-                            "",
 
+                    /* ================================
+                       CORRECTIVE ACTION PHOTOS
+                    ================================= */
 
-                        correctiveAction:
-                            report.correctiveAction ||
-                            "",
+                    correctiveActionPhotos:
+                        report.correctiveActionPhotos ||
+                        "",
 
 
-                        personResponsible:
-                            report.personResponsible ||
-                            report.responsiblePerson ||
-                            "",
+                    /* ================================
+                       KEEP ALIASES TOO
+                       FOR EXISTING FUNCTIONS
+                    ================================= */
 
+                    eshAction:
+                        report.eshAction ||
+                        report.investigationFindings ||
+                        "",
 
-                        responsiblePerson:
-                            report.responsiblePerson ||
-                            report.personResponsible ||
-                            "",
+                    responsiblePerson:
+                        report.responsiblePerson ||
+                        report.personResponsible ||
+                        "",
 
+                    targetDate:
+                        report.targetDate ||
+                        report.dueDate ||
+                        "",
 
-                        dueDate:
-                            report.dueDate ||
-                            report.targetDate ||
-                            "",
+                    completionDate:
+                        report.completionDate ||
+                        report.closedDate ||
+                        "",
 
+                    verification:
+                        report.verification ||
+                        report.verificationRemarks ||
+                        ""
 
-                        targetDate:
-                            report.targetDate ||
-                            report.dueDate ||
-                            "",
+                };
 
+            });
 
-                        verificationRemarks:
-                            report.verificationRemarks ||
-                            report.verification ||
-                            "",
 
-
-                        verification:
-                            report.verification ||
-                            report.verificationRemarks ||
-                            "",
-
-
-                        closedDate:
-                            report.closedDate ||
-                            report.completionDate ||
-                            "",
-
-
-                        completionDate:
-                            report.completionDate ||
-                            report.closedDate ||
-                            "",
-
-
-                        closedBy:
-                            report.closedBy ||
-                            "",
-
-
-                        remarks:
-                            report.remarks ||
-                            "",
-
-
-                        submittedAt:
-                            report.submittedAt ||
-                            report.submissionDateTime ||
-                            "",
-
-
-                        correctiveActionPhotos:
-                            report.correctiveActionPhotos ||
-                            "",
-
-
-                        sourceSheet:
-                            sourceSheet,
-
-
-                        isArchived:
-                            archivedFlag,
-
-
-                        archivedDate:
-                            report.archivedDate ||
-                            report.archiveDate ||
-                            ""
-
-                    };
-
-                }
-            );
-
+        /* =====================================================
+           DEBUG
+        ===================================================== */
 
         console.log(
-            "TOTAL REPORTS:",
-            reports.length
+            "REPORTS LOADED:",
+            reports
         );
 
 
-        console.log(
-            "ARCHIVED REPORTS:",
-            getArchiveReports().length
-        );
-
+        /* =====================================================
+           UPDATE DASHBOARD
+        ===================================================== */
 
         updateDashboard();
 
         populateCategoryFilter();
 
         renderReports();
-
-        renderArchiveReports();
 
         renderAnalytics();
 
@@ -4182,18 +4060,34 @@ async function loadReports(){
             error
         );
 
+        document.getElementById(
+            "reportsGrid"
+        ).innerHTML = `
 
-        showToast(
-            "Unable to load reports."
-        );
+            <div class="empty">
+
+                <div class="empty-icon">
+                    !
+                </div>
+
+                <div class="empty-title">
+                    Unable to load reports
+                </div>
+
+                <p style="margin-top:8px;">
+                    Please check the Apps Script deployment.
+                </p>
+
+            </div>
+
+        `;
 
     }
 
 }
 
-
 /* =========================================================
-   DASHBOARD UPDATE
+   DASHBOARD
 ========================================================= */
 
 function updateDashboard(){
@@ -4201,134 +4095,67 @@ function updateDashboard(){
     const visible =
         getVisibleReports();
 
-
     const total =
         visible.length;
 
-
     const newCount =
-        countStatus(
-            visible,
-            "New"
-        );
+        countStatus("New");
+
+    const investigation =
+        countStatus("Investigation");
+
+    const corrective =
+        countStatus("Corrective Action");
+
+    const verification =
+        countStatus("Verification");
+
+    const closed =
+        countStatus("Closed");
+
+    const overdue =
+        calculateOverdue();
 
 
-    const investigationCount =
-        countStatus(
-            visible,
-            "Investigation"
-        );
+    document.getElementById(
+        "totalReports"
+    ).textContent = total;
 
+    document.getElementById(
+        "newReports"
+    ).textContent = newCount;
 
-    const correctiveCount =
-        countStatus(
-            visible,
-            "Corrective Action"
-        );
+    document.getElementById(
+        "investigationReports"
+    ).textContent = investigation;
 
+    document.getElementById(
+        "correctiveReports"
+    ).textContent = corrective;
 
-    const verificationCount =
-        countStatus(
-            visible,
-            "Verification"
-        );
+    document.getElementById(
+        "verificationReports"
+    ).textContent = verification;
 
+    document.getElementById(
+        "closedReports"
+    ).textContent = closed;
 
-    const closedCount =
-        countStatus(
-            visible,
-            "Closed"
-        );
+    document.getElementById(
+        "overdueReports"
+    ).textContent = overdue;
 
+    document.getElementById(
+        "actionNew"
+    ).textContent = newCount;
 
-    const overdueCount =
-        calculateOverdue(
-            visible
-        );
+    document.getElementById(
+        "actionCorrective"
+    ).textContent = corrective;
 
-
-    setText(
-        "totalReports",
-        total
-    );
-
-
-    setText(
-        "newReports",
-        newCount
-    );
-
-
-    setText(
-        "investigationReports",
-        investigationCount
-    );
-
-
-    setText(
-        "correctiveReports",
-        correctiveCount
-    );
-
-
-    setText(
-        "verificationReports",
-        verificationCount
-    );
-
-
-    setText(
-        "closedReports",
-        closedCount
-    );
-
-
-    setText(
-        "overdueReports",
-        overdueCount
-    );
-
-
-    setText(
-        "actionNew",
-        newCount
-    );
-
-
-    setText(
-        "actionCorrective",
-        correctiveCount
-    );
-
-
-    setText(
-        "actionOverdue",
-        overdueCount
-    );
-
-
-    renderOverdueReports();
-
-}
-
-
-function setText(
-    id,
-    value
-){
-
-    const element =
-        document.getElementById(
-            id
-        );
-
-
-    if(element){
-
-        element.textContent =
-            value;
-
-    }
+    document.getElementById(
+        "actionOverdue"
+    ).textContent = overdue;
 
 }
 
@@ -4337,17 +4164,17 @@ function setText(
    COUNT STATUS
 ========================================================= */
 
-function countStatus(
-    list,
-    status
-){
+function countStatus(status){
 
-    return list.filter(
+    return getVisibleReports().filter(
         function(report){
 
             return normalizeStatus(
                 report.status
-            ) === status;
+            ) ===
+            normalizeStatus(
+                status
+            );
 
         }
     ).length;
@@ -4361,35 +4188,26 @@ function countStatus(
 
 function isReportOverdue(report){
 
-    const status =
+    if(
         normalizeStatus(
             report.status
-        );
-
-
-    if(
-        status === "Closed"
+        ) === "Closed"
     ){
 
         return false;
 
     }
 
-
-    if(
-        !report.dueDate
-    ){
+    if(!report.dueDate){
 
         return false;
 
     }
-
 
     const due =
         parseDate(
             report.dueDate
         );
-
 
     if(!due){
 
@@ -4397,36 +4215,26 @@ function isReportOverdue(report){
 
     }
 
-
     const today =
         new Date();
 
-
     today.setHours(
-        23,
-        59,
-        59,
-        999
+        0,0,0,0
     );
 
+    due.setHours(
+        0,0,0,0
+    );
 
     return due < today;
 
 }
 
 
-function calculateOverdue(
-    list
-){
+function calculateOverdue(){
 
-    return list.filter(
-        function(report){
-
-            return isReportOverdue(
-                report
-            );
-
-        }
+    return getVisibleReports().filter(
+        isReportOverdue
     ).length;
 
 }
@@ -4437,60 +4245,23 @@ function calculateOverdue(
 ========================================================= */
 
 function showSection(
-    sectionId,
+    section,
     button
 ){
 
     document
         .querySelectorAll(
-            ".section"
+            ".nav button"
         )
         .forEach(
-            function(section){
+            function(btn){
 
-                section.classList.remove(
+                btn.classList.remove(
                     "active"
                 );
 
             }
         );
-
-
-    const section =
-        document.getElementById(
-            sectionId
-        );
-
-
-    if(section){
-
-        section.classList.add(
-            "active"
-        );
-
-
-        section.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
-
-    }
-
-
-    document
-        .querySelectorAll(
-            ".sidebar button"
-        )
-        .forEach(
-            function(item){
-
-                item.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
 
     if(button){
 
@@ -4500,22 +4271,19 @@ function showSection(
 
     }
 
-}
-
-
-function goToReports(){
-
-    const section =
+    const target =
         document.getElementById(
-            "reports"
+            section
         );
 
+    if(target){
 
-    if(section){
+        target.scrollIntoView({
 
-        section.scrollIntoView({
             behavior:"smooth",
+
             block:"start"
+
         });
 
     }
@@ -4523,19 +4291,21 @@ function goToReports(){
 }
 
 
-function goToArchive(){
+function goToReports(){
 
-    const section =
+    const target =
         document.getElementById(
-            "archive"
+            "reports"
         );
 
+    if(target){
 
-    if(section){
+        target.scrollIntoView({
 
-        section.scrollIntoView({
             behavior:"smooth",
+
             block:"start"
+
         });
 
     }
@@ -4547,40 +4317,22 @@ function goToArchive(){
    KPI FILTER
 ========================================================= */
 
-function filterKPI(
-    filter
-){
+function filterKPI(filter){
 
-    const statusFilter =
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+
+    if(filter === "ALL"){
+
         document.getElementById(
             "statusFilter"
-        );
-
-
-    const categoryFilter =
-        document.getElementById(
-            "categoryFilter"
-        );
-
-
-    if(categoryFilter){
-
-        categoryFilter.value =
-            "";
-
-    }
-
-
-    if(
-        filter === "ALL"
-    ){
-
-        if(statusFilter){
-
-            statusFilter.value =
-                "";
-
-        }
+        ).value = "";
 
         renderReports();
 
@@ -4591,13 +4343,25 @@ function filterKPI(
     }
 
 
-    if(statusFilter){
+    if(filter === "OVERDUE"){
 
-        statusFilter.value =
-            filter;
+        document.getElementById(
+            "statusFilter"
+        ).value = "";
+
+        renderOverdueReports();
+
+        goToReports();
+
+        return;
 
     }
 
+
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        filter;
 
     renderReports();
 
@@ -4610,45 +4374,128 @@ function filterKPI(
    ACTION FILTER
 ========================================================= */
 
-function filterStatus(
-    filter
-){
+function filterStatus(status){
 
-    const statusFilter =
-        document.getElementById(
-            "statusFilter"
-        );
+    document.getElementById(
+        "searchInput"
+    ).value = "";
 
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
 
-    const categoryFilter =
-        document.getElementById(
-            "categoryFilter"
-        );
-
-
-    if(categoryFilter){
-
-        categoryFilter.value =
-            "";
-
-    }
-
-
-    if(statusFilter){
-
-        statusFilter.value =
-            filter === "Corrective Action"
-            ?
-            "Corrective Action"
-            :
-            filter;
-
-    }
-
+    document.getElementById(
+        "statusFilter"
+    ).value =
+        status;
 
     renderReports();
 
     goToReports();
+
+}
+
+
+/* =========================================================
+   GO TO OVERDUE
+========================================================= */
+
+function goToOverdue(){
+
+    document.getElementById(
+        "searchInput"
+    ).value = "";
+
+    document.getElementById(
+        "statusFilter"
+    ).value = "";
+
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
+
+    renderOverdueReports();
+
+    goToReports();
+
+}
+
+
+/* =========================================================
+   RENDER OVERDUE
+========================================================= */
+
+function renderOverdueReports(){
+
+    const container =
+        document.getElementById(
+            "reportsGrid"
+        );
+
+    const filtered =
+        getVisibleReports().filter(
+            function(report){
+
+                return isReportOverdue(
+                    report
+                );
+
+            }
+        );
+
+
+    if(!filtered.length){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <div class="empty-title">
+                    No overdue reports
+                </div>
+
+                <p style="margin-top:8px;">
+                    There are currently no overdue actions.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    filtered.sort(
+        function(a,b){
+
+            const dateA =
+                parseDate(
+                    a.dueDate
+                ) ||
+                new Date(0);
+
+            const dateB =
+                parseDate(
+                    b.dueDate
+                ) ||
+                new Date(0);
+
+            return dateA - dateB;
+
+        }
+    );
+
+
+    container.innerHTML =
+        filtered
+            .map(createReportCard)
+            .join("");
 
 }
 
@@ -4659,47 +4506,17 @@ function filterStatus(
 
 function resetFilters(){
 
-    const search =
-        document.getElementById(
-            "reportSearch"
-        );
+    document.getElementById(
+        "searchInput"
+    ).value = "";
 
+    document.getElementById(
+        "statusFilter"
+    ).value = "";
 
-    const status =
-        document.getElementById(
-            "statusFilter"
-        );
-
-
-    const category =
-        document.getElementById(
-            "categoryFilter"
-        );
-
-
-    if(search){
-
-        search.value =
-            "";
-
-    }
-
-
-    if(status){
-
-        status.value =
-            "";
-
-    }
-
-
-    if(category){
-
-        category.value =
-            "";
-
-    }
-
+    document.getElementById(
+        "categoryFilter"
+    ).value = "";
 
     renderReports();
 
@@ -4718,48 +4535,23 @@ function populateCategoryFilter(){
         );
 
 
-    if(!select){
+    const categories =
+        [
+            ...new Set(
 
-        return;
+                getVisibleReports()
+                    .map(
+                        r =>
+                            String(
+                                r.hazardCategory ||
+                                ""
+                            ).trim()
+                    )
+                    .filter(Boolean)
 
-    }
-
-
-    const current =
-        select.value;
-
-
-    const categories = [];
-
-
-    getVisibleReports().forEach(
-        function(report){
-
-            const category =
-                String(
-                    report.hazardCategory ||
-                    ""
-                ).trim();
-
-
-            if(
-                category &&
-                !categories.includes(
-                    category
-                )
-            ){
-
-                categories.push(
-                    category
-                );
-
-            }
-
-        }
-    );
-
-
-    categories.sort();
+            )
+        ]
+        .sort();
 
 
     select.innerHTML = `
@@ -4768,43 +4560,35 @@ function populateCategoryFilter(){
             All Categories
         </option>
 
-        ${
-            categories.map(
-                function(category){
-
-                    return `
-
-                        <option
-                            value="${escapeAttribute(category)}"
-                        >
-                            ${escapeHtml(category)}
-                        </option>
-
-                    `;
-
-                }
-            ).join("")
-        }
-
     `;
 
 
-    if(
-        categories.includes(
-            current
-        )
-    ){
+    categories.forEach(
+        function(category){
 
-        select.value =
-            current;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-    }
+            option.value =
+                category;
+
+            option.textContent =
+                category;
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
 
 }
 
 
 /* =========================================================
-   RENDER ACTIVE REPORTS
+   RENDER REPORTS
 ========================================================= */
 
 function renderReports(){
@@ -4815,61 +4599,27 @@ function renderReports(){
         );
 
 
-    if(!container){
-
-        return;
-
-    }
-
-
-    const searchInput =
+    const search =
         document.getElementById(
-            "reportSearch"
-        );
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
 
 
-    const statusInput =
+    const status =
         document.getElementById(
             "statusFilter"
-        );
+        ).value;
 
 
-    const categoryInput =
+    const category =
         document.getElementById(
             "categoryFilter"
-        );
+        ).value;
 
 
-    const search =
-        searchInput
-        ?
-        String(
-            searchInput.value ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        :
-        "";
-
-
-    const selectedStatus =
-        statusInput
-        ?
-        statusInput.value
-        :
-        "";
-
-
-    const selectedCategory =
-        categoryInput
-        ?
-        categoryInput.value
-        :
-        "";
-
-
-    let filtered =
+    const filtered =
         getVisibleReports().filter(
             function(report){
 
@@ -4894,48 +4644,34 @@ function renderReports(){
                 .toLowerCase();
 
 
-                if(
-                    search &&
-                    !text.includes(
-                        search
-                    )
-                ){
-
-                    return false;
-
-                }
+                const searchMatch =
+                    !search ||
+                    text.includes(search);
 
 
-                if(
-                    selectedStatus &&
+                const statusMatch =
+                    !status ||
                     normalizeStatus(
                         report.status
-                    ) !==
+                    ) ===
                     normalizeStatus(
-                        selectedStatus
-                    )
-                ){
-
-                    return false;
-
-                }
+                        status
+                    );
 
 
-                if(
-                    selectedCategory &&
+                const categoryMatch =
+                    !category ||
                     String(
                         report.hazardCategory ||
                         ""
-                    ) !==
-                    selectedCategory
-                ){
-
-                    return false;
-
-                }
+                    ) === category;
 
 
-                return true;
+                return (
+                    searchMatch &&
+                    statusMatch &&
+                    categoryMatch
+                );
 
             }
         );
@@ -4978,14 +4714,12 @@ function renderReports(){
                 ) ||
                 new Date(0);
 
-
             const db =
                 parseDate(
                     b.dateTime ||
                     b.submittedAt
                 ) ||
                 new Date(0);
-
 
             return db - da;
 
@@ -4995,9 +4729,7 @@ function renderReports(){
 
     container.innerHTML =
         filtered
-            .map(
-                createReportCard
-            )
+            .map(createReportCard)
             .join("");
 
 }
@@ -5007,14 +4739,10 @@ function renderReports(){
    REPORT CARD
 ========================================================= */
 
-function createReportCard(
-    report
-){
+function createReportCard(report){
 
     const index =
-        reports.indexOf(
-            report
-        );
+        reports.indexOf(report);
 
 
     const status =
@@ -5058,9 +4786,7 @@ function createReportCard(
                     class="badge ${statusClass}"
                 >
 
-                    ${escapeHtml(
-                        status
-                    )}
+                    ${escapeHtml(status)}
 
                 </div>
 
@@ -5220,412 +4946,11 @@ function createReportCard(
 
 
 /* =========================================================
-   ARCHIVE RENDER
-========================================================= */
-
-function renderArchiveReports(){
-
-    const container =
-        document.getElementById(
-            "archiveGrid"
-        );
-
-
-    if(!container){
-
-        return;
-
-    }
-
-
-    const archiveReports =
-        getArchiveReports();
-
-
-    if(!archiveReports.length){
-
-        container.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    🗄
-                </div>
-
-                <div class="empty-title">
-                    No archived cases
-                </div>
-
-                <p style="margin-top:8px;">
-                    Closed cases will appear here after
-                    automatic archiving.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    const searchInput =
-        document.getElementById(
-            "archiveSearch"
-        );
-
-
-    const search =
-        searchInput
-        ?
-        String(
-            searchInput.value ||
-            ""
-        )
-        .trim()
-        .toLowerCase()
-        :
-        "";
-
-
-    let filtered =
-        archiveReports.filter(
-            function(report){
-
-                if(!search){
-
-                    return true;
-
-                }
-
-
-                const text = [
-
-                    report.reportNumber,
-
-                    report.location,
-
-                    report.department,
-
-                    report.hazardCategory,
-
-                    report.whatHappened,
-
-                    report.reporterName,
-
-                    report.status
-
-                ]
-                .join(" ")
-                .toLowerCase();
-
-
-                return text.includes(
-                    search
-                );
-
-            }
-        );
-
-
-    filtered.sort(
-        function(a,b){
-
-            const da =
-                parseDate(
-                    a.archivedDate
-                ) ||
-                parseDate(
-                    a.closedDate
-                ) ||
-                parseDate(
-                    a.dateTime
-                ) ||
-                new Date(0);
-
-
-            const db =
-                parseDate(
-                    b.archivedDate
-                ) ||
-                parseDate(
-                    b.closedDate
-                ) ||
-                parseDate(
-                    b.dateTime
-                ) ||
-                new Date(0);
-
-
-            return db - da;
-
-        }
-    );
-
-
-    if(!filtered.length){
-
-        container.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⌕
-                </div>
-
-                <div class="empty-title">
-                    No archived cases found
-                </div>
-
-                <p style="margin-top:8px;">
-                    Try another search.
-                </p>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    container.innerHTML =
-        filtered
-            .map(
-                createArchiveCard
-            )
-            .join("");
-
-}
-
-
-/* =========================================================
-   ARCHIVE CARD
-========================================================= */
-
-function createArchiveCard(
-    report
-){
-
-    const index =
-        reports.indexOf(
-            report
-        );
-
-
-    const status =
-        normalizeStatus(
-            report.status
-        ) ||
-        "Closed";
-
-
-    return `
-
-        <div
-            class="report-card archive-card"
-            onclick="openReport(${index})"
-        >
-
-            <div class="report-head">
-
-                <div class="report-number">
-
-                    ${escapeHtml(
-                        report.reportNumber ||
-                        "ESH REPORT"
-                    )}
-
-                </div>
-
-
-                <div
-                    class="badge badge-archived"
-                >
-
-                    ARCHIVED
-
-                </div>
-
-            </div>
-
-
-            <div class="report-body">
-
-                <div class="report-title">
-
-                    ${escapeHtml(
-                        report.whatHappened ||
-                        "ESH report"
-                    )}
-
-                </div>
-
-
-                <div class="report-meta">
-
-                    <div class="meta-row">
-
-                        <span>
-                            Status
-                        </span>
-
-                        <strong>
-                            ${escapeHtml(status)}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Date
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                formatDisplayDate(
-                                    report.dateTime ||
-                                    report.submittedAt
-                                )
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Location
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                report.location ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Department
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                report.department ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Category
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                report.hazardCategory ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Closed Date
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                formatDisplayDate(
-                                    report.closedDate
-                                )
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="meta-row">
-
-                        <span>
-                            Archived Date
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                formatDisplayDate(
-                                    report.archivedDate
-                                )
-                            )}
-
-                        </strong>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="report-footer">
-
-                🔒 READ ONLY • ARCHIVED CASE
-
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   ARCHIVE SEARCH
-========================================================= */
-
-function filterArchive(){
-
-    renderArchiveReports();
-
-}
-
-
-/* =========================================================
    OPEN REPORT
+   LOAD LATEST DATA FROM GOOGLE SHEET
 ========================================================= */
 
-async function openReport(
-    index
-){
+async function openReport(index){
 
     const report =
         reports[index];
@@ -5638,23 +4963,12 @@ async function openReport(
     }
 
 
-    /*
-     * Archived reports use a separate
-     * access list.
-     */
-
-    const accessibleReports =
-        report.isArchived
-        ?
-        getArchiveReports()
-        :
+    const visibleReports =
         getVisibleReports();
 
 
     if(
-        !accessibleReports.includes(
-            report
-        )
+        !visibleReports.includes(report)
     ){
 
         showToast(
@@ -5681,6 +4995,10 @@ async function openReport(
     }
 
 
+    /* =====================================================
+       SHOW LOADING MODAL
+    ===================================================== */
+
     selectedReport =
         report;
 
@@ -5694,10 +5012,6 @@ async function openReport(
     document.getElementById(
         "modalSubtitle"
     ).textContent =
-        report.isArchived
-        ?
-        "Archived Case • Read Only"
-        :
         getModalSubtitle();
 
 
@@ -5732,6 +5046,10 @@ async function openReport(
         report.hazardCategory ||
         "-";
 
+
+    /* =====================================================
+       LOAD LATEST RECORD
+    ===================================================== */
 
     try{
 
@@ -5768,6 +5086,18 @@ async function openReport(
         );
 
 
+        /*
+         * Apps Script may return:
+         *
+         * {status:"success", report:{...}}
+         *
+         * or
+         *
+         * {success:true, data:{...}}
+         *
+         * or the report object directly.
+         */
+
         let latestReport = null;
 
 
@@ -5784,9 +5114,7 @@ async function openReport(
         else if(
             result &&
             result.data &&
-            !Array.isArray(
-                result.data
-            )
+            !Array.isArray(result.data)
         ){
 
             latestReport =
@@ -5814,72 +5142,9 @@ async function openReport(
         }
 
 
-        /*
-         * PRESERVE ARCHIVE INFORMATION.
-         *
-         * Some backend responses may not include
-         * isArchived/sourceSheet.
-         */
-
-        latestReport.isArchived =
-            latestReport.isArchived === true ||
-            String(
-                latestReport.isArchived ||
-                ""
-            ).toLowerCase() ===
-                "true" ||
-            String(
-                latestReport.sourceSheet ||
-                ""
-            ).trim().toLowerCase() ===
-                "archive" ||
-            report.isArchived === true;
-
-
-        latestReport.sourceSheet =
-            latestReport.sourceSheet ||
-            report.sourceSheet ||
-            "";
-
-
-        latestReport.archivedDate =
-            latestReport.archivedDate ||
-            report.archivedDate ||
-            "";
-
-
-        /*
-         * Preserve report metadata that may not
-         * be returned by singleReport.
-         */
-
-        latestReport.reportNumber =
-            latestReport.reportNumber ||
-            report.reportNumber;
-
-
-        latestReport.rowNumber =
-            latestReport.rowNumber ||
-            report.rowNumber;
-
-
-        latestReport.correctiveActionPhotos =
-            latestReport.correctiveActionPhotos ||
-            report.correctiveActionPhotos ||
-            "";
-
-
-        latestReport.photos =
-            latestReport.photos ||
-            report.photos ||
-            "";
-
-
-        latestReport.videoUrl =
-            latestReport.videoUrl ||
-            report.videoUrl ||
-            "";
-
+        /* =================================================
+           REPLACE OLD DASHBOARD OBJECT
+        ================================================= */
 
         selectedReport =
             latestReport;
@@ -5900,9 +5165,7 @@ async function openReport(
             );
 
 
-        if(
-            reportIndex !== -1
-        ){
+        if(reportIndex !== -1){
 
             reports[reportIndex] =
                 latestReport;
@@ -5910,25 +5173,15 @@ async function openReport(
         }
 
 
-        /*
-         * BASIC INFORMATION
-         */
+        /* =================================================
+           BASIC INFORMATION
+        ================================================= */
 
         document.getElementById(
             "modalTitle"
         ).textContent =
             latestReport.reportNumber ||
             reportNumber;
-
-
-        document.getElementById(
-            "modalSubtitle"
-        ).textContent =
-            latestReport.isArchived
-            ?
-            "Archived Case • Read Only"
-            :
-            getModalSubtitle();
 
 
         document.getElementById(
@@ -5959,9 +5212,9 @@ async function openReport(
             "-";
 
 
-        /*
-         * INCIDENT
-         */
+        /* =================================================
+           INCIDENT INFORMATION
+        ================================================= */
 
         document.getElementById(
             "incidentInfo"
@@ -5994,9 +5247,9 @@ async function openReport(
             "-";
 
 
-        /*
-         * INVESTIGATION
-         */
+        /* =================================================
+           INVESTIGATION
+        ================================================= */
 
         document.getElementById(
             "investigationFindings"
@@ -6026,9 +5279,9 @@ async function openReport(
             "";
 
 
-        /*
-         * CORRECTIVE ACTION
-         */
+        /* =================================================
+           CORRECTIVE ACTION
+        ================================================= */
 
         document.getElementById(
             "correctiveAction"
@@ -6052,9 +5305,9 @@ async function openReport(
             );
 
 
-        /*
-         * VERIFICATION
-         */
+        /* =================================================
+           VERIFICATION
+        ================================================= */
 
         document.getElementById(
             "verificationRemarks"
@@ -6063,9 +5316,9 @@ async function openReport(
             "";
 
 
-        /*
-         * CLOSURE
-         */
+        /* =================================================
+           CLOSURE
+        ================================================= */
 
         document.getElementById(
             "closedDate"
@@ -6075,9 +5328,9 @@ async function openReport(
             );
 
 
-        /*
-         * STATUS
-         */
+        /* =================================================
+           STATUS
+        ================================================= */
 
         const status =
             normalizeStatus(
@@ -6097,27 +5350,27 @@ async function openReport(
             status;
 
 
-        /*
-         * TIMELINE
-         */
+        /* =================================================
+           TIMELINE
+        ================================================= */
 
         updateTimeline(
             status
         );
 
 
-        /*
-         * OVERDUE
-         */
+        /* =================================================
+           OVERDUE
+        ================================================= */
 
         updateCaseOverdue(
             latestReport
         );
 
 
-        /*
-         * PHOTOS
-         */
+        /* =================================================
+           PHOTOS
+        ================================================= */
 
         loadPhotos(
             latestReport
@@ -6134,14 +5387,18 @@ async function openReport(
         );
 
 
-        /*
-         * ROLE PERMISSIONS
-         */
+        /* =================================================
+           ROLE PERMISSIONS
+        ================================================= */
 
         applyRolePermissions(
             status
         );
 
+
+        /* =================================================
+           DEBUG
+        ================================================= */
 
         console.log(
             "Investigation Findings:",
@@ -6206,7 +5463,6 @@ async function openReport(
 
 }
 
-
 /* =========================================================
    MODAL SUBTITLE
 ========================================================= */
@@ -6219,7 +5475,6 @@ function getModalSubtitle(){
 
     }
 
-
     if(isHOD()){
 
         return (
@@ -6228,7 +5483,6 @@ function getModalSubtitle(){
         );
 
     }
-
 
     if(isMaintenance()){
 
@@ -6239,7 +5493,6 @@ function getModalSubtitle(){
 
     }
 
-
     return "ESH Case Management";
 
 }
@@ -6249,9 +5502,7 @@ function getModalSubtitle(){
    STATUS OPTIONS
 ========================================================= */
 
-function setupCaseStatusOptions(
-    currentStatus
-){
+function setupCaseStatusOptions(currentStatus){
 
     const select =
         document.getElementById(
@@ -6259,20 +5510,11 @@ function setupCaseStatusOptions(
         );
 
 
-    if(!select){
-
-        return;
-
-    }
-
-
     if(isESH()){
 
         select.innerHTML = `
 
-            <option value="New">
-                New
-            </option>
+            <option value="New">New</option>
 
             <option value="Investigation">
                 Investigation
@@ -6299,10 +5541,7 @@ function setupCaseStatusOptions(
 
     if(isHOD()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             select.innerHTML = `
 
@@ -6314,10 +5553,7 @@ function setupCaseStatusOptions(
 
         }
 
-        else if(
-            currentStatus ===
-            "Verification"
-        ){
+        else if(currentStatus === "Verification"){
 
             select.innerHTML = `
 
@@ -6333,11 +5569,9 @@ function setupCaseStatusOptions(
 
             select.innerHTML = `
 
-                <option
-                    value="${escapeAttribute(
-                        currentStatus
-                    )}"
-                >
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
                     ${escapeHtml(
                         currentStatus
                     )}
@@ -6358,10 +5592,7 @@ function setupCaseStatusOptions(
 
     if(isMaintenance()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             select.innerHTML = `
 
@@ -6373,10 +5604,7 @@ function setupCaseStatusOptions(
 
         }
 
-        else if(
-            currentStatus ===
-            "Verification"
-        ){
+        else if(currentStatus === "Verification"){
 
             select.innerHTML = `
 
@@ -6392,11 +5620,9 @@ function setupCaseStatusOptions(
 
             select.innerHTML = `
 
-                <option
-                    value="${escapeAttribute(
-                        currentStatus
-                    )}"
-                >
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
                     ${escapeHtml(
                         currentStatus
                     )}
@@ -6419,9 +5645,7 @@ function setupCaseStatusOptions(
    ROLE PERMISSIONS
 ========================================================= */
 
-function applyRolePermissions(
-    status
-){
+function applyRolePermissions(status){
 
     const investigationFields = [
 
@@ -6475,32 +5699,14 @@ function applyRolePermissions(
         );
 
 
-    /*
-     * =====================================================
-     * ARCHIVED = READ ONLY
-     * =====================================================
-     */
-
-    if(
-        selectedReport &&
-        selectedReport.isArchived
-    ){
+    if(isESH()){
 
         investigationFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        true;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = false;
 
             }
         );
@@ -6509,136 +5715,49 @@ function applyRolePermissions(
         correctiveFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        true;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = false;
 
             }
         );
 
 
-        if(targetDate){
+        targetDate.disabled = false;
 
-            targetDate.disabled =
-                true;
+        closedDate.disabled = false;
 
-        }
+        document.getElementById(
+            verificationField
+        ).disabled = false;
 
+        caseStatus.disabled = false;
 
-        if(closedDate){
+        saveButton.style.display =
+            "inline-flex";
 
-            closedDate.disabled =
-                true;
+        saveButton.disabled =
+            false;
 
-        }
+        saveButton.textContent =
+            "Save Case";
 
-
-        const verification =
-            document.getElementById(
-                verificationField
-            );
-
-
-        if(verification){
-
-            verification.disabled =
-                true;
-
-        }
-
-
-        if(caseStatus){
-
-            caseStatus.disabled =
-                true;
-
-        }
-
-
-        const photoInput =
-            document.getElementById(
-                "correctivePhotoInput"
-            );
-
-
-        if(photoInput){
-
-            photoInput.disabled =
-                true;
-
-        }
-
-
-        const uploadButton =
-            document.getElementById(
-                "uploadCorrectivePhotosBtn"
-            );
-
-
-        if(uploadButton){
-
-            uploadButton.disabled =
-                true;
-
-        }
-
-
-        if(saveButton){
-
-            saveButton.style.display =
-                "none";
-
-            saveButton.disabled =
-                true;
-
-        }
-
-
-        if(verificationLabel){
-
-            verificationLabel.textContent =
-                "Verification Remarks • Read Only";
-
-        }
-
+        verificationLabel.textContent =
+            "Verification Remarks";
 
         return;
 
     }
 
 
-    /*
-     * =====================================================
-     * ESH
-     * =====================================================
-     */
-
-    if(isESH()){
+    if(isHOD()){
 
         investigationFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        false;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = true;
 
             }
         );
@@ -6647,62 +5766,44 @@ function applyRolePermissions(
         correctiveFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        false;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = true;
 
             }
         );
 
 
-        if(targetDate){
-
-            targetDate.disabled =
-                false;
-
-        }
+        targetDate.disabled =
+            status === "Closed";
 
 
-        if(closedDate){
-
-            closedDate.disabled =
-                false;
-
-        }
+        closedDate.disabled =
+            status === "Closed";
 
 
-        const verification =
-            document.getElementById(
-                verificationField
-            );
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
 
 
-        if(verification){
-
-            verification.disabled =
-                false;
-
-        }
+        caseStatus.disabled =
+            status === "Closed";
 
 
-        if(caseStatus){
+        verificationLabel.textContent =
+            "Verification Remarks";
 
-            caseStatus.disabled =
-                false;
+
+        if(status === "Closed"){
+
+            saveButton.style.display =
+                "none";
 
         }
 
-
-        if(saveButton){
+        else{
 
             saveButton.style.display =
                 "inline-flex";
@@ -6711,173 +5812,23 @@ function applyRolePermissions(
                 false;
 
             saveButton.textContent =
-                "Save Case";
+                "Verify Solution";
 
         }
-
-
-        if(verificationLabel){
-
-            verificationLabel.textContent =
-                "Verification Remarks";
-
-        }
-
 
         return;
 
     }
 
-
-    /*
-     * =====================================================
-     * HOD
-     * =====================================================
-     */
-
-    if(isHOD()){
-
-        investigationFields.forEach(
-            function(id){
-
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        true;
-
-                }
-
-            }
-        );
-
-
-        correctiveFields.forEach(
-            function(id){
-
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        true;
-
-                }
-
-            }
-        );
-
-
-        if(targetDate){
-
-            targetDate.disabled =
-                status === "Closed";
-
-        }
-
-
-        if(closedDate){
-
-            closedDate.disabled =
-                status === "Closed";
-
-        }
-
-
-        const verification =
-            document.getElementById(
-                verificationField
-            );
-
-
-        if(verification){
-
-            verification.disabled =
-                status === "Closed";
-
-        }
-
-
-        if(caseStatus){
-
-            caseStatus.disabled =
-                status === "Closed";
-
-        }
-
-
-        if(verificationLabel){
-
-            verificationLabel.textContent =
-                "Verification Remarks";
-
-        }
-
-
-        if(saveButton){
-
-            if(
-                status === "Closed"
-            ){
-
-                saveButton.style.display =
-                    "none";
-
-            }
-
-            else{
-
-                saveButton.style.display =
-                    "inline-flex";
-
-                saveButton.disabled =
-                    false;
-
-                saveButton.textContent =
-                    "Verify Solution";
-
-            }
-
-        }
-
-
-        return;
-
-    }
-
-
-    /*
-     * =====================================================
-     * MAINTENANCE
-     * =====================================================
-     */
 
     if(isMaintenance()){
 
         investigationFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        true;
-
-                }
+                document.getElementById(
+                    id
+                ).disabled = true;
 
             }
         );
@@ -6886,93 +5837,54 @@ function applyRolePermissions(
         correctiveFields.forEach(
             function(id){
 
-                const element =
-                    document.getElementById(
-                        id
-                    );
-
-
-                if(element){
-
-                    element.disabled =
-                        status ===
-                        "Closed";
-
-                }
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
 
             }
         );
 
 
-        if(targetDate){
-
-            targetDate.disabled =
-                status === "Closed";
-
-        }
+        targetDate.disabled =
+            status === "Closed";
 
 
-        if(closedDate){
-
-            closedDate.disabled =
-                status === "Closed";
-
-        }
+        closedDate.disabled =
+            status === "Closed";
 
 
-        const verification =
-            document.getElementById(
-                verificationField
-            );
+        document.getElementById(
+            verificationField
+        ).disabled =
+            status === "Closed";
 
 
-        if(verification){
-
-            verification.disabled =
-                status === "Closed";
-
-        }
+        caseStatus.disabled =
+            status === "Closed";
 
 
-        if(caseStatus){
+        verificationLabel.textContent =
+            "Repair / Completion Remarks";
 
-            caseStatus.disabled =
-                status === "Closed";
+
+        if(status === "Closed"){
+
+            saveButton.style.display =
+                "none";
 
         }
 
+        else{
 
-        if(verificationLabel){
+            saveButton.style.display =
+                "inline-flex";
 
-            verificationLabel.textContent =
-                "Repair / Completion Remarks";
+            saveButton.disabled =
+                false;
 
-        }
-
-
-        if(saveButton){
-
-            if(
-                status === "Closed"
-            ){
-
-                saveButton.style.display =
-                    "none";
-
-            }
-
-            else{
-
-                saveButton.style.display =
-                    "inline-flex";
-
-                saveButton.disabled =
-                    false;
-
-                saveButton.textContent =
-                    "Save Repair Update";
-
-            }
+            saveButton.textContent =
+                "Save Repair Update";
 
         }
 
@@ -6985,9 +5897,7 @@ function applyRolePermissions(
    TIMELINE
 ========================================================= */
 
-function updateTimeline(
-    status
-){
+function updateTimeline(status){
 
     const steps = [
 
@@ -7002,16 +5912,9 @@ function updateTimeline(
 
     const current =
         steps.findIndex(
-            function(step){
-
-                return normalizeStatus(
-                    step
-                ) ===
-                normalizeStatus(
-                    status
-                );
-
-            }
+            step =>
+                normalizeStatus(step) ===
+                normalizeStatus(status)
         );
 
 
@@ -7028,9 +5931,7 @@ function updateTimeline(
                 );
 
 
-                if(
-                    index < current
-                ){
+                if(index < current){
 
                     item.classList.add(
                         "completed"
@@ -7038,9 +5939,7 @@ function updateTimeline(
 
                 }
 
-                else if(
-                    index === current
-                ){
+                else if(index === current){
 
                     item.classList.add(
                         "active"
@@ -7058,9 +5957,7 @@ function updateTimeline(
    OVERDUE DISPLAY
 ========================================================= */
 
-function updateCaseOverdue(
-    report
-){
+function updateCaseOverdue(report){
 
     const banner =
         document.getElementById(
@@ -7068,30 +5965,15 @@ function updateCaseOverdue(
         );
 
 
-    if(!banner){
+    if(isReportOverdue(report)){
 
-        return;
-
-    }
-
-
-    if(
-        isReportOverdue(
-            report
-        )
-    ){
-
-        banner.classList.add(
-            "show"
-        );
+        banner.classList.add("show");
 
     }
 
     else{
 
-        banner.classList.remove(
-            "show"
-        );
+        banner.classList.remove("show");
 
     }
 
@@ -7099,12 +5981,10 @@ function updateCaseOverdue(
 
 
 /* =========================================================
-   DRIVE FILE ID
+   IMPROVED DRIVE FILE ID
 ========================================================= */
 
-function extractDriveFileId(
-    url
-){
+function extractDriveFileId(url){
 
     if(!url){
 
@@ -7114,9 +5994,7 @@ function extractDriveFileId(
 
 
     const text =
-        String(
-            url
-        ).trim();
+        String(url).trim();
 
 
     let match =
@@ -7165,10 +6043,8 @@ function extractDriveFileId(
 
 
     return match
-        ?
-        match[0]
-        :
-        null;
+        ? match[0]
+        : null;
 
 }
 
@@ -7177,9 +6053,7 @@ function extractDriveFileId(
    PHOTO LIST
 ========================================================= */
 
-function getPhotoList(
-    report
-){
+function getPhotoList(report){
 
     const value =
         report.photos ||
@@ -7189,21 +6063,16 @@ function getPhotoList(
         "";
 
 
-    if(
-        Array.isArray(value)
-    ){
+    if(Array.isArray(value)){
 
         return value
-            .map(
-                function(item){
+            .map(function(item){
 
-                    return String(
-                        item ||
-                        ""
-                    ).trim();
+                return String(
+                    item || ""
+                ).trim();
 
-                }
-            )
+            })
             .filter(Boolean);
 
     }
@@ -7217,9 +6086,7 @@ function getPhotoList(
 
 
     const text =
-        String(
-            value
-        ).trim();
+        String(value).trim();
 
 
     if(!text){
@@ -7232,28 +6099,19 @@ function getPhotoList(
     try{
 
         const parsed =
-            JSON.parse(
-                text
-            );
+            JSON.parse(text);
 
 
-        if(
-            Array.isArray(
-                parsed
-            )
-        ){
+        if(Array.isArray(parsed)){
 
             return parsed
-                .map(
-                    function(item){
+                .map(function(item){
 
-                        return String(
-                            item ||
-                            ""
-                        ).trim();
+                    return String(
+                        item || ""
+                    ).trim();
 
-                    }
-                )
+                })
                 .filter(Boolean);
 
         }
@@ -7264,37 +6122,27 @@ function getPhotoList(
 
 
     return text
-        .split(
-            /\r?\n/
-        )
-        .flatMap(
-            function(line){
+        .split(/\r?\n/)
+        .flatMap(function(line){
 
-                return line.split(
-                    ","
-                );
+            return line.split(",");
 
-            }
-        )
-        .map(
-            function(item){
+        })
+        .map(function(item){
 
-                return item.trim();
+            return item.trim();
 
-            }
-        )
+        })
         .filter(Boolean);
 
 }
 
 
 /* =========================================================
-   PHOTO EVIDENCE
+   IMPROVED PHOTO EVIDENCE
 ========================================================= */
 
-function loadPhotos(
-    report
-){
+function loadPhotos(report){
 
     const container =
         document.getElementById(
@@ -7310,9 +6158,7 @@ function loadPhotos(
 
 
     const photos =
-        getPhotoList(
-            report
-        );
+        getPhotoList(report);
 
 
     if(!photos.length){
@@ -7320,7 +6166,9 @@ function loadPhotos(
         container.innerHTML = `
 
             <div class="empty">
+
                 No photo evidence submitted.
+
             </div>
 
         `;
@@ -7330,182 +6178,172 @@ function loadPhotos(
     }
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    photos.forEach(
-        function(url){
+    photos.forEach(function(url){
 
-            const originalUrl =
-                String(
-                    url ||
-                    ""
-                ).trim();
+        const originalUrl =
+            String(
+                url || ""
+            ).trim();
 
 
-            if(!originalUrl){
+        if(!originalUrl){
 
-                return;
-
-            }
-
-
-            const fileId =
-                extractDriveFileId(
-                    originalUrl
-                );
-
-
-            let imageUrl =
-                originalUrl;
-
-
-            let openUrl =
-                originalUrl;
-
-
-            if(fileId){
-
-                imageUrl =
-                    "https://drive.google.com/thumbnail?id=" +
-                    encodeURIComponent(
-                        fileId
-                    ) +
-                    "&sz=w1200";
-
-
-                openUrl =
-                    "https://drive.google.com/file/d/" +
-                    encodeURIComponent(
-                        fileId
-                    ) +
-                    "/view";
-
-            }
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "photo-card";
-
-
-            const img =
-                document.createElement(
-                    "img"
-                );
-
-
-            img.src =
-                imageUrl;
-
-
-            img.alt =
-                "ESH Evidence";
-
-
-            img.loading =
-                "lazy";
-
-
-            img.referrerPolicy =
-                "no-referrer";
-
-
-            img.onclick =
-                function(event){
-
-                    event.stopPropagation();
-
-                    window.open(
-                        openUrl,
-                        "_blank"
-                    );
-
-                };
-
-
-            img.onerror =
-                function(){
-
-                    img.style.display =
-                        "none";
-
-
-                    const fallback =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    fallback.className =
-                        "photo-fallback";
-
-
-                    fallback.innerHTML =
-                        "📷<br>Open Photo";
-
-
-                    fallback.onclick =
-                        function(event){
-
-                            event.stopPropagation();
-
-                            window.open(
-                                openUrl,
-                                "_blank"
-                            );
-
-                        };
-
-
-                    card.appendChild(
-                        fallback
-                    );
-
-                };
-
-
-            card.appendChild(
-                img
-            );
-
-
-            container.appendChild(
-                card
-            );
+            return;
 
         }
-    );
+
+
+        const fileId =
+            extractDriveFileId(
+                originalUrl
+            );
+
+
+        let imageUrl =
+            originalUrl;
+
+
+        let openUrl =
+            originalUrl;
+
+
+        if(fileId){
+
+            imageUrl =
+                "https://drive.google.com/thumbnail?id=" +
+                encodeURIComponent(
+                    fileId
+                ) +
+                "&sz=w1200";
+
+
+            openUrl =
+                "https://drive.google.com/file/d/" +
+                encodeURIComponent(
+                    fileId
+                ) +
+                "/view";
+
+        }
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "photo-card";
+
+
+        const img =
+            document.createElement(
+                "img"
+            );
+
+
+        img.src =
+            imageUrl;
+
+
+        img.alt =
+            "ESH Evidence";
+
+
+        img.loading =
+            "lazy";
+
+
+        img.referrerPolicy =
+            "no-referrer";
+
+
+        img.onclick =
+            function(event){
+
+                event.stopPropagation();
+
+                window.open(
+                    openUrl,
+                    "_blank"
+                );
+
+            };
+
+
+        img.onerror =
+            function(){
+
+                img.style.display =
+                    "none";
+
+
+                const fallback =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                fallback.className =
+                    "photo-fallback";
+
+
+                fallback.innerHTML =
+                    "📷<br>Open Photo";
+
+
+                fallback.onclick =
+                    function(event){
+
+                        event.stopPropagation();
+
+                        window.open(
+                            openUrl,
+                            "_blank"
+                        );
+
+                    };
+
+
+                card.appendChild(
+                    fallback
+                );
+
+            };
+
+
+        card.appendChild(
+            img
+        );
+
+
+        container.appendChild(
+            card
+        );
+
+    });
 
 }
 
 
 /* =========================================================
-   CORRECTIVE PHOTO LIST
+   CORRECTIVE ACTION PHOTO LIST
 ========================================================= */
 
-function getCorrectivePhotoList(
-    report
-){
+function getCorrectivePhotoList(report){
 
     const value =
         report.correctiveActionPhotos ||
         "";
 
 
-    if(
-        Array.isArray(value)
-    ){
+    if(Array.isArray(value)){
 
-        return value.filter(
-            Boolean
-        );
+        return value.filter(Boolean);
 
     }
 
@@ -7518,24 +6356,16 @@ function getCorrectivePhotoList(
 
 
     const text =
-        String(
-            value
-        ).trim();
+        String(value).trim();
 
 
     try{
 
         const parsed =
-            JSON.parse(
-                text
-            );
+            JSON.parse(text);
 
 
-        if(
-            Array.isArray(
-                parsed
-            )
-        ){
+        if(Array.isArray(parsed)){
 
             return parsed.filter(
                 Boolean
@@ -7549,9 +6379,7 @@ function getCorrectivePhotoList(
 
 
     return text
-        .split(
-            /\r?\n/
-        )
+        .split(/\r?\n/)
         .map(
             function(x){
 
@@ -7568,9 +6396,7 @@ function getCorrectivePhotoList(
    CORRECTIVE ACTION PHOTOS
 ========================================================= */
 
-function loadCorrectiveActionPhotos(
-    report
-){
+function loadCorrectiveActionPhotos(report){
 
     const container =
         document.getElementById(
@@ -7606,158 +6432,150 @@ function loadCorrectiveActionPhotos(
     }
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
-    photos.forEach(
-        function(url){
+    photos.forEach(function(url){
 
-            const originalUrl =
-                String(
-                    url ||
-                    ""
-                ).trim();
+        const originalUrl =
+            String(
+                url || ""
+            ).trim();
 
 
-            if(!originalUrl){
+        if(!originalUrl){
 
-                return;
-
-            }
-
-
-            const id =
-                extractDriveFileId(
-                    originalUrl
-                );
-
-
-            let src =
-                originalUrl;
-
-
-            let openUrl =
-                originalUrl;
-
-
-            if(id){
-
-                src =
-                    "https://drive.google.com/thumbnail?id=" +
-                    encodeURIComponent(
-                        id
-                    ) +
-                    "&sz=w1200";
-
-
-                openUrl =
-                    "https://drive.google.com/file/d/" +
-                    encodeURIComponent(
-                        id
-                    ) +
-                    "/view";
-
-            }
-
-
-            const card =
-                document.createElement(
-                    "div"
-                );
-
-
-            card.className =
-                "photo-card";
-
-
-            const img =
-                document.createElement(
-                    "img"
-                );
-
-
-            img.src =
-                src;
-
-
-            img.alt =
-                "Corrective Action Evidence";
-
-
-            img.loading =
-                "lazy";
-
-
-            img.referrerPolicy =
-                "no-referrer";
-
-
-            img.onclick =
-                function(event){
-
-                    event.stopPropagation();
-
-                    window.open(
-                        openUrl,
-                        "_blank"
-                    );
-
-                };
-
-
-            img.onerror =
-                function(){
-
-                    img.style.display =
-                        "none";
-
-
-                    const fallback =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    fallback.className =
-                        "photo-fallback";
-
-
-                    fallback.innerHTML =
-                        "📷<br>Open Corrective Photo";
-
-
-                    fallback.onclick =
-                        function(event){
-
-                            event.stopPropagation();
-
-                            window.open(
-                                openUrl,
-                                "_blank"
-                            );
-
-                        };
-
-
-                    card.appendChild(
-                        fallback
-                    );
-
-                };
-
-
-            card.appendChild(
-                img
-            );
-
-
-            container.appendChild(
-                card
-            );
+            return;
 
         }
-    );
+
+
+        const id =
+            extractDriveFileId(
+                originalUrl
+            );
+
+
+        let src =
+            originalUrl;
+
+
+        let openUrl =
+            originalUrl;
+
+
+        if(id){
+
+            src =
+                "https://drive.google.com/thumbnail?id=" +
+                encodeURIComponent(id) +
+                "&sz=w1200";
+
+
+            openUrl =
+                "https://drive.google.com/file/d/" +
+                encodeURIComponent(id) +
+                "/view";
+
+        }
+
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "photo-card";
+
+
+        const img =
+            document.createElement(
+                "img"
+            );
+
+
+        img.src =
+            src;
+
+
+        img.alt =
+            "Corrective Action Evidence";
+
+
+        img.loading =
+            "lazy";
+
+
+        img.referrerPolicy =
+            "no-referrer";
+
+
+        img.onclick =
+            function(event){
+
+                event.stopPropagation();
+
+                window.open(
+                    openUrl,
+                    "_blank"
+                );
+
+            };
+
+
+        img.onerror =
+            function(){
+
+                img.style.display =
+                    "none";
+
+
+                const fallback =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                fallback.className =
+                    "photo-fallback";
+
+
+                fallback.innerHTML =
+                    "📷<br>Open Corrective Photo";
+
+
+                fallback.onclick =
+                    function(event){
+
+                        event.stopPropagation();
+
+                        window.open(
+                            openUrl,
+                            "_blank"
+                        );
+
+                    };
+
+
+                card.appendChild(
+                    fallback
+                );
+
+            };
+
+
+        card.appendChild(
+            img
+        );
+
+
+        container.appendChild(
+            card
+        );
+
+    });
 
 }
 
@@ -7791,7 +6609,6 @@ function compressImageForUpload(
 
                             let width =
                                 img.width;
-
 
                             let height =
                                 img.height;
@@ -7911,7 +6728,7 @@ function compressImageForUpload(
 
 
 /* =========================================================
-   UPLOAD CORRECTIVE PHOTOS
+   UPLOAD CORRECTIVE ACTION PHOTOS
 ========================================================= */
 
 async function uploadCorrectivePhotos(){
@@ -7920,23 +6737,6 @@ async function uploadCorrectivePhotos(){
 
         showToast(
             "Please open a report first."
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * ARCHIVE PROTECTION
-     */
-
-    if(
-        selectedReport.isArchived
-    ){
-
-        showToast(
-            "Archived cases are read-only."
         );
 
         return;
@@ -8031,6 +6831,10 @@ async function uploadCorrectivePhotos(){
                 );
 
 
+            /* =================================================
+               CORRECT PAYLOAD FORMAT
+            ================================================= */
+
             const payload = {
 
                 action:
@@ -8063,10 +6867,8 @@ async function uploadCorrectivePhotos(){
                         method:"POST",
 
                         headers:{
-
                             "Content-Type":
                                 "text/plain;charset=utf-8"
-
                         },
 
                         body:
@@ -8096,6 +6898,11 @@ async function uploadCorrectivePhotos(){
 
             catch(parseError){
 
+                console.error(
+                    "Invalid server response:",
+                    responseText
+                );
+
                 throw new Error(
                     "Server returned an invalid response."
                 );
@@ -8124,8 +6931,7 @@ async function uploadCorrectivePhotos(){
         }
 
 
-        input.value =
-            "";
+        input.value = "";
 
 
         await loadReports();
@@ -8222,9 +7028,7 @@ async function uploadCorrectivePhotos(){
    VIDEO
 ========================================================= */
 
-function loadVideo(
-    report
-){
+function loadVideo(report){
 
     const container =
         document.getElementById(
@@ -8239,8 +7043,7 @@ function loadVideo(
     }
 
 
-    container.innerHTML =
-        "";
+    container.innerHTML = "";
 
 
     const url =
@@ -8258,9 +7061,7 @@ function loadVideo(
 
 
     const videoUrl =
-        String(
-            url
-        ).trim();
+        String(url).trim();
 
 
     const id =
@@ -8333,10 +7134,9 @@ function loadVideo(
     `;
 
 }
-
-
 /* =========================================================
-   SELECTED REPORT NUMBER
+   GET SELECTED REPORT NUMBER
+   FIX FOR "REPORT NUMBER REQUIRED"
 ========================================================= */
 
 function getSelectedReportNumber(){
@@ -8365,6 +7165,7 @@ function getSelectedReportNumber(){
 
 /* =========================================================
    SAVE REPORT
+   UPDATED
 ========================================================= */
 
 async function saveReport(){
@@ -8373,23 +7174,6 @@ async function saveReport(){
 
         showToast(
             "Please open a report first."
-        );
-
-        return;
-
-    }
-
-
-    /*
-     * ARCHIVE PROTECTION
-     */
-
-    if(
-        selectedReport.isArchived
-    ){
-
-        showToast(
-            "Archived cases are read-only."
         );
 
         return;
@@ -8407,7 +7191,6 @@ async function saveReport(){
             "UPDATE ERROR: selectedReport has no report number:",
             selectedReport
         );
-
 
         showToast(
             "Report Number Required"
@@ -8438,10 +7221,7 @@ async function saveReport(){
 
     if(isHOD()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             showToast(
                 "Closed cases cannot be modified."
@@ -8453,10 +7233,8 @@ async function saveReport(){
 
 
         if(
-            selectedStatus ===
-            "Closed" &&
-            currentStatus !==
-            "Closed"
+            selectedStatus === "Closed" &&
+            currentStatus !== "Closed"
         ){
 
             showToast(
@@ -8469,10 +7247,8 @@ async function saveReport(){
 
 
         if(
-            selectedStatus !==
-            "Verification" &&
-            selectedStatus !==
-            currentStatus
+            selectedStatus !== "Verification" &&
+            selectedStatus !== currentStatus
         ){
 
             showToast(
@@ -8488,10 +7264,7 @@ async function saveReport(){
 
     if(isMaintenance()){
 
-        if(
-            currentStatus ===
-            "Closed"
-        ){
+        if(currentStatus === "Closed"){
 
             showToast(
                 "Closed cases cannot be modified."
@@ -8503,10 +7276,8 @@ async function saveReport(){
 
 
         if(
-            selectedStatus !==
-            "Verification" &&
-            selectedStatus !==
-            currentStatus
+            selectedStatus !== "Verification" &&
+            selectedStatus !== currentStatus
         ){
 
             showToast(
@@ -8522,15 +7293,13 @@ async function saveReport(){
 
     const data = {
 
-        action:
-            "updateReport",
+        action:"updateReport",
 
         reportNumber:
             reportNumber,
 
         rowNumber:
-            selectedReport.rowNumber ||
-            "",
+            selectedReport.rowNumber || "",
 
         status:
             selectedStatus,
@@ -8588,42 +7357,28 @@ async function saveReport(){
         data.status =
             selectedStatus;
 
-
         data.investigationFindings =
-            selectedReport.investigationFindings ||
-            "";
-
+            selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause ||
-            "";
-
+            selectedReport.rootCause || "";
 
         data.correctiveAction =
-            selectedReport.correctiveAction ||
-            "";
-
+            selectedReport.correctiveAction || "";
 
         data.personResponsible =
-            selectedReport.personResponsible ||
-            "";
-
+            selectedReport.personResponsible || "";
 
         data.dueDate =
             document.getElementById(
                 "dueDate"
             ).value;
 
-
         data.eshInvestigator =
-            selectedReport.eshInvestigator ||
-            "";
-
+            selectedReport.eshInvestigator || "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks ||
-            "";
-
+            selectedReport.eshRemarks || "";
 
         data.closedDate =
             document.getElementById(
@@ -8638,32 +7393,22 @@ async function saveReport(){
         data.status =
             selectedStatus;
 
-
         data.investigationFindings =
-            selectedReport.investigationFindings ||
-            "";
-
+            selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause ||
-            "";
-
+            selectedReport.rootCause || "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator ||
-            "";
-
+            selectedReport.eshInvestigator || "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks ||
-            "";
-
+            selectedReport.eshRemarks || "";
 
         data.dueDate =
             document.getElementById(
                 "dueDate"
             ).value;
-
 
         data.closedDate =
             document.getElementById(
@@ -8673,8 +7418,7 @@ async function saveReport(){
     }
 
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
 
     const originalText =
@@ -8695,16 +7439,12 @@ async function saveReport(){
                     method:"POST",
 
                     headers:{
-
                         "Content-Type":
                             "text/plain;charset=utf-8"
-
                     },
 
                     body:
-                        JSON.stringify(
-                            data
-                        )
+                        JSON.stringify(data)
 
                 }
             );
@@ -8715,17 +7455,13 @@ async function saveReport(){
 
 
         if(
-            result.status ===
-                "success" ||
-            result.success ===
-                true
+            result.status === "success" ||
+            result.success === true
         ){
 
             closeModal();
 
-
             showToast(
-
                 isHOD()
                 ?
                 "Solution verification updated successfully."
@@ -8735,7 +7471,6 @@ async function saveReport(){
                 "Repair update saved successfully."
                 :
                 "Case updated successfully."
-
             );
 
 
@@ -8756,10 +7491,7 @@ async function saveReport(){
 
     catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         showToast(
             "Error: " +
@@ -8773,7 +7505,6 @@ async function saveReport(){
         button.disabled =
             false;
 
-
         button.textContent =
             originalText;
 
@@ -8784,30 +7515,12 @@ async function saveReport(){
 
 /* =========================================================
    AUTO SAVE DATE FIELD
+   UPDATED
 ========================================================= */
 
-async function autoSaveDateField(
-    fieldType
-){
+async function autoSaveDateField(fieldType){
 
     if(!selectedReport){
-
-        return;
-
-    }
-
-
-    /*
-     * ARCHIVE PROTECTION
-     */
-
-    if(
-        selectedReport.isArchived
-    ){
-
-        showToast(
-            "Archived cases are read-only."
-        );
 
         return;
 
@@ -8819,6 +7532,11 @@ async function autoSaveDateField(
 
 
     if(!reportNumber){
+
+        console.error(
+            "DATE UPDATE ERROR: selectedReport has no report number:",
+            selectedReport
+        );
 
         showToast(
             "Report Number Required"
@@ -8835,10 +7553,7 @@ async function autoSaveDateField(
         );
 
 
-    if(
-        status ===
-        "Closed"
-    ){
+    if(status === "Closed"){
 
         showToast(
             "Closed cases cannot be modified."
@@ -8891,8 +7606,7 @@ async function autoSaveDateField(
 
 
     button.textContent =
-        fieldType ===
-        "dueDate"
+        fieldType === "dueDate"
         ?
         "Updating Date..."
         :
@@ -8901,15 +7615,13 @@ async function autoSaveDateField(
 
     const data = {
 
-        action:
-            "updateReport",
+        action:"updateReport",
 
         reportNumber:
             reportNumber,
 
         rowNumber:
-            selectedReport.rowNumber ||
-            "",
+            selectedReport.rowNumber || "",
 
         status:
             document.getElementById(
@@ -8967,33 +7679,22 @@ async function autoSaveDateField(
     if(isHOD()){
 
         data.investigationFindings =
-            selectedReport.investigationFindings ||
-            "";
-
+            selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause ||
-            "";
-
+            selectedReport.rootCause || "";
 
         data.correctiveAction =
-            selectedReport.correctiveAction ||
-            "";
-
+            selectedReport.correctiveAction || "";
 
         data.personResponsible =
-            selectedReport.personResponsible ||
-            "";
-
+            selectedReport.personResponsible || "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator ||
-            "";
-
+            selectedReport.eshInvestigator || "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks ||
-            "";
+            selectedReport.eshRemarks || "";
 
     }
 
@@ -9001,23 +7702,16 @@ async function autoSaveDateField(
     if(isMaintenance()){
 
         data.investigationFindings =
-            selectedReport.investigationFindings ||
-            "";
-
+            selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause ||
-            "";
-
+            selectedReport.rootCause || "";
 
         data.eshInvestigator =
-            selectedReport.eshInvestigator ||
-            "";
-
+            selectedReport.eshInvestigator || "";
 
         data.eshRemarks =
-            selectedReport.eshRemarks ||
-            "";
+            selectedReport.eshRemarks || "";
 
     }
 
@@ -9044,16 +7738,12 @@ async function autoSaveDateField(
                     method:"POST",
 
                     headers:{
-
                         "Content-Type":
                             "text/plain;charset=utf-8"
-
                     },
 
                     body:
-                        JSON.stringify(
-                            data
-                        )
+                        JSON.stringify(data)
 
                 }
             );
@@ -9064,15 +7754,12 @@ async function autoSaveDateField(
 
 
         if(
-            result.status ===
-                "success" ||
-            result.success ===
-                true
+            result.status === "success" ||
+            result.success === true
         ){
 
             selectedReport.dueDate =
                 data.dueDate;
-
 
             selectedReport.closedDate =
                 data.closedDate;
@@ -9096,8 +7783,7 @@ async function autoSaveDateField(
                         reportNumber;
 
                     }
-                )
-                ||
+                ) ||
                 reports.find(
                     function(report){
 
@@ -9144,14 +7830,11 @@ async function autoSaveDateField(
 
 
             showToast(
-
-                fieldType ===
-                "dueDate"
+                fieldType === "dueDate"
                 ?
                 "Target Date updated successfully."
                 :
                 "Closed Date updated successfully."
-
             );
 
         }
@@ -9169,22 +7852,16 @@ async function autoSaveDateField(
 
     catch(error){
 
-        console.error(
-            error
-        );
-
+        console.error(error);
 
         showToast(
-
-            fieldType ===
-            "dueDate"
+            fieldType === "dueDate"
             ?
             "Target Date update failed: " +
             error.message
             :
             "Closed Date update failed: " +
             error.message
-
         );
 
     }
@@ -9193,7 +7870,6 @@ async function autoSaveDateField(
 
         button.disabled =
             false;
-
 
         button.textContent =
             originalText;
@@ -9207,22 +7883,13 @@ async function autoSaveDateField(
    DATE EVENTS
 ========================================================= */
 
-const dueDateElement =
-    document.getElementById(
-        "dueDate"
-    );
-
-
-if(dueDateElement){
-
-    dueDateElement.addEventListener(
+document
+    .getElementById("dueDate")
+    .addEventListener(
         "change",
         async function(){
 
-            if(
-                selectedReport &&
-                !selectedReport.isArchived
-            ){
+            if(selectedReport){
 
                 updateCaseOverdue({
 
@@ -9248,18 +7915,10 @@ if(dueDateElement){
         }
     );
 
-}
 
-
-const closedDateElement =
-    document.getElementById(
-        "closedDate"
-    );
-
-
-if(closedDateElement){
-
-    closedDateElement.addEventListener(
+document
+    .getElementById("closedDate")
+    .addEventListener(
         "change",
         async function(){
 
@@ -9270,30 +7929,12 @@ if(closedDateElement){
         }
     );
 
-}
 
-
-const caseStatusElement =
-    document.getElementById(
-        "caseStatus"
-    );
-
-
-if(caseStatusElement){
-
-    caseStatusElement.addEventListener(
+document
+    .getElementById("caseStatus")
+    .addEventListener(
         "change",
         function(){
-
-            if(
-                selectedReport &&
-                selectedReport.isArchived
-            ){
-
-                return;
-
-            }
-
 
             updateTimeline(
                 this.value
@@ -9321,8 +7962,6 @@ if(caseStatusElement){
         }
     );
 
-}
-
 
 /* =========================================================
    CLOSE MODAL
@@ -9330,19 +7969,10 @@ if(caseStatusElement){
 
 function closeModal(){
 
-    const modal =
-        document.getElementById(
-            "caseModal"
-        );
-
-
-    if(modal){
-
-        modal.classList.remove(
-            "show"
-        );
-
-    }
+    document
+        .getElementById("caseModal")
+        .classList
+        .remove("show");
 
 
     selectedReport =
@@ -9351,21 +7981,14 @@ function closeModal(){
 }
 
 
-const caseModalElement =
-    document.getElementById(
-        "caseModal"
-    );
-
-
-if(caseModalElement){
-
-    caseModalElement.addEventListener(
+document
+    .getElementById("caseModal")
+    .addEventListener(
         "click",
         function(event){
 
             if(
-                event.target ===
-                this
+                event.target === this
             ){
 
                 closeModal();
@@ -9375,17 +7998,12 @@ if(caseModalElement){
         }
     );
 
-}
-
 
 document.addEventListener(
     "keydown",
     function(event){
 
-        if(
-            event.key ===
-            "Escape"
-        ){
+        if(event.key === "Escape"){
 
             closeModal();
 
@@ -9409,10 +8027,6 @@ function renderAnalytics(){
 
 }
 
-
-/* =========================================================
-   TREND CHART
-========================================================= */
 
 function renderTrend(){
 
@@ -9443,15 +8057,15 @@ function renderTrend(){
 
 
     for(
-        let i = 5;
-        i >= 0;
+        let i=5;
+        i>=0;
         i--
     ){
 
         const date =
             new Date(
                 now.getFullYear(),
-                now.getMonth() - i,
+                now.getMonth()-i,
                 1
             );
 
@@ -9484,12 +8098,12 @@ function renderTrend(){
                         d &&
 
                         d.getFullYear() ===
-                        date.getFullYear()
+                            date.getFullYear()
 
                         &&
 
                         d.getMonth() ===
-                        date.getMonth()
+                            date.getMonth()
 
                     );
 
@@ -9517,24 +8131,19 @@ function renderTrend(){
 
                 data:{
 
-                    labels:
-                        labels,
+                    labels:labels,
 
                     datasets:[
 
                         {
 
-                            label:
-                                "Reports",
+                            label:"Reports",
 
-                            data:
-                                values,
+                            data:values,
 
-                            tension:
-                                .35,
+                            tension:.35,
 
-                            fill:
-                                true
+                            fill:true
 
                         }
 
@@ -9544,18 +8153,15 @@ function renderTrend(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            display:
-                                false
+                            display:false
 
                         }
 
@@ -9567,8 +8173,7 @@ function renderTrend(){
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba"
+                                color:"#8fa4ba"
 
                             },
 
@@ -9583,16 +8188,13 @@ function renderTrend(){
 
                         y:{
 
-                            beginAtZero:
-                                true,
+                            beginAtZero:true,
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba",
+                                color:"#8fa4ba",
 
-                                precision:
-                                    0
+                                precision:0
 
                             },
 
@@ -9614,10 +8216,6 @@ function renderTrend(){
 
 }
 
-
-/* =========================================================
-   CATEGORY CHART
-========================================================= */
 
 function renderCategory(){
 
@@ -9667,24 +8265,19 @@ function renderCategory(){
             canvas,
             {
 
-                type:
-                    "doughnut",
+                type:"doughnut",
 
                 data:{
 
                     labels:
-                        Object.keys(
-                            map
-                        ),
+                        Object.keys(map),
 
                     datasets:[
 
                         {
 
                             data:
-                                Object.values(
-                                    map
-                                )
+                                Object.values(map)
 
                         }
 
@@ -9694,29 +8287,23 @@ function renderCategory(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            position:
-                                "bottom",
+                            position:"bottom",
 
                             labels:{
 
-                                color:
-                                    "#a9bbce",
+                                color:"#a9bbce",
 
-                                boxWidth:
-                                    12,
+                                boxWidth:12,
 
-                                padding:
-                                    12
+                                padding:12
 
                             }
 
@@ -9731,10 +8318,6 @@ function renderCategory(){
 
 }
 
-
-/* =========================================================
-   DEPARTMENT CHART
-========================================================= */
 
 function renderDepartment(){
 
@@ -9784,27 +8367,21 @@ function renderDepartment(){
             canvas,
             {
 
-                type:
-                    "bar",
+                type:"bar",
 
                 data:{
 
                     labels:
-                        Object.keys(
-                            map
-                        ),
+                        Object.keys(map),
 
                     datasets:[
 
                         {
 
-                            label:
-                                "Reports",
+                            label:"Reports",
 
                             data:
-                                Object.values(
-                                    map
-                                )
+                                Object.values(map)
 
                         }
 
@@ -9814,18 +8391,15 @@ function renderDepartment(){
 
                 options:{
 
-                    responsive:
-                        true,
+                    responsive:true,
 
-                    maintainAspectRatio:
-                        false,
+                    maintainAspectRatio:false,
 
                     plugins:{
 
                         legend:{
 
-                            display:
-                                false
+                            display:false
 
                         }
 
@@ -9837,15 +8411,13 @@ function renderDepartment(){
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba"
+                                color:"#8fa4ba"
 
                             },
 
                             grid:{
 
-                                display:
-                                    false
+                                display:false
 
                             }
 
@@ -9853,16 +8425,13 @@ function renderDepartment(){
 
                         y:{
 
-                            beginAtZero:
-                                true,
+                            beginAtZero:true,
 
                             ticks:{
 
-                                color:
-                                    "#8fa4ba",
+                                color:"#8fa4ba",
 
-                                precision:
-                                    0
+                                precision:0
 
                             },
 
@@ -9889,14 +8458,11 @@ function renderDepartment(){
    NORMALIZE STATUS
 ========================================================= */
 
-function normalizeStatus(
-    status
-){
+function normalizeStatus(status){
 
     const value =
         String(
-            status ||
-            ""
+            status || ""
         )
         .trim()
         .toLowerCase();
@@ -9955,8 +8521,7 @@ function normalizeStatus(
     }
 
 
-    return status ||
-        "New";
+    return status || "New";
 
 }
 
@@ -9965,43 +8530,28 @@ function normalizeStatus(
    STATUS CLASS
 ========================================================= */
 
-function getStatusClass(
-    status
-){
+function getStatusClass(status){
 
     switch(
-        normalizeStatus(
-            status
-        )
+        normalizeStatus(status)
     ){
 
         case "New":
-
             return "badge-new";
 
-
         case "Investigation":
-
             return "badge-investigation";
 
-
         case "Corrective Action":
-
             return "badge-corrective";
 
-
         case "Verification":
-
             return "badge-verification";
 
-
         case "Closed":
-
             return "badge-closed";
 
-
         default:
-
             return "badge-new";
 
     }
@@ -10013,9 +8563,7 @@ function getStatusClass(
    DATE PARSER
 ========================================================= */
 
-function parseDate(
-    value
-){
+function parseDate(value){
 
     if(!value){
 
@@ -10024,9 +8572,7 @@ function parseDate(
     }
 
 
-    if(
-        value instanceof Date
-    ){
+    if(value instanceof Date){
 
         return isNaN(
             value.getTime()
@@ -10040,9 +8586,7 @@ function parseDate(
 
 
     const text =
-        String(
-            value
-        ).trim();
+        String(value).trim();
 
 
     if(!text){
@@ -10053,9 +8597,7 @@ function parseDate(
 
 
     const date =
-        new Date(
-            text
-        );
+        new Date(text);
 
 
     if(
@@ -10078,14 +8620,10 @@ function parseDate(
    DATE INPUT
 ========================================================= */
 
-function formatDateInput(
-    value
-){
+function formatDateInput(value){
 
     const date =
-        parseDate(
-            value
-        );
+        parseDate(value);
 
 
     if(!date){
@@ -10100,7 +8638,7 @@ function formatDateInput(
         date.getFullYear(),
 
         String(
-            date.getMonth() + 1
+            date.getMonth()+1
         ).padStart(
             2,
             "0"
@@ -10122,14 +8660,10 @@ function formatDateInput(
    DISPLAY DATE
 ========================================================= */
 
-function formatDisplayDate(
-    value
-){
+function formatDisplayDate(value){
 
     const date =
-        parseDate(
-            value
-        );
+        parseDate(value);
 
 
     if(!date){
@@ -10143,14 +8677,11 @@ function formatDisplayDate(
         "en-MY",
         {
 
-            day:
-                "2-digit",
+            day:"2-digit",
 
-            month:
-                "short",
+            month:"short",
 
-            year:
-                "numeric"
+            year:"numeric"
 
         }
     );
@@ -10162,9 +8693,7 @@ function formatDisplayDate(
    SECURITY
 ========================================================= */
 
-function escapeHtml(
-    value
-){
+function escapeHtml(value){
 
     return String(
         value ?? ""
@@ -10193,9 +8722,7 @@ function escapeHtml(
 }
 
 
-function escapeAttribute(
-    value
-){
+function escapeAttribute(value){
 
     return String(
         value ?? ""
@@ -10228,25 +8755,15 @@ function escapeAttribute(
    TOAST
 ========================================================= */
 
-let toastTimer =
-    null;
+let toastTimer = null;
 
 
-function showToast(
-    message
-){
+function showToast(message){
 
     const toast =
         document.getElementById(
             "toast"
         );
-
-
-    if(!toast){
-
-        return;
-
-    }
 
 
     toast.textContent =
@@ -10274,90 +8791,6 @@ function showToast(
             },
             3000
         );
-
-}
-
-
-/* =========================================================
-   SEARCH EVENT LISTENERS
-========================================================= */
-
-const reportSearchElement =
-    document.getElementById(
-        "reportSearch"
-    );
-
-
-if(reportSearchElement){
-
-    reportSearchElement.addEventListener(
-        "input",
-        function(){
-
-            renderReports();
-
-        }
-    );
-
-}
-
-
-const statusFilterElement =
-    document.getElementById(
-        "statusFilter"
-    );
-
-
-if(statusFilterElement){
-
-    statusFilterElement.addEventListener(
-        "change",
-        function(){
-
-            renderReports();
-
-        }
-    );
-
-}
-
-
-const categoryFilterElement =
-    document.getElementById(
-        "categoryFilter"
-    );
-
-
-if(categoryFilterElement){
-
-    categoryFilterElement.addEventListener(
-        "change",
-        function(){
-
-            renderReports();
-
-        }
-    );
-
-}
-
-
-const archiveSearchElement =
-    document.getElementById(
-        "archiveSearch"
-    );
-
-
-if(archiveSearchElement){
-
-    archiveSearchElement.addEventListener(
-        "input",
-        function(){
-
-            renderArchiveReports();
-
-        }
-    );
 
 }
 
