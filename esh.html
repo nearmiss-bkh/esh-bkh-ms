@@ -9208,7 +9208,6 @@ function renderCategory(){
 
 }
 
-
 function renderDepartment(){
 
     const canvas =
@@ -9245,12 +9244,23 @@ function renderDepartment(){
     );
 
 
-    if(departmentChart){
+    /* =====================================================
+       SAFELY DESTROY PREVIOUS CHART
+    ===================================================== */
+
+    if(
+        departmentChart &&
+        typeof departmentChart.destroy === "function"
+    ){
 
         departmentChart.destroy();
 
     }
 
+
+    /* =====================================================
+       CREATE DEPARTMENT CHART
+    ===================================================== */
 
     departmentChart =
         new Chart(
@@ -9342,7 +9352,6 @@ function renderDepartment(){
         );
 
 }
-
 
 /* =========================================================
    NORMALIZE STATUS
