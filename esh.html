@@ -3679,9 +3679,31 @@ let departmentChart = [];
    ROLE HELPERS
 ========================================================= */
 
-let CURRENT_ROLE = "ESH";
+let CURRENT_ROLE =
+    sessionStorage.getItem(
+        "userRole"
+    ) ||
+    "ESH";
 
-console.log("CURRENT_ROLE TEST:", CURRENT_ROLE);
+
+let CURRENT_DEPARTMENT =
+    sessionStorage.getItem(
+        "department"
+    ) ||
+    "ESH";
+
+
+console.log(
+    "CURRENT_ROLE:",
+    CURRENT_ROLE
+);
+
+
+console.log(
+    "CURRENT_DEPARTMENT:",
+    CURRENT_DEPARTMENT
+);
+
 
 function isESH(){
 
@@ -3689,18 +3711,19 @@ function isESH(){
 
 }
 
+
 function isHOD(){
 
     return CURRENT_ROLE === "HOD";
 
 }
 
+
 function isMaintenance(){
 
     return CURRENT_ROLE === "MAINTENANCE";
 
 }
-
 
 /* =========================================================
    VISIBLE REPORTS
