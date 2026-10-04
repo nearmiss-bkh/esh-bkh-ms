@@ -31,39 +31,8 @@ body{
         Helvetica,
         sans-serif;
 
-    /* =====================================================
-       MAIN GRADIENT BACKGROUND
-    ===================================================== */
-
-    background:
-        radial-gradient(
-            circle at 8% 8%,
-            rgba(255,255,255,.16),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 92% 12%,
-            rgba(59,130,246,.22),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 78% 88%,
-            rgba(139,92,246,.20),
-            transparent 32%
-        ),
-        linear-gradient(
-            135deg,
-            #081B33 0%,
-            #123E6A 32%,
-            #2563A6 62%,
-            #5146A5 82%,
-            #7C3AED 100%
-        );
-
-    background-attachment:fixed;
-
-    color:#2F3033;
-
+    background:#07111f;
+    color:#e8f0f8;
     min-height:100vh;
 }
 
@@ -75,31 +44,11 @@ body{
 #loginGuard{
     position:fixed;
     inset:0;
-
-    background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(59,130,246,.20),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 20%,
-            rgba(139,92,246,.18),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #081B33,
-            #123E6A,
-            #5146A5
-        );
-
+    background:#07111f;
     z-index:99999;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 }
 
@@ -109,19 +58,18 @@ body{
 
 .login-loading{
     text-align:center;
-    color:#EAF2FF;
+    color:#9db0c4;
 }
 
 .login-loading-title{
     font-size:18px;
     font-weight:700;
-    color:#FFFFFF;
+    color:#ffffff;
     margin-bottom:8px;
 }
 
 .login-loading-text{
     font-size:13px;
-    color:#D4E2F5;
 }
 
 
@@ -146,18 +94,13 @@ body{
     background:
         linear-gradient(
             180deg,
-            #081525 0%,
-            #102A43 55%,
-            #173B63 100%
+            #0b1929 0%,
+            #07111f 100%
         );
 
     border-right:
         1px solid
-        rgba(255,255,255,.08);
-
-    box-shadow:
-        8px 0 30px
-        rgba(0,0,0,.18);
+        rgba(255,255,255,.07);
 
     position:fixed;
 
@@ -173,62 +116,41 @@ body{
 }
 
 .brand{
-
     padding:
         8px 12px
         24px 12px;
 
     border-bottom:
         1px solid
-        rgba(255,255,255,.09);
+        rgba(255,255,255,.06);
 
     margin-bottom:20px;
 }
 
 .brand-small{
-
     font-size:10px;
-
     letter-spacing:2px;
-
-    color:#8EC5FF;
-
+    color:#6f879e;
     font-weight:700;
-
     margin-bottom:6px;
 }
 
 .brand-name{
-
     font-size:18px;
-
     font-weight:800;
-
-    color:#FFFFFF;
-
+    color:#ffffff;
     line-height:1.25;
 }
 
 .brand-sub{
-
     font-size:11px;
-
-    color:#BFD0E3;
-
+    color:#7990a7;
     margin-top:5px;
 }
 
-
-/* =========================================================
-   NAV
-========================================================= */
-
 .nav{
-
     display:flex;
-
     flex-direction:column;
-
     gap:5px;
 }
 
@@ -240,10 +162,11 @@ body{
 
     background:transparent;
 
-    color:#C7D3E0;
+    color:#8ea3b8;
 
     padding:
-        12px 13px;
+        12px
+        13px;
 
     border-radius:9px;
 
@@ -261,31 +184,22 @@ body{
 .nav button:hover{
 
     background:
-        rgba(255,255,255,.07);
+        rgba(255,255,255,.05);
 
-    color:#FFFFFF;
+    color:#ffffff;
 }
 
 .nav button.active{
 
     background:
-        linear-gradient(
-            135deg,
-            #2563A6,
-            #6941C6
-        );
+        rgba(48,123,255,.13);
 
-    color:#FFFFFF;
+    color:#67a5ff;
 
-    box-shadow:
-        0 6px 16px
-        rgba(0,0,0,.25);
+    border:
+        1px solid
+        rgba(65,137,255,.18);
 }
-
-
-/* =========================================================
-   SIDEBAR FOOTER
-========================================================= */
 
 .sidebar-footer{
 
@@ -296,14 +210,14 @@ body{
 
     border-top:
         1px solid
-        rgba(255,255,255,.09);
+        rgba(255,255,255,.06);
 }
 
 .sidebar-footer-text{
 
     font-size:10px;
 
-    color:#AEBED0;
+    color:#60758a;
 
     line-height:1.6;
 }
@@ -318,34 +232,26 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.13);
+        rgba(255,255,255,.08);
 
     background:
-        rgba(255,255,255,.06);
+        rgba(255,255,255,.03);
 
-    color:#E5EDF5;
+    color:#91a5b9;
 
     border-radius:8px;
 
     cursor:pointer;
 
     font-size:12px;
-
-    transition:.2s;
 }
 
 .logout-btn:hover{
 
     background:
-        linear-gradient(
-            135deg,
-            #2563A6,
-            #6941C6
-        );
+        rgba(255,255,255,.06);
 
-    color:#FFFFFF;
-
-    border-color:transparent;
+    color:#ffffff;
 }
 
 
@@ -383,26 +289,19 @@ body{
 
     border-bottom:
         1px solid
-        rgba(255,255,255,.28);
+        rgba(255,255,255,.06);
 
     background:
-        rgba(248,251,255,.88);
+        rgba(7,17,31,.88);
 
     backdrop-filter:
-        blur(16px);
-
-    -webkit-backdrop-filter:
-        blur(16px);
+        blur(12px);
 
     position:sticky;
 
     top:0;
 
     z-index:50;
-
-    box-shadow:
-        0 4px 20px
-        rgba(0,0,0,.10);
 }
 
 .topbar-title{
@@ -411,7 +310,7 @@ body{
 
     letter-spacing:1.5px;
 
-    color:#3B4654;
+    color:#71869b;
 
     font-weight:700;
 }
@@ -433,32 +332,32 @@ body{
 
     border-radius:50%;
 
-    background:#49A873;
+    background:#39d98a;
 
     box-shadow:
         0 0 10px
-        rgba(73,168,115,.35);
+        rgba(57,217,138,.6);
 }
 
 .status-text{
 
     font-size:11px;
 
-    color:#64748B;
+    color:#7e96ab;
 }
 
 .role-display{
 
     font-size:10px;
 
-    color:#285B91;
+    color:#78aaff;
 
     background:
-        rgba(37,99,166,.09);
+        rgba(72,139,255,.10);
 
     border:
         1px solid
-        rgba(37,99,166,.20);
+        rgba(72,139,255,.18);
 
     padding:
         6px 9px;
@@ -495,14 +394,14 @@ body{
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.96) 0%,
-            rgba(239,246,255,.95) 45%,
-            rgba(219,234,254,.94) 100%
+            #10263e 0%,
+            #0b1829 60%,
+            #091422 100%
         );
 
     border:
         1px solid
-        rgba(255,255,255,.70);
+        rgba(255,255,255,.07);
 
     border-radius:18px;
 
@@ -513,10 +412,6 @@ body{
     position:relative;
 
     overflow:hidden;
-
-    box-shadow:
-        0 12px 35px
-        rgba(0,0,0,.13);
 }
 
 .hero:after{
@@ -536,11 +431,7 @@ body{
     top:-140px;
 
     background:
-        radial-gradient(
-            circle,
-            rgba(37,99,166,.18),
-            transparent 65%
-        );
+        rgba(42,116,255,.09);
 
     pointer-events:none;
 }
@@ -551,7 +442,7 @@ body{
 
     letter-spacing:2.5px;
 
-    color:#2563A6;
+    color:#5f91cf;
 
     font-weight:800;
 
@@ -564,7 +455,7 @@ body{
 
     font-weight:800;
 
-    color:#252525;
+    color:#ffffff;
 
     letter-spacing:-.5px;
 }
@@ -575,7 +466,7 @@ body{
 
     font-size:13px;
 
-    color:#64748B;
+    color:#8096ab;
 }
 
 
@@ -607,11 +498,7 @@ body{
 
     font-weight:800;
 
-    color:#FFFFFF;
-
-    text-shadow:
-        0 1px 3px
-        rgba(0,0,0,.25);
+    color:#ffffff;
 }
 
 .section-subtitle{
@@ -620,7 +507,7 @@ body{
 
     font-size:12px;
 
-    color:#E0ECFA;
+    color:#70859a;
 }
 
 
@@ -633,7 +520,7 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(7,minmax(0,1fr));
+        repeat(7, minmax(0,1fr));
 
     gap:13px;
 
@@ -650,16 +537,15 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.70);
+        rgba(255,255,255,.07);
 
     border-radius:14px;
 
     background:
         linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #F0F0F0 55%,
-            #DCDCDC 100%
+            145deg,
+            rgba(255,255,255,.045),
+            rgba(255,255,255,.018)
         );
 
     overflow:hidden;
@@ -670,10 +556,6 @@ body{
         transform .2s ease,
         border-color .2s ease,
         box-shadow .2s ease;
-
-    box-shadow:
-        0 6px 22px
-        rgba(0,0,0,.12);
 }
 
 .kpi:hover{
@@ -682,11 +564,11 @@ body{
         translateY(-3px);
 
     border-color:
-        rgba(37,99,166,.42);
+        rgba(255,255,255,.20);
 
     box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.17);
+        0 10px 30px
+        rgba(0,0,0,.25);
 }
 
 .kpi:active{
@@ -697,72 +579,32 @@ body{
 
 .kpi.yellow{
 
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #F1EEE4 55%,
-            #DDD2AE 100%
-        );
-
     border-color:
-        rgba(205,164,60,.38);
+        rgba(239,190,67,.12);
 }
 
 .kpi.orange{
 
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #F0E7E3 55%,
-            #DDC9C1 100%
-        );
-
     border-color:
-        rgba(198,93,68,.35);
+        rgba(255,145,73,.12);
 }
 
 .kpi.purple{
 
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #EEE5E9 55%,
-            #DECBD3 100%
-        );
-
     border-color:
-        rgba(180,108,133,.35);
+        rgba(167,119,255,.12);
 }
 
 .kpi.green{
 
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #E9ECEA 55%,
-            #D1DBD5 100%
-        );
-
     border-color:
-        rgba(83,137,107,.35);
+        rgba(57,217,138,.12);
 }
 
 .kpi.red{
 
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #F0E1E2 55%,
-            #DFC5C8 100%
-        );
-
     border-color:
-        rgba(192,72,67,.35);
+        rgba(255,92,107,.14);
 }
 
 .kpi-label{
@@ -771,7 +613,7 @@ body{
 
     letter-spacing:1.3px;
 
-    color:#6C6664;
+    color:#7890a6;
 
     font-weight:800;
 }
@@ -784,7 +626,7 @@ body{
 
     margin-top:15px;
 
-    color:#292929;
+    color:#ffffff;
 }
 
 .kpi-icon{
@@ -797,9 +639,9 @@ body{
 
     font-size:25px;
 
-    color:#2563A6;
+    color:#49657e;
 
-    opacity:.55;
+    opacity:.7;
 }
 
 
@@ -823,25 +665,16 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.72);
+        rgba(255,255,255,.07);
 
     border-radius:14px;
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #E8F0F8 55%,
-            #D1DFEE 100%
-        );
+        rgba(255,255,255,.025);
 
     cursor:pointer;
 
     transition:.2s;
-
-    box-shadow:
-        0 6px 22px
-        rgba(0,0,0,.11);
 }
 
 .action-card:hover{
@@ -850,19 +683,10 @@ body{
         translateY(-2px);
 
     border-color:
-        rgba(37,99,166,.38);
+        rgba(255,255,255,.15);
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #E8F1FA 55%,
-            #D0E1F2 100%
-        );
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.16);
+        rgba(255,255,255,.04);
 }
 
 .action-top{
@@ -880,7 +704,7 @@ body{
 
     font-weight:700;
 
-    color:#3D3738;
+    color:#dce7f1;
 }
 
 .action-count{
@@ -891,14 +715,14 @@ body{
 
     margin-top:15px;
 
-    color:#292929;
+    color:#ffffff;
 }
 
 .action-desc{
 
     margin-top:5px;
 
-    color:#71686A;
+    color:#70869b;
 
     font-size:11px;
 }
@@ -930,52 +754,143 @@ body{
 
 .badge-new{
 
-    color:#27734D;
+    color:#72aaff;
 
     background:
-        rgba(76,157,113,.13);
+        rgba(72,139,255,.12);
 }
 
 .badge-investigation{
 
-    color:#94651D;
+    color:#f3cc55;
 
     background:
-        rgba(218,171,69,.17);
+        rgba(243,204,85,.12);
 }
 
 .badge-corrective{
 
-    color:#A34827;
+    color:#ff9b5e;
 
     background:
-        rgba(211,104,63,.14);
+        rgba(255,155,94,.12);
 }
 
 .badge-verification{
 
-    color:#78506C;
+    color:#bc91ff;
 
     background:
-        rgba(180,108,145,.14);
+        rgba(188,145,255,.12);
 }
 
 .badge-closed{
 
-    color:#27734D;
+    color:#4be39a;
 
     background:
-        rgba(76,157,113,.13);
+        rgba(75,227,154,.12);
 }
 
 .badge-overdue{
 
-    color:#A83431;
+    color:#ff7180;
 
     background:
-        rgba(203,65,60,.14);
+        rgba(255,113,128,.12);
 }
 
+
+/* =========================================================
+   ARCHIVE CASES
+========================================================= */
+
+.archive-section{
+    margin-bottom:40px;
+    padding-top:4px;
+    scroll-margin-top:90px;
+}
+
+.archive-section .section-header{
+    align-items:center;
+}
+
+.archive-section .section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.archive-section .section-title:before{
+    content:"ARCHIVE";
+    font-size:9px;
+    letter-spacing:1px;
+    font-weight:800;
+    color:#9f86ff;
+    background:rgba(159,134,255,.12);
+    border:1px solid rgba(159,134,255,.20);
+    padding:5px 7px;
+    border-radius:6px;
+}
+
+.archive-count{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.8px;
+    color:#9f86ff;
+    background:rgba(159,134,255,.09);
+    border:1px solid rgba(159,134,255,.16);
+    border-radius:7px;
+    padding:7px 10px;
+}
+
+.archive-toolbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.archive-toolbar .search{
+    flex:1;
+    min-width:230px;
+}
+
+.archive-toolbar .search input{
+    width:100%;
+    height:40px;
+    border:1px solid rgba(159,134,255,.15);
+    background:#0b1929;
+    color:#dbe7f1;
+    border-radius:8px;
+    padding:0 12px;
+    outline:none;
+    font-size:12px;
+}
+
+.archive-toolbar .search input:focus{
+    border-color:rgba(159,134,255,.45);
+}
+
+.archive-card{
+    border-color:rgba(159,134,255,.13);
+    background:linear-gradient(145deg,rgba(159,134,255,.045),rgba(255,255,255,.018));
+}
+
+.archive-card:hover{
+    border-color:rgba(159,134,255,.28);
+}
+
+.archive-badge{
+    color:#b49dff;
+    background:rgba(159,134,255,.12);
+}
+
+.archive-readonly{
+    color:#9f86ff;
+    font-weight:800;
+}
 
 /* =========================================================
    ANALYTICS
@@ -995,23 +910,14 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.72);
+        rgba(255,255,255,.07);
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #EEEEEE 55%,
-            #DADADA 100%
-        );
+        rgba(255,255,255,.025);
 
     border-radius:14px;
 
     padding:20px;
-
-    box-shadow:
-        0 6px 22px
-        rgba(0,0,0,.11);
 }
 
 .chart-title{
@@ -1020,14 +926,14 @@ body{
 
     font-weight:700;
 
-    color:#383434;
+    color:#e5edf5;
 }
 
 .chart-subtitle{
 
     font-size:11px;
 
-    color:#756C6C;
+    color:#6f8498;
 
     margin-top:4px;
 }
@@ -1073,12 +979,12 @@ body{
 
     border:
         1px solid
-        rgba(100,90,90,.22);
+        rgba(255,255,255,.08);
 
     background:
-        rgba(255,255,255,.94);
+        #0b1929;
 
-    color:#332F30;
+    color:#dbe7f1;
 
     border-radius:8px;
 
@@ -1097,20 +1003,11 @@ body{
     min-width:150px;
 }
 
-.search input::placeholder{
-
-    color:#958B89;
-}
-
 .search input:focus,
 .toolbar select:focus{
 
     border-color:
-        #3B82F6;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(59,130,246,.09);
+        rgba(80,145,255,.5);
 }
 
 .btn{
@@ -1122,12 +1019,12 @@ body{
 
     border:
         1px solid
-        rgba(100,90,90,.20);
+        rgba(255,255,255,.09);
 
     background:
-        rgba(255,255,255,.94);
+        rgba(255,255,255,.035);
 
-    color:#4A4242;
+    color:#9db0c2;
 
     border-radius:8px;
 
@@ -1136,49 +1033,31 @@ body{
     font-size:12px;
 
     font-weight:700;
-
-    transition:.2s;
 }
 
 .btn:hover{
 
-    background:#F5F9FF;
+    background:
+        rgba(255,255,255,.07);
 
-    border-color:
-        rgba(37,99,166,.30);
-
-    color:#2563A6;
+    color:#ffffff;
 }
 
 .btn-primary{
 
     background:
-        linear-gradient(
-            135deg,
-            #2563A6,
-            #6941C6
-        );
+        #256ee8;
 
     border-color:
-        transparent;
+        #256ee8;
 
-    color:#FFFFFF;
-
-    box-shadow:
-        0 5px 14px
-        rgba(0,0,0,.16);
+    color:#ffffff;
 }
 
 .btn-primary:hover{
 
     background:
-        linear-gradient(
-            135deg,
-            #1D4F87,
-            #5935AD
-        );
-
-    color:#FFFFFF;
+        #347cf0;
 }
 
 .btn:disabled{
@@ -1207,27 +1086,18 @@ body{
 
     border:
         1px solid
-        rgba(255,255,255,.74);
+        rgba(255,255,255,.07);
 
     border-radius:14px;
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #E9F0F7 55%,
-            #D5E0EC 100%
-        );
+        rgba(255,255,255,.025);
 
     overflow:hidden;
 
     cursor:pointer;
 
     transition:.2s;
-
-    box-shadow:
-        0 6px 22px
-        rgba(0,0,0,.11);
 }
 
 .report-card:hover{
@@ -1236,11 +1106,11 @@ body{
         translateY(-2px);
 
     border-color:
-        rgba(37,99,166,.40);
+        rgba(86,148,255,.25);
 
     box-shadow:
         0 12px 30px
-        rgba(0,0,0,.16);
+        rgba(0,0,0,.18);
 }
 
 .report-head{
@@ -1256,7 +1126,7 @@ body{
 
     border-bottom:
         1px solid
-        rgba(100,90,90,.12);
+        rgba(255,255,255,.055);
 }
 
 .report-number{
@@ -1265,7 +1135,7 @@ body{
 
     font-weight:800;
 
-    color:#2563A6;
+    color:#78aaff;
 
     letter-spacing:.4px;
 }
@@ -1281,7 +1151,7 @@ body{
 
     font-weight:700;
 
-    color:#373133;
+    color:#e5edf5;
 
     line-height:1.45;
 
@@ -1309,12 +1179,12 @@ body{
 
     font-size:10px;
 
-    color:#756B6C;
+    color:#71869a;
 }
 
 .meta-row strong{
 
-    color:#4A4142;
+    color:#aebdcb;
 
     text-align:right;
 
@@ -1328,9 +1198,9 @@ body{
 
     border-top:
         1px solid
-        rgba(100,90,90,.12);
+        rgba(255,255,255,.055);
 
-    color:#756B6C;
+    color:#667c91;
 
     font-size:10px;
 }
@@ -1351,28 +1221,25 @@ body{
 
     border:
         1px dashed
-        rgba(255,255,255,.50);
+        rgba(255,255,255,.08);
 
     border-radius:14px;
 
-    color:#E9F1FA;
-
-    background:
-        rgba(8,27,51,.35);
+    color:#70869a;
 }
 
 .empty-icon{
 
     font-size:26px;
 
-    color:#7DB7F5;
+    color:#50677e;
 
     margin-bottom:10px;
 }
 
 .empty-title{
 
-    color:#FFFFFF;
+    color:#a7b7c7;
 
     font-size:13px;
 
@@ -1391,13 +1258,10 @@ body{
     inset:0;
 
     background:
-        rgba(8,15,30,.55);
+        rgba(0,0,0,.72);
 
     backdrop-filter:
-        blur(7px);
-
-    -webkit-backdrop-filter:
-        blur(7px);
+        blur(5px);
 
     z-index:1000;
 
@@ -1424,16 +1288,11 @@ body{
         92vh;
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF 0%,
-            #EEF4FA 60%,
-            #DCE8F4 100%
-        );
+        #0a1726;
 
     border:
         1px solid
-        rgba(255,255,255,.75);
+        rgba(255,255,255,.09);
 
     border-radius:17px;
 
@@ -1445,7 +1304,7 @@ body{
 
     box-shadow:
         0 25px 80px
-        rgba(0,0,0,.30);
+        rgba(0,0,0,.5);
 }
 
 .modal-head{
@@ -1461,14 +1320,7 @@ body{
 
     border-bottom:
         1px solid
-        rgba(100,90,90,.14);
-
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF,
-            #F0F6FC
-        );
+        rgba(255,255,255,.07);
 }
 
 .modal-title{
@@ -1477,14 +1329,14 @@ body{
 
     font-weight:800;
 
-    color:#2F3A46;
+    color:#ffffff;
 }
 
 .modal-subtitle{
 
     font-size:11px;
 
-    color:#756B6C;
+    color:#70869a;
 
     margin-top:4px;
 }
@@ -1495,7 +1347,7 @@ body{
 
     background:transparent;
 
-    color:#746A6B;
+    color:#8298ad;
 
     font-size:27px;
 
@@ -1506,7 +1358,7 @@ body{
 
 .close:hover{
 
-    color:#2563A6;
+    color:#ffffff;
 }
 
 .modal-body{
@@ -1514,13 +1366,6 @@ body{
     padding:24px;
 
     overflow-y:auto;
-
-    background:
-        linear-gradient(
-            135deg,
-            #FBFDFF,
-            #EEF4F9
-        );
 }
 
 .modal-footer{
@@ -1530,15 +1375,13 @@ body{
 
     border-top:
         1px solid
-        rgba(100,90,90,.14);
+        rgba(255,255,255,.07);
 
     display:flex;
 
     justify-content:flex-end;
 
     gap:10px;
-
-    background:#EAF1F7;
 }
 
 
@@ -1551,17 +1394,13 @@ body{
     display:none;
 
     background:
-        linear-gradient(
-            135deg,
-            #F3DADA,
-            #E7C2C2
-        );
+        rgba(255,80,96,.10);
 
     border:
         1px solid
-        rgba(190,65,60,.25);
+        rgba(255,80,96,.2);
 
-    color:#963531;
+    color:#ff7d89;
 
     border-radius:8px;
 
@@ -1599,15 +1438,11 @@ body{
 .case-info{
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF,
-            #E9F0F7
-        );
+        rgba(255,255,255,.025);
 
     border:
         1px solid
-        rgba(100,90,90,.15);
+        rgba(255,255,255,.06);
 
     border-radius:9px;
 
@@ -1620,7 +1455,7 @@ body{
 
     letter-spacing:1px;
 
-    color:#64748B;
+    color:#647b91;
 
     font-weight:800;
 }
@@ -1629,7 +1464,7 @@ body{
 
     font-size:12px;
 
-    color:#383233;
+    color:#dbe7f1;
 
     font-weight:700;
 
@@ -1668,7 +1503,7 @@ body{
     height:2px;
 
     background:
-        #C8D5E3;
+        rgba(255,255,255,.08);
 }
 
 .timeline-item{
@@ -1689,57 +1524,52 @@ body{
     border-radius:50%;
 
     background:
-        #FFFFFF;
+        #15263a;
 
     border:
         2px solid
-        #CFC4C6;
+        #41566b;
 
     margin:auto;
 }
 
 .timeline-item.active .timeline-dot{
 
-    background:
-        linear-gradient(
-            135deg,
-            #2563A6,
-            #6941C6
-        );
+    background:#2675ef;
 
-    border-color:#4C76B5;
+    border-color:#4b95ff;
 
     box-shadow:
         0 0 14px
-        rgba(37,99,166,.25);
+        rgba(75,149,255,.35);
 }
 
 .timeline-item.completed .timeline-dot{
 
-    background:#5D9973;
+    background:#36cb87;
 
-    border-color:#5D9973;
+    border-color:#36cb87;
 }
 
 .timeline-label{
 
     font-size:9px;
 
-    color:#756B6C;
+    color:#70869a;
 
     margin-top:7px;
 }
 
 .timeline-item.active .timeline-label{
 
-    color:#2563A6;
+    color:#75aaff;
 
     font-weight:700;
 }
 
 .timeline-item.completed .timeline-label{
 
-    color:#397052;
+    color:#54d99b;
 }
 
 
@@ -1761,18 +1591,14 @@ body{
 
     border:
         1px solid
-        rgba(100,90,90,.15);
+        rgba(255,255,255,.065);
 
     border-radius:12px;
 
     padding:17px;
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF,
-            #E9F0F7
-        );
+        rgba(255,255,255,.018);
 }
 
 .modal-section.full{
@@ -1789,7 +1615,7 @@ body{
 
     letter-spacing:1px;
 
-    color:#64748B;
+    color:#8ca2b7;
 
     font-weight:800;
 
@@ -1805,7 +1631,7 @@ body{
 
     white-space:pre-line;
 
-    color:#4A4142;
+    color:#b9c7d4;
 
     font-size:12px;
 
@@ -1833,7 +1659,7 @@ body{
 
     font-size:10px;
 
-    color:#64748B;
+    color:#71879c;
 
     font-weight:700;
 
@@ -1848,12 +1674,12 @@ body{
 
     border:
         1px solid
-        rgba(100,90,90,.22);
+        rgba(255,255,255,.08);
 
     background:
-        #FFFFFF;
+        #081522;
 
-    color:#373132;
+    color:#dbe6ef;
 
     border-radius:7px;
 
@@ -1874,22 +1700,12 @@ body{
     resize:vertical;
 }
 
-.form-group input::placeholder,
-.form-group textarea::placeholder{
-
-    color:#9A8E90;
-}
-
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus{
 
     border-color:
-        #3B82F6;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(59,130,246,.07);
+        rgba(73,139,255,.5);
 }
 
 .form-group input:disabled,
@@ -1900,7 +1716,7 @@ body{
 
     cursor:not-allowed;
 
-    background:#E7EDF3;
+    background:#07111d;
 }
 
 
@@ -1941,16 +1757,11 @@ input[type="date"]:disabled{
 
     overflow:hidden;
 
-    background:
-        linear-gradient(
-            135deg,
-            #EEF4F9,
-            #D5E1EC
-        );
+    background:#06101c;
 
     border:
         1px solid
-        rgba(100,90,90,.15);
+        rgba(255,255,255,.06);
 
     position:relative;
 }
@@ -1991,7 +1802,7 @@ input[type="date"]:disabled{
 
     padding:15px;
 
-    color:#64748B;
+    color:#9fb3c8;
 
     font-size:13px;
 
@@ -2003,9 +1814,9 @@ input[type="date"]:disabled{
 .photo-fallback:hover{
 
     background:
-        rgba(37,99,166,.06);
+        rgba(255,255,255,.04);
 
-    color:#2563A6;
+    color:#ffffff;
 }
 
 
@@ -2024,21 +1835,6 @@ input[type="date"]:disabled{
     flex-wrap:wrap;
 
     margin-bottom:14px;
-
-    padding:14px;
-
-    border-radius:10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #FFFFFF,
-            #E7F0F8
-        );
-
-    border:
-        1px dashed
-        #9DB9D3;
 }
 
 .corrective-photo-upload input[type="file"]{
@@ -2054,7 +1850,7 @@ input[type="date"]:disabled{
 
     font-size:12px;
 
-    color:#64748B;
+    color:#8fa4ba;
 
     margin-top:-4px;
 }
@@ -2079,7 +1875,7 @@ input[type="date"]:disabled{
 
     border-radius:10px;
 
-    background:#08111F;
+    background:#000;
 }
 
 
@@ -2099,25 +1895,21 @@ input[type="date"]:disabled{
         12px 17px;
 
     background:
-        linear-gradient(
-            135deg,
-            #FFFFFF,
-            #E7F0F8
-        );
+        #122437;
 
     border:
         1px solid
-        rgba(37,99,166,.30);
+        rgba(255,255,255,.1);
 
     border-radius:9px;
 
-    color:#3B4654;
+    color:#dce8f2;
 
     font-size:12px;
 
     box-shadow:
         0 10px 35px
-        rgba(0,0,0,.20);
+        rgba(0,0,0,.3);
 
     transform:
         translateY(20px);
@@ -2204,7 +1996,8 @@ input[type="date"]:disabled{
 
         border-bottom:
             1px solid
-            rgba(255,255,255,.10);
+            rgba(255,255,255,.07);
+
     }
 
     .app{
@@ -2999,6 +2792,74 @@ input[type="date"]:disabled{
 </section>
 
 
+<!-- ======================================================
+     ARCHIVE CASES
+====================================================== -->
+
+<section
+    class="archive-section"
+    id="archiveCasesSection"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Archive Cases
+            </div>
+
+            <div class="section-subtitle">
+                Closed cases moved from Active Cases to the Archive sheet
+            </div>
+
+        </div>
+
+        <div class="archive-count" id="archiveCasesCount">
+            0 ARCHIVED
+        </div>
+
+    </div>
+
+    <div class="archive-toolbar">
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="archiveSearchInput"
+                placeholder="Search archive report, location, department..."
+                oninput="renderArchiveReports()"
+            >
+
+        </div>
+
+        <button
+            class="btn"
+            onclick="resetArchiveSearch()"
+        >
+            Reset Archive Search
+        </button>
+
+    </div>
+
+    <div
+        class="reports-grid"
+        id="archiveReportsGrid"
+    >
+
+        <div class="empty">
+            <div class="empty-icon">▱</div>
+            <div class="empty-title">
+                No archived cases
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
 </div>
 
 </main>
@@ -3529,6 +3390,10 @@ const GOOGLE_SCRIPT_URL =
 
 let reports = [];
 
+// Active cases from Sheet1 only
+let archiveReports = [];
+
+// Archived cases from Archive sheet only
 let selectedReport = null;
 
 let trendChart = null;
@@ -3777,7 +3642,6 @@ document.addEventListener(
 
 /* =========================================================
    LOAD REPORTS
-   FIXED - PRESERVE ALL CASE DETAILS
 ========================================================= */
 
 async function loadReports(){
@@ -3791,6 +3655,7 @@ async function loadReports(){
                 Date.now()
             );
 
+
         if(!response.ok){
 
             throw new Error(
@@ -3800,19 +3665,17 @@ async function loadReports(){
 
         }
 
+
         const data =
             await response.json();
 
 
-        /* =====================================================
-           GET REPORT ARRAY
-        ===================================================== */
+        let allReports = [];
 
-        let rawReports = [];
 
         if(Array.isArray(data)){
 
-            rawReports = data;
+            allReports = data;
 
         }
 
@@ -3821,7 +3684,7 @@ async function loadReports(){
             Array.isArray(data.reports)
         ){
 
-            rawReports = data.reports;
+            allReports = data.reports;
 
         }
 
@@ -3830,217 +3693,48 @@ async function loadReports(){
             Array.isArray(data.data)
         ){
 
-            rawReports = data.data;
+            allReports = data.data;
 
         }
 
 
-        /* =====================================================
-           NORMALIZE REPORT DATA
-           KEEP ALL FIELDS FROM GOOGLE SHEET
-        ===================================================== */
+        /*
+         * Code.gs returns Sheet1 + Archive together and marks
+         * archived rows with isArchived/sourceSheet.
+         * Keep two separate frontend collections so Active Cases
+         * and Archive Cases never mix on the dashboard.
+         */
+        reports = allReports.filter(
+            function(report){
 
-        reports =
-            rawReports.map(function(report){
+                return !(
+                    report &&
+                    (
+                        report.isArchived === true ||
+                        String(report.isArchived).toLowerCase() === "true" ||
+                        String(report.sourceSheet || "").trim().toLowerCase() === "archive"
+                    )
+                );
 
-                return {
-
-                    /* ================================
-                       BASIC REPORT INFORMATION
-                    ================================= */
-
-                    reportNumber:
-                        report.reportNumber ||
-                        report.reportNo ||
-                        "",
-
-                    rowNumber:
-                        report.rowNumber ||
-                        "",
-
-                    dateTime:
-                        report.dateTime ||
-                        "",
-
-                    location:
-                        report.location ||
-                        "",
-
-                    department:
-                        report.department ||
-                        "",
-
-                    hazardCategory:
-                        report.hazardCategory ||
-                        report.category ||
-                        "",
-
-                    whatHappened:
-                        report.whatHappened ||
-                        "",
-
-                    reporterName:
-                        report.reporterName ||
-                        "",
-
-
-                    /* ================================
-                       ORIGINAL PHOTOS / VIDEO
-                    ================================= */
-
-                    photos:
-                        report.photos ||
-                        "",
-
-                    video:
-                        report.video ||
-                        "",
-
-
-                    /* ================================
-                       STATUS
-                    ================================= */
-
-                    status:
-                        report.status ||
-                        "New",
-
-
-                    /* ================================
-                       ESH INVESTIGATION
-                    ================================= */
-
-                    investigationFindings:
-                        report.investigationFindings ||
-                        report.eshAction ||
-                        "",
-
-                    rootCause:
-                        report.rootCause ||
-                        "",
-
-                    eshInvestigator:
-                        report.eshInvestigator ||
-                        "",
-
-                    eshRemarks:
-                        report.eshRemarks ||
-                        "",
-
-
-                    /* ================================
-                       CORRECTIVE ACTION
-                    ================================= */
-
-                    correctiveAction:
-                        report.correctiveAction ||
-                        "",
-
-                    personResponsible:
-                        report.personResponsible ||
-                        report.responsiblePerson ||
-                        "",
-
-                    dueDate:
-                        report.dueDate ||
-                        report.targetDate ||
-                        "",
-
-
-                    /* ================================
-                       VERIFICATION
-                    ================================= */
-
-                    verificationRemarks:
-                        report.verificationRemarks ||
-                        report.verification ||
-                        "",
-
-
-                    /* ================================
-                       CLOSURE
-                    ================================= */
-
-                    closedDate:
-                        report.closedDate ||
-                        report.completionDate ||
-                        "",
-
-                    closedBy:
-                        report.closedBy ||
-                        "",
-
-                    remarks:
-                        report.remarks ||
-                        "",
-
-
-                    /* ================================
-                       SUBMISSION
-                    ================================= */
-
-                    submittedAt:
-                        report.submittedAt ||
-                        "",
-
-
-                    /* ================================
-                       CORRECTIVE ACTION PHOTOS
-                    ================================= */
-
-                    correctiveActionPhotos:
-                        report.correctiveActionPhotos ||
-                        "",
-
-
-                    /* ================================
-                       KEEP ALIASES TOO
-                       FOR EXISTING FUNCTIONS
-                    ================================= */
-
-                    eshAction:
-                        report.eshAction ||
-                        report.investigationFindings ||
-                        "",
-
-                    responsiblePerson:
-                        report.responsiblePerson ||
-                        report.personResponsible ||
-                        "",
-
-                    targetDate:
-                        report.targetDate ||
-                        report.dueDate ||
-                        "",
-
-                    completionDate:
-                        report.completionDate ||
-                        report.closedDate ||
-                        "",
-
-                    verification:
-                        report.verification ||
-                        report.verificationRemarks ||
-                        ""
-
-                };
-
-            });
-
-
-        /* =====================================================
-           DEBUG
-        ===================================================== */
-
-        console.log(
-            "REPORTS LOADED:",
-            reports
+            }
         );
 
 
-        /* =====================================================
-           UPDATE DASHBOARD
-        ===================================================== */
+        archiveReports = allReports.filter(
+            function(report){
+
+                return (
+                    report &&
+                    (
+                        report.isArchived === true ||
+                        String(report.isArchived).toLowerCase() === "true" ||
+                        String(report.sourceSheet || "").trim().toLowerCase() === "archive"
+                    )
+                );
+
+            }
+        );
+
 
         updateDashboard();
 
@@ -4048,17 +3742,18 @@ async function loadReports(){
 
         renderReports();
 
-        renderAnalytics();
+        renderArchiveReports();
 
+        renderAnalytics();
 
     }
 
     catch(error){
 
-        console.error(
-            "LOAD REPORTS ERROR:",
-            error
-        );
+        console.error(error);
+
+        reports = [];
+        archiveReports = [];
 
         document.getElementById(
             "reportsGrid"
@@ -4082,9 +3777,12 @@ async function loadReports(){
 
         `;
 
+        renderArchiveReports();
+
     }
 
 }
+
 
 /* =========================================================
    DASHBOARD
@@ -4745,30 +4443,239 @@ function createReportCard(report){
         reports.indexOf(report);
 
 
+    return createCaseCard(
+        report,
+        index,
+        false
+    );
+
+}
+
+
+/* =========================================================
+   ARCHIVE REPORTS
+========================================================= */
+
+function renderArchiveReports(){
+
+    const container =
+        document.getElementById(
+            "archiveReportsGrid"
+        );
+
+    const count =
+        document.getElementById(
+            "archiveCasesCount"
+        );
+
+    const section =
+        document.getElementById(
+            "archiveCasesSection"
+        );
+
+
+    if(!container){
+
+        return;
+
+    }
+
+
+    /* Maintenance does not need archived cases. */
+    if(isMaintenance()){
+
+        if(section){
+            section.style.display = "none";
+        }
+
+        return;
+
+    }
+
+
+    if(section){
+        section.style.display = "block";
+    }
+
+
+    if(count){
+        count.textContent =
+            archiveReports.length +
+            " ARCHIVED";
+    }
+
+
+    const input =
+        document.getElementById(
+            "archiveSearchInput"
+        );
+
+    const search =
+        input
+        ? input.value.toLowerCase().trim()
+        : "";
+
+
+    const filtered =
+        archiveReports.filter(
+            function(report){
+
+                const text = [
+
+                    report.reportNumber,
+                    report.location,
+                    report.department,
+                    report.hazardCategory,
+                    report.whatHappened,
+                    report.reporterName,
+                    report.status,
+                    report.closedBy,
+                    report.remarks
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+                return !search || text.includes(search);
+
+            }
+        );
+
+
+    filtered.sort(
+        function(a,b){
+
+            const da =
+                parseDate(
+                    a.closedDate ||
+                    a.dateTime ||
+                    a.submittedAt
+                ) || new Date(0);
+
+            const db =
+                parseDate(
+                    b.closedDate ||
+                    b.dateTime ||
+                    b.submittedAt
+                ) || new Date(0);
+
+            return db - da;
+
+        }
+    );
+
+
+    if(!filtered.length){
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ▱
+                </div>
+
+                <div class="empty-title">
+                    ${archiveReports.length ? "No archived cases match your search" : "No archived cases"}
+                </div>
+
+                <p style="margin-top:8px;">
+                    ${archiveReports.length ? "Try another archive search." : "Closed cases will appear here after they are archived."}
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        filtered
+            .map(
+                function(report){
+
+                    return createCaseCard(
+                        report,
+                        archiveReports.indexOf(report),
+                        true
+                    );
+
+                }
+            )
+            .join("");
+
+}
+
+
+function resetArchiveSearch(){
+
+    const input =
+        document.getElementById(
+            "archiveSearchInput"
+        );
+
+    if(input){
+        input.value = "";
+    }
+
+    renderArchiveReports();
+
+}
+
+
+function createArchiveReportCard(report){
+
+    return createCaseCard(
+        report,
+        archiveReports.indexOf(report),
+        true
+    );
+
+}
+
+
+/* =========================================================
+   CASE CARD BUILDER
+========================================================= */
+
+function createCaseCard(report,index,isArchived){
+
     const status =
         normalizeStatus(
             report.status
         ) ||
-        "New";
+        (isArchived ? "Closed" : "New");
 
 
     const overdue =
-        isReportOverdue(
-            report
-        );
+        !isArchived &&
+        isReportOverdue(report);
 
 
     const statusClass =
-        getStatusClass(
-            status
-        );
+        getStatusClass(status);
+
+
+    const archiveClass =
+        isArchived
+        ? " archive-card"
+        : "";
+
+
+    const clickFunction =
+        isArchived
+        ? "openArchiveReport"
+        : "openReport";
 
 
     return `
 
         <div
-            class="report-card"
-            onclick="openReport(${index})"
+            class="report-card${archiveClass}"
+            onclick="${clickFunction}(${index})"
         >
 
             <div class="report-head">
@@ -4782,11 +4689,17 @@ function createReportCard(report){
 
                 </div>
 
-                <div
-                    class="badge ${statusClass}"
-                >
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
 
-                    ${escapeHtml(status)}
+                    ${
+                        isArchived
+                        ? `<div class="badge archive-badge">ARCHIVE</div>`
+                        : ""
+                    }
+
+                    <div class="badge ${statusClass}">
+                        ${escapeHtml(status)}
+                    </div>
 
                 </div>
 
@@ -4808,109 +4721,75 @@ function createReportCard(report){
                 <div class="report-meta">
 
                     <div class="meta-row">
-
-                        <span>
-                            Date
-                        </span>
-
+                        <span>Date</span>
                         <strong>
-
                             ${escapeHtml(
                                 formatDisplayDate(
                                     report.dateTime ||
                                     report.submittedAt
                                 )
                             )}
-
                         </strong>
-
                     </div>
 
-
                     <div class="meta-row">
-
-                        <span>
-                            Location
-                        </span>
-
+                        <span>Location</span>
                         <strong>
-
                             ${escapeHtml(
                                 report.location ||
                                 "-"
                             )}
-
                         </strong>
-
                     </div>
 
-
                     <div class="meta-row">
-
-                        <span>
-                            Department
-                        </span>
-
+                        <span>Department</span>
                         <strong>
-
                             ${escapeHtml(
                                 report.department ||
                                 "-"
                             )}
-
                         </strong>
-
                     </div>
 
-
                     <div class="meta-row">
-
-                        <span>
-                            Category
-                        </span>
-
+                        <span>Category</span>
                         <strong>
-
                             ${escapeHtml(
                                 report.hazardCategory ||
                                 "-"
                             )}
-
                         </strong>
-
                     </div>
 
-
                     ${
-                        overdue
-                        ?
-                        `
-
+                        isArchived
+                        ? `
                         <div class="meta-row">
-
-                            <span
-                                style="color:#ff7382;"
-                            >
-                                Target Date
-                            </span>
-
-                            <strong
-                                style="color:#ff7382;"
-                            >
-
+                            <span>Closed Date</span>
+                            <strong>
+                                ${escapeHtml(
+                                    formatDisplayDate(
+                                        report.closedDate
+                                    )
+                                )}
+                            </strong>
+                        </div>
+                        `
+                        : overdue
+                        ? `
+                        <div class="meta-row">
+                            <span style="color:#ff7382;">Target Date</span>
+                            <strong style="color:#ff7382;">
                                 ${escapeHtml(
                                     formatDisplayDate(
                                         report.dueDate
                                     )
                                 )}
-
                             </strong>
-
                         </div>
-
                         `
-                        :
-                        ""
+                        : ""
                     }
 
                 </div>
@@ -4921,19 +4800,15 @@ function createReportCard(report){
             <div class="report-footer">
 
                 ${
-                    overdue
-                    ?
-                    "⚠ OVERDUE ACTION"
-                    :
-                    isESH()
-                    ?
-                    "Open case for ESH management"
-                    :
-                    isHOD()
-                    ?
-                    "Open case for verification"
-                    :
-                    "Open case for corrective action update"
+                    isArchived
+                    ? "▱ Archived case • Read only"
+                    : overdue
+                    ? "⚠ OVERDUE ACTION"
+                    : isESH()
+                    ? "Open case for ESH management"
+                    : isHOD()
+                    ? "Open case for verification"
+                    : "Open case for corrective action update"
                 }
 
             </div>
@@ -4947,13 +4822,15 @@ function createReportCard(report){
 
 /* =========================================================
    OPEN REPORT
-   LOAD LATEST DATA FROM GOOGLE SHEET
 ========================================================= */
 
-async function openReport(index){
+function openReport(index, forceArchive = false){
 
     const report =
         reports[index];
+
+    const openingArchived =
+        forceArchive === true;
 
 
     if(!report){
@@ -4980,25 +4857,6 @@ async function openReport(index){
     }
 
 
-    const reportNumber =
-        report.reportNumber;
-
-
-    if(!reportNumber){
-
-        showToast(
-            "Report Number not found."
-        );
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       SHOW LOADING MODAL
-    ===================================================== */
-
     selectedReport =
         report;
 
@@ -5006,7 +4864,8 @@ async function openReport(index){
     document.getElementById(
         "modalTitle"
     ).textContent =
-        reportNumber;
+        report.reportNumber ||
+        "ESH Case";
 
 
     document.getElementById(
@@ -5016,14 +4875,10 @@ async function openReport(index){
 
 
     document.getElementById(
-        "caseModal"
-    ).classList.add("show");
-
-
-    document.getElementById(
         "caseNumber"
     ).textContent =
-        reportNumber;
+        report.reportNumber ||
+        "-";
 
 
     document.getElementById(
@@ -5047,421 +4902,291 @@ async function openReport(index){
         "-";
 
 
-    /* =====================================================
-       LOAD LATEST RECORD
-    ===================================================== */
+    document.getElementById(
+        "incidentInfo"
+    ).textContent = [
+
+        "Date: " +
+        formatDisplayDate(
+            report.dateTime ||
+            report.submittedAt
+        ),
+
+        "Reporter: " +
+        (
+            report.reporterName ||
+            "-"
+        ),
+
+        "Submitted: " +
+        formatDisplayDate(
+            report.submittedAt
+        )
+
+    ].join("\n");
+
+
+    document.getElementById(
+        "caseNarrative"
+    ).textContent =
+        report.whatHappened ||
+        "-";
+
+
+    document.getElementById(
+        "investigationFindings"
+    ).value =
+        report.investigationFindings ||
+        "";
+
+
+    document.getElementById(
+        "rootCause"
+    ).value =
+        report.rootCause ||
+        "";
+
+
+    document.getElementById(
+        "eshInvestigator"
+    ).value =
+        report.eshInvestigator ||
+        "";
+
+
+    document.getElementById(
+        "eshRemarks"
+    ).value =
+        report.eshRemarks ||
+        "";
+
+
+    document.getElementById(
+        "correctiveAction"
+    ).value =
+        report.correctiveAction ||
+        "";
+
+
+    document.getElementById(
+        "personResponsible"
+    ).value =
+        report.personResponsible ||
+        "";
+
+
+    document.getElementById(
+        "dueDate"
+    ).value =
+        formatDateInput(
+            report.dueDate
+        );
+
+
+    document.getElementById(
+        "verificationRemarks"
+    ).value =
+        report.verificationRemarks ||
+        "";
+
+
+    document.getElementById(
+        "closedDate"
+    ).value =
+        formatDateInput(
+            report.closedDate
+        );
+
+
+    const status =
+        normalizeStatus(
+            report.status
+        ) ||
+        "New";
+
+
+    setupCaseStatusOptions(
+        status
+    );
+
+
+    document.getElementById(
+        "caseStatus"
+    ).value =
+        status;
+
+
+    updateTimeline(status);
+
+    updateCaseOverdue(report);
+
+    loadPhotos(report);
+
+    loadCorrectiveActionPhotos(report);
+
+    loadVideo(report);
+
+    applyRolePermissions(status);
+
+
+    document
+        .getElementById(
+            "caseModal"
+        )
+        .classList
+        .add("show");
+
+}
+
+
+/* =========================================================
+   OPEN ARCHIVED REPORT
+========================================================= */
+
+async function openArchiveReport(index){
+
+    const report =
+        archiveReports[index];
+
+    if(!report){
+        return;
+    }
+
+    await openReportFromArchive(report);
+
+}
+
+
+async function openReportFromArchive(report){
+
+    if(!report){
+        return;
+    }
+
+    let reportNumber =
+        String(
+            report.reportNumber ||
+            report.reportNo ||
+            report.report_number ||
+            ""
+        ).trim();
+
+    if(!reportNumber){
+        showToast("Archived report number is missing.");
+        return;
+    }
+
+    selectedReport = report;
+
+    document.getElementById("modalTitle").textContent = reportNumber;
+    document.getElementById("modalSubtitle").textContent = "Archived Case • Read Only";
+    document.getElementById("caseModal").classList.add("show");
 
     try{
 
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL +
-                "?test=singleReport" +
-                "&reportNumber=" +
-                encodeURIComponent(
-                    reportNumber
-                ) +
-                "&ts=" +
-                Date.now()
-            );
+        const response = await fetch(
+            GOOGLE_SCRIPT_URL +
+            "?test=singleReport" +
+            "&reportNumber=" +
+            encodeURIComponent(reportNumber) +
+            "&ts=" +
+            Date.now()
+        );
 
+        if(response.ok){
+            const result = await response.json();
 
-        if(!response.ok){
+            let latestReport = null;
 
-            throw new Error(
-                "Server error " +
-                response.status
-            );
+            if(result && result.report){
+                latestReport = result.report;
+            }
+            else if(result && result.data && !Array.isArray(result.data)){
+                latestReport = result.data;
+            }
+            else if(result && result.reportNumber){
+                latestReport = result;
+            }
 
+            if(latestReport){
+                report = latestReport;
+            }
         }
-
-
-        const result =
-            await response.json();
-
-
-        console.log(
-            "LATEST REPORT FROM SHEET:",
-            result
-        );
-
-
-        /*
-         * Apps Script may return:
-         *
-         * {status:"success", report:{...}}
-         *
-         * or
-         *
-         * {success:true, data:{...}}
-         *
-         * or the report object directly.
-         */
-
-        let latestReport = null;
-
-
-        if(
-            result &&
-            result.report
-        ){
-
-            latestReport =
-                result.report;
-
-        }
-
-        else if(
-            result &&
-            result.data &&
-            !Array.isArray(result.data)
-        ){
-
-            latestReport =
-                result.data;
-
-        }
-
-        else if(
-            result &&
-            result.reportNumber
-        ){
-
-            latestReport =
-                result;
-
-        }
-
-
-        if(!latestReport){
-
-            throw new Error(
-                "Unable to retrieve the latest report data."
-            );
-
-        }
-
-
-        /* =================================================
-           REPLACE OLD DASHBOARD OBJECT
-        ================================================= */
-
-        selectedReport =
-            latestReport;
-
-
-        const reportIndex =
-            reports.findIndex(
-                function(item){
-
-                    return String(
-                        item.reportNumber
-                    ).trim() ===
-                    String(
-                        reportNumber
-                    ).trim();
-
-                }
-            );
-
-
-        if(reportIndex !== -1){
-
-            reports[reportIndex] =
-                latestReport;
-
-        }
-
-
-        /* =================================================
-           BASIC INFORMATION
-        ================================================= */
-
-        document.getElementById(
-            "modalTitle"
-        ).textContent =
-            latestReport.reportNumber ||
-            reportNumber;
-
-
-        document.getElementById(
-            "caseNumber"
-        ).textContent =
-            latestReport.reportNumber ||
-            "-";
-
-
-        document.getElementById(
-            "caseLocation"
-        ).textContent =
-            latestReport.location ||
-            "-";
-
-
-        document.getElementById(
-            "caseDepartment"
-        ).textContent =
-            latestReport.department ||
-            "-";
-
-
-        document.getElementById(
-            "caseCategory"
-        ).textContent =
-            latestReport.hazardCategory ||
-            "-";
-
-
-        /* =================================================
-           INCIDENT INFORMATION
-        ================================================= */
-
-        document.getElementById(
-            "incidentInfo"
-        ).textContent = [
-
-            "Date: " +
-            formatDisplayDate(
-                latestReport.dateTime ||
-                latestReport.submittedAt
-            ),
-
-            "Reporter: " +
-            (
-                latestReport.reporterName ||
-                "-"
-            ),
-
-            "Submitted: " +
-            formatDisplayDate(
-                latestReport.submittedAt
-            )
-
-        ].join("\n");
-
-
-        document.getElementById(
-            "caseNarrative"
-        ).textContent =
-            latestReport.whatHappened ||
-            "-";
-
-
-        /* =================================================
-           INVESTIGATION
-        ================================================= */
-
-        document.getElementById(
-            "investigationFindings"
-        ).value =
-            latestReport.investigationFindings ||
-            "";
-
-
-        document.getElementById(
-            "rootCause"
-        ).value =
-            latestReport.rootCause ||
-            "";
-
-
-        document.getElementById(
-            "eshInvestigator"
-        ).value =
-            latestReport.eshInvestigator ||
-            "";
-
-
-        document.getElementById(
-            "eshRemarks"
-        ).value =
-            latestReport.eshRemarks ||
-            "";
-
-
-        /* =================================================
-           CORRECTIVE ACTION
-        ================================================= */
-
-        document.getElementById(
-            "correctiveAction"
-        ).value =
-            latestReport.correctiveAction ||
-            "";
-
-
-        document.getElementById(
-            "personResponsible"
-        ).value =
-            latestReport.personResponsible ||
-            "";
-
-
-        document.getElementById(
-            "dueDate"
-        ).value =
-            formatDateInput(
-                latestReport.dueDate
-            );
-
-
-        /* =================================================
-           VERIFICATION
-        ================================================= */
-
-        document.getElementById(
-            "verificationRemarks"
-        ).value =
-            latestReport.verificationRemarks ||
-            "";
-
-
-        /* =================================================
-           CLOSURE
-        ================================================= */
-
-        document.getElementById(
-            "closedDate"
-        ).value =
-            formatDateInput(
-                latestReport.closedDate
-            );
-
-
-        /* =================================================
-           STATUS
-        ================================================= */
-
-        const status =
-            normalizeStatus(
-                latestReport.status
-            ) ||
-            "New";
-
-
-        setupCaseStatusOptions(
-            status
-        );
-
-
-        document.getElementById(
-            "caseStatus"
-        ).value =
-            status;
-
-
-        /* =================================================
-           TIMELINE
-        ================================================= */
-
-        updateTimeline(
-            status
-        );
-
-
-        /* =================================================
-           OVERDUE
-        ================================================= */
-
-        updateCaseOverdue(
-            latestReport
-        );
-
-
-        /* =================================================
-           PHOTOS
-        ================================================= */
-
-        loadPhotos(
-            latestReport
-        );
-
-
-        loadCorrectiveActionPhotos(
-            latestReport
-        );
-
-
-        loadVideo(
-            latestReport
-        );
-
-
-        /* =================================================
-           ROLE PERMISSIONS
-        ================================================= */
-
-        applyRolePermissions(
-            status
-        );
-
-
-        /* =================================================
-           DEBUG
-        ================================================= */
-
-        console.log(
-            "Investigation Findings:",
-            latestReport.investigationFindings
-        );
-
-        console.log(
-            "Root Cause:",
-            latestReport.rootCause
-        );
-
-        console.log(
-            "ESH Investigator:",
-            latestReport.eshInvestigator
-        );
-
-        console.log(
-            "ESH Remarks:",
-            latestReport.eshRemarks
-        );
-
-        console.log(
-            "Corrective Action:",
-            latestReport.correctiveAction
-        );
-
-        console.log(
-            "Responsible Person:",
-            latestReport.personResponsible
-        );
-
-        console.log(
-            "Target Date:",
-            latestReport.dueDate
-        );
-
-        console.log(
-            "Verification Remarks:",
-            latestReport.verificationRemarks
-        );
-
-        console.log(
-            "Closed Date:",
-            latestReport.closedDate
-        );
 
     }
-
     catch(error){
+        console.warn("Unable to refresh archived report; using archive data.",error);
+    }
 
-        console.error(
-            "OPEN REPORT ERROR:",
-            error
-        );
+    selectedReport.isArchived = true;
+    selectedReport.sourceSheet = "Archive";
+
+    fillReportModal(selectedReport);
+
+}
 
 
-        showToast(
-            "Unable to load latest case data."
-        );
+/* =========================================================
+   FILL REPORT MODAL
+========================================================= */
 
+function fillReportModal(latestReport){
+
+    const reportNumber =
+        latestReport.reportNumber ||
+        getSelectedReportNumber();
+
+    document.getElementById("modalTitle").textContent = reportNumber || "ESH Case";
+    document.getElementById("modalSubtitle").textContent =
+        latestReport.isArchived
+        ? "Archived Case • Read Only"
+        : getModalSubtitle();
+
+    document.getElementById("caseNumber").textContent = reportNumber || "-";
+    document.getElementById("caseLocation").textContent = latestReport.location || "-";
+    document.getElementById("caseDepartment").textContent = latestReport.department || "-";
+    document.getElementById("caseCategory").textContent = latestReport.hazardCategory || "-";
+
+    document.getElementById("incidentInfo").textContent = [
+        "Date: " + formatDisplayDate(latestReport.dateTime || latestReport.submittedAt),
+        "Reporter: " + (latestReport.reporterName || "-"),
+        "Submitted: " + formatDisplayDate(latestReport.submittedAt)
+    ].join("\n");
+
+    document.getElementById("caseNarrative").textContent =
+        latestReport.whatHappened || "-";
+
+    document.getElementById("investigationFindings").value = latestReport.investigationFindings || "";
+    document.getElementById("rootCause").value = latestReport.rootCause || "";
+    document.getElementById("eshInvestigator").value = latestReport.eshInvestigator || "";
+    document.getElementById("eshRemarks").value = latestReport.eshRemarks || "";
+
+    document.getElementById("correctiveAction").value = latestReport.correctiveAction || "";
+    document.getElementById("personResponsible").value = latestReport.personResponsible || "";
+    document.getElementById("dueDate").value = formatDateInput(latestReport.dueDate);
+    document.getElementById("verificationRemarks").value = latestReport.verificationRemarks || "";
+    document.getElementById("closedDate").value = formatDateInput(latestReport.closedDate);
+
+    const status = normalizeStatus(latestReport.status) || "Closed";
+
+    setupCaseStatusOptions(status);
+    document.getElementById("caseStatus").value = status;
+    updateTimeline(status);
+    updateCaseOverdue(latestReport);
+    loadPhotos(latestReport);
+    loadCorrectiveActionPhotos(latestReport);
+    loadVideo(latestReport);
+
+    if(latestReport.isArchived){
+        applyArchivePermissions();
+    }
+    else{
+        resetArchivePermissions();
+        applyRolePermissions(status);
     }
 
 }
+
 
 /* =========================================================
    MODAL SUBTITLE
@@ -5642,6 +5367,79 @@ function setupCaseStatusOptions(currentStatus){
 
 
 /* =========================================================
+   ARCHIVE READ-ONLY PERMISSIONS
+========================================================= */
+
+function resetArchivePermissions(){
+
+    const modal = document.getElementById("caseModal");
+    if(!modal){
+        return;
+    }
+
+    modal.querySelectorAll("input, textarea, select").forEach(function(field){
+        field.disabled = false;
+    });
+
+    const uploadInput = document.getElementById("correctivePhotoInput");
+    const uploadButton = document.getElementById("uploadCorrectivePhotosBtn");
+
+    if(uploadInput){
+        uploadInput.disabled = false;
+    }
+
+    if(uploadButton){
+        uploadButton.disabled = false;
+        uploadButton.style.display = "inline-flex";
+    }
+
+}
+
+
+function applyArchivePermissions(){
+
+    const modal = document.getElementById("caseModal");
+
+    if(!modal){
+        return;
+    }
+
+    modal.querySelectorAll("input, textarea, select").forEach(function(field){
+        field.disabled = true;
+    });
+
+    const uploadInput = document.getElementById("correctivePhotoInput");
+    const uploadButton = document.getElementById("uploadCorrectivePhotosBtn");
+    const saveButton = document.getElementById("saveButton");
+
+    if(uploadInput){
+        uploadInput.disabled = true;
+    }
+
+    if(uploadButton){
+        uploadButton.disabled = true;
+        uploadButton.style.display = "none";
+    }
+
+    if(saveButton){
+        saveButton.disabled = true;
+        saveButton.style.display = "none";
+    }
+
+    const banner = document.getElementById("caseOverdue");
+    if(banner){
+        banner.classList.remove("show");
+    }
+
+    const verificationLabel = document.getElementById("verificationRemarksLabel");
+    if(verificationLabel){
+        verificationLabel.textContent = "Verification Remarks • Archived";
+    }
+
+}
+
+
+/* =========================================================
    ROLE PERMISSIONS
 ========================================================= */
 
@@ -5698,6 +5496,7 @@ function applyRolePermissions(status){
             "verificationRemarksLabel"
         );
 
+    resetArchivePermissions();
 
     if(isESH()){
 
@@ -6733,6 +6532,13 @@ function compressImageForUpload(
 
 async function uploadCorrectivePhotos(){
 
+    if(selectedReport && selectedReport.isArchived){
+
+        showToast("Archived cases are read-only. Photo upload is disabled.");
+        return;
+
+    }
+
     if(!selectedReport){
 
         showToast(
@@ -6778,12 +6584,7 @@ async function uploadCorrectivePhotos(){
 
 
     const reportNumber =
-        String(
-            selectedReport.reportNumber ||
-            selectedReport.reportNo ||
-            selectedReport.report_number ||
-            ""
-        ).trim();
+        selectedReport.reportNumber;
 
 
     if(!reportNumber){
@@ -6831,34 +6632,6 @@ async function uploadCorrectivePhotos(){
                 );
 
 
-            /* =================================================
-               CORRECT PAYLOAD FORMAT
-            ================================================= */
-
-            const payload = {
-
-                action:
-                    "uploadCorrectivePhoto",
-
-                reportNumber:
-                    reportNumber,
-
-                photo: {
-
-                    base64:
-                        prepared.base64,
-
-                    type:
-                        prepared.mimeType,
-
-                    name:
-                        prepared.fileName
-
-                }
-
-            };
-
-
             const response =
                 await fetch(
                     GOOGLE_SCRIPT_URL,
@@ -6872,42 +6645,31 @@ async function uploadCorrectivePhotos(){
                         },
 
                         body:
-                            JSON.stringify(
-                                payload
-                            )
+                            JSON.stringify({
+
+                                action:
+                                    "uploadCorrectivePhoto",
+
+                                reportNumber:
+                                    reportNumber,
+
+                                fileName:
+                                    prepared.fileName,
+
+                                mimeType:
+                                    prepared.mimeType,
+
+                                base64:
+                                    prepared.base64
+
+                            })
 
                     }
                 );
 
 
-            const responseText =
-                await response.text();
-
-
-            let result;
-
-
-            try{
-
-                result =
-                    JSON.parse(
-                        responseText
-                    );
-
-            }
-
-            catch(parseError){
-
-                console.error(
-                    "Invalid server response:",
-                    responseText
-                );
-
-                throw new Error(
-                    "Server returned an invalid response."
-                );
-
-            }
+            const result =
+                await response.json();
 
 
             if(
@@ -6942,14 +6704,11 @@ async function uploadCorrectivePhotos(){
                 function(report){
 
                     return String(
-                        report.reportNumber ||
-                        report.reportNo ||
-                        report.report_number ||
-                        ""
-                    ).trim() ===
+                        report.reportNumber
+                    ) ===
                     String(
                         reportNumber
-                    ).trim();
+                    );
 
                 }
             );
@@ -6964,7 +6723,6 @@ async function uploadCorrectivePhotos(){
             loadCorrectiveActionPhotos(
                 refreshed
             );
-
 
             loadPhotos(
                 refreshed
@@ -6982,10 +6740,7 @@ async function uploadCorrectivePhotos(){
 
     catch(error){
 
-        console.error(
-            "Corrective photo upload error:",
-            error
-        );
+        console.error(error);
 
 
         if(uploaded > 0){
@@ -7015,7 +6770,6 @@ async function uploadCorrectivePhotos(){
         button.disabled =
             false;
 
-
         button.textContent =
             originalText;
 
@@ -7036,13 +6790,6 @@ function loadVideo(report){
         );
 
 
-    if(!container){
-
-        return;
-
-    }
-
-
     container.innerHTML = "";
 
 
@@ -7060,8 +6807,8 @@ function loadVideo(report){
     }
 
 
-    const videoUrl =
-        String(url).trim();
+    let videoUrl =
+        String(url);
 
 
     const id =
@@ -7077,28 +6824,9 @@ function loadVideo(report){
         )
     ){
 
-        container.innerHTML = `
-
-            <div class="video-card">
-
-                <iframe
-                    src="https://drive.google.com/file/d/${id}/preview"
-                    width="100%"
-                    height="400"
-                    allow="autoplay"
-                    allowfullscreen
-                    style="
-                        border:none;
-                        border-radius:12px;
-                        background:#000;
-                    "
-                ></iframe>
-
-            </div>
-
-        `;
-
-        return;
+        videoUrl =
+            "https://drive.google.com/uc?export=download&id=" +
+            id;
 
     }
 
@@ -7110,13 +6838,6 @@ function loadVideo(report){
             <video
                 controls
                 preload="metadata"
-                playsinline
-                style="
-                    width:100%;
-                    max-height:500px;
-                    border-radius:12px;
-                    background:#000;
-                "
             >
 
                 <source
@@ -7134,6 +6855,8 @@ function loadVideo(report){
     `;
 
 }
+
+
 /* =========================================================
    GET SELECTED REPORT NUMBER
    FIX FOR "REPORT NUMBER REQUIRED"
@@ -7169,6 +6892,13 @@ function getSelectedReportNumber(){
 ========================================================= */
 
 async function saveReport(){
+
+    if(selectedReport && selectedReport.isArchived){
+
+        showToast("Archived cases are read-only and cannot be modified.");
+        return;
+
+    }
 
     if(!selectedReport){
 
@@ -7519,6 +7249,10 @@ async function saveReport(){
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
+
+    if(selectedReport && selectedReport.isArchived){
+        return;
+    }
 
     if(!selectedReport){
 
@@ -7974,6 +7708,7 @@ function closeModal(){
         .classList
         .remove("show");
 
+    resetArchivePermissions();
 
     selectedReport =
         null;
