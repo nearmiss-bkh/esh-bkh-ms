@@ -946,20 +946,7 @@ input::placeholder {
 ========================================================= */
 
 const GOOGLE_SCRIPT_URL =
-    "PASTE_YOUR_EXISTING_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE";
-
-
-/*
-   IMPORTANT:
-
-   Replace the line above with your existing /exec URL.
-
-   Example format:
-
-   https://script.google.com/macros/s/XXXXXXXXXXXX/exec
-
-   Do NOT use the /dev URL.
-*/
+    "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
 /* =========================================================
@@ -1155,6 +1142,7 @@ document
             --------------------------------------------- */
 
             if (
+                !GOOGLE_SCRIPT_URL ||
                 GOOGLE_SCRIPT_URL
                     .indexOf(
                         "/exec"
@@ -1292,15 +1280,11 @@ document
                 sessionStorage.clear();
 
 
-                /* Login status */
-
                 sessionStorage.setItem(
                     "loggedIn",
                     "true"
                 );
 
-
-                /* Username */
 
                 sessionStorage.setItem(
                     "username",
@@ -1309,16 +1293,12 @@ document
                 );
 
 
-                /* Role */
-
                 sessionStorage.setItem(
                     "userRole",
                     data.role ||
                     ""
                 );
 
-
-                /* Department */
 
                 sessionStorage.setItem(
                     "department",
