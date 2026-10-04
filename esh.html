@@ -4998,13 +4998,19 @@ function renderReports(){
 function renderArchiveReports(){
 
     const grid =
-        document.getElementById("archiveReportsGrid");
+        document.getElementById(
+            "archiveReportsGrid"
+        );
 
     const count =
-        document.getElementById("archiveCasesCount");
+        document.getElementById(
+            "archiveCasesCount"
+        );
 
     const searchInput =
-        document.getElementById("archiveSearchInput");
+        document.getElementById(
+            "archiveSearchInput"
+        );
 
 
     if(!grid){
@@ -5023,33 +5029,39 @@ function renderArchiveReports(){
 
     const search =
         searchInput
-            ? searchInput.value.trim().toLowerCase()
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
             : "";
 
 
     const filtered =
-        archiveReports.filter(function(report){
+        archiveReports.filter(
+            function(report){
 
-            const text = [
+                const text = [
 
-                report.reportNumber,
-                report.location,
-                report.department,
-                report.hazardCategory,
-                report.whatHappened,
-                report.reporterName,
-                report.status,
-                report.closedDate,
-                report.closedBy
+                    report.reportNumber,
+                    report.location,
+                    report.department,
+                    report.hazardCategory,
+                    report.whatHappened,
+                    report.reporterName,
+                    report.status,
+                    report.closedDate,
+                    report.closedBy
 
-            ]
-            .join(" ")
-            .toLowerCase();
+                ]
+                .join(" ")
+                .toLowerCase();
 
 
-            return text.includes(search);
+                return text.includes(
+                    search
+                );
 
-        });
+            }
+        );
 
 
     /* =====================================================
@@ -5080,19 +5092,23 @@ function renderArchiveReports(){
                 </div>
 
                 <div class="empty-title">
+
                     ${
                         archiveReports.length === 0
                         ? "No archived cases"
                         : "No matching archived cases"
                     }
+
                 </div>
 
                 <p style="margin-top:8px;">
+
                     ${
                         archiveReports.length === 0
                         ? "Closed cases moved to archive will appear here."
                         : "Try another search."
                     }
+
                 </p>
 
             </div>
@@ -5109,147 +5125,196 @@ function renderArchiveReports(){
     ===================================================== */
 
     grid.innerHTML =
-        filtered.map(function(report){
+        filtered.map(
+            function(report){
 
-            const reportNumber =
-                report.reportNumber ||
-                "No Report Number";
-
-
-            const location =
-                report.location ||
-                "Not specified";
+                const archiveIndex =
+                    archiveReports.indexOf(
+                        report
+                    );
 
 
-            const department =
-                report.department ||
-                "Not specified";
+                const reportNumber =
+                    report.reportNumber ||
+                    "No Report Number";
 
 
-            const category =
-                report.hazardCategory ||
-                "Not specified";
+                const location =
+                    report.location ||
+                    "Not specified";
 
 
-            const description =
-                report.whatHappened ||
-                "No description provided";
+                const department =
+                    report.department ||
+                    "Not specified";
 
 
-            const closedDate =
-                report.closedDate ||
-                report.completionDate ||
-                "Not available";
+                const category =
+                    report.hazardCategory ||
+                    "Not specified";
 
 
-            const closedBy =
-                report.closedBy ||
-                "Not available";
+                const description =
+                    report.whatHappened ||
+                    "No description provided";
 
 
-            return `
+                const closedDate =
+                    report.closedDate ||
+                    report.completionDate ||
+                    "Not available";
 
-                <div class="report-card archive-card">
 
-                    <div class="report-card-header">
+                const closedBy =
+                    report.closedBy ||
+                    "Not available";
 
-                        <div>
 
-                            <div class="report-number">
-                                ${escapeHtml(reportNumber)}
+                return `
+
+                    <div
+                        class="report-card archive-card"
+                        onclick="openArchiveReport(${archiveIndex})"
+                    >
+
+                        <div class="report-card-header">
+
+                            <div>
+
+                                <div class="report-number">
+
+                                    ${escapeHtml(
+                                        reportNumber
+                                    )}
+
+                                </div>
+
+                                <div class="report-date">
+
+                                    Closed:
+                                    ${escapeHtml(
+                                        closedDate
+                                    )}
+
+                                </div>
+
                             </div>
 
-                            <div class="report-date">
-                                Closed:
-                                ${escapeHtml(closedDate)}
+
+                            <div class="status-badge status-closed">
+
+                                CLOSED
+
                             </div>
 
                         </div>
 
-                        <div class="status-badge status-closed">
-                            CLOSED
+
+                        <div class="report-card-body">
+
+                            <div class="report-info">
+
+                                <div class="info-item">
+
+                                    <span class="info-label">
+                                        Location
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        ${escapeHtml(
+                                            location
+                                        )}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <span class="info-label">
+                                        Department
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        ${escapeHtml(
+                                            department
+                                        )}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <span class="info-label">
+                                        Hazard / Category
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        ${escapeHtml(
+                                            category
+                                        )}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="info-item">
+
+                                    <span class="info-label">
+                                        Closed By
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        ${escapeHtml(
+                                            closedBy
+                                        )}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="report-description">
+
+                                <div class="info-label">
+                                    What Happened
+                                </div>
+
+                                <div class="description-text">
+
+                                    ${escapeHtml(
+                                        description
+                                    )}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-footer">
+
+                            Click to view archived case
+
                         </div>
 
                     </div>
 
+                `;
 
-                    <div class="report-card-body">
-
-                        <div class="report-info">
-
-                            <div class="info-item">
-
-                                <span class="info-label">
-                                    Location
-                                </span>
-
-                                <span class="info-value">
-                                    ${escapeHtml(location)}
-                                </span>
-
-                            </div>
-
-
-                            <div class="info-item">
-
-                                <span class="info-label">
-                                    Department
-                                </span>
-
-                                <span class="info-value">
-                                    ${escapeHtml(department)}
-                                </span>
-
-                            </div>
-
-
-                            <div class="info-item">
-
-                                <span class="info-label">
-                                    Hazard / Category
-                                </span>
-
-                                <span class="info-value">
-                                    ${escapeHtml(category)}
-                                </span>
-
-                            </div>
-
-
-                            <div class="info-item">
-
-                                <span class="info-label">
-                                    Closed By
-                                </span>
-
-                                <span class="info-value">
-                                    ${escapeHtml(closedBy)}
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="report-description">
-
-                            <div class="info-label">
-                                What Happened
-                            </div>
-
-                            <div class="description-text">
-                                ${escapeHtml(description)}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        })
+            }
+        )
         .join("");
 
 }
