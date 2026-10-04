@@ -8240,6 +8240,12 @@ function loadVideo(report){
 
     if(!url){
 
+        container.innerHTML = `
+            <div class="empty">
+                No video evidence submitted.
+            </div>
+        `;
+
         return;
 
     }
@@ -8257,7 +8263,6 @@ function loadVideo(report){
 
     /* =====================================================
        GOOGLE DRIVE VIDEO
-       DO NOT USE IFRAME
     ===================================================== */
 
     if(
@@ -8267,6 +8272,11 @@ function loadVideo(report){
         )
     ){
 
+        const directUrl =
+            "https://drive.google.com/uc?export=download&id=" +
+            encodeURIComponent(id);
+
+
         const openUrl =
             "https://drive.google.com/file/d/" +
             encodeURIComponent(id) +
@@ -8275,66 +8285,110 @@ function loadVideo(report){
 
         container.innerHTML = `
 
-            <div
-                class="video-card"
-                style="
-                    padding:20px;
-                    text-align:center;
-                    background:#f8fafc;
-                    border-radius:12px;
-                    border:1px solid #e2e8f0;
-                "
-            >
+            <div class="video-card">
 
-                <div
+                <video
+                    id="driveVideoPlayer"
+                    controls
+                    preload="metadata"
+                    playsinline
                     style="
-                        font-size:42px;
-                        margin-bottom:10px;
+                        width:100%;
+                        max-height:500px;
+                        border-radius:12px;
+                        background:#000;
                     "
                 >
-                    🎥
-                </div>
 
+                    <source
+                        src="${escapeAttribute(
+                            directUrl
+                        )}"
+                    >
 
-                <div
-                    style="
-                        font-size:15px;
-                        font-weight:700;
-                        margin-bottom:6px;
-                    "
-                >
-                    Video Evidence
-                </div>
+                    Your browser does not support
+                    video playback.
+
+                </video>
 
 
                 <div
+                    id="videoOpenFallback"
                     style="
-                        font-size:12px;
-                        color:#64748b;
-                        margin-bottom:15px;
+                        display:none;
+                        margin-top:12px;
+                        text-align:center;
                     "
                 >
-                    Video stored in Google Drive
+
+                    <div
+                        style="
+                            color:#64748b;
+                            font-size:12px;
+                            margin-bottom:8px;
+                        "
+                    >
+                        The video cannot be played
+                        directly in the dashboard.
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="
+                            window.open(
+                                '${escapeAttribute(openUrl)}',
+                                '_blank',
+                                'noopener,noreferrer'
+                            );
+                        "
+                    >
+                        ▶ Open Video in Google Drive
+                    </button>
+
                 </div>
-
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    onclick="
-                        window.open(
-                            '${escapeAttribute(openUrl)}',
-                            '_blank',
-                            'noopener,noreferrer'
-                        );
-                    "
-                >
-                    ▶ Open Video
-                </button>
 
             </div>
 
         `;
+
+
+        const player =
+            document.getElementById(
+                "driveVideoPlayer"
+            );
+
+
+        const fallback =
+            document.getElementById(
+                "videoOpenFallback"
+            );
+
+
+        if(player){
+
+            player.addEventListener(
+                "error",
+                function(){
+
+                    console.warn(
+                        "Google Drive video could not be played directly."
+                    );
+
+
+                    if(fallback){
+
+                        fallback.style.display =
+                            "block";
+
+                    }
+
+                }
+            );
+
+        }
+
 
         return;
 
@@ -8342,7 +8396,7 @@ function loadVideo(report){
 
 
     /* =====================================================
-       NORMAL VIDEO FILE
+       NORMAL VIDEO URL
     ===================================================== */
 
     container.innerHTML = `
@@ -8377,7 +8431,6 @@ function loadVideo(report){
     `;
 
 }
-
 /* =========================================================
    GET SELECTED REPORT NUMBER
    FIX FOR "REPORT NUMBER REQUIRED"
