@@ -6048,6 +6048,288 @@ async function openReport(index){
 }
 
 /* =========================================================
+   OPEN ARCHIVED REPORT
+   VIEW ARCHIVED CASE
+========================================================= */
+
+function openArchiveReport(index){
+
+    const report =
+        archiveReports[index];
+
+
+    if(!report){
+
+        showToast(
+            "Archived report not found."
+        );
+
+        return;
+
+    }
+
+
+    const reportNumber =
+        report.reportNumber ||
+        "Archived Case";
+
+
+    selectedReport =
+        report;
+
+
+    /* =====================================================
+       OPEN MODAL
+    ===================================================== */
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "modalSubtitle"
+    ).textContent =
+        "Archived ESH Case";
+
+
+    document.getElementById(
+        "caseModal"
+    ).classList.add(
+        "show"
+    );
+
+
+    /* =====================================================
+       BASIC INFORMATION
+    ===================================================== */
+
+    document.getElementById(
+        "caseNumber"
+    ).textContent =
+        reportNumber;
+
+
+    document.getElementById(
+        "caseLocation"
+    ).textContent =
+        report.location ||
+        "-";
+
+
+    document.getElementById(
+        "caseDepartment"
+    ).textContent =
+        report.department ||
+        "-";
+
+
+    document.getElementById(
+        "caseCategory"
+    ).textContent =
+        report.hazardCategory ||
+        "-";
+
+
+    /* =====================================================
+       INCIDENT INFORMATION
+    ===================================================== */
+
+    document.getElementById(
+        "incidentInfo"
+    ).textContent = [
+
+        "Date: " +
+        formatDisplayDate(
+            report.dateTime ||
+            report.submittedAt
+        ),
+
+        "Reporter: " +
+        (
+            report.reporterName ||
+            "-"
+        ),
+
+        "Submitted: " +
+        formatDisplayDate(
+            report.submittedAt
+        )
+
+    ].join("\n");
+
+
+    document.getElementById(
+        "caseNarrative"
+    ).textContent =
+        report.whatHappened ||
+        "-";
+
+
+    /* =====================================================
+       INVESTIGATION
+    ===================================================== */
+
+    document.getElementById(
+        "investigationFindings"
+    ).value =
+        report.investigationFindings ||
+        "";
+
+
+    document.getElementById(
+        "rootCause"
+    ).value =
+        report.rootCause ||
+        "";
+
+
+    document.getElementById(
+        "eshInvestigator"
+    ).value =
+        report.eshInvestigator ||
+        "";
+
+
+    document.getElementById(
+        "eshRemarks"
+    ).value =
+        report.eshRemarks ||
+        "";
+
+
+    /* =====================================================
+       CORRECTIVE ACTION
+    ===================================================== */
+
+    document.getElementById(
+        "correctiveAction"
+    ).value =
+        report.correctiveAction ||
+        "";
+
+
+    document.getElementById(
+        "personResponsible"
+    ).value =
+        report.personResponsible ||
+        report.responsiblePerson ||
+        "";
+
+
+    document.getElementById(
+        "dueDate"
+    ).value =
+        formatDateInput(
+            report.dueDate ||
+            report.targetDate
+        );
+
+
+    /* =====================================================
+       VERIFICATION
+    ===================================================== */
+
+    document.getElementById(
+        "verificationRemarks"
+    ).value =
+        report.verificationRemarks ||
+        report.verification ||
+        "";
+
+
+    /* =====================================================
+       CLOSURE
+    ===================================================== */
+
+    document.getElementById(
+        "closedDate"
+    ).value =
+        formatDateInput(
+            report.closedDate ||
+            report.completionDate
+        );
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    const status =
+        normalizeStatus(
+            report.status
+        ) ||
+        "Closed";
+
+
+    setupCaseStatusOptions(
+        status
+    );
+
+
+    document.getElementById(
+        "caseStatus"
+    ).value =
+        status;
+
+
+    /* =====================================================
+       TIMELINE
+    ===================================================== */
+
+    updateTimeline(
+        status
+    );
+
+
+    /* =====================================================
+       PHOTOS / VIDEO
+    ===================================================== */
+
+    loadPhotos(
+        report
+    );
+
+
+    loadCorrectiveActionPhotos(
+        report
+    );
+
+
+    loadVideo(
+        report
+    );
+
+
+    /* =====================================================
+       ARCHIVE VIEW-ONLY
+    ===================================================== */
+
+    const inputs =
+        document.querySelectorAll(
+            "#caseModal input, " +
+            "#caseModal textarea, " +
+            "#caseModal select"
+        );
+
+
+    inputs.forEach(
+        function(input){
+
+            input.disabled = true;
+
+        }
+    );
+
+
+    showToast(
+        "Archived case opened in view-only mode."
+    );
+
+}
+
+/* =========================================================
    MODAL SUBTITLE
 ========================================================= */
 
