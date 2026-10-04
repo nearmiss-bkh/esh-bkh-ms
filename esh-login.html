@@ -1,203 +1,411 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ESH Secure Access | Safety Management System</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    ESH Secure Access | Safety Management System
+</title>
+
 
 <style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
+
     box-sizing: border-box;
+
     margin: 0;
+
     padding: 0;
+
 }
+
+
+/* =========================================================
+   BODY
+========================================================= */
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     min-height: 100vh;
+
     background:
-        radial-gradient(circle at 20% 20%, rgba(0, 180, 255, 0.15), transparent 30%),
-        radial-gradient(circle at 80% 80%, rgba(0, 255, 170, 0.10), transparent 30%),
-        linear-gradient(135deg, #020817, #071426 55%, #031c25);
+
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(0,180,255,0.15),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(0,255,170,0.10),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            #020817,
+            #071426 55%,
+            #031c25
+        );
+
     color: white;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     overflow: hidden;
+
 }
+
+
+/* =========================================================
+   GRID BACKGROUND
+========================================================= */
 
 body::before {
+
     content: "";
+
     position: fixed;
+
     inset: 0;
+
     background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+
+        linear-gradient(
+            rgba(255,255,255,0.025)
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025)
+            1px,
+            transparent 1px
+        );
+
     background-size: 45px 45px;
+
     pointer-events: none;
+
 }
+
+
+/* =========================================================
+   GLOW
+========================================================= */
 
 .glow {
+
     position: fixed;
+
     width: 350px;
+
     height: 350px;
+
     border-radius: 50%;
-    background: rgba(0, 200, 255, 0.08);
-    filter: blur(70px);
+
+    background:
+        rgba(0,200,255,0.08);
+
+    filter:
+        blur(70px);
+
     top: -100px;
+
     left: -100px;
+
 }
+
 
 .glow2 {
+
     position: fixed;
+
     width: 300px;
+
     height: 300px;
+
     border-radius: 50%;
-    background: rgba(0, 255, 170, 0.07);
-    filter: blur(70px);
+
+    background:
+        rgba(0,255,170,0.07);
+
+    filter:
+        blur(70px);
+
     bottom: -100px;
+
     right: -100px;
+
 }
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
 
 .container {
+
     width: 100%;
+
     max-width: 460px;
+
     padding: 20px;
+
     position: relative;
+
     z-index: 2;
+
 }
 
-/* ==========================================
-   LOGO / TITLE AREA
-   ========================================== */
+
+/* =========================================================
+   LOGO AREA
+========================================================= */
 
 .logo-area {
+
     text-align: center;
+
     margin-bottom: 25px;
+
 }
 
+
 .esh-mark {
+
     width: 70px;
+
     height: 70px;
-    margin: 0 auto 18px;
+
+    margin:
+        0 auto 18px;
 
     border-radius: 18px;
 
     background:
+
         linear-gradient(
             145deg,
             rgba(0,217,255,0.20),
             rgba(0,119,255,0.12)
         );
 
-    border: 1px solid rgba(0,217,255,0.35);
+    border:
+        1px solid
+        rgba(0,217,255,0.35);
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     box-shadow:
-        0 0 30px rgba(0,210,255,0.12),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+
+        0 0 30px
+        rgba(0,210,255,0.12),
+
+        inset 0 1px 0
+        rgba(255,255,255,0.08);
+
 }
+
 
 .esh-mark span {
+
     font-size: 20px;
+
     font-weight: 900;
+
     letter-spacing: 1px;
+
     color: #ffffff;
+
 }
+
 
 .company {
+
     font-size: 13px;
+
     font-weight: 700;
+
     letter-spacing: 3px;
+
     color: #9fb4c8;
+
     margin-bottom: 8px;
+
 }
+
 
 .title {
+
     font-size: 28px;
+
     font-weight: 800;
+
     letter-spacing: 1px;
+
 }
+
 
 .subtitle {
+
     color: #7f9aae;
+
     font-size: 13px;
+
     margin-top: 7px;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    LOGIN CARD
-   ========================================== */
+========================================================= */
 
 .card {
-    background: rgba(8, 22, 38, 0.82);
-    border: 1px solid rgba(92, 190, 220, 0.20);
+
+    background:
+        rgba(8,22,38,0.82);
+
+    border:
+        1px solid
+        rgba(92,190,220,0.20);
+
     border-radius: 22px;
-    padding: 34px 30px;
+
+    padding:
+        34px 30px;
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.04);
 
-    backdrop-filter: blur(18px);
+        0 25px 70px
+        rgba(0,0,0,0.45),
+
+        inset 0 1px 0
+        rgba(255,255,255,0.04);
+
+    backdrop-filter:
+        blur(18px);
+
 }
 
+
+/* =========================================================
+   ACCESS STATUS
+========================================================= */
+
 .access {
+
     display: flex;
+
     align-items: center;
+
     gap: 9px;
+
     margin-bottom: 25px;
 
     color: #7fffd4;
+
     font-size: 11px;
+
     font-weight: 700;
+
     letter-spacing: 1.5px;
+
 }
 
+
 .status-dot {
+
     width: 8px;
+
     height: 8px;
+
     border-radius: 50%;
 
     background: #00e6a0;
 
     box-shadow:
-        0 0 12px #00e6a0;
+        0 0 12px
+        #00e6a0;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    FORM
-   ========================================== */
+========================================================= */
 
 label {
+
     display: block;
+
     color: #a9bbca;
+
     font-size: 12px;
+
     font-weight: 700;
+
     margin-bottom: 8px;
+
     letter-spacing: 0.8px;
+
 }
+
 
 .input-group {
+
     position: relative;
+
     margin-bottom: 20px;
+
 }
 
+
 input {
+
     width: 100%;
+
     height: 52px;
 
-    padding: 0 16px;
+    padding:
+        0 16px;
 
     border-radius: 12px;
 
-    border: 1px solid rgba(150,190,210,0.18);
+    border:
+        1px solid
+        rgba(150,190,210,0.18);
 
-    background: rgba(255,255,255,0.045);
+    background:
+        rgba(255,255,255,0.045);
 
     color: white;
 
@@ -206,37 +414,52 @@ input {
     font-size: 14px;
 
     transition: 0.25s;
+
 }
 
+
 input:focus {
+
     border-color: #00cfff;
 
     box-shadow:
-        0 0 0 3px rgba(0,207,255,0.08);
+        0 0 0 3px
+        rgba(0,207,255,0.08);
 
     background:
         rgba(255,255,255,0.065);
+
 }
+
 
 input::placeholder {
+
     color: #536b7d;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    PASSWORD
-   ========================================== */
+========================================================= */
 
 .password-wrap input {
+
     padding-right: 55px;
+
 }
 
+
 .show-password {
+
     position: absolute;
 
     right: 12px;
+
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     border: none;
 
@@ -249,18 +472,25 @@ input::placeholder {
     font-size: 12px;
 
     font-weight: 700;
+
 }
+
 
 .show-password:hover {
+
     color: #00cfff;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    LOGIN BUTTON
-   ========================================== */
+========================================================= */
 
 .login-btn {
+
     width: 100%;
+
     height: 54px;
 
     border: none;
@@ -268,6 +498,7 @@ input::placeholder {
     border-radius: 12px;
 
     background:
+
         linear-gradient(
             135deg,
             #00cfff,
@@ -285,27 +516,55 @@ input::placeholder {
     cursor: pointer;
 
     box-shadow:
-        0 10px 25px rgba(0,150,255,0.22);
+        0 10px 25px
+        rgba(0,150,255,0.22);
 
     transition: 0.25s;
+
 }
+
 
 .login-btn:hover {
-    transform: translateY(-2px);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
-        0 15px 30px rgba(0,170,255,0.30);
+        0 15px 30px
+        rgba(0,170,255,0.30);
+
 }
+
 
 .login-btn:active {
-    transform: translateY(0);
+
+    transform:
+        translateY(0);
+
 }
 
-/* ==========================================
+
+/* =========================================================
+   LOADING STATE
+========================================================= */
+
+.login-btn.loading {
+
+    opacity: 0.7;
+
+    cursor: wait;
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
    ERROR
-   ========================================== */
+========================================================= */
 
 .error {
+
     display: none;
 
     margin-top: 15px;
@@ -318,43 +577,84 @@ input::placeholder {
         rgba(255,60,80,0.08);
 
     border:
-        1px solid rgba(255,80,100,0.20);
+        1px solid
+        rgba(255,80,100,0.20);
 
     color: #ff8290;
 
     text-align: center;
 
     font-size: 12px;
+
 }
 
-/* ==========================================
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.success {
+
+    display: none;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(0,230,160,0.08);
+
+    border:
+        1px solid
+        rgba(0,230,160,0.20);
+
+    color: #6fffd2;
+
+    text-align: center;
+
+    font-size: 12px;
+
+}
+
+
+/* =========================================================
    SECURITY
-   ========================================== */
+========================================================= */
 
 .security {
+
     margin-top: 20px;
 
     padding-top: 18px;
 
     border-top:
-        1px solid rgba(255,255,255,0.06);
+        1px solid
+        rgba(255,255,255,0.06);
 
     text-align: center;
 
     color: #526b7c;
 
     font-size: 10px;
+
 }
+
 
 .security strong {
+
     color: #71899c;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    FOOTER
-   ========================================== */
+========================================================= */
 
 .footer {
+
     text-align: center;
 
     margin-top: 22px;
@@ -364,95 +664,146 @@ input::placeholder {
     font-size: 10px;
 
     line-height: 1.6;
+
 }
+
 
 .footer strong {
+
     color: #6f899b;
+
 }
 
-/* ==========================================
+
+/* =========================================================
    MOBILE
-   ========================================== */
+========================================================= */
 
 @media (max-width: 480px) {
 
     .container {
+
         padding: 16px;
+
     }
+
 
     .card {
-        padding: 28px 22px;
+
+        padding:
+            28px 22px;
+
         border-radius: 18px;
+
     }
+
 
     .title {
+
         font-size: 24px;
+
     }
 
+
     .esh-mark {
+
         width: 62px;
+
         height: 62px;
+
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="glow"></div>
+
 <div class="glow2"></div>
+
 
 <div class="container">
 
-    <!-- ======================================
+
+    <!-- =====================================================
          BRANDING
-         ====================================== -->
+    ====================================================== -->
 
     <div class="logo-area">
 
+
         <div class="esh-mark">
-            <span>ESH</span>
+
+            <span>
+                ESH
+            </span>
+
         </div>
+
 
         <div class="company">
+
             BIDOR KWONG HENG
+
         </div>
+
 
         <div class="title">
+
             ESH SAFETY MANAGEMENT SYSTEM
+
         </div>
 
+
         <div class="subtitle">
+
             Environment • Safety • Health Management System
+
         </div>
+
 
     </div>
 
 
-    <!-- ======================================
+    <!-- =====================================================
          LOGIN CARD
-         ====================================== -->
+    ====================================================== -->
 
     <div class="card">
 
+
         <div class="access">
+
 
             <div class="status-dot"></div>
 
+
             SECURE ESH ACCESS
+
 
         </div>
 
 
         <form id="loginForm">
 
+
             <!-- USERNAME -->
 
             <div class="input-group">
 
+
                 <label for="username">
+
                     USERNAME
+
                 </label>
+
 
                 <input
                     type="text"
@@ -462,16 +813,23 @@ input::placeholder {
                     required
                 >
 
+
             </div>
 
 
             <!-- PASSWORD -->
 
-            <div class="input-group password-wrap">
+            <div
+                class="input-group password-wrap"
+            >
+
 
                 <label for="password">
+
                     PASSWORD
+
                 </label>
+
 
                 <input
                     type="password"
@@ -481,13 +839,17 @@ input::placeholder {
                     required
                 >
 
+
                 <button
                     type="button"
                     class="show-password"
                     onclick="togglePassword()"
                 >
+
                     SHOW
+
                 </button>
+
 
             </div>
 
@@ -497,8 +859,11 @@ input::placeholder {
             <button
                 type="submit"
                 class="login-btn"
+                id="loginButton"
             >
+
                 SIGN IN TO ESH
+
             </button>
 
 
@@ -508,17 +873,35 @@ input::placeholder {
                 id="errorMessage"
                 class="error"
             >
+
                 Invalid username or password.
+
             </div>
+
+
+            <!-- SUCCESS -->
+
+            <div
+                id="successMessage"
+                class="success"
+            >
+
+                Login successful. Opening ESH system...
+
+            </div>
+
 
         </form>
 
 
-        <!-- SECURITY MESSAGE -->
+        <!-- SECURITY -->
 
         <div class="security">
 
-            🔒 <strong>ESH MANAGEMENT ACCESS</strong>
+            🔒
+            <strong>
+                ESH MANAGEMENT ACCESS
+            </strong>
 
             <br>
 
@@ -526,267 +909,501 @@ input::placeholder {
 
         </div>
 
+
     </div>
 
 
-    <!-- ======================================
+    <!-- =====================================================
          FOOTER
-         ====================================== -->
+    ====================================================== -->
 
     <div class="footer">
 
+
         <strong>
+
             ESH SAFETY MANAGEMENT SYSTEM
+
         </strong>
+
 
         <br>
 
+
         Bidor Kwong Heng • ESH Department
 
+
     </div>
+
 
 </div>
 
 
 <script>
 
-/* ==========================================
-   USER ACCOUNTS
-   ========================================== */
+/* =========================================================
+   GOOGLE APPS SCRIPT API
+========================================================= */
 
-const USERS = {
-
-    /* ESH ADMIN */
-
-    eshadmin: {
-        password: "esh@bkh2026",
-        role: "ESH",
-        department: "ESH"
-    },
+const GOOGLE_SCRIPT_URL =
+    "PASTE_YOUR_EXISTING_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE";
 
 
-    /* SECOND ESH ADMIN */
+/*
+   IMPORTANT:
 
-    eshadmin2: {
-        password: "eshadmin@2026",
-        role: "ESH",
-        department: "ESH"
-    },
+   Replace the line above with your existing /exec URL.
 
+   Example format:
 
-    /* PRODUCTION OP HOD */
+   https://script.google.com/macros/s/XXXXXXXXXXXX/exec
 
-    prodadminop: {
-        password: "op@bkh2026",
-        role: "HOD",
-        department: "Production OP"
-    },
+   Do NOT use the /dev URL.
+*/
 
 
-    /* PRODUCTION NP HOD */
-
-    prodadminnp: {
-        password: "np@bkh2026",
-        role: "HOD",
-        department: "Production NP"
-    },
-
-
-    /* BKH HOD - ALL DEPARTMENTS */
-
-    bkhadmin: {
-        password: "bkhadmin@2026",
-        role: "HOD",
-        department: "ALL"
-    },
-
-
-    /* QA/QC HOD */
-
-    qaqcadminbkh: {
-        password: "qaqc@bkh2026",
-        role: "HOD",
-        department: "QC"
-    },
-
-
-    /* MAINTENANCE / ENGINEERING */
-
-    engineeringadmin: {
-        password: "eng@bkh2026",
-        role: "MAINTENANCE",
-        department: "Maintenance / Engineering"
-    }
-
-};
-
-
-/* ==========================================
+/* =========================================================
    SHOW / HIDE PASSWORD
-   ========================================== */
+========================================================= */
 
 function togglePassword() {
 
     const password =
-        document.getElementById("password");
+        document.getElementById(
+            "password"
+        );
+
 
     const button =
-        document.querySelector(".show-password");
+        document.querySelector(
+            ".show-password"
+        );
 
 
-    if (password.type === "password") {
+    if (
+        password.type ===
+        "password"
+    ) {
 
-        password.type = "text";
+        password.type =
+            "text";
 
-        button.textContent = "HIDE";
+        button.textContent =
+            "HIDE";
 
     }
-
     else {
 
-        password.type = "password";
+        password.type =
+            "password";
 
-        button.textContent = "SHOW";
+        button.textContent =
+            "SHOW";
 
     }
 
 }
 
 
-/* ==========================================
-   LOGIN
-   ========================================== */
+/* =========================================================
+   SHOW ERROR
+========================================================= */
+
+function showError(
+    message
+) {
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    const success =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    success.style.display =
+        "none";
+
+
+    error.textContent =
+        message;
+
+
+    error.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            error.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================================================
+   SHOW SUCCESS
+========================================================= */
+
+function showSuccess(
+    message
+) {
+
+    const error =
+        document.getElementById(
+            "errorMessage"
+        );
+
+
+    const success =
+        document.getElementById(
+            "successMessage"
+        );
+
+
+    error.style.display =
+        "none";
+
+
+    success.textContent =
+        message;
+
+
+    success.style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   LOGIN FORM
+========================================================= */
 
 document
-    .getElementById("loginForm")
+    .getElementById(
+        "loginForm"
+    )
     .addEventListener(
         "submit",
-        function(event) {
+        async function(event) {
 
             event.preventDefault();
 
 
-            /* Get username */
-
             const username =
                 document
-                    .getElementById("username")
+                    .getElementById(
+                        "username"
+                    )
                     .value
                     .trim()
                     .toLowerCase();
 
 
-            /* Get password */
-
             const password =
                 document
-                    .getElementById("password")
+                    .getElementById(
+                        "password"
+                    )
                     .value;
 
 
-            /* Error message */
-
-            const error =
+            const loginButton =
                 document
-                    .getElementById("errorMessage");
+                    .getElementById(
+                        "loginButton"
+                    );
 
 
-            /* Find user */
+            /* ---------------------------------------------
+               VALIDATION
+            --------------------------------------------- */
 
-            const user =
-                USERS[username];
+            if (!username) {
 
-
-            /* Check login */
-
-            if (
-                !user ||
-                user.password !== password
-            ) {
-
-                error.textContent =
-                    "Invalid username or password.";
-
-                error.style.display =
-                    "block";
-
-
-                setTimeout(
-                    function() {
-
-                        error.style.display =
-                            "none";
-
-                    },
-                    3000
+                showError(
+                    "Please enter your username."
                 );
-
 
                 return;
 
             }
 
 
-            /* ======================================
-               LOGIN SUCCESS
-               ====================================== */
+            if (!password) {
 
-            sessionStorage.clear();
-
-
-            /* Login status */
-
-            sessionStorage.setItem(
-                "loggedIn",
-                "true"
-            );
-
-
-            /* Username */
-
-            sessionStorage.setItem(
-                "username",
-                username
-            );
-
-
-            /* User role */
-
-            sessionStorage.setItem(
-                "userRole",
-                user.role
-            );
-
-
-            /* Department */
-
-            sessionStorage.setItem(
-                "department",
-                user.department
-            );
-
-
-            /* Compatibility with existing ESH dashboard */
-
-            if (user.role === "ESH") {
-
-                sessionStorage.setItem(
-                    "eshLoggedIn",
-                    "true"
+                showError(
+                    "Please enter your password."
                 );
+
+                return;
 
             }
 
 
-            /* Open dashboard */
+            /* ---------------------------------------------
+               API URL CHECK
+            --------------------------------------------- */
 
-            window.location.href =
-                "esh.html";
+            if (
+                GOOGLE_SCRIPT_URL
+                    .indexOf(
+                        "/exec"
+                    ) === -1
+            ) {
+
+                showError(
+                    "Google Apps Script API URL is not configured."
+                );
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               LOADING
+            --------------------------------------------- */
+
+            loginButton
+                .classList
+                .add(
+                    "loading"
+                );
+
+
+            loginButton.textContent =
+                "AUTHENTICATING...";
+
+
+            try {
+
+
+                /* -----------------------------------------
+                   SEND LOGIN TO GOOGLE APPS SCRIPT
+                ----------------------------------------- */
+
+                const response =
+                    await fetch(
+                        GOOGLE_SCRIPT_URL,
+                        {
+
+                            method:
+                                "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "text/plain;charset=utf-8"
+
+                            },
+
+                            body:
+                                JSON.stringify({
+
+                                    action:
+                                        "login",
+
+                                    username:
+                                        username,
+
+                                    password:
+                                        password
+
+                                })
+
+                        }
+                    );
+
+
+                /* -----------------------------------------
+                   CHECK HTTP RESPONSE
+                ----------------------------------------- */
+
+                if (
+                    !response.ok
+                ) {
+
+                    throw new Error(
+                        "Server returned HTTP " +
+                        response.status
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   READ JSON
+                ----------------------------------------- */
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "LOGIN RESPONSE:",
+                    data
+                );
+
+
+                /* -----------------------------------------
+                   LOGIN FAILED
+                ----------------------------------------- */
+
+                if (
+                    !data.success
+                ) {
+
+                    showError(
+                        data.message ||
+                        "Invalid username or password."
+                    );
+
+
+                    loginButton
+                        .classList
+                        .remove(
+                            "loading"
+                        );
+
+
+                    loginButton.textContent =
+                        "SIGN IN TO ESH";
+
+
+                    return;
+
+                }
+
+
+                /* -----------------------------------------
+                   LOGIN SUCCESS
+                ----------------------------------------- */
+
+                sessionStorage.clear();
+
+
+                /* Login status */
+
+                sessionStorage.setItem(
+                    "loggedIn",
+                    "true"
+                );
+
+
+                /* Username */
+
+                sessionStorage.setItem(
+                    "username",
+                    data.username ||
+                    username
+                );
+
+
+                /* Role */
+
+                sessionStorage.setItem(
+                    "userRole",
+                    data.role ||
+                    ""
+                );
+
+
+                /* Department */
+
+                sessionStorage.setItem(
+                    "department",
+                    data.department ||
+                    ""
+                );
+
+
+                /* -----------------------------------------
+                   COMPATIBILITY WITH EXISTING DASHBOARD
+                ----------------------------------------- */
+
+                if (
+                    data.role ===
+                    "ESH"
+                ) {
+
+                    sessionStorage.setItem(
+                        "eshLoggedIn",
+                        "true"
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   SUCCESS MESSAGE
+                ----------------------------------------- */
+
+                showSuccess(
+                    "Login successful. Opening ESH system..."
+                );
+
+
+                loginButton.textContent =
+                    "ACCESS GRANTED";
+
+
+                /* -----------------------------------------
+                   OPEN DASHBOARD
+                ----------------------------------------- */
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "esh.html";
+
+                    },
+                    700
+                );
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    "LOGIN ERROR:",
+                    error
+                );
+
+
+                showError(
+                    "Unable to connect to the ESH server. Please try again."
+                );
+
+
+                loginButton
+                    .classList
+                    .remove(
+                        "loading"
+                    );
+
+
+                loginButton.textContent =
+                    "SIGN IN TO ESH";
+
+            }
 
         }
     );
 
 </script>
 
+
 </body>
+
 </html>
