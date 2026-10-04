@@ -3007,6 +3007,93 @@ input[type="date"]:disabled{
 
 </section>
 
+<!-- =========================================================
+     ARCHIVE CASES SECTION
+========================================================= -->
+
+<section
+    class="section"
+    id="archiveCases"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-title">
+                Archive Cases
+            </div>
+
+            <div class="section-subtitle">
+                Closed cases moved to archive
+            </div>
+
+        </div>
+
+        <div
+            class="archive-count"
+            id="archiveCasesCount"
+        >
+            0 ARCHIVED
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+        <div class="search">
+
+            <input
+                type="text"
+                id="archiveSearchInput"
+                placeholder="Search archived report, location, department..."
+                oninput="renderArchiveReports()"
+            >
+
+        </div>
+
+
+        <button
+            class="btn"
+            type="button"
+            onclick="resetArchiveSearch()"
+        >
+            Reset
+        </button>
+
+
+        <button
+            class="btn btn-primary"
+            type="button"
+            onclick="loadReports()"
+        >
+            ↻ Refresh
+        </button>
+
+    </div>
+
+
+    <div
+        class="reports-grid"
+        id="archiveReportsGrid"
+    >
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ◌
+            </div>
+
+            <div class="empty-title">
+                Loading archived cases...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 </div>
 
