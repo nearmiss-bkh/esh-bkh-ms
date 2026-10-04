@@ -7282,8 +7282,9 @@ function loadPhotos(report){
             "ESH Evidence";
 
 
+        /* LOAD PHOTO IMMEDIATELY */
         img.loading =
-            "lazy";
+            "eager";
 
 
         img.referrerPolicy =
@@ -7532,8 +7533,9 @@ function loadCorrectiveActionPhotos(report){
             "Corrective Action Evidence";
 
 
+        /* LOAD PHOTO IMMEDIATELY */
         img.loading =
-            "lazy";
+            "eager";
 
 
         img.referrerPolicy =
@@ -7606,7 +7608,6 @@ function loadCorrectiveActionPhotos(report){
     });
 
 }
-
 
 /* =========================================================
    COMPRESS IMAGE
