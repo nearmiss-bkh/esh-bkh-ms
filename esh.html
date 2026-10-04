@@ -3646,6 +3646,10 @@ document.addEventListener(
 
 async function loadReports(){
 
+    console.log("====================================");
+    console.log("LOADING ESH REPORTS");
+    console.log("====================================");
+
     try{
 
         const response =
@@ -3670,71 +3674,115 @@ async function loadReports(){
             await response.json();
 
 
-        let allReports = [];
+        console.log(
+            "FULL API RESPONSE:",
+            data
+        );
 
 
-        if(Array.isArray(data)){
+        /* =====================================================
+           ACTIVE REPORTS
+        ===================================================== */
 
-            allReports = data;
+        if(
+            data &&
+            Array.isArray(
+                data.activeReports
+            )
+        ){
+
+            reports =
+                data.activeReports;
 
         }
 
         else if(
             data &&
-            Array.isArray(data.reports)
+            Array.isArray(
+                data.reports
+            )
         ){
 
-            allReports = data.reports;
+            /*
+             * Fallback for older Code.gs
+             */
+            reports =
+                data.reports.filter(
+                    function(report){
+
+                        return !(
+                            report &&
+                            (
+                                report.isArchived === true ||
+                                String(
+                                    report.isArchived
+                                ).toLowerCase() === "true" ||
+                                String(
+                                    report.sourceSheet || ""
+                                )
+                                .trim()
+                                .toLowerCase() === "archive"
+                            )
+                        );
+
+                    }
+                );
 
         }
 
-        else if(
+        else{
+
+            reports = [];
+
+        }
+
+
+        /* =====================================================
+           ARCHIVE REPORTS
+        ===================================================== */
+
+        if(
             data &&
-            Array.isArray(data.data)
+            Array.isArray(
+                data.archiveReports
+            )
         ){
 
-            allReports = data.data;
+            archiveReports =
+                data.archiveReports;
+
+        }
+
+        else{
+
+            archiveReports = [];
 
         }
 
 
-        /*
-         * Code.gs returns Sheet1 + Archive together and marks
-         * archived rows with isArchived/sourceSheet.
-         * Keep two separate frontend collections so Active Cases
-         * and Archive Cases never mix on the dashboard.
-         */
-        reports = allReports.filter(
-            function(report){
+        /* =====================================================
+           DEBUG
+        ===================================================== */
 
-                return !(
-                    report &&
-                    (
-                        report.isArchived === true ||
-                        String(report.isArchived).toLowerCase() === "true" ||
-                        String(report.sourceSheet || "").trim().toLowerCase() === "archive"
-                    )
-                );
+        console.log(
+            "ACTIVE REPORTS COUNT:",
+            reports.length
+        );
 
-            }
+        console.log(
+            "ARCHIVE REPORTS COUNT:",
+            archiveReports.length
+        );
+
+        console.log(
+            "ARCHIVE REPORTS DATA:",
+            archiveReports
         );
 
 
-        archiveReports = allReports.filter(
-            function(report){
-
-                return (
-                    report &&
-                    (
-                        report.isArchived === true ||
-                        String(report.isArchived).toLowerCase() === "true" ||
-                        String(report.sourceSheet || "").trim().toLowerCase() === "archive"
-                    )
-                );
-
-            }
-        );
-
+        /* =====================================================
+           UPDATE DASHBOARD
+        ===================================================== */
 
         updateDashboard();
 
@@ -3746,36 +3794,61 @@ async function loadReports(){
 
         renderAnalytics();
 
+
+        console.log(
+            "REPORT LOADING COMPLETED"
+        );
+
+        console.log(
+            "===================================="
+        );
+
     }
+
 
     catch(error){
 
-        console.error(error);
+        console.error(
+            "LOAD REPORTS ERROR:",
+            error
+        );
+
 
         reports = [];
+
         archiveReports = [];
 
-        document.getElementById(
-            "reportsGrid"
-        ).innerHTML = `
 
-            <div class="empty">
+        const reportsGrid =
+            document.getElementById(
+                "reportsGrid"
+            );
 
-                <div class="empty-icon">
-                    !
+
+        if(reportsGrid){
+
+            reportsGrid.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        !
+                    </div>
+
+                    <div class="empty-title">
+                        Unable to load reports
+                    </div>
+
+                    <p style="margin-top:8px;">
+                        Please check the Apps Script deployment.
+                    </p>
+
                 </div>
 
-                <div class="empty-title">
-                    Unable to load reports
-                </div>
+            `;
 
-                <p style="margin-top:8px;">
-                    Please check the Apps Script deployment.
-                </p>
+        }
 
-            </div>
-
-        `;
 
         renderArchiveReports();
 
