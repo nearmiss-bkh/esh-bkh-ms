@@ -3873,7 +3873,7 @@ document.addEventListener(
 
 /* =========================================================
    LOAD REPORTS
-   FIXED - PRESERVE ALL CASE DETAILS
+   ACTIVE + ARCHIVE
 ========================================================= */
 
 async function loadReports(){
@@ -3901,7 +3901,7 @@ async function loadReports(){
 
 
         /* =====================================================
-           GET REPORT ARRAY
+           GET ACTIVE REPORT ARRAY
         ===================================================== */
 
         let rawReports = [];
@@ -3914,10 +3914,21 @@ async function loadReports(){
 
         else if(
             data &&
+            Array.isArray(data.activeReports)
+        ){
+
+            rawReports =
+                data.activeReports;
+
+        }
+
+        else if(
+            data &&
             Array.isArray(data.reports)
         ){
 
-            rawReports = data.reports;
+            rawReports =
+                data.reports;
 
         }
 
@@ -3926,24 +3937,20 @@ async function loadReports(){
             Array.isArray(data.data)
         ){
 
-            rawReports = data.data;
+            rawReports =
+                data.data;
 
         }
 
 
         /* =====================================================
-           NORMALIZE REPORT DATA
-           KEEP ALL FIELDS FROM GOOGLE SHEET
+           NORMALIZE ACTIVE REPORTS
         ===================================================== */
 
         reports =
             rawReports.map(function(report){
 
                 return {
-
-                    /* ================================
-                       BASIC REPORT INFORMATION
-                    ================================= */
 
                     reportNumber:
                         report.reportNumber ||
@@ -3979,11 +3986,6 @@ async function loadReports(){
                         report.reporterName ||
                         "",
 
-
-                    /* ================================
-                       ORIGINAL PHOTOS / VIDEO
-                    ================================= */
-
                     photos:
                         report.photos ||
                         "",
@@ -3992,19 +3994,9 @@ async function loadReports(){
                         report.video ||
                         "",
 
-
-                    /* ================================
-                       STATUS
-                    ================================= */
-
                     status:
                         report.status ||
                         "New",
-
-
-                    /* ================================
-                       ESH INVESTIGATION
-                    ================================= */
 
                     investigationFindings:
                         report.investigationFindings ||
@@ -4023,11 +4015,6 @@ async function loadReports(){
                         report.eshRemarks ||
                         "",
 
-
-                    /* ================================
-                       CORRECTIVE ACTION
-                    ================================= */
-
                     correctiveAction:
                         report.correctiveAction ||
                         "",
@@ -4042,20 +4029,10 @@ async function loadReports(){
                         report.targetDate ||
                         "",
 
-
-                    /* ================================
-                       VERIFICATION
-                    ================================= */
-
                     verificationRemarks:
                         report.verificationRemarks ||
                         report.verification ||
                         "",
-
-
-                    /* ================================
-                       CLOSURE
-                    ================================= */
 
                     closedDate:
                         report.closedDate ||
@@ -4070,29 +4047,13 @@ async function loadReports(){
                         report.remarks ||
                         "",
 
-
-                    /* ================================
-                       SUBMISSION
-                    ================================= */
-
                     submittedAt:
                         report.submittedAt ||
                         "",
 
-
-                    /* ================================
-                       CORRECTIVE ACTION PHOTOS
-                    ================================= */
-
                     correctiveActionPhotos:
                         report.correctiveActionPhotos ||
                         "",
-
-
-                    /* ================================
-                       KEEP ALIASES TOO
-                       FOR EXISTING FUNCTIONS
-                    ================================= */
 
                     eshAction:
                         report.eshAction ||
@@ -4125,17 +4086,185 @@ async function loadReports(){
 
 
         /* =====================================================
+           GET ARCHIVE REPORT ARRAY
+        ===================================================== */
+
+        let rawArchiveReports = [];
+
+        if(
+            data &&
+            Array.isArray(data.archiveReports)
+        ){
+
+            rawArchiveReports =
+                data.archiveReports;
+
+        }
+
+
+        /* =====================================================
+           NORMALIZE ARCHIVE REPORTS
+        ===================================================== */
+
+        archiveReports =
+            rawArchiveReports.map(function(report){
+
+                return {
+
+                    reportNumber:
+                        report.reportNumber ||
+                        report.reportNo ||
+                        "",
+
+                    rowNumber:
+                        report.rowNumber ||
+                        "",
+
+                    dateTime:
+                        report.dateTime ||
+                        "",
+
+                    location:
+                        report.location ||
+                        "",
+
+                    department:
+                        report.department ||
+                        "",
+
+                    hazardCategory:
+                        report.hazardCategory ||
+                        report.category ||
+                        "",
+
+                    whatHappened:
+                        report.whatHappened ||
+                        "",
+
+                    reporterName:
+                        report.reporterName ||
+                        "",
+
+                    photos:
+                        report.photos ||
+                        "",
+
+                    video:
+                        report.video ||
+                        "",
+
+                    status:
+                        report.status ||
+                        "Closed",
+
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
+
+                    rootCause:
+                        report.rootCause ||
+                        "",
+
+                    eshInvestigator:
+                        report.eshInvestigator ||
+                        "",
+
+                    eshRemarks:
+                        report.eshRemarks ||
+                        "",
+
+                    correctiveAction:
+                        report.correctiveAction ||
+                        "",
+
+                    personResponsible:
+                        report.personResponsible ||
+                        report.responsiblePerson ||
+                        "",
+
+                    dueDate:
+                        report.dueDate ||
+                        report.targetDate ||
+                        "",
+
+                    verificationRemarks:
+                        report.verificationRemarks ||
+                        report.verification ||
+                        "",
+
+                    closedDate:
+                        report.closedDate ||
+                        report.completionDate ||
+                        "",
+
+                    closedBy:
+                        report.closedBy ||
+                        "",
+
+                    remarks:
+                        report.remarks ||
+                        "",
+
+                    submittedAt:
+                        report.submittedAt ||
+                        "",
+
+                    correctiveActionPhotos:
+                        report.correctiveActionPhotos ||
+                        "",
+
+                    eshAction:
+                        report.eshAction ||
+                        report.investigationFindings ||
+                        "",
+
+                    responsiblePerson:
+                        report.responsiblePerson ||
+                        report.personResponsible ||
+                        "",
+
+                    targetDate:
+                        report.targetDate ||
+                        report.dueDate ||
+                        "",
+
+                    completionDate:
+                        report.completionDate ||
+                        report.closedDate ||
+                        "",
+
+                    verification:
+                        report.verification ||
+                        report.verificationRemarks ||
+                        "",
+
+                    archivedDate:
+                        report.archivedDate ||
+                        ""
+
+                };
+
+            });
+
+
+        /* =====================================================
            DEBUG
         ===================================================== */
 
         console.log(
-            "REPORTS LOADED:",
+            "ACTIVE REPORTS LOADED:",
             reports
+        );
+
+        console.log(
+            "ARCHIVE REPORTS LOADED:",
+            archiveReports
         );
 
 
         /* =====================================================
-           UPDATE DASHBOARD
+           UPDATE ACTIVE DASHBOARD
         ===================================================== */
 
         updateDashboard();
@@ -4147,6 +4276,13 @@ async function loadReports(){
         renderAnalytics();
 
 
+        /* =====================================================
+           UPDATE ARCHIVE DASHBOARD
+        ===================================================== */
+
+        renderArchiveReports();
+
+
     }
 
     catch(error){
@@ -4156,32 +4292,65 @@ async function loadReports(){
             error
         );
 
-        document.getElementById(
-            "reportsGrid"
-        ).innerHTML = `
 
-            <div class="empty">
+        const reportsGrid =
+            document.getElementById(
+                "reportsGrid"
+            );
 
-                <div class="empty-icon">
-                    !
+        if(reportsGrid){
+
+            reportsGrid.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        !
+                    </div>
+
+                    <div class="empty-title">
+                        Unable to load reports
+                    </div>
+
+                    <p style="margin-top:8px;">
+                        Please check the Apps Script deployment.
+                    </p>
+
                 </div>
 
-                <div class="empty-title">
-                    Unable to load reports
+            `;
+
+        }
+
+
+        const archiveGrid =
+            document.getElementById(
+                "archiveReportsGrid"
+            );
+
+        if(archiveGrid){
+
+            archiveGrid.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        !
+                    </div>
+
+                    <div class="empty-title">
+                        Unable to load archived cases
+                    </div>
+
                 </div>
 
-                <p style="margin-top:8px;">
-                    Please check the Apps Script deployment.
-                </p>
+            `;
 
-            </div>
-
-        `;
+        }
 
     }
 
 }
-
 /* =========================================================
    DASHBOARD
 ========================================================= */
