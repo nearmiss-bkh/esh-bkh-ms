@@ -135,219 +135,171 @@ body{
 }
 
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
 
-.sidebar{
+<aside class="sidebar">
 
-    width:250px;
+    <!-- =====================================================
+         BRAND
+    ====================================================== -->
 
-    background:
-        linear-gradient(
-            180deg,
-            #081525 0%,
-            #102A43 55%,
-            #173B63 100%
-        );
+    <div class="brand">
 
-    border-right:
-        1px solid
-        rgba(255,255,255,.08);
+        <div class="brand-small">
+            BKH
+        </div>
 
-    box-shadow:
-        8px 0 30px
-        rgba(0,0,0,.18);
+        <div class="brand-name">
+            ESH Management
+        </div>
 
-    position:fixed;
+        <div class="brand-sub">
+            Near Miss Reporting System
+        </div>
 
-    left:0;
-    top:0;
-    bottom:0;
-
-    z-index:100;
-
-    padding:24px 16px;
-
-    overflow-y:auto;
-}
-
-.brand{
-
-    padding:
-        8px 12px
-        24px 12px;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.09);
-
-    margin-bottom:20px;
-}
-
-.brand-small{
-
-    font-size:10px;
-
-    letter-spacing:2px;
-
-    color:#8EC5FF;
-
-    font-weight:700;
-
-    margin-bottom:6px;
-}
-
-.brand-name{
-
-    font-size:18px;
-
-    font-weight:800;
-
-    color:#FFFFFF;
-
-    line-height:1.25;
-}
-
-.brand-sub{
-
-    font-size:11px;
-
-    color:#BFD0E3;
-
-    margin-top:5px;
-}
+    </div>
 
 
-/* =========================================================
-   NAV
-========================================================= */
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
 
-.nav{
+    <div class="nav">
 
-    display:flex;
+        <!-- OVERVIEW -->
 
-    flex-direction:column;
+        <button
+            type="button"
+            onclick="showSection('overview')"
+        >
+            Overview
+        </button>
 
-    gap:5px;
-}
 
-.nav button{
+        <!-- ANALYTICS -->
 
-    width:100%;
+        <button
+            type="button"
+            onclick="showSection('analytics')"
+        >
+            Analytics
+        </button>
 
-    border:none;
 
-    background:transparent;
+        <!-- ACTION CENTER -->
 
-    color:#C7D3E0;
+        <button
+            type="button"
+            onclick="showSection('actionCenter')"
+        >
+            Action Center
+        </button>
 
-    padding:
-        12px 13px;
 
-    border-radius:9px;
+        <!-- REPORTS -->
 
-    text-align:left;
+        <button
+            type="button"
+            onclick="showSection('reports')"
+        >
+            Reports
+        </button>
 
-    cursor:pointer;
 
-    font-size:13px;
+        <!-- ARCHIVE CASES -->
 
-    font-weight:600;
+        <button
+            type="button"
+            class="archive-nav"
+            onclick="showSection('archiveCases')"
+        >
+            Archive Cases
+        </button>
 
-    transition:.2s;
-}
+    </div>
 
-.nav button:hover{
 
-    background:
-        rgba(255,255,255,.07);
+    <!-- =====================================================
+         SIDEBAR FOOTER
+    ====================================================== -->
 
-    color:#FFFFFF;
-}
+    <div class="sidebar-footer">
 
-.nav button.active{
+        <div
+            class="sidebar-footer-text"
+        >
 
-    background:
-        linear-gradient(
-            135deg,
-            #2563A6,
-            #6941C6
-        );
+            ESH Management System<br>
 
-    color:#FFFFFF;
+            Bidor Kwong Heng Sdn. Bhd.
 
-    box-shadow:
-        0 6px 16px
-        rgba(0,0,0,.25);
-}
+        </div>
 
+
+        <button
+            type="button"
+            class="logout-btn"
+            onclick="logout()"
+        >
+
+            Logout
+
+        </button>
+
+    </div>
+
+</aside>
+Keep your existing sidebar CSS
+
+Your CSS that you sent earlier already works with this sidebar.
+
+Only add this small CSS at the bottom if you want Archive Cases to have a different purple highlight:
 
 /* =========================================================
-   SIDEBAR FOOTER
+   ARCHIVE NAVIGATION
 ========================================================= */
 
-.sidebar-footer{
+.nav button.archive-nav{
 
-    margin-top:30px;
-
-    padding:
-        16px 12px;
-
-    border-top:
-        1px solid
-        rgba(255,255,255,.09);
-}
-
-.sidebar-footer-text{
-
-    font-size:10px;
-
-    color:#AEBED0;
-
-    line-height:1.6;
-}
-
-.logout-btn{
-
-    width:100%;
-
-    margin-top:12px;
-
-    padding:10px;
+    margin-top:8px;
 
     border:
         1px solid
-        rgba(255,255,255,.13);
+        rgba(139,92,246,.18);
+
+    color:#D8CCFF;
 
     background:
-        rgba(255,255,255,.06);
-
-    color:#E5EDF5;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    font-size:12px;
-
-    transition:.2s;
+        rgba(139,92,246,.06);
 }
 
-.logout-btn:hover{
+
+.nav button.archive-nav:hover{
+
+    background:
+        rgba(139,92,246,.16);
+
+    color:#FFFFFF;
+
+}
+
+
+.nav button.archive-nav.active{
 
     background:
         linear-gradient(
             135deg,
-            #2563A6,
-            #6941C6
+            #6D4AC7,
+            #8B5CF6
         );
 
     color:#FFFFFF;
 
     border-color:transparent;
-}
 
+}
 
 /* =========================================================
    MAIN
