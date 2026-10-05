@@ -12,6 +12,7 @@
 
 <title>ESH Management System | Bidor Kwong Heng</title>
 
+
 <style>
 
 /* =========================================================
@@ -35,7 +36,9 @@ body{
     min-height:100%;
 }
 
+
 body{
+
     font-family:
         Inter,
         -apple-system,
@@ -45,23 +48,193 @@ body{
         Helvetica,
         sans-serif;
 
-    background:
-        linear-gradient(
-            135deg,
-            #eef4f8 0%,
-            #f7fafc 45%,
-            #e9f1f6 100%
-        );
-
     color:#17212b;
 
     min-height:100vh;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     padding:30px;
+
+    position:relative;
+
+    overflow-x:hidden;
+
+    background:
+
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(25,168,125,0.18),
+            transparent 30%
+        ),
+
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(18,108,104,0.22),
+            transparent 32%
+        ),
+
+        linear-gradient(
+            135deg,
+            #061923 0%,
+            #0a2938 40%,
+            #0c3b48 72%,
+            #071c28 100%
+        );
+}
+
+
+/* =========================================================
+   SAFETY WARNING STRIPES
+========================================================= */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.13;
+
+    background:
+
+        repeating-linear-gradient(
+            135deg,
+
+            transparent 0px,
+            transparent 80px,
+
+            rgba(255,193,7,.30) 81px,
+            rgba(255,193,7,.30) 99px,
+
+            transparent 100px,
+            transparent 180px
+        );
+
+    z-index:0;
+}
+
+
+/* =========================================================
+   INDUSTRIAL GRID
+========================================================= */
+
+body::after{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    opacity:.08;
+
+    background-image:
+
+        linear-gradient(
+            rgba(255,255,255,.20) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.20) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        55px 55px;
+
+    z-index:0;
+}
+
+
+/* =========================================================
+   BACKGROUND SAFETY SYMBOLS
+========================================================= */
+
+.safety-symbol{
+
+    position:fixed;
+
+    pointer-events:none;
+
+    user-select:none;
+
+    z-index:1;
+
+    color:
+        rgba(255,255,255,.045);
+
+    font-size:150px;
+
+    line-height:1;
+
+    filter:
+        drop-shadow(
+            0 0 20px
+            rgba(255,255,255,.03)
+        );
+}
+
+
+.symbol-one{
+
+    top:7%;
+
+    left:5%;
+
+    transform:rotate(-12deg);
+
+}
+
+
+.symbol-two{
+
+    bottom:5%;
+
+    left:8%;
+
+    font-size:120px;
+
+    transform:rotate(10deg);
+
+}
+
+
+.symbol-three{
+
+    top:12%;
+
+    right:7%;
+
+    font-size:135px;
+
+    transform:rotate(10deg);
+
+}
+
+
+.symbol-four{
+
+    bottom:8%;
+
+    right:6%;
+
+    font-size:145px;
+
+    transform:rotate(-8deg);
+
 }
 
 
@@ -71,7 +244,12 @@ body{
 
 .login-container{
 
+    position:relative;
+
+    z-index:5;
+
     width:100%;
+
     max-width:1100px;
 
     min-height:650px;
@@ -89,11 +267,16 @@ body{
     overflow:hidden;
 
     box-shadow:
-        0 25px 70px rgba(15, 35, 50, 0.15),
-        0 8px 25px rgba(15, 35, 50, 0.08);
 
-    border:1px solid rgba(255,255,255,0.8);
+        0 30px 80px
+        rgba(0,0,0,.35),
 
+        0 10px 30px
+        rgba(0,0,0,.20);
+
+    border:
+        1px solid
+        rgba(255,255,255,.80);
 }
 
 
@@ -120,6 +303,7 @@ body{
     color:#ffffff;
 
     background:
+
         linear-gradient(
             145deg,
             #0c3148 0%,
@@ -131,7 +315,9 @@ body{
 }
 
 
-/* Decorative circles */
+/* =========================================================
+   LEFT DECORATION
+========================================================= */
 
 .left-panel::before{
 
@@ -140,14 +326,16 @@ body{
     position:absolute;
 
     width:330px;
+
     height:330px;
 
     border-radius:50%;
 
     background:
-        rgba(255,255,255,0.045);
+        rgba(255,255,255,.045);
 
     top:-120px;
+
     left:-130px;
 }
 
@@ -159,15 +347,49 @@ body{
     position:absolute;
 
     width:420px;
+
     height:420px;
 
     border-radius:50%;
 
     background:
-        rgba(255,255,255,0.035);
+        rgba(255,255,255,.035);
 
     bottom:-210px;
+
     right:-180px;
+}
+
+
+/* =========================================================
+   LEFT SAFETY LINE
+========================================================= */
+
+.left-safety-line{
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:7px;
+
+    background:
+
+        repeating-linear-gradient(
+            135deg,
+
+            #f6c344 0px,
+            #f6c344 18px,
+
+            #17212b 18px,
+            #17212b 36px
+        );
+
+    opacity:.9;
 }
 
 
@@ -187,7 +409,9 @@ body{
 }
 
 
-/* Company */
+/* =========================================================
+   COMPANY NAME
+========================================================= */
 
 .company-name{
 
@@ -205,7 +429,9 @@ body{
 }
 
 
-/* System */
+/* =========================================================
+   SYSTEM NAME
+========================================================= */
 
 .system-name{
 
@@ -213,16 +439,17 @@ body{
 
     font-weight:700;
 
-    letter-spacing:0.8px;
+    letter-spacing:.8px;
 
     line-height:1.2;
 
     text-transform:uppercase;
-
 }
 
 
-/* Divider */
+/* =========================================================
+   DIVIDER
+========================================================= */
 
 .left-divider{
 
@@ -233,17 +460,18 @@ body{
     border-radius:10px;
 
     background:
-        rgba(255,255,255,0.9);
+        rgba(255,255,255,.9);
 
     margin:
-
         28px
         auto
         30px;
 }
 
 
-/* Safety quote */
+/* =========================================================
+   SAFETY QUOTE
+========================================================= */
 
 .safety-quote{
 
@@ -254,7 +482,7 @@ body{
     line-height:1.7;
 
     color:
-        rgba(255,255,255,0.92);
+        rgba(255,255,255,.92);
 
     max-width:350px;
 
@@ -337,7 +565,9 @@ body{
     background:#19a87d;
 
     box-shadow:
-        0 0 0 5px rgba(25,168,125,0.10);
+
+        0 0 0 5px
+        rgba(25,168,125,.10);
 }
 
 
@@ -363,7 +593,7 @@ body{
 
     margin-bottom:9px;
 
-    letter-spacing:0.2px;
+    letter-spacing:.2px;
 }
 
 
@@ -381,7 +611,9 @@ body{
 
     height:54px;
 
-    border:1px solid #d8e1e7;
+    border:
+        1px solid
+        #d8e1e7;
 
     border-radius:12px;
 
@@ -398,8 +630,11 @@ body{
     outline:none;
 
     transition:
+
         border-color .2s ease,
+
         box-shadow .2s ease,
+
         background .2s ease;
 }
 
@@ -423,8 +658,9 @@ body{
     border-color:#16806f;
 
     box-shadow:
+
         0 0 0 4px
-        rgba(22,128,111,0.10);
+        rgba(22,128,111,.10);
 }
 
 
@@ -483,6 +719,7 @@ body{
     margin-top:7px;
 
     background:
+
         linear-gradient(
             135deg,
             #126c68,
@@ -500,31 +737,39 @@ body{
     cursor:pointer;
 
     box-shadow:
+
         0 8px 20px
-        rgba(13,139,118,0.20);
+        rgba(13,139,118,.20);
 
     transition:
+
         transform .2s ease,
+
         box-shadow .2s ease,
+
         filter .2s ease;
 }
 
 
 .login-button:hover{
 
-    transform:translateY(-1px);
+    transform:
+        translateY(-1px);
 
     box-shadow:
-        0 12px 25px
-        rgba(13,139,118,0.28);
 
-    filter:brightness(1.04);
+        0 12px 25px
+        rgba(13,139,118,.28);
+
+    filter:
+        brightness(1.04);
 }
 
 
 .login-button:active{
 
-    transform:translateY(0);
+    transform:
+        translateY(0);
 }
 
 
@@ -548,7 +793,9 @@ body{
 
     padding-top:25px;
 
-    border-top:1px solid #e5ebef;
+    border-top:
+        1px solid
+        #e5ebef;
 }
 
 
@@ -660,7 +907,9 @@ body{
 
     background:#fff2f2;
 
-    border:1px solid #f3cccc;
+    border:
+        1px solid
+        #f3cccc;
 
     color:#b42318;
 
@@ -789,6 +1038,14 @@ body{
         font-size:27px;
     }
 
+
+    .safety-symbol{
+
+        opacity:.6;
+
+        font-size:100px;
+    }
+
 }
 
 
@@ -889,6 +1146,47 @@ body{
 <body>
 
 
+<!-- =========================================================
+     SUBTLE SAFETY SYMBOLS
+========================================================= -->
+
+<div
+    class="safety-symbol symbol-one"
+    aria-hidden="true"
+>
+    ⚠
+</div>
+
+
+<div
+    class="safety-symbol symbol-two"
+    aria-hidden="true"
+>
+    🦺
+</div>
+
+
+<div
+    class="safety-symbol symbol-three"
+    aria-hidden="true"
+>
+    ⛑
+</div>
+
+
+<div
+    class="safety-symbol symbol-four"
+    aria-hidden="true"
+>
+    ⚠
+</div>
+
+
+
+<!-- =========================================================
+     MAIN LOGIN CONTAINER
+========================================================= -->
+
 <div class="login-container">
 
 
@@ -898,7 +1196,12 @@ body{
 
     <section class="left-panel">
 
+
+        <div class="left-safety-line"></div>
+
+
         <div class="left-content">
+
 
             <div class="company-name">
                 BIDOR KWONG HENG SDN BHD
@@ -917,7 +1220,9 @@ body{
                 Safety starts with me, but protects us all.
             </div>
 
+
         </div>
+
 
     </section>
 
@@ -929,10 +1234,13 @@ body{
 
     <section class="right-panel">
 
+
         <div class="login-content">
 
 
-            <!-- HEADER -->
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
 
             <h1 class="login-title">
                 Welcome To ESH Management System
@@ -945,7 +1253,9 @@ body{
 
 
 
-            <!-- LOGIN FORM -->
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
 
             <form
                 id="loginForm"
@@ -957,6 +1267,7 @@ body{
 
                 <div class="form-group">
 
+
                     <label
                         class="form-label"
                         for="username"
@@ -964,7 +1275,9 @@ body{
                         Username
                     </label>
 
+
                     <div class="input-wrapper">
+
 
                         <input
                             type="text"
@@ -976,7 +1289,9 @@ body{
                             required
                         >
 
+
                     </div>
+
 
                 </div>
 
@@ -986,6 +1301,7 @@ body{
 
                 <div class="form-group">
 
+
                     <label
                         class="form-label"
                         for="password"
@@ -993,7 +1309,9 @@ body{
                         Password
                     </label>
 
+
                     <div class="input-wrapper">
+
 
                         <input
                             type="password"
@@ -1005,6 +1323,7 @@ body{
                             required
                         >
 
+
                         <button
                             type="button"
                             class="password-toggle"
@@ -1015,13 +1334,17 @@ body{
                             Show
                         </button>
 
+
                     </div>
+
 
                 </div>
 
 
 
-                <!-- LOGIN BUTTON -->
+                <!-- =================================================
+                     LOGIN BUTTON
+                ================================================== -->
 
                 <button
                     type="submit"
@@ -1033,7 +1356,9 @@ body{
 
 
 
-                <!-- ERROR -->
+                <!-- =================================================
+                     ERROR
+                ================================================== -->
 
                 <div
                     class="error-message"
@@ -1045,67 +1370,91 @@ body{
 
 
 
-            <!-- SECURITY -->
+            <!-- =================================================
+                 SECURITY INFORMATION
+            ================================================== -->
 
             <div class="security-box">
 
 
                 <div class="authorized">
 
+
                     <div class="authorized-icon">
                         🔒
                     </div>
 
+
                     <div>
+
                         <strong>
                             Authorized personnel only
                         </strong>
+
                     </div>
 
+
                 </div>
+
 
 
                 <div class="security-description">
+
                     Access is monitored and protected by the
                     ESH Management System.
+
                 </div>
 
 
 
-                <!-- FOOTER -->
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
 
                 <div class="login-footer">
+
 
                     <strong>
                         BIDOR KWONG HENG
                     </strong>
 
+
                     <span class="footer-separator">
                         •
                     </span>
+
 
                     <strong>
                         ESH DEPARTMENT
                     </strong>
 
+
                     <br>
 
+
                     Environment
+
                     <span class="footer-separator">
                         •
                     </span>
+
                     Safety
+
                     <span class="footer-separator">
                         •
                     </span>
+
                     Health.
 
+
                 </div>
+
 
             </div>
 
 
         </div>
+
 
     </section>
 
@@ -1125,11 +1474,14 @@ function togglePassword(){
     const password =
         document.getElementById("password");
 
+
     const toggle =
         document.getElementById("passwordToggle");
 
 
-    if(password.type === "password"){
+    if(
+        password.type === "password"
+    ){
 
         password.type = "text";
 
@@ -1140,7 +1492,9 @@ function togglePassword(){
             "Hide password"
         );
 
-    }else{
+    }
+
+    else{
 
         password.type = "password";
 
@@ -1166,46 +1520,48 @@ function handleLogin(event){
 
 
     /*
-       =====================================================
-       IMPORTANT
+    =========================================================
+    IMPORTANT
 
-       KEEP YOUR EXISTING LOGIN / AUTHENTICATION CODE HERE.
+    KEEP YOUR EXISTING LOGIN / AUTHENTICATION CODE HERE.
 
-       Example:
+    This section only provides the display framework.
 
-       const username =
-           document.getElementById("username").value.trim();
+    If your current ESH system already has a working
+    authentication function, replace this function with
+    your existing authentication code.
 
-       const password =
-           document.getElementById("password").value;
-
-       Then use your existing authentication logic.
-
-       DO NOT replace your existing authentication system
-       with this example unless your current system does
-       not already have one.
-       =====================================================
+    =========================================================
     */
 
 
     const username =
-        document.getElementById("username")
-        .value
-        .trim();
+        document
+            .getElementById("username")
+            .value
+            .trim();
+
 
     const password =
-        document.getElementById("password")
-        .value;
+        document
+            .getElementById("password")
+            .value;
 
 
     /*
-       Temporary placeholder.
+    =========================================================
+    TEMPORARY VALIDATION
 
-       REMOVE this section if your existing login
-       authentication is already connected.
+    This only checks that both fields contain information.
+
+    Your existing authentication system should remain here.
+    =========================================================
     */
 
-    if(!username || !password){
+    if(
+        !username ||
+        !password
+    ){
 
         showLoginError(
             "Please enter your username and password."
@@ -1216,9 +1572,9 @@ function handleLogin(event){
 
 
     /*
-       -----------------------------------------------------
-       Your existing login code should continue from here.
-       -----------------------------------------------------
+    =========================================================
+    YOUR EXISTING LOGIN CODE SHOULD CONTINUE HERE.
+    =========================================================
     */
 
 }
@@ -1233,9 +1589,14 @@ function showLoginError(message){
     const error =
         document.getElementById("loginError");
 
-    error.textContent = message;
 
-    error.classList.add("show");
+    error.textContent =
+        message;
+
+
+    error.classList.add(
+        "show"
+    );
 
 }
 
@@ -1265,7 +1626,11 @@ function clearLoginError(){
     const error =
         document.getElementById("loginError");
 
-    error.classList.remove("show");
+
+    error.classList.remove(
+        "show"
+    );
+
 
     error.textContent = "";
 
