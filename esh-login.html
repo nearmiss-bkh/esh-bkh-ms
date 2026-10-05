@@ -921,8 +921,6 @@ body{
 
     overflow:hidden;
 
-    /* DARK BLUE + RED */
-
     background:
 
         radial-gradient(
@@ -1036,6 +1034,37 @@ body{
 }
 
 
+/* =========================================================
+   COMPANY LOGO
+========================================================= */
+
+.company-logo{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+
+    display:block;
+
+    margin:
+        0 auto 24px;
+
+    filter:
+
+        drop-shadow(
+            0 8px 18px
+            rgba(0,0,0,.35)
+        );
+
+}
+
+
+/* =========================================================
+   COMPANY NAME
+========================================================= */
+
 .company-name{
 
     font-size:24px;
@@ -1053,6 +1082,10 @@ body{
 }
 
 
+/* =========================================================
+   SYSTEM NAME
+========================================================= */
+
 .system-name{
 
     font-size:34px;
@@ -1067,6 +1100,10 @@ body{
 
 }
 
+
+/* =========================================================
+   DIVIDER
+========================================================= */
 
 .left-divider{
 
@@ -1093,6 +1130,10 @@ body{
 
 }
 
+
+/* =========================================================
+   SAFETY QUOTE
+========================================================= */
 
 .safety-quote{
 
@@ -1592,7 +1633,18 @@ body{
 
         padding:45px 30px;
 
-        min-height:300px;
+        min-height:350px;
+
+    }
+
+
+    .company-logo{
+
+        width:95px;
+
+        height:95px;
+
+        margin-bottom:20px;
 
     }
 
@@ -1654,7 +1706,18 @@ body{
 
         padding:38px 20px;
 
-        min-height:270px;
+        min-height:310px;
+
+    }
+
+
+    .company-logo{
+
+        width:80px;
+
+        height:80px;
+
+        margin-bottom:17px;
 
     }
 
@@ -1890,12 +1953,25 @@ body{
         <div class="left-content">
 
 
+            <!-- COMPANY LOGO -->
+
+            <img
+                src="logo.png"
+                alt="Bidor Kwong Heng Logo"
+                class="company-logo"
+            >
+
+
+            <!-- COMPANY NAME -->
+
             <div class="company-name">
 
                 BIDOR KWONG HENG SDN BHD
 
             </div>
 
+
+            <!-- SYSTEM NAME -->
 
             <div class="system-name">
 
