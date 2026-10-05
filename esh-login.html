@@ -13,13 +13,13 @@ content="width=device-width, initial-scale=1.0"
 >
 
 <title>
-    ESH Secure Access | Safety Management System
+    ESH Management System | Secure Access
 </title>
 
 <style>
 
 /* =========================================================
-   RESET
+   GLOBAL RESET
 ========================================================= */
 
 *{
@@ -28,42 +28,161 @@ content="width=device-width, initial-scale=1.0"
     padding:0;
 }
 
-
-/* =========================================================
-   BODY
-========================================================= */
+html{
+    min-height:100%;
+}
 
 body{
 
+    min-height:100vh;
+
     font-family:
+        Inter,
+        "Segoe UI",
         Arial,
         Helvetica,
         sans-serif;
 
-    min-height:100vh;
+    color:#ffffff;
+
+    background:
+        #06111d;
+
+    overflow-x:hidden;
+
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.background{
+
+    position:fixed;
+
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+
+    z-index:0;
+
+}
+
+
+.background::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
 
     background:
 
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(0,210,255,0.16),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 85% 85%,
-            rgba(0,255,180,0.12),
-            transparent 30%
+        linear-gradient(
+            135deg,
+            rgba(0,204,255,0.035),
+            transparent 35%
         ),
 
         linear-gradient(
-            135deg,
-            #020814,
-            #061525 52%,
-            #03242b
+            315deg,
+            rgba(0,255,180,0.025),
+            transparent 40%
         );
 
-    color:#ffffff;
+}
+
+
+.grid{
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+        linear-gradient(
+            rgba(255,255,255,0.018) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.018) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        55px 55px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            black,
+            transparent 90%
+        );
+
+}
+
+
+.orb{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(90px);
+
+}
+
+
+.orb.one{
+
+    width:500px;
+
+    height:500px;
+
+    top:-250px;
+
+    left:-180px;
+
+    background:
+        rgba(0,174,255,0.09);
+
+}
+
+
+.orb.two{
+
+    width:450px;
+
+    height:450px;
+
+    bottom:-260px;
+
+    right:-180px;
+
+    background:
+        rgba(0,255,170,0.065);
+
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page{
+
+    position:relative;
+
+    z-index:2;
+
+    min-height:100vh;
 
     display:flex;
 
@@ -71,52 +190,91 @@ body{
 
     justify-content:center;
 
-    overflow-x:hidden;
-
-    padding:30px 15px;
+    padding:35px;
 
 }
 
 
 /* =========================================================
-   BACKGROUND GRID
+   MAIN SHELL
 ========================================================= */
 
-body::before{
+.shell{
+
+    width:100%;
+
+    max-width:1120px;
+
+    min-height:650px;
+
+    display:grid;
+
+    grid-template-columns:
+        1.08fr
+        0.92fr;
+
+    background:
+        rgba(7,20,34,0.88);
+
+    border:
+        1px solid
+        rgba(132,196,220,0.16);
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    box-shadow:
+
+        0 40px 100px
+        rgba(0,0,0,0.55),
+
+        0 0 0 1px
+        rgba(255,255,255,0.015);
+
+    backdrop-filter:
+        blur(25px);
+
+}
+
+
+/* =========================================================
+   LEFT PANEL
+========================================================= */
+
+.brand-panel{
+
+    position:relative;
+
+    padding:
+        55px 55px 45px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(10,35,55,0.95),
+            rgba(5,24,39,0.90)
+        );
+
+    border-right:
+        1px solid
+        rgba(130,195,220,0.10);
+
+}
+
+
+.brand-panel::after{
 
     content:"";
 
-    position:fixed;
-
-    inset:0;
-
-    background-image:
-
-        linear-gradient(
-            rgba(255,255,255,0.025) 1px,
-            transparent 1px
-        ),
-
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,0.025) 1px,
-            transparent 1px
-        );
-
-    background-size:45px 45px;
-
-    pointer-events:none;
-
-}
-
-
-/* =========================================================
-   DECORATIVE GLOW
-========================================================= */
-
-.glow{
-
-    position:fixed;
+    position:absolute;
 
     width:420px;
 
@@ -124,55 +282,24 @@ body::before{
 
     border-radius:50%;
 
-    background:
-        rgba(0,200,255,0.08);
+    top:-180px;
 
-    filter:
-        blur(90px);
-
-    top:-150px;
-
-    left:-140px;
-
-    pointer-events:none;
-
-}
-
-
-.glow2{
-
-    position:fixed;
-
-    width:380px;
-
-    height:380px;
-
-    border-radius:50%;
+    right:-190px;
 
     background:
-        rgba(0,255,170,0.07);
+        rgba(0,190,255,0.055);
 
     filter:
-        blur(90px);
-
-    bottom:-150px;
-
-    right:-140px;
-
-    pointer-events:none;
+        blur(20px);
 
 }
 
 
 /* =========================================================
-   MAIN CONTAINER
+   BRAND HEADER
 ========================================================= */
 
-.container{
-
-    width:100%;
-
-    max-width:470px;
+.brand-header{
 
     position:relative;
 
@@ -181,45 +308,15 @@ body::before{
 }
 
 
-/* =========================================================
-   BRANDING
-========================================================= */
+/* LOGO */
 
-.logo-area{
+.logo{
 
-    text-align:center;
+    width:78px;
 
-    margin-bottom:24px;
+    height:78px;
 
-}
-
-
-/* =========================================================
-   ESH LOGO
-========================================================= */
-
-.esh-mark{
-
-    width:82px;
-
-    height:82px;
-
-    margin:
-        0 auto 17px;
-
-    border-radius:24px;
-
-    background:
-
-        linear-gradient(
-            145deg,
-            rgba(0,220,255,0.22),
-            rgba(0,105,255,0.15)
-        );
-
-    border:
-        1px solid
-        rgba(0,220,255,0.40);
+    border-radius:22px;
 
     display:flex;
 
@@ -229,33 +326,44 @@ body::before{
 
     position:relative;
 
+    margin-bottom:27px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(0,215,255,0.22),
+            rgba(0,104,255,0.10)
+        );
+
+    border:
+        1px solid
+        rgba(0,218,255,0.36);
+
     box-shadow:
 
-        0 0 35px
-        rgba(0,210,255,0.15),
+        0 15px 35px
+        rgba(0,170,255,0.10),
 
         inset 0 1px 0
-        rgba(255,255,255,0.12);
+        rgba(255,255,255,0.10);
 
 }
 
 
-/* INNER SHIELD */
-
-.esh-mark::before{
+.logo::before{
 
     content:"";
 
     position:absolute;
 
-    width:48px;
+    width:42px;
 
-    height:54px;
+    height:49px;
 
     border:
-
         2px solid
-        rgba(0,220,255,0.65);
+        rgba(0,220,255,0.68);
 
     clip-path:
         polygon(
@@ -270,21 +378,17 @@ body::before{
 }
 
 
-/* ESH TEXT */
-
-.esh-mark span{
-
-    font-size:17px;
-
-    font-weight:900;
-
-    letter-spacing:1.5px;
-
-    color:#ffffff;
+.logo span{
 
     position:relative;
 
     z-index:2;
+
+    font-size:15px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
 
 }
 
@@ -293,172 +397,472 @@ body::before{
 
 .company{
 
-    font-size:12px;
+    font-size:11px;
 
     font-weight:800;
 
-    letter-spacing:3.5px;
+    letter-spacing:3px;
 
-    color:#9db5c7;
+    color:#6e91a7;
 
-    margin-bottom:9px;
-
-}
-
-
-/* MAIN TITLE */
-
-.title{
-
-    font-size:27px;
-
-    font-weight:900;
-
-    letter-spacing:0.8px;
-
-    line-height:1.2;
+    margin-bottom:12px;
 
 }
 
 
-/* SUBTITLE */
+/* MAIN HEADING */
 
-.subtitle{
+.brand-title{
 
-    color:#7894a8;
+    max-width:520px;
 
-    font-size:12px;
+    font-size:
+        clamp(32px,4vw,48px);
 
-    margin-top:9px;
+    line-height:1.08;
 
-    letter-spacing:0.3px;
+    font-weight:800;
+
+    letter-spacing:-1.2px;
+
+}
+
+
+.brand-title span{
+
+    color:#00d6ff;
+
+}
+
+
+/* DESCRIPTION */
+
+.brand-description{
+
+    max-width:500px;
+
+    margin-top:19px;
+
+    color:#7895a8;
+
+    font-size:14px;
+
+    line-height:1.8;
 
 }
 
 
 /* =========================================================
-   LOGIN CARD
+   SYSTEM FEATURES
 ========================================================= */
 
-.card{
+.features{
 
-    background:
+    position:relative;
 
-        linear-gradient(
-            145deg,
-            rgba(11,31,50,0.91),
-            rgba(5,19,32,0.88)
-        );
+    z-index:2;
 
-    border:
+    display:grid;
 
-        1px solid
-        rgba(94,195,225,0.22);
+    grid-template-columns:
+        repeat(2,1fr);
 
-    border-radius:24px;
+    gap:12px;
+
+    margin-top:34px;
+
+}
+
+
+.feature{
 
     padding:
-        32px 31px 28px;
+        15px 16px;
 
-    box-shadow:
+    border:
+        1px solid
+        rgba(126,191,214,0.10);
 
-        0 30px 80px
-        rgba(0,0,0,0.50),
+    border-radius:14px;
 
-        inset 0 1px 0
-        rgba(255,255,255,0.05);
-
-    backdrop-filter:
-        blur(20px);
+    background:
+        rgba(255,255,255,0.025);
 
 }
 
 
-/* =========================================================
-   TOP SECURITY STATUS
-========================================================= */
+.feature-icon{
 
-.access{
+    width:30px;
+
+    height:30px;
+
+    border-radius:9px;
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
+    justify-content:center;
 
-    margin-bottom:25px;
+    margin-bottom:10px;
 
-    color:#73ffd2;
+    background:
+        rgba(0,205,255,0.08);
 
-    font-size:10px;
+    color:#00d5ff;
 
-    font-weight:800;
-
-    letter-spacing:1.7px;
+    font-size:14px;
 
 }
 
 
-/* STATUS DOT */
+.feature-title{
 
-.status-dot{
+    font-size:11px;
 
-    width:9px;
+    font-weight:800;
 
-    height:9px;
+    letter-spacing:0.4px;
+
+    color:#c0d1dc;
+
+}
+
+
+.feature-text{
+
+    margin-top:4px;
+
+    color:#607d90;
+
+    font-size:10px;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================================================
+   LEFT FOOTER
+========================================================= */
+
+.brand-footer{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-top:35px;
+
+    padding-top:18px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.055);
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.brand-footer-text{
+
+    color:#526f82;
+
+    font-size:9px;
+
+    line-height:1.6;
+
+}
+
+
+.brand-footer-text strong{
+
+    color:#718c9d;
+
+}
+
+
+/* SYSTEM STATUS */
+
+.system-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:
+        7px 11px;
+
+    border-radius:20px;
+
+    background:
+        rgba(0,220,160,0.045);
+
+    border:
+        1px solid
+        rgba(0,220,160,0.12);
+
+    color:#6de3bf;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:0.7px;
+
+    white-space:nowrap;
+
+}
+
+
+.system-status-dot{
+
+    width:7px;
+
+    height:7px;
 
     border-radius:50%;
 
     background:#00e6a0;
 
     box-shadow:
-
-        0 0 12px
-        #00e6a0,
-
-        0 0 24px
-        rgba(0,230,160,0.35);
+        0 0 10px
+        rgba(0,230,160,0.8);
 
 }
 
 
 /* =========================================================
-   FORM LABEL
+   RIGHT LOGIN PANEL
 ========================================================= */
+
+.login-panel{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:
+        55px 58px;
+
+    background:
+        rgba(3,13,24,0.48);
+
+}
+
+
+.login-content{
+
+    width:100%;
+
+    max-width:365px;
+
+}
+
+
+/* =========================================================
+   LOGIN HEADER
+========================================================= */
+
+.login-header{
+
+    margin-bottom:30px;
+
+}
+
+
+.login-eyebrow{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#00d7ff;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:1.7px;
+
+    margin-bottom:13px;
+
+}
+
+
+.login-eyebrow-line{
+
+    width:20px;
+
+    height:1px;
+
+    background:#00cfff;
+
+}
+
+
+.login-title{
+
+    font-size:29px;
+
+    font-weight:800;
+
+    letter-spacing:-0.5px;
+
+}
+
+
+.login-subtitle{
+
+    margin-top:8px;
+
+    color:#637f91;
+
+    font-size:12px;
+
+    line-height:1.6;
+
+}
+
+
+/* =========================================================
+   LOGIN STATUS
+========================================================= */
+
+.secure-status{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        11px 13px;
+
+    margin-bottom:24px;
+
+    border:
+        1px solid
+        rgba(104,190,215,0.10);
+
+    border-radius:11px;
+
+    background:
+        rgba(255,255,255,0.022);
+
+}
+
+
+.secure-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    color:#7d9aaa;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:0.8px;
+
+}
+
+
+.secure-icon{
+
+    color:#00dfa7;
+
+    font-size:12px;
+
+}
+
+
+.secure-class{
+
+    color:#4f7185;
+
+    font-size:8px;
+
+    font-weight:800;
+
+    letter-spacing:0.8px;
+
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group{
+
+    margin-bottom:20px;
+
+}
+
 
 label{
 
     display:block;
 
-    color:#a9bfce;
+    margin-bottom:8px;
 
-    font-size:11px;
+    color:#9db5c4;
+
+    font-size:10px;
 
     font-weight:800;
 
-    margin-bottom:8px;
-
-    letter-spacing:0.9px;
+    letter-spacing:1px;
 
 }
 
 
-/* =========================================================
-   INPUT GROUP
-========================================================= */
-
-.input-group{
+.input-wrapper{
 
     position:relative;
 
-    margin-bottom:19px;
-
 }
 
 
-/* =========================================================
-   INPUT
-========================================================= */
+.input-icon{
+
+    position:absolute;
+
+    left:16px;
+
+    top:50%;
+
+    transform:
+        translateY(-50%);
+
+    color:#557589;
+
+    font-size:13px;
+
+    pointer-events:none;
+
+}
+
 
 input{
 
@@ -467,134 +871,115 @@ input{
     height:54px;
 
     padding:
-        0 17px;
-
-    border-radius:13px;
+        0 16px 0 43px;
 
     border:
         1px solid
-        rgba(145,190,212,0.18);
+        rgba(130,180,201,0.14);
 
-    background:
-        rgba(255,255,255,0.045);
-
-    color:#ffffff;
+    border-radius:12px;
 
     outline:none;
 
-    font-size:14px;
+    background:
+        rgba(255,255,255,0.035);
+
+    color:#ffffff;
+
+    font-size:13px;
 
     transition:
-        border-color 0.25s,
-        background 0.25s,
-        box-shadow 0.25s,
-        transform 0.25s;
+        0.2s;
 
 }
 
-
-/* INPUT HOVER */
 
 input:hover{
 
     border-color:
-        rgba(0,207,255,0.30);
+        rgba(0,207,255,0.24);
 
 }
 
-
-/* INPUT FOCUS */
 
 input:focus{
 
     border-color:
-        #00cfff;
+        rgba(0,211,255,0.70);
 
     background:
-        rgba(255,255,255,0.065);
+        rgba(0,207,255,0.035);
 
     box-shadow:
-
         0 0 0 3px
-        rgba(0,207,255,0.08),
-
-        0 5px 20px
-        rgba(0,150,255,0.06);
+        rgba(0,207,255,0.055);
 
 }
 
-
-/* PLACEHOLDER */
 
 input::placeholder{
 
-    color:#536c7d;
+    color:#456276;
 
 }
 
 
-/* =========================================================
-   PASSWORD
-========================================================= */
+/* PASSWORD */
 
-.password-wrap input{
+.password-wrapper input{
 
     padding-right:65px;
 
 }
 
 
-/* SHOW PASSWORD */
-
 .show-password{
 
     position:absolute;
 
-    right:12px;
+    right:9px;
 
     top:50%;
 
     transform:
         translateY(-50%);
 
-    min-width:48px;
+    height:34px;
 
-    height:32px;
+    min-width:45px;
 
     border:none;
 
     border-radius:8px;
 
     background:
-        rgba(0,207,255,0.07);
+        transparent;
 
-    color:#7895a8;
+    color:#59798b;
 
     cursor:pointer;
 
-    font-size:10px;
+    font-size:9px;
 
     font-weight:800;
 
     letter-spacing:0.5px;
-
-    transition:0.2s;
 
 }
 
 
 .show-password:hover{
 
-    color:#00cfff;
+    color:#00d5ff;
 
     background:
-        rgba(0,207,255,0.14);
+        rgba(0,207,255,0.07);
 
 }
 
 
 /* =========================================================
-   LOGIN BUTTON
+   SIGN IN BUTTON
 ========================================================= */
 
 .login-btn{
@@ -603,39 +988,37 @@ input::placeholder{
 
     height:55px;
 
-    margin-top:4px;
+    margin-top:3px;
 
     border:none;
 
-    border-radius:13px;
+    border-radius:12px;
+
+    cursor:pointer;
 
     background:
 
         linear-gradient(
             135deg,
-            #00d4ff,
-            #0078ff
+            #00cfff,
+            #0075ff
         );
 
     color:#ffffff;
 
-    font-size:13px;
+    font-size:11px;
 
     font-weight:900;
 
-    letter-spacing:1.1px;
-
-    cursor:pointer;
+    letter-spacing:1.2px;
 
     box-shadow:
 
         0 12px 28px
-        rgba(0,150,255,0.22);
+        rgba(0,130,255,0.18);
 
     transition:
-        transform 0.2s,
-        box-shadow 0.2s,
-        opacity 0.2s;
+        0.22s;
 
 }
 
@@ -648,7 +1031,7 @@ input::placeholder{
     box-shadow:
 
         0 17px 35px
-        rgba(0,170,255,0.32);
+        rgba(0,150,255,0.27);
 
 }
 
@@ -673,65 +1056,54 @@ input::placeholder{
 
 
 /* =========================================================
-   ERROR
+   MESSAGES
 ========================================================= */
 
-.error{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:12px 13px;
-
-    border-radius:10px;
-
-    background:
-        rgba(255,60,80,0.08);
-
-    border:
-        1px solid
-        rgba(255,80,100,0.22);
-
-    color:#ff8290;
-
-    text-align:center;
-
-    font-size:11px;
-
-    line-height:1.4;
-
-}
-
-
-/* =========================================================
-   SUCCESS
-========================================================= */
-
+.error,
 .success{
 
     display:none;
 
-    margin-top:15px;
+    margin-top:14px;
 
-    padding:12px 13px;
+    padding:
+        11px 12px;
 
-    border-radius:10px;
+    border-radius:9px;
 
-    background:
-        rgba(0,230,160,0.08);
-
-    border:
-        1px solid
-        rgba(0,230,160,0.22);
-
-    color:#6fffd2;
+    font-size:10px;
 
     text-align:center;
 
-    font-size:11px;
+    line-height:1.5;
 
-    line-height:1.4;
+}
+
+
+.error{
+
+    color:#ff8794;
+
+    background:
+        rgba(255,60,80,0.06);
+
+    border:
+        1px solid
+        rgba(255,80,100,0.16);
+
+}
+
+
+.success{
+
+    color:#70f0c9;
+
+    background:
+        rgba(0,230,160,0.055);
+
+    border:
+        1px solid
+        rgba(0,230,160,0.15);
 
 }
 
@@ -742,95 +1114,106 @@ input::placeholder{
 
 .security{
 
-    margin-top:21px;
+    margin-top:27px;
 
     padding-top:18px;
 
     border-top:
         1px solid
-        rgba(255,255,255,0.06);
+        rgba(255,255,255,0.055);
 
     text-align:center;
 
-    color:#536d7f;
-
-    font-size:10px;
-
-    line-height:1.7;
-
 }
 
 
-.security strong{
+.security-main{
 
-    color:#7893a4;
-
-    letter-spacing:0.5px;
-
-}
-
-
-/* SECURITY BADGE */
-
-.security-badge{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:7px;
-
-    margin-bottom:4px;
-
-    padding:
-        5px 10px;
-
-    border-radius:20px;
-
-    background:
-        rgba(0,230,160,0.055);
-
-    border:
-        1px solid
-        rgba(0,230,160,0.12);
-
-    color:#6fdab9;
+    color:#647f90;
 
     font-size:9px;
 
-    font-weight:800;
+    font-weight:700;
 
-    letter-spacing:0.8px;
+    letter-spacing:0.4px;
+
+}
+
+
+.security-sub{
+
+    margin-top:5px;
+
+    color:#405d6e;
+
+    font-size:8px;
 
 }
 
 
 /* =========================================================
-   FOOTER
+   LOGIN FOOTER
 ========================================================= */
 
-.footer{
+.login-footer{
+
+    margin-top:22px;
 
     text-align:center;
 
-    margin-top:19px;
+    color:#3f5b6b;
 
-    color:#50697a;
+    font-size:8px;
 
-    font-size:9px;
-
-    line-height:1.7;
+    line-height:1.6;
 
 }
 
 
-.footer strong{
+.login-footer strong{
 
-    color:#718b9d;
+    color:#607c8c;
 
-    letter-spacing:0.5px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width:900px){
+
+    .page{
+
+        padding:20px;
+
+    }
+
+
+    .shell{
+
+        grid-template-columns:1fr;
+
+        max-width:620px;
+
+    }
+
+
+    .brand-panel{
+
+        display:none;
+
+    }
+
+
+    .login-panel{
+
+        min-height:620px;
+
+        padding:
+            45px 40px;
+
+    }
 
 }
 
@@ -841,79 +1224,47 @@ input::placeholder{
 
 @media(max-width:480px){
 
-    body{
+    .page{
+
+        padding:12px;
+
+    }
+
+
+    .shell{
+
+        border-radius:21px;
+
+    }
+
+
+    .login-panel{
+
+        min-height:auto;
 
         padding:
-            22px 14px;
+            34px 21px 28px;
 
     }
 
 
-    .container{
+    .login-content{
 
-        max-width:430px;
-
-    }
-
-
-    .logo-area{
-
-        margin-bottom:19px;
+        max-width:none;
 
     }
 
 
-    .esh-mark{
+    .login-title{
 
-        width:68px;
-
-        height:68px;
-
-        border-radius:20px;
-
-        margin-bottom:13px;
+        font-size:25px;
 
     }
 
 
-    .esh-mark::before{
+    .login-header{
 
-        width:40px;
-
-        height:45px;
-
-    }
-
-
-    .title{
-
-        font-size:22px;
-
-    }
-
-
-    .subtitle{
-
-        font-size:11px;
-
-    }
-
-
-    .card{
-
-        padding:
-            27px 21px 24px;
-
-        border-radius:20px;
-
-    }
-
-
-    .company{
-
-        font-size:10px;
-
-        letter-spacing:2.5px;
+        margin-bottom:24px;
 
     }
 
@@ -940,17 +1291,17 @@ input::placeholder{
 
 @media(max-width:350px){
 
-    .title{
+    .login-panel{
 
-        font-size:20px;
+        padding:
+            28px 17px 24px;
 
     }
 
 
-    .card{
+    .login-title{
 
-        padding:
-            24px 17px;
+        font-size:23px;
 
     }
 
@@ -962,218 +1313,477 @@ input::placeholder{
 
 <body>
 
-<div class="glow"></div>
+<!-- =========================================================
+     BACKGROUND
+========================================================= -->
 
-<div class="glow2"></div>
-
-<div class="container">
+<div class="background">
 
 ```
-<!-- =====================================================
-     BRANDING
-====================================================== -->
+<div class="grid"></div>
 
-<div class="logo-area">
+<div class="orb one"></div>
 
-
-    <div class="esh-mark">
-
-        <span>
-            ESH
-        </span>
-
-    </div>
-
-
-    <div class="company">
-
-        BIDOR KWONG HENG
-
-    </div>
-
-
-    <div class="title">
-
-        ESH MANAGEMENT SYSTEM
-
-    </div>
-
-
-    <div class="subtitle">
-
-        Environment • Safety • Health Management System
-
-    </div>
-
+<div class="orb two"></div>
+```
 
 </div>
 
+<!-- =========================================================
+     PAGE
+========================================================= -->
 
-<!-- =====================================================
-     LOGIN CARD
-====================================================== -->
+<div class="page">
 
-<div class="card">
-
-
-    <div class="access">
-
-        <div class="status-dot"></div>
-
-        SECURE ESH ACCESS
-
-    </div>
+```
+<div class="shell">
 
 
-    <form id="loginForm">
+    <!-- =================================================
+         LEFT BRAND PANEL
+    ================================================== -->
+
+    <section class="brand-panel">
 
 
-        <!-- USERNAME -->
-
-        <div class="input-group">
+        <div class="brand-header">
 
 
-            <label for="username">
+            <!-- LOGO -->
 
-                USERNAME
+            <div class="logo">
 
-            </label>
+                <span>
+                    ESH
+                </span>
+
+            </div>
 
 
-            <input
-                type="text"
-                id="username"
-                placeholder="Enter username"
-                autocomplete="username"
-                required
-            >
+            <!-- COMPANY -->
+
+            <div class="company">
+
+                BIDOR KWONG HENG
+
+            </div>
+
+
+            <!-- TITLE -->
+
+            <div class="brand-title">
+
+                Environment.<br>
+
+                <span>Safety.</span><br>
+
+                Health.
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="brand-description">
+
+                A centralized management platform for
+                ESH reporting, corrective actions,
+                verification, monitoring and safety
+                performance management.
+
+            </div>
+
+
+            <!-- FEATURES -->
+
+            <div class="features">
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        ✓
+
+                    </div>
+
+                    <div class="feature-title">
+
+                        ESH CASE MANAGEMENT
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Manage reported cases and
+                        corrective actions.
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        ◈
+
+                    </div>
+
+                    <div class="feature-title">
+
+                        NEAR MISS REPORTING
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Track unsafe acts and
+                        unsafe conditions.
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        ✓
+
+                    </div>
+
+                    <div class="feature-title">
+
+                        VERIFICATION
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Monitor actions through
+                        closure and verification.
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        ▣
+
+                    </div>
+
+                    <div class="feature-title">
+
+                        ESH MONITORING
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Centralized visibility of
+                        safety performance.
+
+                    </div>
+
+                </div>
+
+
+            </div>
 
 
         </div>
 
 
-        <!-- PASSWORD -->
+        <!-- LEFT FOOTER -->
 
-        <div
-            class="input-group password-wrap"
-        >
+        <div class="brand-footer">
 
 
-            <label for="password">
+            <div class="brand-footer-text">
 
-                PASSWORD
+                <strong>
+                    ESH SAFETY MANAGEMENT SYSTEM
+                </strong>
 
-            </label>
+                <br>
 
+                Bidor Kwong Heng • ESH Department
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter password"
-                autocomplete="current-password"
-                required
-            >
+            </div>
 
 
-            <button
-                type="button"
-                class="show-password"
-                onclick="togglePassword()"
-            >
+            <div class="system-status">
 
-                SHOW
+                <div class="system-status-dot"></div>
 
-            </button>
+                SYSTEM OPERATIONAL
+
+            </div>
 
 
         </div>
 
 
-        <!-- LOGIN BUTTON -->
-
-        <button
-            type="submit"
-            class="login-btn"
-            id="loginButton"
-        >
-
-            SIGN IN TO ESH
-
-        </button>
+    </section>
 
 
-        <!-- ERROR -->
+    <!-- =================================================
+         RIGHT LOGIN PANEL
+    ================================================== -->
 
-        <div
-            id="errorMessage"
-            class="error"
-        >
+    <section class="login-panel">
 
-            Invalid username or password.
+
+        <div class="login-content">
+
+
+            <!-- LOGIN HEADER -->
+
+            <div class="login-header">
+
+
+                <div class="login-eyebrow">
+
+                    <div class="login-eyebrow-line"></div>
+
+                    SECURE ACCESS
+
+                </div>
+
+
+                <div class="login-title">
+
+                    Welcome back
+
+                </div>
+
+
+                <div class="login-subtitle">
+
+                    Sign in to access the ESH Management
+                    System and continue your work.
+
+                </div>
+
+
+            </div>
+
+
+            <!-- SECURITY STATUS -->
+
+            <div class="secure-status">
+
+
+                <div class="secure-left">
+
+                    <span class="secure-icon">
+                        ●
+                    </span>
+
+                    SECURE CONNECTION
+
+                </div>
+
+
+                <div class="secure-class">
+
+                    ESH-AUTH
+
+                </div>
+
+
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form id="loginForm">
+
+
+                <!-- USERNAME -->
+
+                <div class="form-group">
+
+
+                    <label
+                        for="username"
+                    >
+
+                        USERNAME
+
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <span class="input-icon">
+                            ◉
+                        </span>
+
+
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            required
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div
+                    class="form-group"
+                    style="margin-bottom:22px;"
+                >
+
+
+                    <label
+                        for="password"
+                    >
+
+                        PASSWORD
+
+                    </label>
+
+
+                    <div
+                        class="input-wrapper password-wrapper"
+                    >
+
+
+                        <span class="input-icon">
+                            ◆
+                        </span>
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            onclick="togglePassword()"
+                        >
+
+                            SHOW
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginButton"
+                >
+
+                    SIGN IN TO ESH
+
+                </button>
+
+
+                <!-- ERROR -->
+
+                <div
+                    id="errorMessage"
+                    class="error"
+                >
+
+                    Invalid username or password.
+
+                </div>
+
+
+                <!-- SUCCESS -->
+
+                <div
+                    id="successMessage"
+                    class="success"
+                >
+
+                    Login successful. Opening ESH system...
+
+                </div>
+
+
+            </form>
+
+
+            <!-- SECURITY -->
+
+            <div class="security">
+
+
+                <div class="security-main">
+
+                    🔒 &nbsp;
+                    Authorized personnel only
+
+                </div>
+
+
+                <div class="security-sub">
+
+                    Access is monitored and protected
+                    by the ESH Management System.
+
+                </div>
+
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="login-footer">
+
+                <strong>
+                    BIDOR KWONG HENG
+                </strong>
+
+                &nbsp;•&nbsp;
+
+                ESH DEPARTMENT
+
+                <br>
+
+                Environment • Safety • Health
+
+            </div>
+
 
         </div>
 
 
-        <!-- SUCCESS -->
-
-        <div
-            id="successMessage"
-            class="success"
-        >
-
-            Login successful. Opening ESH system...
-
-        </div>
-
-
-    </form>
-
-
-    <!-- SECURITY -->
-
-    <div class="security">
-
-        <div class="security-badge">
-
-            🔒
-            AUTHORIZED ACCESS
-
-        </div>
-
-        <br>
-
-        <strong>
-            ESH MANAGEMENT ACCESS
-        </strong>
-
-        <br>
-
-        Authorized personnel only
-
-    </div>
-
-
-</div>
-
-
-<!-- =====================================================
-     FOOTER
-====================================================== -->
-
-<div class="footer">
-
-
-    <strong>
-
-        ESH SAFETY MANAGEMENT SYSTEM
-
-    </strong>
-
-
-    <br>
-
-
-    Bidor Kwong Heng • ESH Department
+    </section>
 
 
 </div>
@@ -1551,7 +2161,7 @@ document
 
 
                 /* -----------------------------------------
-                   COMPATIBILITY WITH EXISTING DASHBOARD
+                   ESH COMPATIBILITY
                 ----------------------------------------- */
 
                 if(
@@ -1568,7 +2178,7 @@ document
 
 
                 /* -----------------------------------------
-                   SUCCESS MESSAGE
+                   SUCCESS
                 ----------------------------------------- */
 
                 showSuccess(
