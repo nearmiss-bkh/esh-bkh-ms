@@ -54,70 +54,34 @@ body{
 
     overflow-x:hidden;
 
+    /* DARK BLUE + RED */
     background:
+
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(180,20,35,.40),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 75%,
+            rgba(120,10,25,.35),
+            transparent 30%
+        ),
+
         linear-gradient(
             135deg,
-            #061923,
-            #0b3343 45%,
-            #082a35
+            #020817 0%,
+            #071a36 35%,
+            #101b38 55%,
+            #4a0712 100%
         );
 
 }
 
 
 /* =========================================================
-   SAFETY ENVIRONMENT BACKGROUND
-========================================================= */
-
-body::before{
-
-    content:"";
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:0;
-
-    background:
-
-        /* factory lights */
-
-        radial-gradient(
-            circle at 15% 25%,
-            rgba(35,180,190,.28),
-            transparent 24%
-        ),
-
-        radial-gradient(
-            circle at 82% 18%,
-            rgba(255,193,7,.18),
-            transparent 20%
-        ),
-
-        /* blue industrial glow */
-
-        radial-gradient(
-            circle at 50% 80%,
-            rgba(0,125,150,.30),
-            transparent 35%
-        ),
-
-        /* dark factory atmosphere */
-
-        linear-gradient(
-            120deg,
-            #06151d 0%,
-            #0b3040 38%,
-            #07303a 65%,
-            #041219 100%
-        );
-
-}
-
-
-/* =========================================================
-   INDUSTRIAL STRUCTURE
+   SAFETY BACKGROUND
 ========================================================= */
 
 .safety-background{
@@ -132,10 +96,40 @@ body::before{
 
     pointer-events:none;
 
+    background:
+
+        radial-gradient(
+            circle at 12% 25%,
+            rgba(220,30,45,.28),
+            transparent 24%
+        ),
+
+        radial-gradient(
+            circle at 88% 18%,
+            rgba(40,90,180,.28),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 55% 80%,
+            rgba(180,15,35,.20),
+            transparent 32%
+        ),
+
+        linear-gradient(
+            120deg,
+            #020817 0%,
+            #071a36 40%,
+            #111a35 65%,
+            #3c0712 100%
+        );
+
 }
 
 
-/* Factory roof beams */
+/* =========================================================
+   INDUSTRIAL ROOF STRUCTURE
+========================================================= */
 
 .safety-background::before{
 
@@ -144,9 +138,11 @@ body::before{
     position:absolute;
 
     width:160%;
+
     height:180px;
 
     top:0;
+
     left:-20%;
 
     background:
@@ -155,8 +151,8 @@ body::before{
             90deg,
             transparent 0,
             transparent 95px,
-            rgba(255,255,255,.06) 96px,
-            rgba(255,255,255,.06) 102px
+            rgba(255,255,255,.055) 96px,
+            rgba(255,255,255,.055) 102px
         );
 
     transform:
@@ -170,7 +166,9 @@ body::before{
 }
 
 
-/* Factory floor */
+/* =========================================================
+   INDUSTRIAL FLOOR
+========================================================= */
 
 .safety-background::after{
 
@@ -179,7 +177,9 @@ body::before{
     position:absolute;
 
     left:-10%;
+
     right:-10%;
+
     bottom:-5%;
 
     height:48%;
@@ -196,8 +196,8 @@ body::before{
 
         linear-gradient(
             180deg,
-            rgba(10,45,55,.1),
-            rgba(2,15,20,.95)
+            rgba(10,30,55,.10),
+            rgba(2,5,12,.96)
         );
 
     transform:
@@ -230,12 +230,12 @@ body::before{
         );
 
     box-shadow:
-        0 8px 18px rgba(0,0,0,.45);
+        0 8px 18px
+        rgba(0,0,0,.55);
 
     border:
-        1px solid rgba(255,255,255,.15);
-
-    transform:rotate(-4deg);
+        1px solid
+        rgba(255,255,255,.15);
 
 }
 
@@ -247,6 +247,8 @@ body::before{
     left:-50px;
 
     bottom:150px;
+
+    transform:rotate(-4deg);
 
 }
 
@@ -279,7 +281,9 @@ body::before{
 }
 
 
-/* Barricade legs */
+/* =========================================================
+   BARRICADE LEGS
+========================================================= */
 
 .barricade-leg{
 
@@ -290,6 +294,7 @@ body::before{
     height:90px;
 
     background:
+
         linear-gradient(
             90deg,
             #20282d,
@@ -298,34 +303,47 @@ body::before{
         );
 
     box-shadow:
-        0 6px 10px rgba(0,0,0,.4);
+        0 6px 10px
+        rgba(0,0,0,.45);
 
 }
 
 
 .leg1{
+
     left:100px;
+
     bottom:85px;
+
     transform:rotate(8deg);
+
 }
 
 
 .leg2{
+
     left:310px;
+
     bottom:78px;
+
     transform:rotate(8deg);
+
 }
 
 
 .leg3{
+
     right:230px;
+
     bottom:45px;
+
     transform:rotate(-8deg);
+
 }
 
 
 /* =========================================================
-   HAZARD STRIPES
+   HAZARD FLOOR
 ========================================================= */
 
 .hazard-floor{
@@ -353,7 +371,8 @@ body::before{
     opacity:.85;
 
     box-shadow:
-        0 -5px 25px rgba(0,0,0,.5);
+        0 -5px 25px
+        rgba(0,0,0,.65);
 
 }
 
@@ -367,12 +386,14 @@ body::before{
     position:absolute;
 
     width:92px;
+
     height:92px;
 
     background:#ffd400;
 
     border:
-        7px solid #111820;
+        7px solid
+        #111820;
 
     clip-path:
         polygon(
@@ -389,7 +410,8 @@ body::before{
 
     filter:
         drop-shadow(
-            0 8px 12px rgba(0,0,0,.45)
+            0 8px 12px
+            rgba(0,0,0,.55)
         );
 
 }
@@ -445,11 +467,12 @@ body::before{
 
     height:230px;
 
-    opacity:.42;
+    opacity:.45;
 
     filter:
         drop-shadow(
-            0 10px 20px rgba(0,0,0,.5)
+            0 10px 20px
+            rgba(0,0,0,.65)
         );
 
 }
@@ -465,7 +488,7 @@ body::before{
 
     border-radius:50%;
 
-    background:#091218;
+    background:#05090e;
 
     top:0;
 
@@ -502,9 +525,10 @@ body::before{
 
     height:110px;
 
-    border-radius:15px 15px 8px 8px;
+    border-radius:
+        15px 15px 8px 8px;
 
-    background:#111b21;
+    background:#080f16;
 
     top:43px;
 
@@ -526,10 +550,12 @@ body::before{
     left:26px;
 
     border-left:
-        9px solid #f5c400;
+        9px solid
+        #f5c400;
 
     border-right:
-        9px solid #f5c400;
+        9px solid
+        #f5c400;
 
 }
 
@@ -543,7 +569,7 @@ body::before{
 
     height:85px;
 
-    background:#080f13;
+    background:#05090e;
 
     top:145px;
 
@@ -553,12 +579,16 @@ body::before{
 
 
 .worker-leg-left{
+
     left:28px;
+
 }
 
 
 .worker-leg-right{
+
     right:28px;
+
 }
 
 
@@ -571,7 +601,7 @@ body::before{
 
     height:85px;
 
-    background:#080f13;
+    background:#05090e;
 
     top:55px;
 
@@ -618,7 +648,7 @@ body::before{
 
 
 /* =========================================================
-   FORKLIFT SHAPE
+   FORKLIFT
 ========================================================= */
 
 .forklift{
@@ -633,7 +663,7 @@ body::before{
 
     height:100px;
 
-    opacity:.35;
+    opacity:.38;
 
 }
 
@@ -650,10 +680,11 @@ body::before{
 
     height:65px;
 
-    background:#172329;
+    background:#101a27;
 
     border:
-        2px solid rgba(255,210,0,.7);
+        2px solid
+        rgba(255,210,0,.75);
 
     border-radius:8px;
 
@@ -672,7 +703,7 @@ body::before{
 
     height:12px;
 
-    background:#182328;
+    background:#111923;
 
 }
 
@@ -689,7 +720,7 @@ body::before{
 
     height:65px;
 
-    background:#222d32;
+    background:#2b3740;
 
 }
 
@@ -704,10 +735,11 @@ body::before{
 
     border-radius:50%;
 
-    background:#050a0d;
+    background:#05080c;
 
     border:
-        4px solid #3d4b50;
+        4px solid
+        #3d4b50;
 
     bottom:0;
 
@@ -715,12 +747,16 @@ body::before{
 
 
 .wheel-one{
+
     left:45px;
+
 }
 
 
 .wheel-two{
+
     right:20px;
+
 }
 
 
@@ -759,7 +795,7 @@ body::before{
 
 
 /* =========================================================
-   ESH INSPECTION GLOW
+   SAFETY GLOW
 ========================================================= */
 
 .esh-glow{
@@ -780,9 +816,11 @@ body::before{
     border-radius:50%;
 
     background:
+
         radial-gradient(
             circle,
-            rgba(0,170,180,.12),
+            rgba(30,70,150,.16),
+            rgba(150,10,30,.08),
             transparent 68%
         );
 
@@ -805,15 +843,15 @@ body::before{
 
         linear-gradient(
             90deg,
-            rgba(2,16,24,.60),
-            rgba(3,21,29,.25) 45%,
-            rgba(2,13,20,.62)
+            rgba(2,8,22,.64),
+            rgba(3,12,28,.28) 45%,
+            rgba(15,2,9,.68)
         ),
 
         radial-gradient(
             ellipse at center,
-            transparent 25%,
-            rgba(0,0,0,.55) 100%
+            transparent 20%,
+            rgba(0,0,0,.60) 100%
         );
 
 }
@@ -849,10 +887,10 @@ body::before{
     box-shadow:
 
         0 35px 90px
-        rgba(0,0,0,.45),
+        rgba(0,0,0,.55),
 
         0 10px 30px
-        rgba(0,0,0,.25);
+        rgba(0,0,0,.35);
 
     border:
         1px solid
@@ -883,19 +921,36 @@ body::before{
 
     overflow:hidden;
 
+    /* DARK BLUE + RED */
+
     background:
+
+        radial-gradient(
+            circle at 20% 25%,
+            rgba(20,80,180,.32),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(200,20,40,.30),
+            transparent 35%
+        ),
 
         linear-gradient(
             145deg,
-            rgba(4,35,52,.95),
-            rgba(7,81,99,.92),
-            rgba(0,116,110,.90)
+            #020b1c 0%,
+            #092653 45%,
+            #101b38 65%,
+            #680b18 100%
         );
 
 }
 
 
-/* Safety stripes behind left */
+/* =========================================================
+   LEFT SAFETY STRIPE
+========================================================= */
 
 .left-panel::before{
 
@@ -915,20 +970,23 @@ body::before{
 
         repeating-linear-gradient(
             135deg,
-            rgba(255,209,0,.9) 0,
-            rgba(255,209,0,.9) 28px,
-            rgba(10,20,24,.9) 28px,
-            rgba(10,20,24,.9) 56px
+            rgba(255,209,0,.90) 0,
+            rgba(255,209,0,.90) 28px,
+            rgba(10,20,24,.90) 28px,
+            rgba(10,20,24,.90) 56px
         );
 
-    transform:rotate(-7deg);
+    transform:
+        rotate(-7deg);
 
-    opacity:.15;
+    opacity:.13;
 
 }
 
 
-/* Safety ring */
+/* =========================================================
+   LEFT DECORATIVE CIRCLE
+========================================================= */
 
 .left-panel::after{
 
@@ -941,9 +999,8 @@ body::before{
     height:390px;
 
     border:
-
         1px solid
-        rgba(255,255,255,.15);
+        rgba(255,255,255,.12);
 
     border-radius:50%;
 
@@ -954,10 +1011,10 @@ body::before{
     box-shadow:
 
         0 0 0 60px
-        rgba(255,255,255,.025),
+        rgba(255,255,255,.02),
 
         0 0 0 120px
-        rgba(255,255,255,.018);
+        rgba(255,255,255,.015);
 
 }
 
@@ -979,56 +1036,19 @@ body::before{
 }
 
 
-.safety-badge{
-
-    width:72px;
-
-    height:72px;
-
-    margin:
-        0 auto 25px;
-
-    border-radius:18px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:35px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffd400,
-            #e9a900
-        );
-
-    color:#17212b;
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.25);
-
-    border:
-        4px solid
-        rgba(255,255,255,.75);
-
-}
-
-
 .company-name{
 
-    font-size:23px;
+    font-size:24px;
 
     font-weight:800;
 
-    letter-spacing:1.4px;
+    letter-spacing:1.5px;
 
     line-height:1.35;
 
-    margin-bottom:14px;
+    margin-bottom:15px;
+
+    text-transform:uppercase;
 
 }
 
@@ -1043,6 +1063,8 @@ body::before{
 
     line-height:1.2;
 
+    text-transform:uppercase;
+
 }
 
 
@@ -1054,10 +1076,20 @@ body::before{
 
     border-radius:10px;
 
-    background:#ffd400;
+    background:
+
+        linear-gradient(
+            90deg,
+            #1d5bd1,
+            #e3223b
+        );
 
     margin:
-        28px auto 28px;
+        28px auto 30px;
+
+    box-shadow:
+        0 0 15px
+        rgba(225,30,55,.30);
 
 }
 
@@ -1071,49 +1103,11 @@ body::before{
     line-height:1.7;
 
     color:
-        rgba(255,255,255,.92);
+        rgba(255,255,255,.93);
 
-}
+    max-width:350px;
 
-
-/* =========================================================
-   SAFETY POINTS
-========================================================= */
-
-.safety-points{
-
-    display:flex;
-
-    justify-content:center;
-
-    gap:10px;
-
-    margin-top:30px;
-
-    flex-wrap:wrap;
-
-}
-
-
-.safety-point{
-
-    padding:
-        8px 12px;
-
-    border-radius:20px;
-
-    background:
-        rgba(255,255,255,.09);
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    font-size:11px;
-
-    font-weight:700;
-
-    letter-spacing:.4px;
+    margin:0 auto;
 
 }
 
@@ -1146,6 +1140,10 @@ body::before{
 }
 
 
+/* =========================================================
+   LOGIN TITLE
+========================================================= */
+
 .login-title{
 
     font-size:31px;
@@ -1167,7 +1165,7 @@ body::before{
 
     font-weight:650;
 
-    color:#16806f;
+    color:#b21d32;
 
     display:flex;
 
@@ -1190,11 +1188,11 @@ body::before{
 
     border-radius:50%;
 
-    background:#19a87d;
+    background:#c82038;
 
     box-shadow:
         0 0 0 5px
-        rgba(25,168,125,.10);
+        rgba(200,32,56,.10);
 
 }
 
@@ -1221,6 +1219,8 @@ body::before{
     color:#344454;
 
     margin-bottom:9px;
+
+    letter-spacing:.2px;
 
 }
 
@@ -1258,7 +1258,9 @@ body::before{
     outline:none;
 
     transition:
-        .2s ease;
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
 
 }
 
@@ -1281,11 +1283,11 @@ body::before{
 
     background:#fff;
 
-    border-color:#16806f;
+    border-color:#b21d32;
 
     box-shadow:
         0 0 0 4px
-        rgba(22,128,111,.10);
+        rgba(178,29,50,.10);
 
 }
 
@@ -1320,7 +1322,7 @@ body::before{
 
 .password-toggle:hover{
 
-    color:#16806f;
+    color:#b21d32;
 
 }
 
@@ -1345,8 +1347,9 @@ body::before{
 
         linear-gradient(
             135deg,
-            #126c68,
-            #0d8b76
+            #071d46,
+            #123d82 52%,
+            #9e1429
         );
 
     color:#fff;
@@ -1355,13 +1358,22 @@ body::before{
 
     font-weight:750;
 
+    letter-spacing:.2px;
+
     cursor:pointer;
 
     box-shadow:
-        0 9px 22px
-        rgba(13,139,118,.22);
 
-    transition:.2s ease;
+        0 9px 24px
+        rgba(20,42,90,.25),
+
+        0 4px 12px
+        rgba(150,20,40,.12);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
 
 }
 
@@ -1372,8 +1384,14 @@ body::before{
         translateY(-1px);
 
     box-shadow:
+
         0 13px 28px
-        rgba(13,139,118,.30);
+        rgba(20,42,90,.30),
+
+        0 7px 18px
+        rgba(150,20,40,.18);
+
+    filter:brightness(1.05);
 
 }
 
@@ -1388,9 +1406,11 @@ body::before{
 
 .login-button:disabled{
 
+    cursor:not-allowed;
+
     opacity:.7;
 
-    cursor:not-allowed;
+    transform:none;
 
 }
 
@@ -1424,6 +1444,8 @@ body::before{
 
     font-size:13px;
 
+    line-height:1.5;
+
     margin-bottom:10px;
 
 }
@@ -1437,7 +1459,7 @@ body::before{
 
     border-radius:9px;
 
-    background:#edf8f5;
+    background:#fdf0f2;
 
     display:flex;
 
@@ -1446,6 +1468,15 @@ body::before{
     justify-content:center;
 
     font-size:15px;
+
+    flex-shrink:0;
+
+}
+
+
+.authorized strong{
+
+    font-weight:750;
 
 }
 
@@ -1465,6 +1496,8 @@ body::before{
 
 .login-footer{
 
+    text-align:left;
+
     font-size:11.5px;
 
     line-height:1.6;
@@ -1477,6 +1510,8 @@ body::before{
 .login-footer strong{
 
     color:#344454;
+
+    font-weight:750;
 
 }
 
@@ -1515,6 +1550,8 @@ body::before{
 
     font-size:13px;
 
+    line-height:1.5;
+
 }
 
 
@@ -1537,27 +1574,60 @@ body::before{
 
     }
 
+
     .login-container{
 
         grid-template-columns:1fr;
 
-        max-width:560px;
-
         min-height:auto;
 
+        max-width:560px;
+
+        border-radius:22px;
+
     }
+
 
     .left-panel{
 
-        min-height:380px;
-
         padding:45px 30px;
 
+        min-height:300px;
+
     }
+
+
+    .company-name{
+
+        font-size:19px;
+
+    }
+
+
+    .system-name{
+
+        font-size:28px;
+
+    }
+
+
+    .safety-quote{
+
+        font-size:16px;
+
+    }
+
 
     .right-panel{
 
         padding:45px 30px;
+
+    }
+
+
+    .login-title{
+
+        font-size:27px;
 
     }
 
@@ -1572,25 +1642,31 @@ body::before{
 
     }
 
+
     .login-container{
 
         border-radius:18px;
 
     }
 
-    .left-panel{
 
-        min-height:330px;
+    .left-panel{
 
         padding:38px 20px;
 
+        min-height:270px;
+
     }
+
 
     .company-name{
 
         font-size:17px;
 
+        letter-spacing:1px;
+
     }
+
 
     .system-name{
 
@@ -1598,15 +1674,21 @@ body::before{
 
     }
 
-    .safety-badge{
 
-        width:60px;
+    .left-divider{
 
-        height:60px;
-
-        font-size:28px;
+        margin:
+            22px auto;
 
     }
+
+
+    .safety-quote{
+
+        font-size:15px;
+
+    }
+
 
     .right-panel{
 
@@ -1614,9 +1696,31 @@ body::before{
 
     }
 
+
     .login-title{
 
         font-size:24px;
+
+    }
+
+
+    .login-subtitle{
+
+        margin-bottom:30px;
+
+    }
+
+
+    .form-input{
+
+        height:52px;
+
+    }
+
+
+    .login-button{
+
+        height:54px;
 
     }
 
@@ -1648,32 +1752,50 @@ body::before{
 
 
 <!-- =======================================================
-     INDUSTRIAL SAFETY BACKGROUND
+     SAFETY BACKGROUND
 ======================================================= -->
 
 <div class="safety-background">
 
+
     <div class="esh-glow"></div>
 
+
+    <!-- Safety barricades -->
+
     <div class="barricade one"></div>
+
     <div class="barricade two"></div>
+
     <div class="barricade three"></div>
 
+
+    <!-- Barricade legs -->
+
     <div class="barricade-leg leg1"></div>
+
     <div class="barricade-leg leg2"></div>
+
     <div class="barricade-leg leg3"></div>
 
 
+    <!-- Warning signs -->
+
     <div class="warning-sign warning-one">
+
         <span>!</span>
+
     </div>
+
 
     <div class="warning-sign warning-two">
+
         <span>!</span>
+
     </div>
 
 
-    <!-- WORKER 1 -->
+    <!-- Worker 1 -->
 
     <div class="worker worker-one">
 
@@ -1686,15 +1808,17 @@ body::before{
         <div class="worker-vest"></div>
 
         <div class="worker-arm-left"></div>
+
         <div class="worker-arm-right"></div>
 
         <div class="worker-leg-left"></div>
+
         <div class="worker-leg-right"></div>
 
     </div>
 
 
-    <!-- WORKER 2 -->
+    <!-- Worker 2 -->
 
     <div class="worker worker-two">
 
@@ -1707,15 +1831,17 @@ body::before{
         <div class="worker-vest"></div>
 
         <div class="worker-arm-left"></div>
+
         <div class="worker-arm-right"></div>
 
         <div class="worker-leg-left"></div>
+
         <div class="worker-leg-right"></div>
 
     </div>
 
 
-    <!-- FORKLIFT -->
+    <!-- Forklift -->
 
     <div class="forklift">
 
@@ -1726,6 +1852,7 @@ body::before{
         <div class="forklift-body"></div>
 
         <div class="forklift-wheel wheel-one"></div>
+
         <div class="forklift-wheel wheel-two"></div>
 
         <div class="fork"></div>
@@ -1733,40 +1860,47 @@ body::before{
     </div>
 
 
+    <!-- Hazard floor -->
+
     <div class="hazard-floor"></div>
+
 
 </div>
 
+
+<!-- Background overlay -->
 
 <div class="background-overlay"></div>
 
 
 <!-- =======================================================
-     LOGIN
+     LOGIN CONTAINER
 ======================================================= -->
 
 <div class="login-container">
 
 
-    <!-- LEFT -->
+    <!-- ===================================================
+         LEFT COLUMN
+    =================================================== -->
 
     <section class="left-panel">
+
 
         <div class="left-content">
 
 
-            <div class="safety-badge">
-                ⚠
-            </div>
-
-
             <div class="company-name">
+
                 BIDOR KWONG HENG SDN BHD
+
             </div>
 
 
             <div class="system-name">
+
                 ESH MANAGEMENT SYSTEM
+
             </div>
 
 
@@ -1774,46 +1908,39 @@ body::before{
 
 
             <div class="safety-quote">
+
                 Safety starts with me, but protects us all.
-            </div>
-
-
-            <div class="safety-points">
-
-                <div class="safety-point">
-                    NEAR MISS
-                </div>
-
-                <div class="safety-point">
-                    SAFE WORKPLACE
-                </div>
-
-                <div class="safety-point">
-                    ESH
-                </div>
 
             </div>
 
 
         </div>
 
+
     </section>
 
 
-    <!-- RIGHT -->
+    <!-- ===================================================
+         RIGHT COLUMN
+    =================================================== -->
 
     <section class="right-panel">
+
 
         <div class="login-content">
 
 
             <h1 class="login-title">
+
                 Welcome To ESH Management System
+
             </h1>
 
 
             <div class="login-subtitle">
+
                 Secure Connection
+
             </div>
 
 
@@ -1823,17 +1950,23 @@ body::before{
             >
 
 
+                <!-- USERNAME -->
+
                 <div class="form-group">
+
 
                     <label
                         class="form-label"
                         for="username"
                     >
+
                         Username
+
                     </label>
 
 
                     <div class="input-wrapper">
+
 
                         <input
                             type="text"
@@ -1845,22 +1978,30 @@ body::before{
                             required
                         >
 
+
                     </div>
+
 
                 </div>
 
 
+                <!-- PASSWORD -->
+
                 <div class="form-group">
+
 
                     <label
                         class="form-label"
                         for="password"
                     >
+
                         Password
+
                     </label>
 
 
                     <div class="input-wrapper">
+
 
                         <input
                             type="password"
@@ -1878,23 +2019,34 @@ body::before{
                             class="password-toggle"
                             id="passwordToggle"
                             onclick="togglePassword()"
+                            aria-label="Show password"
                         >
+
                             Show
+
                         </button>
+
 
                     </div>
 
+
                 </div>
 
+
+                <!-- LOGIN BUTTON -->
 
                 <button
                     type="submit"
                     class="login-button"
                     id="loginButton"
                 >
+
                     Login
+
                 </button>
 
+
+                <!-- ERROR MESSAGE -->
 
                 <div
                     class="error-message"
@@ -1905,53 +2057,80 @@ body::before{
             </form>
 
 
+            <!-- SECURITY INFORMATION -->
+
             <div class="security-box">
 
 
                 <div class="authorized">
 
+
                     <div class="authorized-icon">
+
                         🔒
+
                     </div>
 
+
                     <div>
+
                         <strong>
                             Authorized personnel only
                         </strong>
+
                     </div>
+
 
                 </div>
 
 
                 <div class="security-description">
 
-                    Access is monitored and protected by the
-                    ESH Management System.
+                    Access is monitored and protected by
+                    the ESH Management System.
 
                 </div>
 
 
                 <div class="login-footer">
 
+
                     <strong>
                         BIDOR KWONG HENG
                     </strong>
+
 
                     <span class="footer-separator">
                         •
                     </span>
 
+
                     <strong>
                         ESH DEPARTMENT
                     </strong>
 
+
                     <br>
 
+
                     Environment
-                    <span class="footer-separator">•</span>
+
+
+                    <span class="footer-separator">
+                        •
+                    </span>
+
+
                     Safety
-                    <span class="footer-separator">•</span>
+
+
+                    <span class="footer-separator">
+                        •
+                    </span>
+
+
                     Health.
+
 
                 </div>
 
@@ -1960,6 +2139,7 @@ body::before{
 
 
         </div>
+
 
     </section>
 
@@ -1971,7 +2151,7 @@ body::before{
 
 
 /* =========================================================
-   PASSWORD
+   PASSWORD VISIBILITY
 ========================================================= */
 
 function togglePassword(){
@@ -1980,6 +2160,7 @@ function togglePassword(){
         document.getElementById(
             "password"
         );
+
 
     const toggle =
         document.getElementById(
@@ -1993,18 +2174,22 @@ function togglePassword(){
 
         password.type = "text";
 
-        toggle.textContent = "Hide";
+        toggle.textContent =
+            "Hide";
 
         toggle.setAttribute(
             "aria-label",
             "Hide password"
         );
 
-    }else{
+    }
+    else{
 
-        password.type = "password";
+        password.type =
+            "password";
 
-        toggle.textContent = "Show";
+        toggle.textContent =
+            "Show";
 
         toggle.setAttribute(
             "aria-label",
@@ -2053,8 +2238,13 @@ function handleLogin(event){
 
 
     /*
-       KEEP YOUR EXISTING LOGIN /
-       AUTHENTICATION CODE HERE.
+    ========================================================
+    KEEP YOUR EXISTING LOGIN / AUTHENTICATION CODE HERE.
+
+    IMPORTANT:
+    If your current website already has working login
+    authentication, keep that existing code here.
+    ========================================================
     */
 
 
@@ -2062,7 +2252,7 @@ function handleLogin(event){
 
 
 /* =========================================================
-   ERROR
+   ERROR MESSAGE
 ========================================================= */
 
 function showLoginError(message){
@@ -2092,7 +2282,9 @@ function clearLoginError(){
         );
 
 
-    error.textContent = "";
+    error.textContent =
+        "";
+
 
     error.classList.remove(
         "show"
