@@ -945,10 +945,6 @@ body{
 }
 
 
-/* =========================================================
-   LEFT SAFETY STRIPE
-========================================================= */
-
 .left-panel::before{
 
     content:"";
@@ -981,10 +977,6 @@ body{
 }
 
 
-/* =========================================================
-   LEFT DECORATIVE CIRCLE
-========================================================= */
-
 .left-panel::after{
 
     content:"";
@@ -1016,10 +1008,6 @@ body{
 }
 
 
-/* =========================================================
-   LEFT CONTENT
-========================================================= */
-
 .left-content{
 
     position:relative;
@@ -1032,10 +1020,6 @@ body{
 
 }
 
-
-/* =========================================================
-   COMPANY LOGO
-========================================================= */
 
 .company-logo{
 
@@ -1060,10 +1044,6 @@ body{
 }
 
 
-/* =========================================================
-   COMPANY NAME
-========================================================= */
-
 .company-name{
 
     font-size:24px;
@@ -1081,10 +1061,6 @@ body{
 }
 
 
-/* =========================================================
-   SYSTEM NAME
-========================================================= */
-
 .system-name{
 
     font-size:34px;
@@ -1099,10 +1075,6 @@ body{
 
 }
 
-
-/* =========================================================
-   DIVIDER
-========================================================= */
 
 .left-divider{
 
@@ -1129,10 +1101,6 @@ body{
 
 }
 
-
-/* =========================================================
-   SAFETY QUOTE
-========================================================= */
 
 .safety-quote{
 
@@ -1179,10 +1147,6 @@ body{
 
 }
 
-
-/* =========================================================
-   LOGIN TITLE
-========================================================= */
 
 .login-title{
 
@@ -1236,10 +1200,6 @@ body{
 
 }
 
-
-/* =========================================================
-   FORM
-========================================================= */
 
 .form-group{
 
@@ -1367,10 +1327,6 @@ body{
 }
 
 
-/* =========================================================
-   LOGIN BUTTON
-========================================================= */
-
 .login-button{
 
     width:100%;
@@ -1454,10 +1410,6 @@ body{
 
 }
 
-
-/* =========================================================
-   SECURITY
-========================================================= */
 
 .security-box{
 
@@ -1603,17 +1555,65 @@ body{
 
 
 /* =========================================================
+   SUCCESS
+========================================================= */
+
+.success-message{
+
+    display:none;
+
+    margin-top:15px;
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    background:#effbf5;
+
+    border:
+        1px solid
+        #bcebd0;
+
+    color:#087443;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+.success-message.show{
+
+    display:block;
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.login-button.loading{
+
+    opacity:.75;
+
+    cursor:wait;
+
+    pointer-events:none;
+
+}
+
+
+/* =========================================================
    RESPONSIVE
 ========================================================= */
 
 @media(max-width:850px){
 
     body{
-
         padding:18px;
-
     }
-
 
     .login-container{
 
@@ -1627,7 +1627,6 @@ body{
 
     }
 
-
     .left-panel{
 
         padding:45px 30px;
@@ -1635,7 +1634,6 @@ body{
         min-height:350px;
 
     }
-
 
     .company-logo{
 
@@ -1647,13 +1645,11 @@ body{
 
     }
 
-
     .company-name{
 
         font-size:19px;
 
     }
-
 
     .system-name{
 
@@ -1661,20 +1657,17 @@ body{
 
     }
 
-
     .safety-quote{
 
         font-size:16px;
 
     }
 
-
     .right-panel{
 
         padding:45px 30px;
 
     }
-
 
     .login-title{
 
@@ -1693,13 +1686,11 @@ body{
 
     }
 
-
     .login-container{
 
         border-radius:18px;
 
     }
-
 
     .left-panel{
 
@@ -1708,7 +1699,6 @@ body{
         min-height:310px;
 
     }
-
 
     .company-logo{
 
@@ -1720,7 +1710,6 @@ body{
 
     }
 
-
     .company-name{
 
         font-size:17px;
@@ -1729,13 +1718,11 @@ body{
 
     }
 
-
     .system-name{
 
         font-size:24px;
 
     }
-
 
     .left-divider{
 
@@ -1744,13 +1731,11 @@ body{
 
     }
 
-
     .safety-quote{
 
         font-size:15px;
 
     }
-
 
     .right-panel{
 
@@ -1758,13 +1743,11 @@ body{
 
     }
 
-
     .login-title{
 
         font-size:24px;
 
     }
-
 
     .login-subtitle{
 
@@ -1772,13 +1755,11 @@ body{
 
     }
 
-
     .form-input{
 
         height:52px;
 
     }
-
 
     .login-button{
 
@@ -1788,10 +1769,6 @@ body{
 
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
 
 @media(prefers-reduced-motion:reduce){
 
@@ -1819,11 +1796,7 @@ body{
 
 <div class="safety-background">
 
-
     <div class="esh-glow"></div>
-
-
-    <!-- Safety barricades -->
 
     <div class="barricade one"></div>
 
@@ -1831,106 +1804,61 @@ body{
 
     <div class="barricade three"></div>
 
-
-    <!-- Barricade legs -->
-
     <div class="barricade-leg leg1"></div>
 
     <div class="barricade-leg leg2"></div>
 
     <div class="barricade-leg leg3"></div>
 
-
-    <!-- Warning signs -->
-
     <div class="warning-sign warning-one">
-
         <span>!</span>
-
     </div>
-
 
     <div class="warning-sign warning-two">
-
         <span>!</span>
-
     </div>
-
-
-    <!-- Worker 1 -->
 
     <div class="worker worker-one">
 
         <div class="worker-helmet"></div>
-
         <div class="worker-head"></div>
-
         <div class="worker-body"></div>
-
         <div class="worker-vest"></div>
-
         <div class="worker-arm-left"></div>
-
         <div class="worker-arm-right"></div>
-
         <div class="worker-leg-left"></div>
-
         <div class="worker-leg-right"></div>
 
     </div>
-
-
-    <!-- Worker 2 -->
 
     <div class="worker worker-two">
 
         <div class="worker-helmet"></div>
-
         <div class="worker-head"></div>
-
         <div class="worker-body"></div>
-
         <div class="worker-vest"></div>
-
         <div class="worker-arm-left"></div>
-
         <div class="worker-arm-right"></div>
-
         <div class="worker-leg-left"></div>
-
         <div class="worker-leg-right"></div>
 
     </div>
 
-
-    <!-- Forklift -->
-
     <div class="forklift">
 
         <div class="forklift-roof"></div>
-
         <div class="forklift-pillar"></div>
-
         <div class="forklift-body"></div>
-
         <div class="forklift-wheel wheel-one"></div>
-
         <div class="forklift-wheel wheel-two"></div>
-
         <div class="fork"></div>
 
     </div>
 
-
-    <!-- Hazard floor -->
-
     <div class="hazard-floor"></div>
-
 
 </div>
 
-
-<!-- Background overlay -->
 
 <div class="background-overlay"></div>
 
@@ -1943,16 +1871,12 @@ body{
 
 
     <!-- ===================================================
-         LEFT COLUMN
+         LEFT PANEL
     =================================================== -->
 
     <section class="left-panel">
 
-
         <div class="left-content">
-
-
-            <!-- COMPANY LOGO -->
 
             <img
                 src="logo_BidorKwongHeng.png"
@@ -1960,62 +1884,39 @@ body{
                 class="company-logo"
             >
 
-
-            <!-- COMPANY NAME -->
-
             <div class="company-name">
-
                 BIDOR KWONG HENG SDN BHD
-
             </div>
-
-
-            <!-- SYSTEM NAME -->
 
             <div class="system-name">
-
                 ESH MANAGEMENT SYSTEM
-
             </div>
-
 
             <div class="left-divider"></div>
 
-
             <div class="safety-quote">
-
                 Safety starts with me, but protects us all.
-
             </div>
 
-
         </div>
-
 
     </section>
 
 
     <!-- ===================================================
-         RIGHT COLUMN
+         RIGHT PANEL
     =================================================== -->
 
     <section class="right-panel">
 
-
         <div class="login-content">
 
-
             <h1 class="login-title">
-
                 Welcome To ESH Management System
-
             </h1>
 
-
             <div class="login-subtitle">
-
                 Secure Connection
-
             </div>
 
 
@@ -2029,19 +1930,14 @@ body{
 
                 <div class="form-group">
 
-
                     <label
                         class="form-label"
                         for="username"
                     >
-
                         Username
-
                     </label>
 
-
                     <div class="input-wrapper">
-
 
                         <input
                             type="text"
@@ -2053,9 +1949,7 @@ body{
                             required
                         >
 
-
                     </div>
-
 
                 </div>
 
@@ -2064,19 +1958,14 @@ body{
 
                 <div class="form-group">
 
-
                     <label
                         class="form-label"
                         for="password"
                     >
-
                         Password
-
                     </label>
 
-
                     <div class="input-wrapper">
-
 
                         <input
                             type="password"
@@ -2088,7 +1977,6 @@ body{
                             required
                         >
 
-
                         <button
                             type="button"
                             class="password-toggle"
@@ -2096,14 +1984,10 @@ body{
                             onclick="togglePassword()"
                             aria-label="Show password"
                         >
-
                             Show
-
                         </button>
 
-
                     </div>
-
 
                 </div>
 
@@ -2115,18 +1999,26 @@ body{
                     class="login-button"
                     id="loginButton"
                 >
-
                     Login
-
                 </button>
 
 
-                <!-- ERROR MESSAGE -->
+                <!-- ERROR -->
 
                 <div
                     class="error-message"
                     id="loginError"
                 ></div>
+
+
+                <!-- SUCCESS -->
+
+                <div
+                    class="success-message"
+                    id="loginSuccess"
+                >
+                    Login successful. Opening ESH system...
+                </div>
 
 
             </form>
@@ -2136,25 +2028,17 @@ body{
 
             <div class="security-box">
 
-
                 <div class="authorized">
 
-
                     <div class="authorized-icon">
-
                         🔒
-
                     </div>
 
-
                     <div>
-
                         <strong>
                             Authorized personnel only
                         </strong>
-
                     </div>
-
 
                 </div>
 
@@ -2169,60 +2053,59 @@ body{
 
                 <div class="login-footer">
 
-
                     <strong>
                         BIDOR KWONG HENG
                     </strong>
 
-
                     <span class="footer-separator">
                         •
                     </span>
-
 
                     <strong>
                         ESH DEPARTMENT
                     </strong>
 
-
                     <br>
-
 
                     Environment
 
-
                     <span class="footer-separator">
                         •
                     </span>
-
 
                     Safety
 
-
                     <span class="footer-separator">
                         •
                     </span>
 
-
                     Health.
-
 
                 </div>
 
-
             </div>
-
 
         </div>
 
-
     </section>
-
 
 </div>
 
 
 <script>
+
+/* =========================================================
+   GOOGLE APPS SCRIPT API
+========================================================= */
+
+/*
+   IMPORTANT:
+   This is your existing Google Apps Script endpoint.
+   Do NOT put Markdown [ ] or ( ) around the URL.
+*/
+
+const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
 /* =========================================================
@@ -2235,7 +2118,6 @@ function togglePassword(){
         document.getElementById(
             "password"
         );
-
 
     const toggle =
         document.getElementById(
@@ -2277,57 +2159,7 @@ function togglePassword(){
 
 
 /* =========================================================
-   LOGIN
-========================================================= */
-
-function handleLogin(event){
-
-    event.preventDefault();
-
-
-    const username =
-        document
-            .getElementById("username")
-            .value
-            .trim();
-
-
-    const password =
-        document
-            .getElementById("password")
-            .value;
-
-
-    if(
-        !username ||
-        !password
-    ){
-
-        showLoginError(
-            "Please enter your username and password."
-        );
-
-        return;
-
-    }
-
-
-    /*
-    ========================================================
-    KEEP YOUR EXISTING LOGIN / AUTHENTICATION CODE HERE.
-
-    IMPORTANT:
-    If your current website already has working login
-    authentication, keep that existing code here.
-    ========================================================
-    */
-
-
-}
-
-
-/* =========================================================
-   ERROR MESSAGE
+   SHOW ERROR
 ========================================================= */
 
 function showLoginError(message){
@@ -2337,10 +2169,17 @@ function showLoginError(message){
             "loginError"
         );
 
+    const success =
+        document.getElementById(
+            "loginSuccess"
+        );
+
+    success.classList.remove(
+        "show"
+    );
 
     error.textContent =
         message;
-
 
     error.classList.add(
         "show"
@@ -2349,21 +2188,347 @@ function showLoginError(message){
 }
 
 
-function clearLoginError(){
+/* =========================================================
+   SHOW SUCCESS
+========================================================= */
+
+function showLoginSuccess(message){
 
     const error =
         document.getElementById(
             "loginError"
         );
 
-
-    error.textContent =
-        "";
-
+    const success =
+        document.getElementById(
+            "loginSuccess"
+        );
 
     error.classList.remove(
         "show"
     );
+
+    success.textContent =
+        message;
+
+    success.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR MESSAGES
+========================================================= */
+
+function clearLoginMessages(){
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+    const success =
+        document.getElementById(
+            "loginSuccess"
+        );
+
+    error.textContent = "";
+
+    error.classList.remove(
+        "show"
+    );
+
+    success.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function handleLogin(event){
+
+    event.preventDefault();
+
+
+    const username =
+        document
+            .getElementById("username")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const password =
+        document
+            .getElementById("password")
+            .value;
+
+
+    const loginButton =
+        document.getElementById(
+            "loginButton"
+        );
+
+
+    /* -------------------------------------------------------
+       VALIDATION
+    ------------------------------------------------------- */
+
+    clearLoginMessages();
+
+
+    if(!username){
+
+        showLoginError(
+            "Please enter your username."
+        );
+
+        return;
+
+    }
+
+
+    if(!password){
+
+        showLoginError(
+            "Please enter your password."
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------------
+       API URL CHECK
+    ------------------------------------------------------- */
+
+    if(
+        !GOOGLE_SCRIPT_URL ||
+        GOOGLE_SCRIPT_URL.indexOf(
+            "/exec"
+        ) === -1
+    ){
+
+        showLoginError(
+            "Google Apps Script API URL is not configured."
+        );
+
+        return;
+
+    }
+
+
+    /* -------------------------------------------------------
+       LOADING
+    ------------------------------------------------------- */
+
+    loginButton.classList.add(
+        "loading"
+    );
+
+    loginButton.disabled = true;
+
+    loginButton.textContent =
+        "AUTHENTICATING...";
+
+
+    try{
+
+        /* ---------------------------------------------------
+           SEND LOGIN TO GOOGLE APPS SCRIPT
+        --------------------------------------------------- */
+
+        const response =
+            await fetch(
+                GOOGLE_SCRIPT_URL,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            action:
+                                "login",
+
+                            username:
+                                username,
+
+                            password:
+                                password
+
+                        })
+                }
+            );
+
+
+        /* ---------------------------------------------------
+           CHECK HTTP RESPONSE
+        --------------------------------------------------- */
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server returned HTTP " +
+                response.status
+            );
+
+        }
+
+
+        /* ---------------------------------------------------
+           READ JSON RESPONSE
+        --------------------------------------------------- */
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "LOGIN RESPONSE:",
+            data
+        );
+
+
+        /* ---------------------------------------------------
+           LOGIN FAILED
+        --------------------------------------------------- */
+
+        if(!data.success){
+
+            showLoginError(
+                data.message ||
+                "Invalid username or password."
+            );
+
+
+            loginButton.classList.remove(
+                "loading"
+            );
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+                "Login";
+
+            return;
+
+        }
+
+
+        /* ---------------------------------------------------
+           LOGIN SUCCESS
+        --------------------------------------------------- */
+
+        sessionStorage.clear();
+
+
+        sessionStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
+
+        sessionStorage.setItem(
+            "username",
+            data.username ||
+            username
+        );
+
+
+        sessionStorage.setItem(
+            "userRole",
+            data.role ||
+            ""
+        );
+
+
+        sessionStorage.setItem(
+            "department",
+            data.department ||
+            ""
+        );
+
+
+        /* ---------------------------------------------------
+           COMPATIBILITY WITH EXISTING DASHBOARD
+        --------------------------------------------------- */
+
+        if(
+            data.role === "ESH"
+        ){
+
+            sessionStorage.setItem(
+                "eshLoggedIn",
+                "true"
+            );
+
+        }
+
+
+        /* ---------------------------------------------------
+           SUCCESS MESSAGE
+        --------------------------------------------------- */
+
+        showLoginSuccess(
+            "Login successful. Opening ESH system..."
+        );
+
+
+        loginButton.textContent =
+            "ACCESS GRANTED";
+
+
+        /* ---------------------------------------------------
+           OPEN DASHBOARD
+        --------------------------------------------------- */
+
+        setTimeout(
+            function(){
+
+                window.location.href =
+                    "esh.html";
+
+            },
+            700
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
+
+
+        showLoginError(
+            "Unable to connect to the ESH server. Please try again."
+        );
+
+
+        loginButton.classList.remove(
+            "loading"
+        );
+
+        loginButton.disabled = false;
+
+        loginButton.textContent =
+            "Login";
+
+    }
 
 }
 
@@ -2376,7 +2541,7 @@ document
     .getElementById("username")
     .addEventListener(
         "input",
-        clearLoginError
+        clearLoginMessages
     );
 
 
@@ -2384,9 +2549,33 @@ document
     .getElementById("password")
     .addEventListener(
         "input",
-        clearLoginError
+        clearLoginMessages
     );
 
+
+/* =========================================================
+   ENTER KEY / FORM READY
+========================================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "keydown",
+        function(event){
+
+            if(
+                event.key === "Enter"
+            ){
+
+                /*
+                   Allow the normal form submit
+                   to handle authentication.
+                */
+
+            }
+
+        }
+    );
 
 </script>
 
