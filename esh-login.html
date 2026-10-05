@@ -25,17 +25,11 @@
     box-sizing:border-box;
 }
 
-
-/* =========================================================
-   PAGE
-========================================================= */
-
 html,
 body{
     width:100%;
     min-height:100%;
 }
-
 
 body{
 
@@ -48,48 +42,31 @@ body{
         Helvetica,
         sans-serif;
 
-    color:#17212b;
-
     min-height:100vh;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     padding:30px;
 
-    position:relative;
+    color:#17212b;
 
     overflow-x:hidden;
 
     background:
-
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(25,168,125,0.18),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 85% 75%,
-            rgba(18,108,104,0.22),
-            transparent 32%
-        ),
-
         linear-gradient(
             135deg,
-            #061923 0%,
-            #0a2938 40%,
-            #0c3b48 72%,
-            #071c28 100%
+            #061923,
+            #0b3343 45%,
+            #082a35
         );
+
 }
 
 
 /* =========================================================
-   SAFETY WARNING STRIPES
+   SAFETY ENVIRONMENT BACKGROUND
 ========================================================= */
 
 body::before{
@@ -100,146 +77,750 @@ body::before{
 
     inset:0;
 
-    pointer-events:none;
-
-    opacity:.13;
+    z-index:0;
 
     background:
 
-        repeating-linear-gradient(
-            135deg,
+        /* factory lights */
 
-            transparent 0px,
-            transparent 80px,
+        radial-gradient(
+            circle at 15% 25%,
+            rgba(35,180,190,.28),
+            transparent 24%
+        ),
 
-            rgba(255,193,7,.30) 81px,
-            rgba(255,193,7,.30) 99px,
+        radial-gradient(
+            circle at 82% 18%,
+            rgba(255,193,7,.18),
+            transparent 20%
+        ),
 
-            transparent 100px,
-            transparent 180px
+        /* blue industrial glow */
+
+        radial-gradient(
+            circle at 50% 80%,
+            rgba(0,125,150,.30),
+            transparent 35%
+        ),
+
+        /* dark factory atmosphere */
+
+        linear-gradient(
+            120deg,
+            #06151d 0%,
+            #0b3040 38%,
+            #07303a 65%,
+            #041219 100%
         );
 
-    z-index:0;
 }
 
 
 /* =========================================================
-   INDUSTRIAL GRID
+   INDUSTRIAL STRUCTURE
 ========================================================= */
 
-body::after{
-
-    content:"";
+.safety-background{
 
     position:fixed;
 
     inset:0;
 
+    z-index:0;
+
+    overflow:hidden;
+
     pointer-events:none;
 
-    opacity:.08;
+}
 
-    background-image:
 
-        linear-gradient(
-            rgba(255,255,255,.20) 1px,
-            transparent 1px
+/* Factory roof beams */
+
+.safety-background::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:160%;
+    height:180px;
+
+    top:0;
+    left:-20%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            transparent 0,
+            transparent 95px,
+            rgba(255,255,255,.06) 96px,
+            rgba(255,255,255,.06) 102px
+        );
+
+    transform:
+        perspective(600px)
+        rotateX(58deg);
+
+    transform-origin:top;
+
+    opacity:.8;
+
+}
+
+
+/* Factory floor */
+
+.safety-background::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:-10%;
+    right:-10%;
+    bottom:-5%;
+
+    height:48%;
+
+    background:
+
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.035) 0,
+            rgba(255,255,255,.035) 2px,
+            transparent 2px,
+            transparent 100px
         ),
 
         linear-gradient(
-            90deg,
-            rgba(255,255,255,.20) 1px,
-            transparent 1px
+            180deg,
+            rgba(10,45,55,.1),
+            rgba(2,15,20,.95)
         );
 
-    background-size:
-        55px 55px;
+    transform:
+        perspective(500px)
+        rotateX(55deg);
 
-    z-index:0;
+    transform-origin:bottom;
+
 }
 
 
 /* =========================================================
-   BACKGROUND SAFETY SYMBOLS
+   SAFETY BARRICADES
 ========================================================= */
 
-.safety-symbol{
+.barricade{
 
-    position:fixed;
+    position:absolute;
 
-    pointer-events:none;
+    height:18px;
 
-    user-select:none;
+    background:
 
-    z-index:1;
-
-    color:
-        rgba(255,255,255,.045);
-
-    font-size:150px;
-
-    line-height:1;
-
-    filter:
-        drop-shadow(
-            0 0 20px
-            rgba(255,255,255,.03)
+        repeating-linear-gradient(
+            135deg,
+            #ffd400 0,
+            #ffd400 28px,
+            #111820 28px,
+            #111820 56px
         );
-}
 
+    box-shadow:
+        0 8px 18px rgba(0,0,0,.45);
 
-.symbol-one{
+    border:
+        1px solid rgba(255,255,255,.15);
 
-    top:7%;
-
-    left:5%;
-
-    transform:rotate(-12deg);
+    transform:rotate(-4deg);
 
 }
 
 
-.symbol-two{
+.barricade.one{
 
-    bottom:5%;
+    width:430px;
+
+    left:-50px;
+
+    bottom:150px;
+
+}
+
+
+.barricade.two{
+
+    width:350px;
+
+    right:-70px;
+
+    bottom:105px;
+
+    transform:rotate(5deg);
+
+}
+
+
+.barricade.three{
+
+    width:280px;
 
     left:8%;
 
-    font-size:120px;
+    top:130px;
 
-    transform:rotate(10deg);
+    transform:rotate(3deg);
 
-}
-
-
-.symbol-three{
-
-    top:12%;
-
-    right:7%;
-
-    font-size:135px;
-
-    transform:rotate(10deg);
+    opacity:.75;
 
 }
 
 
-.symbol-four{
+/* Barricade legs */
 
-    bottom:8%;
+.barricade-leg{
 
-    right:6%;
+    position:absolute;
 
-    font-size:145px;
+    width:9px;
 
+    height:90px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #20282d,
+            #5c666b,
+            #161c20
+        );
+
+    box-shadow:
+        0 6px 10px rgba(0,0,0,.4);
+
+}
+
+
+.leg1{
+    left:100px;
+    bottom:85px;
+    transform:rotate(8deg);
+}
+
+
+.leg2{
+    left:310px;
+    bottom:78px;
+    transform:rotate(8deg);
+}
+
+
+.leg3{
+    right:230px;
+    bottom:45px;
     transform:rotate(-8deg);
+}
+
+
+/* =========================================================
+   HAZARD STRIPES
+========================================================= */
+
+.hazard-floor{
+
+    position:absolute;
+
+    height:34px;
+
+    width:100%;
+
+    bottom:0;
+
+    left:0;
+
+    background:
+
+        repeating-linear-gradient(
+            135deg,
+            #ffd400 0,
+            #ffd400 30px,
+            #15191c 30px,
+            #15191c 60px
+        );
+
+    opacity:.85;
+
+    box-shadow:
+        0 -5px 25px rgba(0,0,0,.5);
 
 }
 
 
 /* =========================================================
-   MAIN LOGIN CONTAINER
+   WARNING SIGNS
+========================================================= */
+
+.warning-sign{
+
+    position:absolute;
+
+    width:92px;
+    height:92px;
+
+    background:#ffd400;
+
+    border:
+        7px solid #111820;
+
+    clip-path:
+        polygon(
+            50% 0,
+            100% 100%,
+            0 100%
+        );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    filter:
+        drop-shadow(
+            0 8px 12px rgba(0,0,0,.45)
+        );
+
+}
+
+
+.warning-sign span{
+
+    color:#111;
+
+    font-size:35px;
+
+    font-weight:900;
+
+    transform:
+        translateY(15px);
+
+}
+
+
+.warning-one{
+
+    left:7%;
+
+    top:16%;
+
+    transform:rotate(-7deg);
+
+}
+
+
+.warning-two{
+
+    right:7%;
+
+    top:26%;
+
+    transform:rotate(8deg);
+
+}
+
+
+/* =========================================================
+   WORKER SILHOUETTES
+========================================================= */
+
+.worker{
+
+    position:absolute;
+
+    bottom:30px;
+
+    width:110px;
+
+    height:230px;
+
+    opacity:.42;
+
+    filter:
+        drop-shadow(
+            0 10px 20px rgba(0,0,0,.5)
+        );
+
+}
+
+
+.worker-head{
+
+    position:absolute;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#091218;
+
+    top:0;
+
+    left:34px;
+
+}
+
+
+.worker-helmet{
+
+    position:absolute;
+
+    width:58px;
+
+    height:20px;
+
+    border-radius:
+        35px 35px 10px 10px;
+
+    background:#f5c400;
+
+    top:-5px;
+
+    left:26px;
+
+}
+
+
+.worker-body{
+
+    position:absolute;
+
+    width:70px;
+
+    height:110px;
+
+    border-radius:15px 15px 8px 8px;
+
+    background:#111b21;
+
+    top:43px;
+
+    left:20px;
+
+}
+
+
+.worker-vest{
+
+    position:absolute;
+
+    width:58px;
+
+    height:105px;
+
+    top:48px;
+
+    left:26px;
+
+    border-left:
+        9px solid #f5c400;
+
+    border-right:
+        9px solid #f5c400;
+
+}
+
+
+.worker-leg-left,
+.worker-leg-right{
+
+    position:absolute;
+
+    width:20px;
+
+    height:85px;
+
+    background:#080f13;
+
+    top:145px;
+
+    border-radius:8px;
+
+}
+
+
+.worker-leg-left{
+    left:28px;
+}
+
+
+.worker-leg-right{
+    right:28px;
+}
+
+
+.worker-arm-left,
+.worker-arm-right{
+
+    position:absolute;
+
+    width:18px;
+
+    height:85px;
+
+    background:#080f13;
+
+    top:55px;
+
+    border-radius:10px;
+
+}
+
+
+.worker-arm-left{
+
+    left:5px;
+
+    transform:rotate(15deg);
+
+}
+
+
+.worker-arm-right{
+
+    right:5px;
+
+    transform:rotate(-15deg);
+
+}
+
+
+.worker-one{
+
+    left:4%;
+
+}
+
+
+.worker-two{
+
+    right:3%;
+
+    transform:
+        scale(.82);
+
+    bottom:15px;
+
+}
+
+
+/* =========================================================
+   FORKLIFT SHAPE
+========================================================= */
+
+.forklift{
+
+    position:absolute;
+
+    right:12%;
+
+    bottom:95px;
+
+    width:190px;
+
+    height:100px;
+
+    opacity:.35;
+
+}
+
+
+.forklift-body{
+
+    position:absolute;
+
+    left:35px;
+
+    bottom:10px;
+
+    width:115px;
+
+    height:65px;
+
+    background:#172329;
+
+    border:
+        2px solid rgba(255,210,0,.7);
+
+    border-radius:8px;
+
+}
+
+
+.forklift-roof{
+
+    position:absolute;
+
+    left:55px;
+
+    bottom:75px;
+
+    width:90px;
+
+    height:12px;
+
+    background:#182328;
+
+}
+
+
+.forklift-pillar{
+
+    position:absolute;
+
+    left:63px;
+
+    bottom:25px;
+
+    width:7px;
+
+    height:65px;
+
+    background:#222d32;
+
+}
+
+
+.forklift-wheel{
+
+    position:absolute;
+
+    width:27px;
+
+    height:27px;
+
+    border-radius:50%;
+
+    background:#050a0d;
+
+    border:
+        4px solid #3d4b50;
+
+    bottom:0;
+
+}
+
+
+.wheel-one{
+    left:45px;
+}
+
+
+.wheel-two{
+    right:20px;
+}
+
+
+.fork{
+
+    position:absolute;
+
+    left:-5px;
+
+    bottom:17px;
+
+    width:60px;
+
+    height:7px;
+
+    background:#b6c0c3;
+
+}
+
+
+.fork::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:60px;
+
+    height:7px;
+
+    background:#b6c0c3;
+
+    top:15px;
+
+}
+
+
+/* =========================================================
+   ESH INSPECTION GLOW
+========================================================= */
+
+.esh-glow{
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    left:50%;
+
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,170,180,.12),
+            transparent 68%
+        );
+
+}
+
+
+/* =========================================================
+   DARK OVERLAY
+========================================================= */
+
+.background-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:1;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(2,16,24,.60),
+            rgba(3,21,29,.25) 45%,
+            rgba(2,13,20,.62)
+        ),
+
+        radial-gradient(
+            ellipse at center,
+            transparent 25%,
+            rgba(0,0,0,.55) 100%
+        );
+
+}
+
+
+/* =========================================================
+   LOGIN CONTAINER
 ========================================================= */
 
 .login-container{
@@ -250,33 +831,33 @@ body::after{
 
     width:100%;
 
-    max-width:1100px;
+    max-width:1120px;
 
     min-height:650px;
 
     display:grid;
 
     grid-template-columns:
-        46%
-        54%;
+        46% 54%;
 
-    background:#ffffff;
+    background:#fff;
 
-    border-radius:28px;
+    border-radius:24px;
 
     overflow:hidden;
 
     box-shadow:
 
-        0 30px 80px
-        rgba(0,0,0,.35),
+        0 35px 90px
+        rgba(0,0,0,.45),
 
         0 10px 30px
-        rgba(0,0,0,.20);
+        rgba(0,0,0,.25);
 
     border:
         1px solid
-        rgba(255,255,255,.80);
+        rgba(255,255,255,.35);
+
 }
 
 
@@ -290,34 +871,31 @@ body::after{
 
     display:flex;
 
-    flex-direction:column;
+    align-items:center;
 
     justify-content:center;
-
-    align-items:center;
 
     text-align:center;
 
     padding:60px 50px;
 
-    color:#ffffff;
+    color:#fff;
+
+    overflow:hidden;
 
     background:
 
         linear-gradient(
             145deg,
-            #0c3148 0%,
-            #124c67 48%,
-            #087b76 100%
+            rgba(4,35,52,.95),
+            rgba(7,81,99,.92),
+            rgba(0,116,110,.90)
         );
 
-    overflow:hidden;
 }
 
 
-/* =========================================================
-   LEFT DECORATION
-========================================================= */
+/* Safety stripes behind left */
 
 .left-panel::before{
 
@@ -325,20 +903,32 @@ body::after{
 
     position:absolute;
 
-    width:330px;
+    width:150%;
 
-    height:330px;
+    height:120px;
 
-    border-radius:50%;
+    left:-25%;
+
+    bottom:70px;
 
     background:
-        rgba(255,255,255,.045);
 
-    top:-120px;
+        repeating-linear-gradient(
+            135deg,
+            rgba(255,209,0,.9) 0,
+            rgba(255,209,0,.9) 28px,
+            rgba(10,20,24,.9) 28px,
+            rgba(10,20,24,.9) 56px
+        );
 
-    left:-130px;
+    transform:rotate(-7deg);
+
+    opacity:.15;
+
 }
 
+
+/* Safety ring */
 
 .left-panel::after{
 
@@ -346,50 +936,29 @@ body::after{
 
     position:absolute;
 
-    width:420px;
+    width:390px;
 
-    height:420px;
+    height:390px;
+
+    border:
+
+        1px solid
+        rgba(255,255,255,.15);
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.035);
+    top:-170px;
 
-    bottom:-210px;
+    right:-170px;
 
-    right:-180px;
-}
+    box-shadow:
 
+        0 0 0 60px
+        rgba(255,255,255,.025),
 
-/* =========================================================
-   LEFT SAFETY LINE
-========================================================= */
+        0 0 0 120px
+        rgba(255,255,255,.018);
 
-.left-safety-line{
-
-    position:absolute;
-
-    top:0;
-
-    left:0;
-
-    width:100%;
-
-    height:7px;
-
-    background:
-
-        repeating-linear-gradient(
-            135deg,
-
-            #f6c344 0px,
-            #f6c344 18px,
-
-            #17212b 18px,
-            #17212b 36px
-        );
-
-    opacity:.9;
 }
 
 
@@ -401,77 +970,97 @@ body::after{
 
     position:relative;
 
-    z-index:2;
+    z-index:3;
 
     width:100%;
 
     max-width:430px;
+
 }
 
 
-/* =========================================================
-   COMPANY NAME
-========================================================= */
+.safety-badge{
+
+    width:72px;
+
+    height:72px;
+
+    margin:
+        0 auto 25px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:35px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffd400,
+            #e9a900
+        );
+
+    color:#17212b;
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.25);
+
+    border:
+        4px solid
+        rgba(255,255,255,.75);
+
+}
+
 
 .company-name{
 
-    font-size:24px;
+    font-size:23px;
 
     font-weight:800;
 
-    letter-spacing:1.5px;
+    letter-spacing:1.4px;
 
     line-height:1.35;
 
-    margin-bottom:15px;
+    margin-bottom:14px;
 
-    text-transform:uppercase;
 }
 
-
-/* =========================================================
-   SYSTEM NAME
-========================================================= */
 
 .system-name{
 
     font-size:34px;
 
-    font-weight:700;
+    font-weight:750;
 
     letter-spacing:.8px;
 
     line-height:1.2;
 
-    text-transform:uppercase;
 }
 
 
-/* =========================================================
-   DIVIDER
-========================================================= */
-
 .left-divider{
 
-    width:70px;
+    width:80px;
 
     height:4px;
 
     border-radius:10px;
 
-    background:
-        rgba(255,255,255,.9);
+    background:#ffd400;
 
     margin:
-        28px
-        auto
-        30px;
+        28px auto 28px;
+
 }
 
-
-/* =========================================================
-   SAFETY QUOTE
-========================================================= */
 
 .safety-quote{
 
@@ -484,9 +1073,48 @@ body::after{
     color:
         rgba(255,255,255,.92);
 
-    max-width:350px;
+}
 
-    margin:0 auto;
+
+/* =========================================================
+   SAFETY POINTS
+========================================================= */
+
+.safety-points{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+
+}
+
+
+.safety-point{
+
+    padding:
+        8px 12px;
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.09);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    font-size:11px;
+
+    font-weight:700;
+
+    letter-spacing:.4px;
+
 }
 
 
@@ -496,7 +1124,7 @@ body::after{
 
 .right-panel{
 
-    background:#ffffff;
+    background:#fff;
 
     display:flex;
 
@@ -505,6 +1133,7 @@ body::after{
     justify-content:center;
 
     padding:60px 70px;
+
 }
 
 
@@ -513,16 +1142,13 @@ body::after{
     width:100%;
 
     max-width:430px;
+
 }
 
 
-/* =========================================================
-   RIGHT HEADER
-========================================================= */
-
 .login-title{
 
-    font-size:32px;
+    font-size:31px;
 
     font-weight:750;
 
@@ -531,6 +1157,7 @@ body::after{
     line-height:1.2;
 
     margin-bottom:10px;
+
 }
 
 
@@ -538,7 +1165,7 @@ body::after{
 
     font-size:14px;
 
-    font-weight:600;
+    font-weight:650;
 
     color:#16806f;
 
@@ -546,9 +1173,10 @@ body::after{
 
     align-items:center;
 
-    gap:8px;
+    gap:9px;
 
     margin-bottom:38px;
+
 }
 
 
@@ -565,9 +1193,9 @@ body::after{
     background:#19a87d;
 
     box-shadow:
-
         0 0 0 5px
         rgba(25,168,125,.10);
+
 }
 
 
@@ -578,6 +1206,7 @@ body::after{
 .form-group{
 
     margin-bottom:22px;
+
 }
 
 
@@ -593,7 +1222,6 @@ body::after{
 
     margin-bottom:9px;
 
-    letter-spacing:.2px;
 }
 
 
@@ -602,6 +1230,7 @@ body::after{
     position:relative;
 
     width:100%;
+
 }
 
 
@@ -624,49 +1253,42 @@ body::after{
     font-size:15px;
 
     padding:
-        0
-        16px;
+        0 16px;
 
     outline:none;
 
     transition:
+        .2s ease;
 
-        border-color .2s ease,
-
-        box-shadow .2s ease,
-
-        background .2s ease;
 }
 
 
 .form-input::placeholder{
 
     color:#9aa8b4;
+
 }
 
 
 .form-input:hover{
 
     border-color:#b9c9d3;
+
 }
 
 
 .form-input:focus{
 
-    background:#ffffff;
+    background:#fff;
 
     border-color:#16806f;
 
     box-shadow:
-
         0 0 0 4px
         rgba(22,128,111,.10);
+
 }
 
-
-/* =========================================================
-   PASSWORD TOGGLE
-========================================================= */
 
 .password-toggle{
 
@@ -676,7 +1298,8 @@ body::after{
 
     top:50%;
 
-    transform:translateY(-50%);
+    transform:
+        translateY(-50%);
 
     border:none;
 
@@ -684,21 +1307,21 @@ body::after{
 
     cursor:pointer;
 
-    font-size:14px;
+    font-size:13px;
 
-    font-weight:600;
+    font-weight:700;
 
     color:#71808d;
 
     padding:6px;
 
-    transition:.2s ease;
 }
 
 
 .password-toggle:hover{
 
     color:#16806f;
+
 }
 
 
@@ -726,28 +1349,20 @@ body::after{
             #0d8b76
         );
 
-    color:#ffffff;
+    color:#fff;
 
     font-size:15px;
 
     font-weight:750;
 
-    letter-spacing:.2px;
-
     cursor:pointer;
 
     box-shadow:
+        0 9px 22px
+        rgba(13,139,118,.22);
 
-        0 8px 20px
-        rgba(13,139,118,.20);
+    transition:.2s ease;
 
-    transition:
-
-        transform .2s ease,
-
-        box-shadow .2s ease,
-
-        filter .2s ease;
 }
 
 
@@ -757,12 +1372,9 @@ body::after{
         translateY(-1px);
 
     box-shadow:
+        0 13px 28px
+        rgba(13,139,118,.30);
 
-        0 12px 25px
-        rgba(13,139,118,.28);
-
-    filter:
-        brightness(1.04);
 }
 
 
@@ -770,21 +1382,21 @@ body::after{
 
     transform:
         translateY(0);
+
 }
 
 
 .login-button:disabled{
 
-    cursor:not-allowed;
-
     opacity:.7;
 
-    transform:none;
+    cursor:not-allowed;
+
 }
 
 
 /* =========================================================
-   SECURITY INFORMATION
+   SECURITY
 ========================================================= */
 
 .security-box{
@@ -796,6 +1408,7 @@ body::after{
     border-top:
         1px solid
         #e5ebef;
+
 }
 
 
@@ -811,9 +1424,8 @@ body::after{
 
     font-size:13px;
 
-    line-height:1.5;
-
     margin-bottom:10px;
+
 }
 
 
@@ -835,13 +1447,6 @@ body::after{
 
     font-size:15px;
 
-    flex-shrink:0;
-}
-
-
-.authorized strong{
-
-    font-weight:750;
 }
 
 
@@ -854,22 +1459,18 @@ body::after{
     line-height:1.65;
 
     margin-bottom:22px;
+
 }
 
 
-/* =========================================================
-   FOOTER
-========================================================= */
-
 .login-footer{
-
-    text-align:left;
 
     font-size:11.5px;
 
     line-height:1.6;
 
     color:#687986;
+
 }
 
 
@@ -877,22 +1478,21 @@ body::after{
 
     color:#344454;
 
-    font-weight:750;
 }
 
 
 .footer-separator{
 
     margin:
-        0
-        4px;
+        0 4px;
 
     color:#a4b0b8;
+
 }
 
 
 /* =========================================================
-   ERROR MESSAGE
+   ERROR
 ========================================================= */
 
 .error-message{
@@ -915,62 +1515,18 @@ body::after{
 
     font-size:13px;
 
-    line-height:1.5;
 }
 
 
 .error-message.show{
 
     display:block;
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loading{
-
-    display:inline-flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:9px;
-}
-
-
-.loading-spinner{
-
-    width:16px;
-
-    height:16px;
-
-    border:
-        2px solid
-        rgba(255,255,255,.35);
-
-    border-top-color:#ffffff;
-
-    border-radius:50%;
-
-    animation:
-        spin .7s linear infinite;
-}
-
-
-@keyframes spin{
-
-    to{
-        transform:rotate(360deg);
-    }
 
 }
 
 
 /* =========================================================
-   MOBILE
+   RESPONSIVE
 ========================================================= */
 
 @media(max-width:850px){
@@ -979,161 +1535,106 @@ body::after{
 
         padding:18px;
 
-        align-items:center;
     }
-
 
     .login-container{
 
         grid-template-columns:1fr;
 
-        min-height:auto;
-
         max-width:560px;
 
-        border-radius:22px;
-    }
+        min-height:auto;
 
+    }
 
     .left-panel{
 
-        padding:
-            45px
-            30px;
+        min-height:380px;
 
-        min-height:300px;
+        padding:45px 30px;
+
     }
-
-
-    .company-name{
-
-        font-size:19px;
-    }
-
-
-    .system-name{
-
-        font-size:28px;
-    }
-
-
-    .safety-quote{
-
-        font-size:16px;
-
-        max-width:330px;
-    }
-
 
     .right-panel{
 
-        padding:
-            45px
-            30px;
-    }
+        padding:45px 30px;
 
-
-    .login-title{
-
-        font-size:27px;
-    }
-
-
-    .safety-symbol{
-
-        opacity:.6;
-
-        font-size:100px;
     }
 
 }
 
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
 
 @media(max-width:480px){
 
     body{
 
         padding:10px;
-    }
 
+    }
 
     .login-container{
 
         border-radius:18px;
-    }
 
+    }
 
     .left-panel{
 
-        padding:
-            38px
-            20px;
+        min-height:330px;
 
-        min-height:270px;
+        padding:38px 20px;
+
     }
-
 
     .company-name{
 
         font-size:17px;
 
-        letter-spacing:1px;
     }
-
 
     .system-name{
 
         font-size:24px;
+
     }
 
+    .safety-badge{
 
-    .left-divider{
+        width:60px;
 
-        margin:
-            22px
-            auto;
+        height:60px;
+
+        font-size:28px;
+
     }
-
-
-    .safety-quote{
-
-        font-size:15px;
-    }
-
 
     .right-panel{
 
-        padding:
-            35px
-            22px;
-    }
+        padding:35px 22px;
 
+    }
 
     .login-title{
 
         font-size:24px;
+
     }
 
-
-    .login-subtitle{
-
-        margin-bottom:30px;
-    }
+}
 
 
-    .form-input{
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
 
-        height:52px;
-    }
+@media(prefers-reduced-motion:reduce){
 
+    *{
 
-    .login-button{
+        animation:none !important;
 
-        height:54px;
+        transition:none !important;
+
     }
 
 }
@@ -1146,61 +1647,117 @@ body::after{
 <body>
 
 
-<!-- =========================================================
-     SUBTLE SAFETY SYMBOLS
-========================================================= -->
+<!-- =======================================================
+     INDUSTRIAL SAFETY BACKGROUND
+======================================================= -->
 
-<div
-    class="safety-symbol symbol-one"
-    aria-hidden="true"
->
-    ⚠
+<div class="safety-background">
+
+    <div class="esh-glow"></div>
+
+    <div class="barricade one"></div>
+    <div class="barricade two"></div>
+    <div class="barricade three"></div>
+
+    <div class="barricade-leg leg1"></div>
+    <div class="barricade-leg leg2"></div>
+    <div class="barricade-leg leg3"></div>
+
+
+    <div class="warning-sign warning-one">
+        <span>!</span>
+    </div>
+
+    <div class="warning-sign warning-two">
+        <span>!</span>
+    </div>
+
+
+    <!-- WORKER 1 -->
+
+    <div class="worker worker-one">
+
+        <div class="worker-helmet"></div>
+
+        <div class="worker-head"></div>
+
+        <div class="worker-body"></div>
+
+        <div class="worker-vest"></div>
+
+        <div class="worker-arm-left"></div>
+        <div class="worker-arm-right"></div>
+
+        <div class="worker-leg-left"></div>
+        <div class="worker-leg-right"></div>
+
+    </div>
+
+
+    <!-- WORKER 2 -->
+
+    <div class="worker worker-two">
+
+        <div class="worker-helmet"></div>
+
+        <div class="worker-head"></div>
+
+        <div class="worker-body"></div>
+
+        <div class="worker-vest"></div>
+
+        <div class="worker-arm-left"></div>
+        <div class="worker-arm-right"></div>
+
+        <div class="worker-leg-left"></div>
+        <div class="worker-leg-right"></div>
+
+    </div>
+
+
+    <!-- FORKLIFT -->
+
+    <div class="forklift">
+
+        <div class="forklift-roof"></div>
+
+        <div class="forklift-pillar"></div>
+
+        <div class="forklift-body"></div>
+
+        <div class="forklift-wheel wheel-one"></div>
+        <div class="forklift-wheel wheel-two"></div>
+
+        <div class="fork"></div>
+
+    </div>
+
+
+    <div class="hazard-floor"></div>
+
 </div>
 
 
-<div
-    class="safety-symbol symbol-two"
-    aria-hidden="true"
->
-    🦺
-</div>
+<div class="background-overlay"></div>
 
 
-<div
-    class="safety-symbol symbol-three"
-    aria-hidden="true"
->
-    ⛑
-</div>
-
-
-<div
-    class="safety-symbol symbol-four"
-    aria-hidden="true"
->
-    ⚠
-</div>
-
-
-
-<!-- =========================================================
-     MAIN LOGIN CONTAINER
-========================================================= -->
+<!-- =======================================================
+     LOGIN
+======================================================= -->
 
 <div class="login-container">
 
 
-    <!-- =====================================================
-         LEFT SIDE
-    ====================================================== -->
+    <!-- LEFT -->
 
     <section class="left-panel">
 
-
-        <div class="left-safety-line"></div>
-
-
         <div class="left-content">
+
+
+            <div class="safety-badge">
+                ⚠
+            </div>
 
 
             <div class="company-name">
@@ -1221,26 +1778,34 @@ body::after{
             </div>
 
 
-        </div>
+            <div class="safety-points">
 
+                <div class="safety-point">
+                    NEAR MISS
+                </div>
+
+                <div class="safety-point">
+                    SAFE WORKPLACE
+                </div>
+
+                <div class="safety-point">
+                    ESH
+                </div>
+
+            </div>
+
+
+        </div>
 
     </section>
 
 
-
-    <!-- =====================================================
-         RIGHT SIDE
-    ====================================================== -->
+    <!-- RIGHT -->
 
     <section class="right-panel">
 
-
         <div class="login-content">
 
-
-            <!-- =================================================
-                 HEADER
-            ================================================== -->
 
             <h1 class="login-title">
                 Welcome To ESH Management System
@@ -1252,21 +1817,13 @@ body::after{
             </div>
 
 
-
-            <!-- =================================================
-                 LOGIN FORM
-            ================================================== -->
-
             <form
                 id="loginForm"
                 onsubmit="handleLogin(event)"
             >
 
 
-                <!-- USERNAME -->
-
                 <div class="form-group">
-
 
                     <label
                         class="form-label"
@@ -1278,7 +1835,6 @@ body::after{
 
                     <div class="input-wrapper">
 
-
                         <input
                             type="text"
                             id="username"
@@ -1289,18 +1845,12 @@ body::after{
                             required
                         >
 
-
                     </div>
-
 
                 </div>
 
 
-
-                <!-- PASSWORD -->
-
                 <div class="form-group">
-
 
                     <label
                         class="form-label"
@@ -1311,7 +1861,6 @@ body::after{
 
 
                     <div class="input-wrapper">
-
 
                         <input
                             type="password"
@@ -1329,22 +1878,14 @@ body::after{
                             class="password-toggle"
                             id="passwordToggle"
                             onclick="togglePassword()"
-                            aria-label="Show password"
                         >
                             Show
                         </button>
 
-
                     </div>
-
 
                 </div>
 
-
-
-                <!-- =================================================
-                     LOGIN BUTTON
-                ================================================== -->
 
                 <button
                     type="submit"
@@ -1355,11 +1896,6 @@ body::after{
                 </button>
 
 
-
-                <!-- =================================================
-                     ERROR
-                ================================================== -->
-
                 <div
                     class="error-message"
                     id="loginError"
@@ -1369,33 +1905,22 @@ body::after{
             </form>
 
 
-
-            <!-- =================================================
-                 SECURITY INFORMATION
-            ================================================== -->
-
             <div class="security-box">
 
 
                 <div class="authorized">
 
-
                     <div class="authorized-icon">
                         🔒
                     </div>
 
-
                     <div>
-
                         <strong>
                             Authorized personnel only
                         </strong>
-
                     </div>
 
-
                 </div>
-
 
 
                 <div class="security-description">
@@ -1406,46 +1931,27 @@ body::after{
                 </div>
 
 
-
-                <!-- =================================================
-                     FOOTER
-                ================================================== -->
-
                 <div class="login-footer">
-
 
                     <strong>
                         BIDOR KWONG HENG
                     </strong>
 
-
                     <span class="footer-separator">
                         •
                     </span>
-
 
                     <strong>
                         ESH DEPARTMENT
                     </strong>
 
-
                     <br>
 
-
                     Environment
-
-                    <span class="footer-separator">
-                        •
-                    </span>
-
+                    <span class="footer-separator">•</span>
                     Safety
-
-                    <span class="footer-separator">
-                        •
-                    </span>
-
+                    <span class="footer-separator">•</span>
                     Health.
-
 
                 </div>
 
@@ -1455,28 +1961,30 @@ body::after{
 
         </div>
 
-
     </section>
 
 
 </div>
 
 
-
 <script>
 
+
 /* =========================================================
-   PASSWORD SHOW / HIDE
+   PASSWORD
 ========================================================= */
 
 function togglePassword(){
 
     const password =
-        document.getElementById("password");
-
+        document.getElementById(
+            "password"
+        );
 
     const toggle =
-        document.getElementById("passwordToggle");
+        document.getElementById(
+            "passwordToggle"
+        );
 
 
     if(
@@ -1492,9 +2000,7 @@ function togglePassword(){
             "Hide password"
         );
 
-    }
-
-    else{
+    }else{
 
         password.type = "password";
 
@@ -1519,22 +2025,6 @@ function handleLogin(event){
     event.preventDefault();
 
 
-    /*
-    =========================================================
-    IMPORTANT
-
-    KEEP YOUR EXISTING LOGIN / AUTHENTICATION CODE HERE.
-
-    This section only provides the display framework.
-
-    If your current ESH system already has a working
-    authentication function, replace this function with
-    your existing authentication code.
-
-    =========================================================
-    */
-
-
     const username =
         document
             .getElementById("username")
@@ -1548,16 +2038,6 @@ function handleLogin(event){
             .value;
 
 
-    /*
-    =========================================================
-    TEMPORARY VALIDATION
-
-    This only checks that both fields contain information.
-
-    Your existing authentication system should remain here.
-    =========================================================
-    */
-
     if(
         !username ||
         !password
@@ -1568,26 +2048,29 @@ function handleLogin(event){
         );
 
         return;
+
     }
 
 
     /*
-    =========================================================
-    YOUR EXISTING LOGIN CODE SHOULD CONTINUE HERE.
-    =========================================================
+       KEEP YOUR EXISTING LOGIN /
+       AUTHENTICATION CODE HERE.
     */
+
 
 }
 
 
 /* =========================================================
-   ERROR DISPLAY
+   ERROR
 ========================================================= */
 
 function showLoginError(message){
 
     const error =
-        document.getElementById("loginError");
+        document.getElementById(
+            "loginError"
+        );
 
 
     error.textContent =
@@ -1601,8 +2084,25 @@ function showLoginError(message){
 }
 
 
+function clearLoginError(){
+
+    const error =
+        document.getElementById(
+            "loginError"
+        );
+
+
+    error.textContent = "";
+
+    error.classList.remove(
+        "show"
+    );
+
+}
+
+
 /* =========================================================
-   CLEAR ERROR WHEN USER TYPES
+   CLEAR ERROR WHILE TYPING
 ========================================================= */
 
 document
@@ -1620,21 +2120,6 @@ document
         clearLoginError
     );
 
-
-function clearLoginError(){
-
-    const error =
-        document.getElementById("loginError");
-
-
-    error.classList.remove(
-        "show"
-    );
-
-
-    error.textContent = "";
-
-}
 
 </script>
 
