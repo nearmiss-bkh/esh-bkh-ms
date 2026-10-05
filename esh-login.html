@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -6,14 +7,14 @@
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
 >
 
 <title>
     ESH Secure Access | Safety Management System
 </title>
-
 
 <style>
 
@@ -21,14 +22,10 @@
    RESET
 ========================================================= */
 
-* {
-
-    box-sizing: border-box;
-
-    margin: 0;
-
-    padding: 0;
-
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 
@@ -36,251 +33,305 @@
    BODY
 ========================================================= */
 
-body {
+body{
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
 
-    min-height: 100vh;
+    min-height:100vh;
 
     background:
 
         radial-gradient(
-            circle at 20% 20%,
-            rgba(0,180,255,0.15),
-            transparent 30%
+            circle at 15% 15%,
+            rgba(0,210,255,0.16),
+            transparent 28%
         ),
 
         radial-gradient(
-            circle at 80% 80%,
-            rgba(0,255,170,0.10),
+            circle at 85% 85%,
+            rgba(0,255,180,0.12),
             transparent 30%
         ),
 
         linear-gradient(
             135deg,
-            #020817,
-            #071426 55%,
-            #031c25
+            #020814,
+            #061525 52%,
+            #03242b
         );
 
-    color: white;
+    color:#ffffff;
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+    justify-content:center;
 
-    overflow: hidden;
+    overflow-x:hidden;
+
+    padding:30px 15px;
 
 }
 
 
 /* =========================================================
-   GRID BACKGROUND
+   BACKGROUND GRID
 ========================================================= */
 
-body::before {
+body::before{
 
-    content: "";
+    content:"";
 
-    position: fixed;
+    position:fixed;
 
-    inset: 0;
+    inset:0;
 
     background-image:
 
         linear-gradient(
-            rgba(255,255,255,0.025)
-            1px,
+            rgba(255,255,255,0.025) 1px,
             transparent 1px
         ),
 
         linear-gradient(
             90deg,
-            rgba(255,255,255,0.025)
-            1px,
+            rgba(255,255,255,0.025) 1px,
             transparent 1px
         );
 
-    background-size: 45px 45px;
+    background-size:45px 45px;
 
-    pointer-events: none;
+    pointer-events:none;
 
 }
 
 
 /* =========================================================
-   GLOW
+   DECORATIVE GLOW
 ========================================================= */
 
-.glow {
+.glow{
 
-    position: fixed;
+    position:fixed;
 
-    width: 350px;
+    width:420px;
 
-    height: 350px;
+    height:420px;
 
-    border-radius: 50%;
+    border-radius:50%;
 
     background:
         rgba(0,200,255,0.08);
 
     filter:
-        blur(70px);
+        blur(90px);
 
-    top: -100px;
+    top:-150px;
 
-    left: -100px;
+    left:-140px;
+
+    pointer-events:none;
 
 }
 
 
-.glow2 {
+.glow2{
 
-    position: fixed;
+    position:fixed;
 
-    width: 300px;
+    width:380px;
 
-    height: 300px;
+    height:380px;
 
-    border-radius: 50%;
+    border-radius:50%;
 
     background:
         rgba(0,255,170,0.07);
 
     filter:
-        blur(70px);
+        blur(90px);
 
-    bottom: -100px;
+    bottom:-150px;
 
-    right: -100px;
+    right:-140px;
 
-}
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
-
-.container {
-
-    width: 100%;
-
-    max-width: 460px;
-
-    padding: 20px;
-
-    position: relative;
-
-    z-index: 2;
+    pointer-events:none;
 
 }
 
 
 /* =========================================================
-   LOGO AREA
+   MAIN CONTAINER
 ========================================================= */
 
-.logo-area {
+.container{
 
-    text-align: center;
+    width:100%;
 
-    margin-bottom: 25px;
+    max-width:470px;
+
+    position:relative;
+
+    z-index:2;
 
 }
 
 
-.esh-mark {
+/* =========================================================
+   BRANDING
+========================================================= */
 
-    width: 70px;
+.logo-area{
 
-    height: 70px;
+    text-align:center;
+
+    margin-bottom:24px;
+
+}
+
+
+/* =========================================================
+   ESH LOGO
+========================================================= */
+
+.esh-mark{
+
+    width:82px;
+
+    height:82px;
 
     margin:
-        0 auto 18px;
+        0 auto 17px;
 
-    border-radius: 18px;
+    border-radius:24px;
 
     background:
 
         linear-gradient(
             145deg,
-            rgba(0,217,255,0.20),
-            rgba(0,119,255,0.12)
+            rgba(0,220,255,0.22),
+            rgba(0,105,255,0.15)
         );
 
     border:
         1px solid
-        rgba(0,217,255,0.35);
+        rgba(0,220,255,0.40);
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    justify-content: center;
+    justify-content:center;
+
+    position:relative;
 
     box-shadow:
 
-        0 0 30px
-        rgba(0,210,255,0.12),
+        0 0 35px
+        rgba(0,210,255,0.15),
 
         inset 0 1px 0
-        rgba(255,255,255,0.08);
+        rgba(255,255,255,0.12);
 
 }
 
 
-.esh-mark span {
+/* INNER SHIELD */
 
-    font-size: 20px;
+.esh-mark::before{
 
-    font-weight: 900;
+    content:"";
 
-    letter-spacing: 1px;
+    position:absolute;
 
-    color: #ffffff;
+    width:48px;
 
-}
+    height:54px;
 
+    border:
 
-.company {
+        2px solid
+        rgba(0,220,255,0.65);
 
-    font-size: 13px;
-
-    font-weight: 700;
-
-    letter-spacing: 3px;
-
-    color: #9fb4c8;
-
-    margin-bottom: 8px;
-
-}
-
-
-.title {
-
-    font-size: 28px;
-
-    font-weight: 800;
-
-    letter-spacing: 1px;
+    clip-path:
+        polygon(
+            50% 0%,
+            92% 15%,
+            88% 65%,
+            50% 100%,
+            12% 65%,
+            8% 15%
+        );
 
 }
 
 
-.subtitle {
+/* ESH TEXT */
 
-    color: #7f9aae;
+.esh-mark span{
 
-    font-size: 13px;
+    font-size:17px;
 
-    margin-top: 7px;
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    color:#ffffff;
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+/* COMPANY */
+
+.company{
+
+    font-size:12px;
+
+    font-weight:800;
+
+    letter-spacing:3.5px;
+
+    color:#9db5c7;
+
+    margin-bottom:9px;
+
+}
+
+
+/* MAIN TITLE */
+
+.title{
+
+    font-size:27px;
+
+    font-weight:900;
+
+    letter-spacing:0.8px;
+
+    line-height:1.2;
+
+}
+
+
+/* SUBTITLE */
+
+.subtitle{
+
+    color:#7894a8;
+
+    font-size:12px;
+
+    margin-top:9px;
+
+    letter-spacing:0.3px;
 
 }
 
@@ -289,152 +340,195 @@ body::before {
    LOGIN CARD
 ========================================================= */
 
-.card {
+.card{
 
     background:
-        rgba(8,22,38,0.82);
+
+        linear-gradient(
+            145deg,
+            rgba(11,31,50,0.91),
+            rgba(5,19,32,0.88)
+        );
 
     border:
-        1px solid
-        rgba(92,190,220,0.20);
 
-    border-radius: 22px;
+        1px solid
+        rgba(94,195,225,0.22);
+
+    border-radius:24px;
 
     padding:
-        34px 30px;
+        32px 31px 28px;
 
     box-shadow:
 
-        0 25px 70px
-        rgba(0,0,0,0.45),
+        0 30px 80px
+        rgba(0,0,0,0.50),
 
         inset 0 1px 0
-        rgba(255,255,255,0.04);
+        rgba(255,255,255,0.05);
 
     backdrop-filter:
-        blur(18px);
+        blur(20px);
 
 }
 
 
 /* =========================================================
-   ACCESS STATUS
+   TOP SECURITY STATUS
 ========================================================= */
 
-.access {
+.access{
 
-    display: flex;
+    display:flex;
 
-    align-items: center;
+    align-items:center;
 
-    gap: 9px;
+    gap:10px;
 
-    margin-bottom: 25px;
+    margin-bottom:25px;
 
-    color: #7fffd4;
+    color:#73ffd2;
 
-    font-size: 11px;
+    font-size:10px;
 
-    font-weight: 700;
+    font-weight:800;
 
-    letter-spacing: 1.5px;
+    letter-spacing:1.7px;
 
 }
 
 
-.status-dot {
+/* STATUS DOT */
 
-    width: 8px;
+.status-dot{
 
-    height: 8px;
+    width:9px;
 
-    border-radius: 50%;
+    height:9px;
 
-    background: #00e6a0;
+    border-radius:50%;
+
+    background:#00e6a0;
 
     box-shadow:
+
         0 0 12px
-        #00e6a0;
+        #00e6a0,
+
+        0 0 24px
+        rgba(0,230,160,0.35);
 
 }
 
 
 /* =========================================================
-   FORM
+   FORM LABEL
 ========================================================= */
 
-label {
+label{
 
-    display: block;
+    display:block;
 
-    color: #a9bbca;
+    color:#a9bfce;
 
-    font-size: 12px;
+    font-size:11px;
 
-    font-weight: 700;
+    font-weight:800;
 
-    margin-bottom: 8px;
+    margin-bottom:8px;
 
-    letter-spacing: 0.8px;
-
-}
-
-
-.input-group {
-
-    position: relative;
-
-    margin-bottom: 20px;
+    letter-spacing:0.9px;
 
 }
 
 
-input {
+/* =========================================================
+   INPUT GROUP
+========================================================= */
 
-    width: 100%;
+.input-group{
 
-    height: 52px;
+    position:relative;
+
+    margin-bottom:19px;
+
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+input{
+
+    width:100%;
+
+    height:54px;
 
     padding:
-        0 16px;
+        0 17px;
 
-    border-radius: 12px;
+    border-radius:13px;
 
     border:
         1px solid
-        rgba(150,190,210,0.18);
+        rgba(145,190,212,0.18);
 
     background:
         rgba(255,255,255,0.045);
 
-    color: white;
+    color:#ffffff;
 
-    outline: none;
+    outline:none;
 
-    font-size: 14px;
+    font-size:14px;
 
-    transition: 0.25s;
+    transition:
+        border-color 0.25s,
+        background 0.25s,
+        box-shadow 0.25s,
+        transform 0.25s;
 
 }
 
 
-input:focus {
+/* INPUT HOVER */
 
-    border-color: #00cfff;
+input:hover{
 
-    box-shadow:
-        0 0 0 3px
-        rgba(0,207,255,0.08);
+    border-color:
+        rgba(0,207,255,0.30);
+
+}
+
+
+/* INPUT FOCUS */
+
+input:focus{
+
+    border-color:
+        #00cfff;
 
     background:
         rgba(255,255,255,0.065);
 
+    box-shadow:
+
+        0 0 0 3px
+        rgba(0,207,255,0.08),
+
+        0 5px 20px
+        rgba(0,150,255,0.06);
+
 }
 
 
-input::placeholder {
+/* PLACEHOLDER */
 
-    color: #536b7d;
+input::placeholder{
+
+    color:#536c7d;
 
 }
 
@@ -443,42 +537,58 @@ input::placeholder {
    PASSWORD
 ========================================================= */
 
-.password-wrap input {
+.password-wrap input{
 
-    padding-right: 55px;
+    padding-right:65px;
 
 }
 
 
-.show-password {
+/* SHOW PASSWORD */
 
-    position: absolute;
+.show-password{
 
-    right: 12px;
+    position:absolute;
 
-    top: 50%;
+    right:12px;
+
+    top:50%;
 
     transform:
         translateY(-50%);
 
-    border: none;
+    min-width:48px;
 
-    background: transparent;
+    height:32px;
 
-    color: #7690a3;
+    border:none;
 
-    cursor: pointer;
+    border-radius:8px;
 
-    font-size: 12px;
+    background:
+        rgba(0,207,255,0.07);
 
-    font-weight: 700;
+    color:#7895a8;
+
+    cursor:pointer;
+
+    font-size:10px;
+
+    font-weight:800;
+
+    letter-spacing:0.5px;
+
+    transition:0.2s;
 
 }
 
 
-.show-password:hover {
+.show-password:hover{
 
-    color: #00cfff;
+    color:#00cfff;
+
+    background:
+        rgba(0,207,255,0.14);
 
 }
 
@@ -487,56 +597,63 @@ input::placeholder {
    LOGIN BUTTON
 ========================================================= */
 
-.login-btn {
+.login-btn{
 
-    width: 100%;
+    width:100%;
 
-    height: 54px;
+    height:55px;
 
-    border: none;
+    margin-top:4px;
 
-    border-radius: 12px;
+    border:none;
+
+    border-radius:13px;
 
     background:
 
         linear-gradient(
             135deg,
-            #00cfff,
-            #007cff
+            #00d4ff,
+            #0078ff
         );
 
-    color: white;
+    color:#ffffff;
 
-    font-size: 14px;
+    font-size:13px;
 
-    font-weight: 800;
+    font-weight:900;
 
-    letter-spacing: 1px;
+    letter-spacing:1.1px;
 
-    cursor: pointer;
+    cursor:pointer;
 
     box-shadow:
-        0 10px 25px
+
+        0 12px 28px
         rgba(0,150,255,0.22);
 
-    transition: 0.25s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        opacity 0.2s;
 
 }
 
 
-.login-btn:hover {
+.login-btn:hover{
 
     transform:
         translateY(-2px);
 
     box-shadow:
-        0 15px 30px
-        rgba(0,170,255,0.30);
+
+        0 17px 35px
+        rgba(0,170,255,0.32);
 
 }
 
 
-.login-btn:active {
+.login-btn:active{
 
     transform:
         translateY(0);
@@ -544,17 +661,13 @@ input::placeholder {
 }
 
 
-/* =========================================================
-   LOADING STATE
-========================================================= */
+.login-btn.loading{
 
-.login-btn.loading {
+    opacity:0.65;
 
-    opacity: 0.7;
+    cursor:wait;
 
-    cursor: wait;
-
-    pointer-events: none;
+    pointer-events:none;
 
 }
 
@@ -563,28 +676,30 @@ input::placeholder {
    ERROR
 ========================================================= */
 
-.error {
+.error{
 
-    display: none;
+    display:none;
 
-    margin-top: 15px;
+    margin-top:15px;
 
-    padding: 12px;
+    padding:12px 13px;
 
-    border-radius: 10px;
+    border-radius:10px;
 
     background:
         rgba(255,60,80,0.08);
 
     border:
         1px solid
-        rgba(255,80,100,0.20);
+        rgba(255,80,100,0.22);
 
-    color: #ff8290;
+    color:#ff8290;
 
-    text-align: center;
+    text-align:center;
 
-    font-size: 12px;
+    font-size:11px;
+
+    line-height:1.4;
 
 }
 
@@ -593,58 +708,101 @@ input::placeholder {
    SUCCESS
 ========================================================= */
 
-.success {
+.success{
 
-    display: none;
+    display:none;
 
-    margin-top: 15px;
+    margin-top:15px;
 
-    padding: 12px;
+    padding:12px 13px;
 
-    border-radius: 10px;
+    border-radius:10px;
 
     background:
         rgba(0,230,160,0.08);
 
     border:
         1px solid
-        rgba(0,230,160,0.20);
+        rgba(0,230,160,0.22);
 
-    color: #6fffd2;
+    color:#6fffd2;
 
-    text-align: center;
+    text-align:center;
 
-    font-size: 12px;
+    font-size:11px;
+
+    line-height:1.4;
 
 }
 
 
 /* =========================================================
-   SECURITY
+   SECURITY NOTICE
 ========================================================= */
 
-.security {
+.security{
 
-    margin-top: 20px;
+    margin-top:21px;
 
-    padding-top: 18px;
+    padding-top:18px;
 
     border-top:
         1px solid
         rgba(255,255,255,0.06);
 
-    text-align: center;
+    text-align:center;
 
-    color: #526b7c;
+    color:#536d7f;
 
-    font-size: 10px;
+    font-size:10px;
+
+    line-height:1.7;
 
 }
 
 
-.security strong {
+.security strong{
 
-    color: #71899c;
+    color:#7893a4;
+
+    letter-spacing:0.5px;
+
+}
+
+
+/* SECURITY BADGE */
+
+.security-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-bottom:4px;
+
+    padding:
+        5px 10px;
+
+    border-radius:20px;
+
+    background:
+        rgba(0,230,160,0.055);
+
+    border:
+        1px solid
+        rgba(0,230,160,0.12);
+
+    color:#6fdab9;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    letter-spacing:0.8px;
 
 }
 
@@ -653,24 +811,26 @@ input::placeholder {
    FOOTER
 ========================================================= */
 
-.footer {
+.footer{
 
-    text-align: center;
+    text-align:center;
 
-    margin-top: 22px;
+    margin-top:19px;
 
-    color: #50687a;
+    color:#50697a;
 
-    font-size: 10px;
+    font-size:9px;
 
-    line-height: 1.6;
+    line-height:1.7;
 
 }
 
 
-.footer strong {
+.footer strong{
 
-    color: #6f899b;
+    color:#718b9d;
+
+    letter-spacing:0.5px;
 
 }
 
@@ -679,37 +839,118 @@ input::placeholder {
    MOBILE
 ========================================================= */
 
-@media (max-width: 480px) {
+@media(max-width:480px){
 
-    .container {
-
-        padding: 16px;
-
-    }
-
-
-    .card {
+    body{
 
         padding:
-            28px 22px;
-
-        border-radius: 18px;
+            22px 14px;
 
     }
 
 
-    .title {
+    .container{
 
-        font-size: 24px;
+        max-width:430px;
 
     }
 
 
-    .esh-mark {
+    .logo-area{
 
-        width: 62px;
+        margin-bottom:19px;
 
-        height: 62px;
+    }
+
+
+    .esh-mark{
+
+        width:68px;
+
+        height:68px;
+
+        border-radius:20px;
+
+        margin-bottom:13px;
+
+    }
+
+
+    .esh-mark::before{
+
+        width:40px;
+
+        height:45px;
+
+    }
+
+
+    .title{
+
+        font-size:22px;
+
+    }
+
+
+    .subtitle{
+
+        font-size:11px;
+
+    }
+
+
+    .card{
+
+        padding:
+            27px 21px 24px;
+
+        border-radius:20px;
+
+    }
+
+
+    .company{
+
+        font-size:10px;
+
+        letter-spacing:2.5px;
+
+    }
+
+
+    input{
+
+        height:52px;
+
+    }
+
+
+    .login-btn{
+
+        height:53px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width:350px){
+
+    .title{
+
+        font-size:20px;
+
+    }
+
+
+    .card{
+
+        padding:
+            24px 17px;
 
     }
 
@@ -719,219 +960,48 @@ input::placeholder {
 
 </head>
 
-
 <body>
-
 
 <div class="glow"></div>
 
 <div class="glow2"></div>
 
-
 <div class="container">
 
+```
+<!-- =====================================================
+     BRANDING
+====================================================== -->
 
-    <!-- =====================================================
-         BRANDING
-    ====================================================== -->
-
-    <div class="logo-area">
-
-
-        <div class="esh-mark">
-
-            <span>
-                ESH
-            </span>
-
-        </div>
+<div class="logo-area">
 
 
-        <div class="company">
+    <div class="esh-mark">
 
-            BIDOR KWONG HENG
-
-        </div>
-
-
-        <div class="title">
-
-            ESH SAFETY MANAGEMENT SYSTEM
-
-        </div>
-
-
-        <div class="subtitle">
-
-            Environment • Safety • Health Management System
-
-        </div>
-
+        <span>
+            ESH
+        </span>
 
     </div>
 
 
-    <!-- =====================================================
-         LOGIN CARD
-    ====================================================== -->
+    <div class="company">
 
-    <div class="card">
-
-
-        <div class="access">
-
-
-            <div class="status-dot"></div>
-
-
-            SECURE ESH ACCESS
-
-
-        </div>
-
-
-        <form id="loginForm">
-
-
-            <!-- USERNAME -->
-
-            <div class="input-group">
-
-
-                <label for="username">
-
-                    USERNAME
-
-                </label>
-
-
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Enter username"
-                    autocomplete="username"
-                    required
-                >
-
-
-            </div>
-
-
-            <!-- PASSWORD -->
-
-            <div
-                class="input-group password-wrap"
-            >
-
-
-                <label for="password">
-
-                    PASSWORD
-
-                </label>
-
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Enter password"
-                    autocomplete="current-password"
-                    required
-                >
-
-
-                <button
-                    type="button"
-                    class="show-password"
-                    onclick="togglePassword()"
-                >
-
-                    SHOW
-
-                </button>
-
-
-            </div>
-
-
-            <!-- LOGIN BUTTON -->
-
-            <button
-                type="submit"
-                class="login-btn"
-                id="loginButton"
-            >
-
-                SIGN IN TO ESH
-
-            </button>
-
-
-            <!-- ERROR -->
-
-            <div
-                id="errorMessage"
-                class="error"
-            >
-
-                Invalid username or password.
-
-            </div>
-
-
-            <!-- SUCCESS -->
-
-            <div
-                id="successMessage"
-                class="success"
-            >
-
-                Login successful. Opening ESH system...
-
-            </div>
-
-
-        </form>
-
-
-        <!-- SECURITY -->
-
-        <div class="security">
-
-            🔒
-            <strong>
-                ESH MANAGEMENT ACCESS
-            </strong>
-
-            <br>
-
-            Authorized personnel only
-
-        </div>
-
+        BIDOR KWONG HENG
 
     </div>
 
 
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
+    <div class="title">
 
-    <div class="footer">
+        ESH MANAGEMENT SYSTEM
 
-
-        <strong>
-
-            ESH SAFETY MANAGEMENT SYSTEM
-
-        </strong>
+    </div>
 
 
-        <br>
+    <div class="subtitle">
 
-
-        Bidor Kwong Heng • ESH Department
-
+        Environment • Safety • Health Management System
 
     </div>
 
@@ -939,7 +1009,180 @@ input::placeholder {
 </div>
 
 
+<!-- =====================================================
+     LOGIN CARD
+====================================================== -->
+
+<div class="card">
+
+
+    <div class="access">
+
+        <div class="status-dot"></div>
+
+        SECURE ESH ACCESS
+
+    </div>
+
+
+    <form id="loginForm">
+
+
+        <!-- USERNAME -->
+
+        <div class="input-group">
+
+
+            <label for="username">
+
+                USERNAME
+
+            </label>
+
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                autocomplete="username"
+                required
+            >
+
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div
+            class="input-group password-wrap"
+        >
+
+
+            <label for="password">
+
+                PASSWORD
+
+            </label>
+
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+
+
+            <button
+                type="button"
+                class="show-password"
+                onclick="togglePassword()"
+            >
+
+                SHOW
+
+            </button>
+
+
+        </div>
+
+
+        <!-- LOGIN BUTTON -->
+
+        <button
+            type="submit"
+            class="login-btn"
+            id="loginButton"
+        >
+
+            SIGN IN TO ESH
+
+        </button>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="errorMessage"
+            class="error"
+        >
+
+            Invalid username or password.
+
+        </div>
+
+
+        <!-- SUCCESS -->
+
+        <div
+            id="successMessage"
+            class="success"
+        >
+
+            Login successful. Opening ESH system...
+
+        </div>
+
+
+    </form>
+
+
+    <!-- SECURITY -->
+
+    <div class="security">
+
+        <div class="security-badge">
+
+            🔒
+            AUTHORIZED ACCESS
+
+        </div>
+
+        <br>
+
+        <strong>
+            ESH MANAGEMENT ACCESS
+        </strong>
+
+        <br>
+
+        Authorized personnel only
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<div class="footer">
+
+
+    <strong>
+
+        ESH SAFETY MANAGEMENT SYSTEM
+
+    </strong>
+
+
+    <br>
+
+
+    Bidor Kwong Heng • ESH Department
+
+
+</div>
+```
+
+</div>
+
 <script>
+
 
 /* =========================================================
    GOOGLE APPS SCRIPT API
@@ -953,7 +1196,7 @@ const GOOGLE_SCRIPT_URL =
    SHOW / HIDE PASSWORD
 ========================================================= */
 
-function togglePassword() {
+function togglePassword(){
 
     const password =
         document.getElementById(
@@ -967,10 +1210,10 @@ function togglePassword() {
         );
 
 
-    if (
+    if(
         password.type ===
         "password"
-    ) {
+    ){
 
         password.type =
             "text";
@@ -979,7 +1222,7 @@ function togglePassword() {
             "HIDE";
 
     }
-    else {
+    else{
 
         password.type =
             "password";
@@ -998,7 +1241,7 @@ function togglePassword() {
 
 function showError(
     message
-) {
+){
 
     const error =
         document.getElementById(
@@ -1025,7 +1268,7 @@ function showError(
 
 
     setTimeout(
-        function() {
+        function(){
 
             error.style.display =
                 "none";
@@ -1043,7 +1286,7 @@ function showError(
 
 function showSuccess(
     message
-) {
+){
 
     const error =
         document.getElementById(
@@ -1081,7 +1324,7 @@ document
     )
     .addEventListener(
         "submit",
-        async function(event) {
+        async function(event){
 
             event.preventDefault();
 
@@ -1115,7 +1358,7 @@ document
                VALIDATION
             --------------------------------------------- */
 
-            if (!username) {
+            if(!username){
 
                 showError(
                     "Please enter your username."
@@ -1126,7 +1369,7 @@ document
             }
 
 
-            if (!password) {
+            if(!password){
 
                 showError(
                     "Please enter your password."
@@ -1141,13 +1384,13 @@ document
                API URL CHECK
             --------------------------------------------- */
 
-            if (
+            if(
                 !GOOGLE_SCRIPT_URL ||
                 GOOGLE_SCRIPT_URL
                     .indexOf(
                         "/exec"
                     ) === -1
-            ) {
+            ){
 
                 showError(
                     "Google Apps Script API URL is not configured."
@@ -1173,7 +1416,7 @@ document
                 "AUTHENTICATING...";
 
 
-            try {
+            try{
 
 
                 /* -----------------------------------------
@@ -1188,7 +1431,7 @@ document
                             method:
                                 "POST",
 
-                            headers: {
+                            headers:{
 
                                 "Content-Type":
                                     "text/plain;charset=utf-8"
@@ -1217,9 +1460,9 @@ document
                    CHECK HTTP RESPONSE
                 ----------------------------------------- */
 
-                if (
+                if(
                     !response.ok
-                ) {
+                ){
 
                     throw new Error(
                         "Server returned HTTP " +
@@ -1247,9 +1490,9 @@ document
                    LOGIN FAILED
                 ----------------------------------------- */
 
-                if (
+                if(
                     !data.success
-                ) {
+                ){
 
                     showError(
                         data.message ||
@@ -1311,10 +1554,10 @@ document
                    COMPATIBILITY WITH EXISTING DASHBOARD
                 ----------------------------------------- */
 
-                if (
+                if(
                     data.role ===
                     "ESH"
-                ) {
+                ){
 
                     sessionStorage.setItem(
                         "eshLoggedIn",
@@ -1342,7 +1585,7 @@ document
                 ----------------------------------------- */
 
                 setTimeout(
-                    function() {
+                    function(){
 
                         window.location.href =
                             "esh.html";
@@ -1353,7 +1596,7 @@ document
 
 
             }
-            catch (error) {
+            catch(error){
 
                 console.error(
                     "LOGIN ERROR:",
@@ -1381,8 +1624,8 @@ document
         }
     );
 
-</script>
 
+</script>
 
 </body>
 
