@@ -3539,12 +3539,14 @@ input[type="date"]:disabled{
             Target Date
         </label>
 
-        <input
-            type="date"
-            id="dueDate"
-            onclick="if(this.showPicker) this.showPicker();"
-        >
-
+<input
+    type="text"
+    id="dueDate"
+    placeholder="DD-MM-YYYY"
+    inputmode="numeric"
+    maxlength="10"
+    autocomplete="off"
+>
     </div>
 
 
@@ -3612,11 +3614,14 @@ input[type="date"]:disabled{
                 Closed Date
             </label>
 
-            <input
-                type="date"
-                id="closedDate"
-                onclick="if(this.showPicker) this.showPicker();"
-            >
+<input
+    type="text"
+    id="closedDate"
+    placeholder="DD-MM-YYYY"
+    inputmode="numeric"
+    maxlength="10"
+    autocomplete="off"
+>
 
         </div>
 
