@@ -11363,6 +11363,1005 @@ function closePrintSummary(){
 }
 
 /* =========================================================
+   GENERATE SUMMARY REPORT
+========================================================= */
+
+function generatePrintSummary(){
+
+    const fromInput =
+        document.getElementById(
+            "summaryFromDate"
+        );
+
+    const toInput =
+        document.getElementById(
+            "summaryToDate"
+        );
+
+
+    const fromDate =
+        fromInput
+            ? fromInput.value
+            : "";
+
+    const toDate =
+        toInput
+            ? toInput.value
+            : "";
+
+
+    /* -----------------------------------------------------
+       VALIDATE DATE RANGE
+    ----------------------------------------------------- */
+
+    if(
+        fromDate &&
+        toDate &&
+        fromDate > toDate
+    ){
+
+        showToast(
+            "From Date cannot be later than To Date."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CLOSE SUMMARY MODAL
+    ----------------------------------------------------- */
+
+    closePrintSummary();
+
+
+    /* -----------------------------------------------------
+       CHECK REPORT DATA
+    ----------------------------------------------------- */
+
+    if(
+        !Array.isArray(reports)
+    ){
+
+        showToast(
+            "Report data is not available."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       FILTER ACTIVE REPORTS BY DATE
+    ----------------------------------------------------- */
+
+    const filteredReports =
+        reports.filter(
+            function(report){
+
+                const rawDate =
+                    report.dateTime ||
+                    report.submittedAt ||
+                    report.observationDate ||
+                    report.createdAt ||
+                    "";
+
+
+                if(!rawDate){
+
+                    return false;
+
+                }
+
+
+                const reportDate =
+                    new Date(rawDate);
+
+
+                if(
+                    isNaN(
+                        reportDate.getTime()
+                    )
+                ){
+
+                    return false;
+
+                }
+
+
+                const dateOnly =
+                    reportDate
+                        .toISOString()
+                        .slice(0,10);
+
+
+                if(
+                    fromDate &&
+                    dateOnly < fromDate
+                ){
+
+                    return false;
+
+                }
+
+
+                if(
+                    toDate &&
+                    dateOnly > toDate
+                ){
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    /* -----------------------------------------------------
+       BASIC COUNTS
+    ----------------------------------------------------- */
+
+    const totalReports =
+        filteredReports.length;
+
+
+    let openCount = 0;
+
+    let inProgressCount = 0;
+
+    let closedCount = 0;
+
+    let overdueCount = 0;
+
+
+    filteredReports.forEach(
+        function(report){
+
+            const status =
+                typeof normalizeStatus === "function"
+                    ? normalizeStatus(
+                        report.status
+                    ).toLowerCase()
+                    : String(
+                        report.status || ""
+                    ).toLowerCase();
+
+
+            if(
+                status.includes("closed") ||
+                status.includes("complete")
+            ){
+
+                closedCount++;
+
+            }
+            else if(
+                status.includes("progress")
+            ){
+
+                inProgressCount++;
+
+            }
+            else{
+
+                openCount++;
+
+            }
+
+
+            /* -------------------------------------------------
+               OVERDUE
+            ------------------------------------------------- */
+
+            const dueDate =
+                report.dueDate ||
+                "";
+
+
+            if(
+                dueDate &&
+                !(
+                    status.includes("closed") ||
+                    status.includes("complete")
+                )
+            ){
+
+                const due =
+                    new Date(dueDate);
+
+
+                if(
+                    !isNaN(
+                        due.getTime()
+                    ) &&
+                    due <
+                    new Date()
+                ){
+
+                    overdueCount++;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       REPORT TYPE COUNTS
+    ----------------------------------------------------- */
+
+    const typeCounts = {};
+
+
+    filteredReports.forEach(
+        function(report){
+
+            const type =
+                report.reportType ||
+                report.type ||
+                "Other";
+
+
+            const cleanType =
+                String(type).trim() ||
+                "Other";
+
+
+            typeCounts[cleanType] =
+                (
+                    typeCounts[cleanType] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       DEPARTMENT COUNTS
+    ----------------------------------------------------- */
+
+    const departmentCounts = {};
+
+
+    filteredReports.forEach(
+        function(report){
+
+            const department =
+                String(
+                    report.department ||
+                    "Unknown"
+                ).trim() ||
+                "Unknown";
+
+
+            departmentCounts[department] =
+                (
+                    departmentCounts[department] ||
+                    0
+                ) + 1;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       PREPARE REPORTING PERIOD
+    ----------------------------------------------------- */
+
+    const periodText =
+        fromDate || toDate
+            ? (
+                (fromDate || "All") +
+                " to " +
+                (toDate || "All")
+            )
+            : "All Available Records";
+
+
+    /* -----------------------------------------------------
+       OPEN PRINT WINDOW
+    ----------------------------------------------------- */
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank",
+            "width=1000,height=900"
+        );
+
+
+    if(!printWindow){
+
+        showToast(
+            "Please allow pop-ups to print the summary."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       TYPE TABLE
+    ----------------------------------------------------- */
+
+    const typeRows =
+        Object.keys(typeCounts)
+            .sort()
+            .map(
+                function(type){
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(type)}
+                            </td>
+
+                            <td class="number">
+                                ${typeCounts[type]}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    /* -----------------------------------------------------
+       DEPARTMENT TABLE
+    ----------------------------------------------------- */
+
+    const departmentRows =
+        Object.keys(departmentCounts)
+            .sort()
+            .map(
+                function(department){
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(department)}
+                            </td>
+
+                            <td class="number">
+                                ${departmentCounts[department]}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+    printWindow.document.open();
+
+
+    /* -----------------------------------------------------
+       PRINT DOCUMENT
+    ----------------------------------------------------- */
+
+    printWindow.document.write(`
+
+        <!DOCTYPE html>
+
+        <html lang="en">
+
+        <head>
+
+            <meta charset="UTF-8">
+
+            <title>
+                ESH Summary Report
+            </title>
+
+
+            <style>
+
+                @page{
+
+                    size:A4;
+
+                    margin:14mm;
+
+                }
+
+
+                *{
+
+                    box-sizing:border-box;
+
+                }
+
+
+                body{
+
+                    margin:0;
+
+                    background:#ffffff;
+
+                    color:#172033;
+
+                    font-family:
+                        Arial,
+                        Helvetica,
+                        sans-serif;
+
+                    font-size:11px;
+
+                    line-height:1.45;
+
+                }
+
+
+                .header{
+
+                    border-bottom:
+                        3px solid #12395b;
+
+                    padding-bottom:12px;
+
+                    margin-bottom:18px;
+
+                }
+
+
+                .company{
+
+                    font-size:19px;
+
+                    font-weight:800;
+
+                    color:#102a43;
+
+                }
+
+
+                .department{
+
+                    margin-top:3px;
+
+                    font-size:9px;
+
+                    font-weight:700;
+
+                    letter-spacing:1px;
+
+                    color:#64748b;
+
+                }
+
+
+                .title{
+
+                    margin-top:15px;
+
+                    font-size:20px;
+
+                    font-weight:800;
+
+                    color:#102a43;
+
+                }
+
+
+                .subtitle{
+
+                    margin-top:3px;
+
+                    color:#64748b;
+
+                    font-size:10px;
+
+                }
+
+
+                .period{
+
+                    margin-top:14px;
+
+                    padding:10px 12px;
+
+                    border:1px solid #d7e1eb;
+
+                    background:#f3f7fb;
+
+                    border-radius:6px;
+
+                    font-weight:700;
+
+                    color:#12395b;
+
+                }
+
+
+                .section{
+
+                    margin-top:20px;
+
+                }
+
+
+                .section-title{
+
+                    font-size:12px;
+
+                    font-weight:800;
+
+                    color:#12395b;
+
+                    text-transform:uppercase;
+
+                    letter-spacing:.5px;
+
+                    border-bottom:
+                        1px solid #d9e2ec;
+
+                    padding-bottom:5px;
+
+                    margin-bottom:10px;
+
+                }
+
+
+                .summary-grid{
+
+                    display:grid;
+
+                    grid-template-columns:
+                        repeat(4,1fr);
+
+                    gap:9px;
+
+                }
+
+
+                .card{
+
+                    border:
+                        1px solid #d9e2ec;
+
+                    border-radius:6px;
+
+                    padding:12px;
+
+                    text-align:center;
+
+                }
+
+
+                .card-value{
+
+                    font-size:23px;
+
+                    font-weight:800;
+
+                    color:#102a43;
+
+                }
+
+
+                .card-label{
+
+                    margin-top:4px;
+
+                    font-size:8px;
+
+                    font-weight:700;
+
+                    color:#64748b;
+
+                    text-transform:uppercase;
+
+                }
+
+
+                table{
+
+                    width:100%;
+
+                    border-collapse:collapse;
+
+                }
+
+
+                th{
+
+                    background:#f3f7fb;
+
+                    color:#12395b;
+
+                    font-size:9px;
+
+                    text-transform:uppercase;
+
+                    text-align:left;
+
+                    padding:8px;
+
+                    border:1px solid #d9e2ec;
+
+                }
+
+
+                td{
+
+                    padding:8px;
+
+                    border:1px solid #d9e2ec;
+
+                }
+
+
+                .number{
+
+                    width:100px;
+
+                    text-align:center;
+
+                    font-weight:800;
+
+                }
+
+
+                .empty{
+
+                    padding:15px;
+
+                    text-align:center;
+
+                    color:#718096;
+
+                    border:1px dashed #cbd5e1;
+
+                }
+
+
+                .footer{
+
+                    margin-top:25px;
+
+                    padding-top:8px;
+
+                    border-top:
+                        1px solid #d9e2ec;
+
+                    display:flex;
+
+                    justify-content:space-between;
+
+                    gap:10px;
+
+                    font-size:8px;
+
+                    color:#718096;
+
+                }
+
+
+                @media print{
+
+                    body{
+
+                        -webkit-print-color-adjust:exact;
+
+                        print-color-adjust:exact;
+
+                    }
+
+                }
+
+            </style>
+
+        </head>
+
+
+        <body>
+
+
+            <div class="header">
+
+                <div class="company">
+
+                    BIDOR KWONG HENG SDN. BHD.
+
+                </div>
+
+
+                <div class="department">
+
+                    ENVIRONMENT • SAFETY • HEALTH DEPARTMENT
+
+                </div>
+
+
+                <div class="title">
+
+                    ESH MANAGEMENT SUMMARY REPORT
+
+                </div>
+
+
+                <div class="subtitle">
+
+                    Near Miss / Unsafe Act / Unsafe Condition Management Summary
+
+                </div>
+
+
+                <div class="period">
+
+                    Reporting Period:
+                    ${escapeHtml(periodText)}
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    1. Management Overview
+
+                </div>
+
+
+                <div class="summary-grid">
+
+                    <div class="card">
+
+                        <div class="card-value">
+                            ${totalReports}
+                        </div>
+
+                        <div class="card-label">
+                            Total Reports
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-value">
+                            ${openCount}
+                        </div>
+
+                        <div class="card-label">
+                            Open
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-value">
+                            ${inProgressCount}
+                        </div>
+
+                        <div class="card-label">
+                            In Progress
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-value">
+                            ${closedCount}
+                        </div>
+
+                        <div class="card-label">
+                            Closed
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="summary-grid"
+                    style="margin-top:9px;"
+                >
+
+                    <div class="card">
+
+                        <div class="card-value">
+                            ${overdueCount}
+                        </div>
+
+                        <div class="card-label">
+                            Overdue
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    2. Report Type Summary
+
+                </div>
+
+
+                ${
+                    typeRows
+                        ? `
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Report Type
+                                        </th>
+
+                                        <th>
+                                            Count
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    ${typeRows}
+
+                                </tbody>
+
+                            </table>
+                        `
+                        : `
+                            <div class="empty">
+                                No reports found for this period.
+                            </div>
+                        `
+                }
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+
+                    3. Department Summary
+
+                </div>
+
+
+                ${
+                    departmentRows
+                        ? `
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Department
+                                        </th>
+
+                                        <th>
+                                            Count
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    ${departmentRows}
+
+                                </tbody>
+
+                            </table>
+                        `
+                        : `
+                            <div class="empty">
+                                No department data available.
+                            </div>
+                        `
+                }
+
+            </div>
+
+
+            <div class="footer">
+
+                <div>
+
+                    Bidor Kwong Heng Sdn. Bhd.
+                    • ESH Management System
+
+                </div>
+
+
+                <div>
+
+                    Generated:
+                    ${escapeHtml(
+                        new Date().toLocaleString()
+                    )}
+
+                </div>
+
+            </div>
+
+
+        </body>
+
+        </html>
+
+    `);
+
+
+    printWindow.document.close();
+
+
+    /* -----------------------------------------------------
+       WAIT THEN PRINT
+    ----------------------------------------------------- */
+
+    setTimeout(
+        function(){
+
+            try{
+
+                printWindow.focus();
+
+                printWindow.print();
+
+            }
+            catch(error){
+
+                console.error(
+                    "Summary print error:",
+                    error
+                );
+
+            }
+
+        },
+        1000
+    );
+
+}
+    
+/* =========================================================
    PRINT COMPLETE REPORT
 ========================================================= */
 
