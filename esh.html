@@ -8241,191 +8241,205 @@ async function uploadCorrectivePhotos(){
 }
 
 
-/* =========================================================
-   VIDEO
-========================================================= */
+    /* =========================================================
+       VIDEO
+       SHOW ONLY WHEN VIDEO EVIDENCE EXISTS
+    ========================================================= */
 
-function loadVideo(report){
+    function loadVideo(report){
 
-    const container =
-        document.getElementById(
-            "videoEvidence"
-        );
-
-
-    if(!container){
-
-        return;
-
-    }
+        const container =
+            document.getElementById(
+                "videoEvidence"
+            );
 
 
-    container.innerHTML = "";
+        if(!container){
+
+            return;
+
+        }
 
 
-    const url =
-        report.videoUrl ||
-        report.videoLink ||
-        report.video ||
-        "";
+        /*
+         * CLEAR PREVIOUS VIDEO
+         */
+        container.innerHTML = "";
 
 
-    if(!url){
+        /*
+         * GET VIDEO URL
+         */
+        const url =
+            report.videoUrl ||
+            report.videoLink ||
+            report.video ||
+            "";
+
+
+        /*
+         * NO VIDEO
+         * HIDE ENTIRE VIDEO SECTION
+         */
+        if(!url){
+
+            container.innerHTML = "";
+
+            container.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        /*
+         * VIDEO EXISTS
+         * SHOW VIDEO SECTION
+         */
+        const videoUrl =
+            String(url).trim();
+
+
+        container.style.display =
+            "block";
+
+
+        /*
+         * GET GOOGLE DRIVE FILE ID
+         */
+        const id =
+            extractDriveFileId(
+                videoUrl
+            );
+
+
+        /* =====================================================
+           GOOGLE DRIVE VIDEO
+        ===================================================== */
+
+        if(
+            id &&
+            videoUrl.includes(
+                "drive.google.com"
+            )
+        ){
+
+            const openUrl =
+                "https://drive.google.com/file/d/" +
+                encodeURIComponent(id) +
+                "/view";
+
+
+            container.innerHTML = `
+
+                <div
+                    class="video-card"
+                    style="
+                        padding:20px;
+                        border:1px solid #e5e7eb;
+                        border-radius:14px;
+                        background:#f8fafc;
+                        text-align:center;
+                    "
+                >
+
+                    <div
+                        style="
+                            font-size:44px;
+                            margin-bottom:10px;
+                        "
+                    >
+                        🎥
+                    </div>
+
+
+                    <div
+                        style="
+                            font-size:15px;
+                            font-weight:700;
+                            color:#1f2937;
+                            margin-bottom:6px;
+                        "
+                    >
+                        Video Evidence
+                    </div>
+
+
+                    <div
+                        style="
+                            font-size:12px;
+                            color:#64748b;
+                            margin-bottom:16px;
+                        "
+                    >
+                        Video evidence is stored securely
+                        in Google Drive.
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        onclick="
+                            window.open(
+                                '${escapeAttribute(openUrl)}',
+                                '_blank',
+                                'noopener,noreferrer'
+                            );
+                        "
+                    >
+                        ▶ Open Video
+                    </button>
+
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        /* =====================================================
+           NORMAL VIDEO URL
+        ===================================================== */
 
         container.innerHTML = `
-            <div class="empty">
 
-                <div class="empty-icon">
-                    🎥
-                </div>
+            <div class="video-card">
 
-                <div class="empty-title">
-                    No video evidence submitted.
-                </div>
-
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    const videoUrl =
-        String(url).trim();
-
-
-    const id =
-        extractDriveFileId(
-            videoUrl
-        );
-
-
-    /* =====================================================
-       GOOGLE DRIVE VIDEO
-    ===================================================== */
-
-    if(
-        id &&
-        videoUrl.includes(
-            "drive.google.com"
-        )
-    ){
-
-        const openUrl =
-            "https://drive.google.com/file/d/" +
-            encodeURIComponent(id) +
-            "/view";
-
-
-        container.innerHTML = `
-
-            <div
-                class="video-card"
-                style="
-                    padding:20px;
-                    border:1px solid #e5e7eb;
-                    border-radius:14px;
-                    background:#f8fafc;
-                    text-align:center;
-                "
-            >
-
-                <div
+                <video
+                    controls
+                    preload="metadata"
+                    playsinline
                     style="
-                        font-size:44px;
-                        margin-bottom:10px;
+                        width:100%;
+                        max-height:500px;
+                        border-radius:12px;
+                        background:#000;
                     "
                 >
-                    🎥
-                </div>
 
+                    <source
+                        src="${escapeAttribute(
+                            videoUrl
+                        )}"
+                    >
 
-                <div
-                    style="
-                        font-size:15px;
-                        font-weight:700;
-                        color:#1f2937;
-                        margin-bottom:6px;
-                    "
-                >
-                    Video Evidence
-                </div>
+                    Your browser does not support
+                    video playback.
 
-
-                <div
-                    style="
-                        font-size:12px;
-                        color:#64748b;
-                        margin-bottom:16px;
-                    "
-                >
-                    Video evidence is stored securely
-                    in Google Drive.
-                </div>
-
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    onclick="
-                        window.open(
-                            '${escapeAttribute(openUrl)}',
-                            '_blank',
-                            'noopener,noreferrer'
-                        );
-                    "
-                >
-                    ▶ Open Video
-                </button>
-
+                </video>
 
             </div>
 
         `;
 
-
-        return;
-
     }
 
-
-    /* =====================================================
-       NORMAL VIDEO URL
-    ===================================================== */
-
-    container.innerHTML = `
-
-        <div class="video-card">
-
-            <video
-                controls
-                preload="metadata"
-                playsinline
-                style="
-                    width:100%;
-                    max-height:500px;
-                    border-radius:12px;
-                    background:#000;
-                "
-            >
-
-                <source
-                    src="${escapeAttribute(
-                        videoUrl
-                    )}"
-                >
-
-                Your browser does not support
-                video playback.
-
-            </video>
-
-        </div>
-
-    `;
-
-}
 /* =========================================================
    GET SELECTED REPORT NUMBER
    FIX FOR "REPORT NUMBER REQUIRED"
