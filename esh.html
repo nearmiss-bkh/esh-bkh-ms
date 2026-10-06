@@ -10413,6 +10413,24 @@ setInterval(
 
 function openPrintReportPanel(){
 
+    /* =====================================================
+       PRINT ACCESS — ESH ONLY
+    ===================================================== */
+
+    if(
+        typeof isESH === "function" &&
+        !isESH()
+    ){
+
+        showToast(
+            "Print access is restricted to ESH personnel."
+        );
+
+        return;
+
+    }
+
+
     const existing =
         document.getElementById("printMenuModal");
 
@@ -10476,6 +10494,10 @@ function openPrintReportPanel(){
                 "
             >
 
+                <!-- =========================================
+                     COMPLETE REPORT
+                ========================================== -->
+
                 <button
                     type="button"
                     class="btn btn-primary"
@@ -10512,6 +10534,10 @@ function openPrintReportPanel(){
 
                 </button>
 
+
+                <!-- =========================================
+                     SUMMARY REPORT
+                ========================================== -->
 
                 <button
                     type="button"
@@ -10552,6 +10578,10 @@ function openPrintReportPanel(){
             </div>
 
 
+            <!-- =============================================
+                 FOOTER
+            ============================================== -->
+
             <div class="modal-footer">
 
                 <button
@@ -10572,18 +10602,22 @@ function openPrintReportPanel(){
     document.body.appendChild(modal);
 
 
-    requestAnimationFrame(() => {
+    requestAnimationFrame(
+        function(){
 
-        modal.classList.add("show");
+            modal.classList.add("show");
 
-    });
+        }
+    );
 
 
     modal.addEventListener(
         "click",
         function(event){
 
-            if(event.target === modal){
+            if(
+                event.target === modal
+            ){
 
                 closePrintMenu();
 
@@ -10591,8 +10625,8 @@ function openPrintReportPanel(){
 
         }
     );
-}
 
+}
 
 /* =========================================================
    CLOSE PRINT MENU
