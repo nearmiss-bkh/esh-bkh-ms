@@ -3595,7 +3595,22 @@ input[type="date"]:disabled{
     >
         Save Case
     </button>
+    
+    <button
+        class="btn"
+        id="printCompleteReportBtn"
+        onclick="printCompleteReport()"
+    >
+        🖨 Print Complete Report
+    </button>
 
+    <button
+        class="btn"
+        id="printSummaryBtn"
+        onclick="printReportSummary()"
+    >
+        📄 Print Summary
+    </button>
 </div>
 
 
@@ -9271,6 +9286,651 @@ document.addEventListener(
 
     }
 );
+
+/* =========================================================
+   PRINT COMPLETE REPORT
+========================================================= */
+
+function printCompleteReport(){
+
+    if(!selectedReport){
+
+        showToast(
+            "Please select a report first.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const report = selectedReport;
+
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if(!printWindow){
+
+        showToast(
+            "Please allow pop-ups to print the report.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    printWindow.document.write(`
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+ESH Complete Report -
+${escapeHtml(report.reportNo || "Report")}
+</title>
+
+
+<style>
+
+@page{
+    size:A4;
+    margin:15mm;
+}
+
+
+*{
+    box-sizing:border-box;
+}
+
+
+body{
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color:#111827;
+
+    background:white;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+    margin:0;
+
+}
+
+
+.header{
+
+    border-bottom:
+        3px solid #123b6d;
+
+    padding-bottom:12px;
+
+    margin-bottom:18px;
+
+}
+
+
+.company{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#123b6d;
+
+}
+
+
+.system{
+
+    font-size:12px;
+
+    color:#555;
+
+    margin-top:3px;
+
+}
+
+
+.title{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    margin-top:15px;
+
+    color:#111827;
+
+}
+
+
+.section{
+
+    margin-top:18px;
+
+    page-break-inside:avoid;
+
+}
+
+
+.section-title{
+
+    background:#123b6d;
+
+    color:white;
+
+    padding:7px 10px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    margin-bottom:8px;
+
+}
+
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:8px;
+
+}
+
+
+.field{
+
+    border:
+        1px solid #d1d5db;
+
+    padding:7px;
+
+    min-height:40px;
+
+}
+
+
+.full{
+
+    grid-column:
+        1 / -1;
+
+}
+
+
+.label{
+
+    font-size:9px;
+
+    color:#6b7280;
+
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    margin-bottom:3px;
+
+}
+
+
+.value{
+
+    font-size:11px;
+
+    color:#111827;
+
+    white-space:pre-wrap;
+
+}
+
+
+.footer{
+
+    margin-top:25px;
+
+    padding-top:8px;
+
+    border-top:
+        1px solid #d1d5db;
+
+    font-size:9px;
+
+    color:#6b7280;
+
+    text-align:center;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <div class="company">
+        BIDOR KWONG HENG SDN BHD
+    </div>
+
+    <div class="system">
+        Environment • Safety • Health Management System
+    </div>
+
+    <div class="title">
+        ESH COMPLETE REPORT
+    </div>
+
+</div>
+
+
+
+<div class="section">
+
+    <div class="section-title">
+        REPORT INFORMATION
+    </div>
+
+
+    <div class="grid">
+
+
+        <div class="field">
+
+            <div class="label">
+                Report No.
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.reportNo || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Status
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.status || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Report Type
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.reportType || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Location
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.location || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Reporter
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.reporterName || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Department
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.department || "-"
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="section">
+
+    <div class="section-title">
+        INCIDENT / OBSERVATION
+    </div>
+
+
+    <div class="grid">
+
+
+        <div class="field">
+
+            <div class="label">
+                Observation Date & Time
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.observationDateTime || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Submission Date & Time
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.submissionDateTime || "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field full">
+
+            <div class="label">
+                Issue Description
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.issueDescription ||
+                    report.description ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="section">
+
+    <div class="section-title">
+        INVESTIGATION
+    </div>
+
+
+    <div class="grid">
+
+
+        <div class="field full">
+
+            <div class="label">
+                Investigation / Findings
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.investigation ||
+                    report.findings ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field full">
+
+            <div class="label">
+                Root Cause
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.rootCause ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="section">
+
+    <div class="section-title">
+        CORRECTIVE ACTION
+    </div>
+
+
+    <div class="grid">
+
+
+        <div class="field full">
+
+            <div class="label">
+                Corrective Action
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.correctiveAction ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Responsible Person
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.responsiblePerson ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Target Date
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.targetDate ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="section">
+
+    <div class="section-title">
+        VERIFICATION & CLOSURE
+    </div>
+
+
+    <div class="grid">
+
+
+        <div class="field full">
+
+            <div class="label">
+                Verification
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.verification ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Closure Date
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.closureDate ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <div class="label">
+                Remarks
+            </div>
+
+            <div class="value">
+                ${escapeHtml(
+                    report.remarks ||
+                    "-"
+                )}
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<div class="footer">
+
+    BIDOR KWONG HENG SDN BHD • ESH DEPARTMENT
+
+    <br>
+
+    Environment • Safety • Health
+
+    <br>
+
+    Printed from ESH Management System
+
+</div>
+
+
+
+<script>
+
+window.onload = function(){
+
+    window.print();
+
+};
+
+<\/script>
+
+
+</body>
+
+</html>
+
+    `);
+
+
+    printWindow.document.close();
+
+}
 
 
 /* =========================================================
