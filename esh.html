@@ -6819,7 +6819,7 @@ function applyRolePermissions(status){
 
     /* =====================================================
        HOD
-       CORRECTIVE ACTION + VERIFICATION
+       ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
     ===================================================== */
 
     if(isHOD()){
@@ -6829,7 +6829,8 @@ function applyRolePermissions(status){
 
                 document.getElementById(
                     id
-                ).disabled = true;
+                ).disabled =
+                    id !== "rootCause";
 
             }
         );
@@ -6897,7 +6898,7 @@ function applyRolePermissions(status){
 
     /* =====================================================
        MAINTENANCE
-       CORRECTIVE ACTION + VERIFICATION
+       ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
     ===================================================== */
 
     if(isMaintenance()){
@@ -6907,7 +6908,8 @@ function applyRolePermissions(status){
 
                 document.getElementById(
                     id
-                ).disabled = true;
+                ).disabled =
+                    id !== "rootCause";
 
             }
         );
