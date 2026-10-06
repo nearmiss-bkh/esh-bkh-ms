@@ -8921,71 +8921,74 @@ async function saveReport(){
     };
 
 
-    if(isHOD()){
+if(isHOD()){
 
-        data.status =
-            selectedStatus;
+    data.status =
+        selectedStatus;
 
-        data.investigationFindings =
-            selectedReport.investigationFindings || "";
+    data.investigationFindings =
+        selectedReport.investigationFindings || "";
 
-        data.rootCause =
-            selectedReport.rootCause || "";
+    data.rootCause =
+        document.getElementById(
+            "rootCause"
+        ).value;
 
-        data.correctiveAction =
-            selectedReport.correctiveAction || "";
+    data.correctiveAction =
+        selectedReport.correctiveAction || "";
 
-        data.personResponsible =
-            selectedReport.personResponsible || "";
+    data.personResponsible =
+        selectedReport.personResponsible || "";
 
-        data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+    data.dueDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
 
-        data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+    data.eshInvestigator =
+        selectedReport.eshInvestigator || "";
 
-        data.eshRemarks =
-            selectedReport.eshRemarks || "";
+    data.eshRemarks =
+        selectedReport.eshRemarks || "";
 
-        data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+    data.closedDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
 
-    }
+}
 
 
-    if(isMaintenance()){
+if(isMaintenance()){
 
-        data.status =
-            selectedStatus;
+    data.status =
+        selectedStatus;
 
-        data.investigationFindings =
-            selectedReport.investigationFindings || "";
+    data.investigationFindings =
+        selectedReport.investigationFindings || "";
 
-        data.rootCause =
-            selectedReport.rootCause || "";
+    data.rootCause =
+        document.getElementById(
+            "rootCause"
+        ).value;
 
-        data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+    data.eshInvestigator =
+        selectedReport.eshInvestigator || "";
 
-        data.eshRemarks =
-            selectedReport.eshRemarks || "";
+    data.eshRemarks =
+        selectedReport.eshRemarks || "";
 
-        data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+    data.dueDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
 
-        data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+    data.closedDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
 
-    }
-
+}
 
     button.disabled = true;
 
