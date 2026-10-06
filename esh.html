@@ -5963,12 +5963,13 @@ async function openReport(index){
             "";
 
 
-        document.getElementById(
-            "dueDate"
-        ).value =
-            formatDateInput(
-                latestReport.dueDate
-            );
+document.getElementById(
+    "dueDate"
+).value =
+    formatDateInput(
+        latestReport.targetDate ||
+        latestReport.dueDate
+    );
 
 
         /* =================================================
@@ -5986,13 +5987,13 @@ async function openReport(index){
            CLOSURE
         ================================================= */
 
-        document.getElementById(
-            "closedDate"
-        ).value =
-            formatDateInput(
-                latestReport.closedDate
-            );
-
+document.getElementById(
+    "closedDate"
+).value =
+    formatDateInput(
+        latestReport.completionDate ||
+        latestReport.closedDate
+    );
 
         /* =================================================
            STATUS
