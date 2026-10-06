@@ -11301,6 +11301,7 @@ function printCompleteReport(report){
 
     /* -----------------------------------------------------
        PHOTO HTML
+       CONVERT GOOGLE DRIVE LINKS FOR PRINT PREVIEW
     ----------------------------------------------------- */
 
     function buildPhotoHTML(
@@ -11348,12 +11349,44 @@ function printCompleteReport(report){
                     }
 
 
+                    /* -------------------------------------------------
+                       CONVERT GOOGLE DRIVE URL TO IMAGE URL
+                    ------------------------------------------------- */
+
+                    let imageUrl =
+                        photoUrl;
+
+
+                    if(
+                        typeof extractDriveFileId === "function"
+                    ){
+
+                        const fileId =
+                            extractDriveFileId(
+                                photoUrl
+                            );
+
+
+                        if(fileId){
+
+                            imageUrl =
+                                "https://lh3.googleusercontent.com/d/" +
+                                encodeURIComponent(
+                                    fileId
+                                ) +
+                                "=w1200";
+
+                        }
+
+                    }
+
+
                     return `
 
                         <div class="photo-item">
 
                             <img
-                                src="${escapeAttribute(photoUrl)}"
+                                src="${escapeAttribute(imageUrl)}"
                                 alt="Photo ${index + 1}"
                             >
 
@@ -11386,7 +11419,6 @@ function printCompleteReport(report){
             correctivePhotos,
             "No corrective-action photos attached."
         );
-
 
     /* -----------------------------------------------------
        OPEN PRINT WINDOW
