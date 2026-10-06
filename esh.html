@@ -6817,160 +6817,160 @@ function applyRolePermissions(status){
     }
 
 
-/* =====================================================
-   HOD
-   CORRECTIVE ACTION + VERIFICATION
-===================================================== */
+    /* =====================================================
+       HOD
+       CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
 
-if(isHOD()){
+    if(isHOD()){
 
-    investigationFields.forEach(
-        function(id){
+        investigationFields.forEach(
+            function(id){
 
-            document.getElementById(
-                id
-            ).disabled =
-                id !== "rootCause";
+                document.getElementById(
+                    id
+                ).disabled = true;
 
-        }
-    );
-
-
-    correctiveFields.forEach(
-        function(id){
-
-            document.getElementById(
-                id
-            ).disabled =
-                status === "Closed";
-
-        }
-    );
+            }
+        );
 
 
-    verificationField.disabled =
-        status === "Closed";
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
+        );
 
 
-    targetDate.disabled =
-        true;
+        verificationField.disabled =
+            status === "Closed";
 
 
-    closedDate.disabled =
-        true;
+        targetDate.disabled =
+            true;
 
 
-    caseStatus.disabled =
-        true;
+        closedDate.disabled =
+            true;
 
 
-    verificationLabel.textContent =
-        "Verification Remarks";
+        caseStatus.disabled =
+            true;
 
 
-    if(status === "Closed"){
-
-        saveButton.style.display =
-            "none";
-
-    }
-
-    else{
-
-        saveButton.style.display =
-            "inline-flex";
+        verificationLabel.textContent =
+            "Verification Remarks";
 
 
-        saveButton.disabled =
-            false;
+        if(status === "Closed"){
 
-
-        saveButton.textContent =
-            "Save Verification";
-
-    }
-
-
-    return;
-
-}
-
-
-/* =====================================================
-   MAINTENANCE
-   CORRECTIVE ACTION + VERIFICATION
-===================================================== */
-
-if(isMaintenance()){
-
-    investigationFields.forEach(
-        function(id){
-
-            document.getElementById(
-                id
-            ).disabled =
-                id !== "rootCause";
+            saveButton.style.display =
+                "none";
 
         }
-    );
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
 
 
-    correctiveFields.forEach(
-        function(id){
+            saveButton.disabled =
+                false;
 
-            document.getElementById(
-                id
-            ).disabled =
-                status === "Closed";
+
+            saveButton.textContent =
+                "Save Verification";
 
         }
-    );
 
 
-    verificationField.disabled =
-        status === "Closed";
-
-
-    targetDate.disabled =
-        true;
-
-
-    closedDate.disabled =
-        true;
-
-
-    caseStatus.disabled =
-        true;
-
-
-    verificationLabel.textContent =
-        "Verification Remarks";
-
-
-    if(status === "Closed"){
-
-        saveButton.style.display =
-            "none";
-
-    }
-
-    else{
-
-        saveButton.style.display =
-            "inline-flex";
-
-
-        saveButton.disabled =
-            false;
-
-
-        saveButton.textContent =
-            "Save Repair Update";
+        return;
 
     }
 
 
-    return;
+    /* =====================================================
+       MAINTENANCE
+       CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
+
+    if(isMaintenance()){
+
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled = true;
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
+        );
+
+
+        verificationField.disabled =
+            status === "Closed";
+
+
+        targetDate.disabled =
+            true;
+
+
+        closedDate.disabled =
+            true;
+
+
+        caseStatus.disabled =
+            true;
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        if(status === "Closed"){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+
+            saveButton.disabled =
+                false;
+
+
+            saveButton.textContent =
+                "Save Repair Update";
+
+        }
+
+
+        return;
+
+    }
 
 }
 
@@ -8921,74 +8921,71 @@ async function saveReport(){
     };
 
 
-if(isHOD()){
+    if(isHOD()){
 
-    data.status =
-        selectedStatus;
+        data.status =
+            selectedStatus;
 
-    data.investigationFindings =
-        selectedReport.investigationFindings || "";
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
 
-    data.rootCause =
-        document.getElementById(
-            "rootCause"
-        ).value;
+        data.rootCause =
+            selectedReport.rootCause || "";
 
-    data.correctiveAction =
-        selectedReport.correctiveAction || "";
+        data.correctiveAction =
+            selectedReport.correctiveAction || "";
 
-    data.personResponsible =
-        selectedReport.personResponsible || "";
+        data.personResponsible =
+            selectedReport.personResponsible || "";
 
-    data.dueDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
+        data.dueDate =
+            document.getElementById(
+                "dueDate"
+            ).value;
 
-    data.eshInvestigator =
-        selectedReport.eshInvestigator || "";
+        data.eshInvestigator =
+            selectedReport.eshInvestigator || "";
 
-    data.eshRemarks =
-        selectedReport.eshRemarks || "";
+        data.eshRemarks =
+            selectedReport.eshRemarks || "";
 
-    data.closedDate =
-        document.getElementById(
-            "closedDate"
-        ).value;
+        data.closedDate =
+            document.getElementById(
+                "closedDate"
+            ).value;
 
-}
+    }
 
 
-if(isMaintenance()){
+    if(isMaintenance()){
 
-    data.status =
-        selectedStatus;
+        data.status =
+            selectedStatus;
 
-    data.investigationFindings =
-        selectedReport.investigationFindings || "";
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
 
-    data.rootCause =
-        document.getElementById(
-            "rootCause"
-        ).value;
+        data.rootCause =
+            selectedReport.rootCause || "";
 
-    data.eshInvestigator =
-        selectedReport.eshInvestigator || "";
+        data.eshInvestigator =
+            selectedReport.eshInvestigator || "";
 
-    data.eshRemarks =
-        selectedReport.eshRemarks || "";
+        data.eshRemarks =
+            selectedReport.eshRemarks || "";
 
-    data.dueDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
+        data.dueDate =
+            document.getElementById(
+                "dueDate"
+            ).value;
 
-    data.closedDate =
-        document.getElementById(
-            "closedDate"
-        ).value;
+        data.closedDate =
+            document.getElementById(
+                "closedDate"
+            ).value;
 
-}
+    }
+
 
     button.disabled = true;
 
