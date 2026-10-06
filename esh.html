@@ -3540,12 +3540,9 @@ input[type="date"]:disabled{
         </label>
 
 <input
-    type="text"
+    type="date"
     id="dueDate"
-    placeholder="DD-MM-YYYY"
-    inputmode="numeric"
-    maxlength="10"
-    autocomplete="off"
+    onclick="if(this.showPicker) this.showPicker();"
 >
     </div>
 
@@ -3615,12 +3612,9 @@ input[type="date"]:disabled{
             </label>
 
 <input
-    type="text"
+    type="date"
     id="closedDate"
-    placeholder="DD-MM-YYYY"
-    inputmode="numeric"
-    maxlength="10"
-    autocomplete="off"
+    onclick="if(this.showPicker) this.showPicker();"
 >
 
         </div>
@@ -10207,6 +10201,83 @@ function parseDate(value){
 
 function formatDateInput(value){
 
+    if(!value){
+
+        return "";
+
+    }
+
+
+    /* =====================================================
+       ALREADY YYYY-MM-DD
+    ===================================================== */
+
+    if(
+        typeof value === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(
+            value.trim()
+        )
+    ){
+
+        return value.trim();
+
+    }
+
+
+    /* =====================================================
+       DD-MM-YYYY
+    ===================================================== */
+
+    if(
+        typeof value === "string" &&
+        /^\d{2}-\d{2}-\d{4}$/.test(
+            value.trim()
+        )
+    ){
+
+        const parts =
+            value.trim().split("-");
+
+        return (
+            parts[2] +
+            "-" +
+            parts[1] +
+            "-" +
+            parts[0]
+        );
+
+    }
+
+
+    /* =====================================================
+       DD/MM/YYYY
+    ===================================================== */
+
+    if(
+        typeof value === "string" &&
+        /^\d{2}\/\d{2}\/\d{4}$/.test(
+            value.trim()
+        )
+    ){
+
+        const parts =
+            value.trim().split("/");
+
+        return (
+            parts[2] +
+            "-" +
+            parts[1] +
+            "-" +
+            parts[0]
+        );
+
+    }
+
+
+    /* =====================================================
+       OTHER DATE FORMATS
+    ===================================================== */
+
     const date =
         parseDate(value);
 
@@ -10223,7 +10294,7 @@ function formatDateInput(value){
         date.getFullYear(),
 
         String(
-            date.getMonth()+1
+            date.getMonth() + 1
         ).padStart(
             2,
             "0"
