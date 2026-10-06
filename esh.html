@@ -10571,107 +10571,110 @@ function openPrintReportPanel(){
                 "
             >
 
-                <!-- =========================================
-                     COMPLETE REPORT
-                ========================================== -->
+<!-- =========================================================
+     COMPLETE REPORT
+========================================================= -->
 
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    style="
-                        width:100%;
-                        padding:18px;
-                        text-align:left;
-                        font-size:15px;
-                    "
-                    onclick="startPrintCompleteReport()"
-                >
+<button
+    type="button"
+    class="btn btn-primary"
+    style="
+        width:100%;
+        padding:22px;
+        text-align:left;
+        font-size:16px;
+        min-height:90px;
+    "
+    onclick="startPrintCompleteReport()"
+>
 
-                    🖨️
+    🖨️
 
-                    <span
-                        style="
-                            margin-left:8px;
-                            font-weight:700;
-                        "
-                    >
-                        Complete Report
-                    </span>
+    <span
+        style="
+            margin-left:8px;
+            font-weight:700;
+        "
+    >
+        Complete Report
+    </span>
 
-                    <div
-                        style="
-                            margin-left:31px;
-                            margin-top:5px;
-                            font-size:12px;
-                            opacity:.75;
-                        "
-                    >
-                        Print one complete ESH case report
-                    </div>
+    <div
+        style="
+            margin-left:31px;
+            margin-top:6px;
+            font-size:12px;
+            opacity:.75;
+        "
+    >
+        Print one complete ESH case report
+    </div>
 
-                </button>
-
-
-                <!-- =========================================
-                     SUMMARY REPORT
-                ========================================== -->
-
-                <button
-                    type="button"
-                    class="btn"
-                    style="
-                        width:100%;
-                        padding:18px;
-                        text-align:left;
-                        font-size:15px;
-                    "
-                    onclick="startPrintSummary()"
-                >
-
-                    📊
-
-                    <span
-                        style="
-                            margin-left:8px;
-                            font-weight:700;
-                        "
-                    >
-                        Summary Report
-                    </span>
-
-                    <div
-                        style="
-                            margin-left:31px;
-                            margin-top:5px;
-                            font-size:12px;
-                            opacity:.65;
-                        "
-                    >
-                        Print a filtered management summary
-                    </div>
-
-                </button>
-
-            </div>
+</button>
 
 
-            <!-- =============================================
-                 FOOTER
-            ============================================== -->
+<!-- =========================================================
+     SUMMARY REPORT
+========================================================= -->
 
-            <div class="modal-footer">
+<button
+    type="button"
+    class="btn"
+    style="
+        width:100%;
+        padding:22px;
+        text-align:left;
+        font-size:16px;
+        min-height:90px;
+    "
+    onclick="startPrintSummary()"
+>
 
-                <button
-                    type="button"
-                    class="btn"
-                    onclick="closePrintMenu()"
-                >
-                    Cancel
-                </button>
+    📊
 
-            </div>
+    <span
+        style="
+            margin-left:8px;
+            font-weight:700;
+        "
+    >
+        Summary Report
+    </span>
 
-        </div>
+    <div
+        style="
+            margin-left:31px;
+            margin-top:6px;
+            font-size:12px;
+            opacity:.65;
+        "
+    >
+        Print a filtered management summary
+    </div>
+
+</button>
+
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<div class="modal-footer">
+
+    <button
+        type="button"
+        class="btn"
+        onclick="closePrintMenu()"
+    >
+        Cancel
+    </button>
+
+</div>
+
+</div>
 
     `;
 
