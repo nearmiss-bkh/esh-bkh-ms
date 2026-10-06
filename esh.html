@@ -10391,7 +10391,6 @@ function resetArchiveSearch(){
 
 }
 
-
 /* =========================================================
    AUTO REFRESH
 ========================================================= */
@@ -10404,6 +10403,734 @@ setInterval(
     },
     30000
 );
+
+
+/* =========================================================
+   PRINT MENU
+========================================================= */
+
+function openPrintReportPanel(){
+
+    const existing =
+        document.getElementById("printMenuModal");
+
+    if(existing){
+
+        existing.classList.add("show");
+
+        return;
+    }
+
+
+    const modal =
+        document.createElement("div");
+
+    modal.id = "printMenuModal";
+
+    modal.className = "modal";
+
+
+    modal.innerHTML = `
+
+        <div
+            class="modal-box"
+            style="
+                max-width:520px;
+                width:95%;
+            "
+        >
+
+            <div class="modal-head">
+
+                <div>
+
+                    <div class="modal-title">
+                        Print
+                    </div>
+
+                    <div class="modal-subtitle">
+                        ESH Management System
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    onclick="closePrintMenu()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                style="
+                    padding:25px;
+                    display:grid;
+                    gap:14px;
+                "
+            >
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    style="
+                        width:100%;
+                        padding:18px;
+                        text-align:left;
+                        font-size:15px;
+                    "
+                    onclick="startPrintCompleteReport()"
+                >
+
+                    🖨️
+
+                    <span
+                        style="
+                            margin-left:8px;
+                            font-weight:700;
+                        "
+                    >
+                        Complete Report
+                    </span>
+
+                    <div
+                        style="
+                            margin-left:31px;
+                            margin-top:5px;
+                            font-size:12px;
+                            opacity:.75;
+                        "
+                    >
+                        Print one complete ESH case report
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn"
+                    style="
+                        width:100%;
+                        padding:18px;
+                        text-align:left;
+                        font-size:15px;
+                    "
+                    onclick="startPrintSummary()"
+                >
+
+                    📊
+
+                    <span
+                        style="
+                            margin-left:8px;
+                            font-weight:700;
+                        "
+                    >
+                        Summary Report
+                    </span>
+
+                    <div
+                        style="
+                            margin-left:31px;
+                            margin-top:5px;
+                            font-size:12px;
+                            opacity:.65;
+                        "
+                    >
+                        Print a filtered management summary
+                    </div>
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="closePrintMenu()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(modal);
+
+
+    requestAnimationFrame(() => {
+
+        modal.classList.add("show");
+
+    });
+
+
+    modal.addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === modal){
+
+                closePrintMenu();
+
+            }
+
+        }
+    );
+}
+
+
+/* =========================================================
+   CLOSE PRINT MENU
+========================================================= */
+
+function closePrintMenu(){
+
+    const modal =
+        document.getElementById("printMenuModal");
+
+    if(!modal){
+
+        return;
+
+    }
+
+    modal.classList.remove("show");
+
+}
+
+
+/* =========================================================
+   PRINT COMPLETE REPORT
+========================================================= */
+
+function startPrintCompleteReport(){
+
+    closePrintMenu();
+
+
+    /* -----------------------------------------------------
+       IF A REPORT IS ALREADY OPEN
+    ----------------------------------------------------- */
+
+    if(
+        typeof selectedReport !== "undefined" &&
+        selectedReport
+    ){
+
+        printCompleteReport(selectedReport);
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       OTHERWISE OPEN REPORT SELECTION
+    ----------------------------------------------------- */
+
+    openPrintReportSelector();
+
+}
+
+
+/* =========================================================
+   PRINT REPORT SELECTOR
+========================================================= */
+
+function openPrintReportSelector(){
+
+    const existing =
+        document.getElementById("printReportSelector");
+
+    if(existing){
+
+        existing.remove();
+
+    }
+
+
+    const modal =
+        document.createElement("div");
+
+    modal.id =
+        "printReportSelector";
+
+    modal.className =
+        "modal";
+
+
+    let availableReports = [];
+
+
+    /* -----------------------------------------------------
+       ACTIVE REPORTS
+    ----------------------------------------------------- */
+
+    if(
+        Array.isArray(reports)
+    ){
+
+        availableReports =
+            availableReports.concat(
+                reports.map(
+                    function(report){
+
+                        return {
+                            report:report,
+                            source:"Active"
+                        };
+
+                    }
+                )
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       ARCHIVE REPORTS
+       ESH ONLY
+    ----------------------------------------------------- */
+
+    if(
+        typeof isESH === "function" &&
+        isESH() &&
+        Array.isArray(archiveReports)
+    ){
+
+        availableReports =
+            availableReports.concat(
+                archiveReports.map(
+                    function(report){
+
+                        return {
+                            report:report,
+                            source:"Archive"
+                        };
+
+                    }
+                )
+            );
+
+    }
+
+
+    let reportList = "";
+
+
+    if(
+        availableReports.length === 0
+    ){
+
+        reportList = `
+
+            <div
+                style="
+                    padding:35px 20px;
+                    text-align:center;
+                    color:#64748b;
+                "
+            >
+
+                <div
+                    style="
+                        font-size:35px;
+                        margin-bottom:10px;
+                    "
+                >
+                    📄
+                </div>
+
+                <div
+                    style="
+                        font-weight:700;
+                        font-size:15px;
+                        margin-bottom:5px;
+                    "
+                >
+                    No Reports Available
+                </div>
+
+                <div
+                    style="
+                        font-size:12px;
+                    "
+                >
+                    There are currently no reports available for printing.
+                </div>
+
+            </div>
+
+        `;
+
+    }
+    else{
+
+        reportList =
+            availableReports
+                .map(
+                    function(item, index){
+
+                        const report =
+                            item.report;
+
+                        const reportNo =
+                            report.reportNumber ||
+                            "Report #" + (index + 1);
+
+                        const date =
+                            report.dateTime ||
+                            report.submittedAt ||
+                            "";
+
+                        const department =
+                            report.department ||
+                            "—";
+
+                        const location =
+                            report.location ||
+                            "—";
+
+                        const status =
+                            typeof normalizeStatus === "function"
+                                ? normalizeStatus(report.status)
+                                : (
+                                    report.status ||
+                                    "—"
+                                );
+
+
+                        return `
+
+                            <button
+                                type="button"
+                                style="
+                                    width:100%;
+                                    border:1px solid #dbe3ec;
+                                    background:#ffffff;
+                                    border-radius:10px;
+                                    padding:14px 16px;
+                                    text-align:left;
+                                    cursor:pointer;
+                                    margin-bottom:10px;
+                                    transition:.2s;
+                                "
+                                onclick="
+                                    selectPrintReport(${index})
+                                "
+                                onmouseover="
+                                    this.style.background='#f5f8fc';
+                                    this.style.borderColor='#9bb7d4';
+                                "
+                                onmouseout="
+                                    this.style.background='#ffffff';
+                                    this.style.borderColor='#dbe3ec';
+                                "
+                            >
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        align-items:center;
+                                        gap:10px;
+                                    "
+                                >
+
+                                    <div>
+
+                                        <div
+                                            style="
+                                                font-weight:800;
+                                                color:#102a43;
+                                                font-size:14px;
+                                            "
+                                        >
+                                            ${escapeHtml(reportNo)}
+                                        </div>
+
+                                        <div
+                                            style="
+                                                margin-top:4px;
+                                                font-size:11px;
+                                                color:#64748b;
+                                            "
+                                        >
+                                            ${escapeHtml(department)}
+                                            &nbsp; • &nbsp;
+                                            ${escapeHtml(location)}
+                                        </div>
+
+                                    </div>
+
+
+                                    <span
+                                        style="
+                                            font-size:10px;
+                                            font-weight:700;
+                                            padding:5px 8px;
+                                            border-radius:20px;
+                                            background:
+                                                ${
+                                                    item.source === "Archive"
+                                                        ? "#eef2f7"
+                                                        : "#eaf4ff"
+                                                };
+                                            color:
+                                                ${
+                                                    item.source === "Archive"
+                                                        ? "#475569"
+                                                        : "#2563a6"
+                                                };
+                                            white-space:nowrap;
+                                        "
+                                    >
+                                        ${escapeHtml(item.source)}
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    style="
+                                        display:flex;
+                                        justify-content:space-between;
+                                        gap:10px;
+                                        margin-top:10px;
+                                        font-size:11px;
+                                        color:#64748b;
+                                    "
+                                >
+
+                                    <span>
+                                        ${escapeHtml(
+                                            formatDisplayDate(date)
+                                        )}
+                                    </span>
+
+                                    <span>
+                                        ${escapeHtml(status)}
+                                    </span>
+
+                                </div>
+
+                            </button>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
+    }
+
+
+    modal.innerHTML = `
+
+        <div
+            class="modal-box"
+            style="
+                max-width:650px;
+                width:95%;
+            "
+        >
+
+            <div class="modal-head">
+
+                <div>
+
+                    <div class="modal-title">
+                        Select Report
+                    </div>
+
+                    <div class="modal-subtitle">
+                        Complete ESH Case Report
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="modal-close"
+                    onclick="closePrintReportSelector()"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <div
+                style="
+                    padding:20px;
+                    max-height:65vh;
+                    overflow-y:auto;
+                "
+            >
+
+                ${reportList}
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn"
+                    onclick="closePrintReportSelector()"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    document.body.appendChild(modal);
+
+
+    window.printReportSelection =
+        availableReports;
+
+
+    requestAnimationFrame(
+        function(){
+
+            modal.classList.add("show");
+
+        }
+    );
+
+
+    modal.addEventListener(
+        "click",
+        function(event){
+
+            if(
+                event.target === modal
+            ){
+
+                closePrintReportSelector();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   SELECT REPORT FOR PRINTING
+========================================================= */
+
+function selectPrintReport(index){
+
+    if(
+        !Array.isArray(window.printReportSelection)
+    ){
+
+        showToast(
+            "Report selection is unavailable."
+        );
+
+        return;
+
+    }
+
+
+    const item =
+        window.printReportSelection[index];
+
+
+    if(
+        !item ||
+        !item.report
+    ){
+
+        showToast(
+            "Unable to load the selected report."
+        );
+
+        return;
+
+    }
+
+
+    closePrintReportSelector();
+
+
+    printCompleteReport(
+        item.report
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE REPORT SELECTOR
+========================================================= */
+
+function closePrintReportSelector(){
+
+    const modal =
+        document.getElementById(
+            "printReportSelector"
+        );
+
+    if(!modal){
+
+        return;
+
+    }
+
+    modal.classList.remove("show");
+
+    setTimeout(
+        function(){
+
+            if(modal){
+
+                modal.remove();
+
+            }
+
+        },
+        200
+    );
+
+}
+
+/* =========================================================
+   PRINT SUMMARY
+   TEMPORARY STEP
+========================================================= */
+
+function startPrintSummary(){
+
+    closePrintMenu();
+
+    showToast(
+        "Summary Report printing will be added next."
+    );
+}
 
 </script>
 
