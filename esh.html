@@ -9892,7 +9892,42 @@ body{
 
 </div>
 
+<div class="section">
 
+    <div class="section-title">
+        PHOTO EVIDENCE
+    </div>
+
+    <div class="photos">
+
+        ${
+            getPhotoList(report).length
+            ?
+            getPhotoList(report)
+                .map(function(photo){
+
+                    return `
+                        <div class="photo-box">
+
+                            <img
+                                src="${escapeAttribute(photo)}"
+                                alt="Report Photo"
+                            >
+
+                        </div>
+                    `;
+
+                })
+                .join("")
+            :
+            `<div class="no-photo">
+                No photo evidence available.
+            </div>`
+        }
+
+    </div>
+
+</div>
 
 <div class="footer">
 
