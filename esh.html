@@ -6817,160 +6817,160 @@ function applyRolePermissions(status){
     }
 
 
-    /* =====================================================
-       HOD
-       CORRECTIVE ACTION + VERIFICATION
-    ===================================================== */
+/* =====================================================
+   HOD
+   CORRECTIVE ACTION + VERIFICATION
+===================================================== */
 
-    if(isHOD()){
+if(isHOD()){
 
-        investigationFields.forEach(
-            function(id){
+    investigationFields.forEach(
+        function(id){
 
-                document.getElementById(
-                    id
-                ).disabled = true;
-
-            }
-        );
-
-
-        correctiveFields.forEach(
-            function(id){
-
-                document.getElementById(
-                    id
-                ).disabled =
-                    status === "Closed";
-
-            }
-        );
-
-
-        verificationField.disabled =
-            status === "Closed";
-
-
-        targetDate.disabled =
-            true;
-
-
-        closedDate.disabled =
-            true;
-
-
-        caseStatus.disabled =
-            true;
-
-
-        verificationLabel.textContent =
-            "Verification Remarks";
-
-
-        if(status === "Closed"){
-
-            saveButton.style.display =
-                "none";
+            document.getElementById(
+                id
+            ).disabled =
+                id !== "rootCause";
 
         }
-
-        else{
-
-            saveButton.style.display =
-                "inline-flex";
+    );
 
 
-            saveButton.disabled =
-                false;
+    correctiveFields.forEach(
+        function(id){
 
-
-            saveButton.textContent =
-                "Save Verification";
+            document.getElementById(
+                id
+            ).disabled =
+                status === "Closed";
 
         }
+    );
 
 
-        return;
+    verificationField.disabled =
+        status === "Closed";
+
+
+    targetDate.disabled =
+        true;
+
+
+    closedDate.disabled =
+        true;
+
+
+    caseStatus.disabled =
+        true;
+
+
+    verificationLabel.textContent =
+        "Verification Remarks";
+
+
+    if(status === "Closed"){
+
+        saveButton.style.display =
+            "none";
+
+    }
+
+    else{
+
+        saveButton.style.display =
+            "inline-flex";
+
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Save Verification";
 
     }
 
 
-    /* =====================================================
-       MAINTENANCE
-       CORRECTIVE ACTION + VERIFICATION
-    ===================================================== */
+    return;
 
-    if(isMaintenance()){
-
-        investigationFields.forEach(
-            function(id){
-
-                document.getElementById(
-                    id
-                ).disabled = true;
-
-            }
-        );
+}
 
 
-        correctiveFields.forEach(
-            function(id){
+/* =====================================================
+   MAINTENANCE
+   CORRECTIVE ACTION + VERIFICATION
+===================================================== */
 
-                document.getElementById(
-                    id
-                ).disabled =
-                    status === "Closed";
+if(isMaintenance()){
 
-            }
-        );
+    investigationFields.forEach(
+        function(id){
 
-
-        verificationField.disabled =
-            status === "Closed";
-
-
-        targetDate.disabled =
-            true;
-
-
-        closedDate.disabled =
-            true;
-
-
-        caseStatus.disabled =
-            true;
-
-
-        verificationLabel.textContent =
-            "Verification Remarks";
-
-
-        if(status === "Closed"){
-
-            saveButton.style.display =
-                "none";
+            document.getElementById(
+                id
+            ).disabled =
+                id !== "rootCause";
 
         }
-
-        else{
-
-            saveButton.style.display =
-                "inline-flex";
+    );
 
 
-            saveButton.disabled =
-                false;
+    correctiveFields.forEach(
+        function(id){
 
-
-            saveButton.textContent =
-                "Save Repair Update";
+            document.getElementById(
+                id
+            ).disabled =
+                status === "Closed";
 
         }
+    );
 
 
-        return;
+    verificationField.disabled =
+        status === "Closed";
+
+
+    targetDate.disabled =
+        true;
+
+
+    closedDate.disabled =
+        true;
+
+
+    caseStatus.disabled =
+        true;
+
+
+    verificationLabel.textContent =
+        "Verification Remarks";
+
+
+    if(status === "Closed"){
+
+        saveButton.style.display =
+            "none";
 
     }
+
+    else{
+
+        saveButton.style.display =
+            "inline-flex";
+
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Save Repair Update";
+
+    }
+
+
+    return;
 
 }
 
