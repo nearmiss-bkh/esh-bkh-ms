@@ -7264,16 +7264,14 @@ function getPhotoList(report){
 }
 
 /* =========================================================
-   IMPROVED PHOTO EVIDENCE
-   AUTO DISPLAY + DRIVE THUMBNAIL
+   PHOTO EVIDENCE
+   DISPLAY DRIVE IMAGE + CLICK TO OPEN
 ========================================================= */
 
 function loadPhotos(report){
 
     const container =
-        document.getElementById(
-            "photoEvidence"
-        );
+        document.getElementById("photoEvidence");
 
 
     if(!container){
@@ -7287,16 +7285,15 @@ function loadPhotos(report){
         getPhotoList(report);
 
 
+    container.innerHTML = "";
+
+
     if(!photos.length){
 
         container.innerHTML = `
-
             <div class="empty">
-
                 No photo evidence submitted.
-
             </div>
-
         `;
 
         return;
@@ -7304,15 +7301,10 @@ function loadPhotos(report){
     }
 
 
-    container.innerHTML = "";
-
-
     photos.forEach(function(url){
 
         const originalUrl =
-            String(
-                url || ""
-            ).trim();
+            String(url || "").trim();
 
 
         if(!originalUrl){
@@ -7323,9 +7315,7 @@ function loadPhotos(report){
 
 
         const fileId =
-            extractDriveFileId(
-                originalUrl
-            );
+            extractDriveFileId(originalUrl);
 
 
         let imageUrl =
@@ -7337,49 +7327,51 @@ function loadPhotos(report){
 
 
         /*
-         * GOOGLE DRIVE FILE
+         * GOOGLE DRIVE
          */
         if(fileId){
 
+            /*
+             * Try Drive thumbnail
+             */
             imageUrl =
-                "https://drive.google.com/thumbnail" +
-                "?id=" +
-                encodeURIComponent(
-                    fileId
-                ) +
-                "&sz=w1600";
+                "https://drive.google.com/thumbnail?id=" +
+                encodeURIComponent(fileId) +
+                "&sz=w1200";
 
 
+            /*
+             * Original Drive file
+             */
             openUrl =
                 "https://drive.google.com/file/d/" +
-                encodeURIComponent(
-                    fileId
-                ) +
+                encodeURIComponent(fileId) +
                 "/view";
 
         }
 
 
+        /*
+         * PHOTO CARD
+         */
         const card =
-            document.createElement(
-                "div"
-            );
-
+            document.createElement("div");
 
         card.className =
             "photo-card";
 
 
-        const img =
-            document.createElement(
-                "img"
-            );
-
-
         /*
-         * IMPORTANT
-         * Load immediately.
+         * IMAGE
          */
+        const img =
+            document.createElement("img");
+
+
+        img.alt =
+            "ESH Evidence Photo";
+
+
         img.loading =
             "eager";
 
@@ -7392,17 +7384,28 @@ function loadPhotos(report){
             "no-referrer";
 
 
-        img.alt =
-            "ESH Evidence";
+        img.style.display =
+            "block";
 
 
-        img.src =
-            imageUrl;
+        img.style.width =
+            "100%";
+
+
+        img.style.height =
+            "220px";
+
+
+        img.style.objectFit =
+            "cover";
+
+
+        img.style.cursor =
+            "pointer";
 
 
         /*
-         * CLICK PHOTO
-         * Opens the original Drive file.
+         * IMAGE CLICK
          */
         img.onclick =
             function(event){
@@ -7410,36 +7413,35 @@ function loadPhotos(report){
                 event.stopPropagation();
 
 
-                if(fileId){
-
-                    window.open(
-                        openUrl,
-                        "_blank",
-                        "noopener,noreferrer"
-                    );
-
-                }
-                else{
-
-                    window.open(
-                        originalUrl,
-                        "_blank",
-                        "noopener,noreferrer"
-                    );
-
-                }
+                window.open(
+                    openUrl,
+                    "_blank",
+                    "noopener,noreferrer"
+                );
 
             };
 
 
         /*
-         * IF THUMBNAIL FAILS
+         * IMAGE LOAD SUCCESS
+         */
+        img.onload =
+            function(){
+
+                img.style.display =
+                    "block";
+
+            };
+
+
+        /*
+         * IMAGE LOAD FAILED
          */
         img.onerror =
             function(){
 
                 console.warn(
-                    "Photo failed to load:",
+                    "Unable to display photo:",
                     originalUrl
                 );
 
@@ -7449,21 +7451,52 @@ function loadPhotos(report){
 
 
                 const fallback =
-                    document.createElement(
-                        "div"
-                    );
+                    document.createElement("div");
 
 
                 fallback.className =
                     "photo-fallback";
 
 
+                fallback.style.height =
+                    "220px";
+
+
+                fallback.style.display =
+                    "flex";
+
+
+                fallback.style.flexDirection =
+                    "column";
+
+
+                fallback.style.alignItems =
+                    "center";
+
+
+                fallback.style.justifyContent =
+                    "center";
+
+
+                fallback.style.cursor =
+                    "pointer";
+
+
                 fallback.innerHTML = `
-                    📷
-                    <br>
-                    <span>
-                        Open Photo
-                    </span>
+                    <div style="font-size:40px;">
+                        📷
+                    </div>
+
+                    <div style="margin-top:8px;">
+                        Photo Preview Unavailable
+                    </div>
+
+                    <div style="
+                        margin-top:6px;
+                        font-size:13px;
+                    ">
+                        Click to Open Photo
+                    </div>
                 `;
 
 
@@ -7473,24 +7506,11 @@ function loadPhotos(report){
                         event.stopPropagation();
 
 
-                        if(fileId){
-
-                            window.open(
-                                openUrl,
-                                "_blank",
-                                "noopener,noreferrer"
-                            );
-
-                        }
-                        else{
-
-                            window.open(
-                                originalUrl,
-                                "_blank",
-                                "noopener,noreferrer"
-                            );
-
-                        }
+                        window.open(
+                            openUrl,
+                            "_blank",
+                            "noopener,noreferrer"
+                        );
 
                     };
 
@@ -7502,11 +7522,24 @@ function loadPhotos(report){
             };
 
 
+        /*
+         * SET IMAGE SOURCE
+         */
+        img.src =
+            imageUrl;
+
+
+        /*
+         * ADD IMAGE TO CARD
+         */
         card.appendChild(
             img
         );
 
 
+        /*
+         * ADD CARD
+         */
         container.appendChild(
             card
         );
@@ -7514,7 +7547,7 @@ function loadPhotos(report){
     });
 
 }
-
+    
 /* =========================================================
    CORRECTIVE ACTION PHOTO LIST
 ========================================================= */
