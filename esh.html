@@ -5704,7 +5704,7 @@ async function openReport(index){
 
 
     /* =====================================================
-       LOAD LATEST RECORD
+       LOAD LATEST RECORD FROM GOOGLE SHEET
     ===================================================== */
 
     try{
@@ -5742,17 +5742,9 @@ async function openReport(index){
         );
 
 
-        /*
-         * Apps Script may return:
-         *
-         * {status:"success", report:{...}}
-         *
-         * or
-         *
-         * {success:true, data:{...}}
-         *
-         * or the report object directly.
-         */
+        /* =================================================
+           GET REPORT OBJECT
+        ================================================= */
 
         let latestReport = null;
 
@@ -5946,44 +5938,67 @@ async function openReport(index){
             "";
 
 
+        /* =================================================
+           PERSON RESPONSIBLE
+           
+           Code.gs returns:
+           responsiblePerson
+
+           Also support:
+           personResponsible
+        ================================================= */
+
         document.getElementById(
             "personResponsible"
         ).value =
             latestReport.personResponsible ||
+            latestReport.responsiblePerson ||
             "";
 
 
-document.getElementById(
-    "dueDate"
-).value =
-    formatDateInput(
-        latestReport.targetDate ||
-        latestReport.dueDate
-    );
+        /* =================================================
+           TARGET DATE
+        ================================================= */
+
+        document.getElementById(
+            "dueDate"
+        ).value =
+            formatDateInput(
+                latestReport.targetDate ||
+                latestReport.dueDate
+            );
 
 
         /* =================================================
-           VERIFICATION
+           VERIFICATION REMARKS
+           
+           Code.gs returns:
+           remarks
+
+           Also support:
+           verificationRemarks
         ================================================= */
 
         document.getElementById(
             "verificationRemarks"
         ).value =
             latestReport.verificationRemarks ||
+            latestReport.remarks ||
             "";
 
 
         /* =================================================
-           CLOSURE
+           CLOSURE DATE
         ================================================= */
 
-document.getElementById(
-    "closedDate"
-).value =
-    formatDateInput(
-        latestReport.completionDate ||
-        latestReport.closedDate
-    );
+        document.getElementById(
+            "closedDate"
+        ).value =
+            formatDateInput(
+                latestReport.completionDate ||
+                latestReport.closedDate
+            );
+
 
         /* =================================================
            STATUS
@@ -6026,7 +6041,7 @@ document.getElementById(
 
 
         /* =================================================
-           PHOTOS
+           ORIGINAL PHOTOS
         ================================================= */
 
         loadPhotos(
@@ -6034,14 +6049,23 @@ document.getElementById(
         );
 
 
+        /* =================================================
+           CORRECTIVE ACTION PHOTOS
+        ================================================= */
+
         loadCorrectiveActionPhotos(
             latestReport
         );
 
 
+        /* =================================================
+           VIDEO
+        ================================================= */
+
         loadVideo(
             latestReport
         );
+
 
         /* =================================================
            ENABLE FIELDS FOR ACTIVE CASE
@@ -6078,48 +6102,85 @@ document.getElementById(
         ================================================= */
 
         console.log(
+            "========================================"
+        );
+
+        console.log(
+            "LATEST REPORT LOADED:",
+            latestReport
+        );
+
+
+        console.log(
             "Investigation Findings:",
             latestReport.investigationFindings
         );
+
 
         console.log(
             "Root Cause:",
             latestReport.rootCause
         );
 
+
         console.log(
             "ESH Investigator:",
             latestReport.eshInvestigator
         );
+
 
         console.log(
             "ESH Remarks:",
             latestReport.eshRemarks
         );
 
+
         console.log(
             "Corrective Action:",
             latestReport.correctiveAction
         );
 
+
         console.log(
             "Responsible Person:",
-            latestReport.personResponsible
+            latestReport.personResponsible ||
+            latestReport.responsiblePerson ||
+            ""
         );
+
 
         console.log(
             "Target Date:",
-            latestReport.dueDate
+            latestReport.targetDate ||
+            latestReport.dueDate ||
+            ""
         );
+
 
         console.log(
             "Verification Remarks:",
-            latestReport.verificationRemarks
+            latestReport.verificationRemarks ||
+            latestReport.remarks ||
+            ""
         );
+
 
         console.log(
             "Closed Date:",
-            latestReport.closedDate
+            latestReport.completionDate ||
+            latestReport.closedDate ||
+            ""
+        );
+
+
+        console.log(
+            "Status:",
+            latestReport.status
+        );
+
+
+        console.log(
+            "========================================"
         );
 
     }
@@ -8728,7 +8789,7 @@ function getSelectedReportNumber(){
 
 /* =========================================================
    SAVE REPORT
-   FIXED - BACKEND FIELD NAMES MATCHED
+   SAVE RESPONSIBLE PERSON + VERIFICATION REMARKS
 ========================================================= */
 
 async function saveReport(){
@@ -8852,7 +8913,7 @@ async function saveReport(){
         ){
 
             showToast(
-                "HOD cannot close the report. ESH must close the case."
+                "Engineering cannot close the report. ESH must close the case."
             );
 
             return;
@@ -8866,7 +8927,7 @@ async function saveReport(){
         ){
 
             showToast(
-                "HOD can only verify the solution."
+                "Engineering can only verify the solution."
             );
 
             return;
@@ -8877,9 +8938,67 @@ async function saveReport(){
 
 
     /* =====================================================
+       READ FORM VALUES
+    ===================================================== */
+
+    const responsiblePerson =
+        document.getElementById(
+            "personResponsible"
+        ).value.trim();
+
+
+    const verificationRemarks =
+        document.getElementById(
+            "verificationRemarks"
+        ).value.trim();
+
+
+    const investigationFindings =
+        document.getElementById(
+            "investigationFindings"
+        ).value;
+
+
+    const rootCause =
+        document.getElementById(
+            "rootCause"
+        ).value;
+
+
+    const correctiveAction =
+        document.getElementById(
+            "correctiveAction"
+        ).value;
+
+
+    const dueDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
+
+
+    const eshInvestigator =
+        document.getElementById(
+            "eshInvestigator"
+        ).value;
+
+
+    const eshRemarks =
+        document.getElementById(
+            "eshRemarks"
+        ).value;
+
+
+    const closedDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
+
+
+    /* =====================================================
        BUILD UPDATE DATA
-       IMPORTANT:
-       These property names MUST match Code.gs
+       
+       Send BOTH current and compatibility field names.
     ===================================================== */
 
     const data = {
@@ -8896,52 +9015,72 @@ async function saveReport(){
         status:
             selectedStatus,
 
+
         investigationFindings:
-            document.getElementById(
-                "investigationFindings"
-            ).value,
+            investigationFindings,
+
 
         rootCause:
-            document.getElementById(
-                "rootCause"
-            ).value,
+            rootCause,
+
 
         correctiveAction:
-            document.getElementById(
-                "correctiveAction"
-            ).value,
+            correctiveAction,
 
-        /* FIXED */
+
+        /* =============================================
+           PERSON RESPONSIBLE
+        ============================================= */
+
         responsiblePerson:
-            document.getElementById(
-                "personResponsible"
-            ).value,
+            responsiblePerson,
+
+        personResponsible:
+            responsiblePerson,
+
+
+        /* =============================================
+           TARGET DATE
+        ============================================= */
 
         dueDate:
-            document.getElementById(
-                "dueDate"
-            ).value,
+            dueDate,
 
-        /* FIXED */
+        targetDate:
+            dueDate,
+
+
+        /* =============================================
+           VERIFICATION REMARKS
+        ============================================= */
+
         remarks:
-            document.getElementById(
-                "verificationRemarks"
-            ).value,
+            verificationRemarks,
+
+        verificationRemarks:
+            verificationRemarks,
+
+
+        /* =============================================
+           ESH
+        ============================================= */
 
         eshInvestigator:
-            document.getElementById(
-                "eshInvestigator"
-            ).value,
+            eshInvestigator,
 
         eshRemarks:
-            document.getElementById(
-                "eshRemarks"
-            ).value,
+            eshRemarks,
+
+
+        /* =============================================
+           CLOSED DATE
+        ============================================= */
 
         closedDate:
-            document.getElementById(
-                "closedDate"
-            ).value
+            closedDate,
+
+        completionDate:
+            closedDate
 
     };
 
@@ -8961,35 +9100,35 @@ async function saveReport(){
 
 
         data.rootCause =
-            document.getElementById(
-                "rootCause"
-            ).value;
+            rootCause;
 
 
         data.correctiveAction =
-            document.getElementById(
-                "correctiveAction"
-            ).value;
+            correctiveAction;
 
 
-        /* FIXED */
         data.responsiblePerson =
-            document.getElementById(
-                "personResponsible"
-            ).value;
+            responsiblePerson;
 
 
-        /* FIXED */
+        data.personResponsible =
+            responsiblePerson;
+
+
         data.remarks =
-            document.getElementById(
-                "verificationRemarks"
-            ).value;
+            verificationRemarks;
+
+
+        data.verificationRemarks =
+            verificationRemarks;
 
 
         data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+            dueDate;
+
+
+        data.targetDate =
+            dueDate;
 
 
         data.eshInvestigator =
@@ -9001,9 +9140,11 @@ async function saveReport(){
 
 
         data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+            closedDate;
+
+
+        data.completionDate =
+            closedDate;
 
     }
 
@@ -9023,35 +9164,35 @@ async function saveReport(){
 
 
         data.rootCause =
-            document.getElementById(
-                "rootCause"
-            ).value;
+            rootCause;
 
 
         data.correctiveAction =
-            document.getElementById(
-                "correctiveAction"
-            ).value;
+            correctiveAction;
 
 
-        /* FIXED */
         data.responsiblePerson =
-            document.getElementById(
-                "personResponsible"
-            ).value;
+            responsiblePerson;
 
 
-        /* FIXED */
+        data.personResponsible =
+            responsiblePerson;
+
+
         data.remarks =
-            document.getElementById(
-                "verificationRemarks"
-            ).value;
+            verificationRemarks;
+
+
+        data.verificationRemarks =
+            verificationRemarks;
 
 
         data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+            dueDate;
+
+
+        data.targetDate =
+            dueDate;
 
 
         data.eshInvestigator =
@@ -9063,11 +9204,69 @@ async function saveReport(){
 
 
         data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+            closedDate;
+
+
+        data.completionDate =
+            closedDate;
 
     }
+
+
+    /* =====================================================
+       DEBUG BEFORE SAVE
+    ===================================================== */
+
+    console.log(
+        "========================================"
+    );
+
+
+    console.log(
+        "SAVING REPORT:",
+        reportNumber
+    );
+
+
+    console.log(
+        "Responsible Person:",
+        responsiblePerson
+    );
+
+
+    console.log(
+        "Verification Remarks:",
+        verificationRemarks
+    );
+
+
+    console.log(
+        "Target Date:",
+        dueDate
+    );
+
+
+    console.log(
+        "Closed Date:",
+        closedDate
+    );
+
+
+    console.log(
+        "STATUS:",
+        selectedStatus
+    );
+
+
+    console.log(
+        "UPDATE PAYLOAD:",
+        data
+    );
+
+
+    console.log(
+        "========================================"
+    );
 
 
     /* =====================================================
@@ -9118,6 +9317,12 @@ async function saveReport(){
             await response.json();
 
 
+        console.log(
+            "SAVE RESPONSE:",
+            result
+        );
+
+
         /* =================================================
            SUCCESS
         ================================================= */
@@ -9127,9 +9332,6 @@ async function saveReport(){
             result.success === true
         ){
 
-            closeModal();
-
-
             showToast(
                 isHOD() || isEngineering()
                 ?
@@ -9138,6 +9340,17 @@ async function saveReport(){
                 "Case updated successfully."
             );
 
+
+            /* =============================================
+               CLOSE MODAL
+            ============================================= */
+
+            closeModal();
+
+
+            /* =============================================
+               RELOAD ALL REPORTS
+            ============================================= */
 
             await loadReports();
 
@@ -9188,7 +9401,6 @@ async function saveReport(){
     }
 
 }
-
 
 
 /* =========================================================
@@ -9292,9 +9504,65 @@ async function autoSaveDateField(fieldType){
 
 
     /* =====================================================
+       READ CURRENT FORM VALUES
+    ===================================================== */
+
+    const responsiblePerson =
+        document.getElementById(
+            "personResponsible"
+        ).value.trim();
+
+
+    const verificationRemarks =
+        document.getElementById(
+            "verificationRemarks"
+        ).value.trim();
+
+
+    const investigationFindings =
+        document.getElementById(
+            "investigationFindings"
+        ).value;
+
+
+    const rootCause =
+        document.getElementById(
+            "rootCause"
+        ).value;
+
+
+    const correctiveAction =
+        document.getElementById(
+            "correctiveAction"
+        ).value;
+
+
+    const dueDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
+
+
+    const closedDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
+
+
+    const eshInvestigator =
+        document.getElementById(
+            "eshInvestigator"
+        ).value;
+
+
+    const eshRemarks =
+        document.getElementById(
+            "eshRemarks"
+        ).value;
+
+
+    /* =====================================================
        BUILD UPDATE DATA
-       IMPORTANT:
-       Match Code.gs property names exactly
     ===================================================== */
 
     const data = {
@@ -9308,57 +9576,95 @@ async function autoSaveDateField(fieldType){
         rowNumber:
             selectedReport.rowNumber || "",
 
+
+        /* =============================================
+           STATUS
+        ============================================= */
+
         status:
             document.getElementById(
                 "caseStatus"
             ).value,
 
+
+        /* =============================================
+           INVESTIGATION
+        ============================================= */
+
         investigationFindings:
-            document.getElementById(
-                "investigationFindings"
-            ).value,
+            investigationFindings,
+
 
         rootCause:
-            document.getElementById(
-                "rootCause"
-            ).value,
+            rootCause,
+
+
+        /* =============================================
+           CORRECTIVE ACTION
+        ============================================= */
 
         correctiveAction:
-            document.getElementById(
-                "correctiveAction"
-            ).value,
+            correctiveAction,
 
-        /* FIXED */
+
+        /* =============================================
+           PERSON RESPONSIBLE
+           
+           Code.gs accepts responsiblePerson.
+           Also send personResponsible for compatibility.
+        ============================================= */
+
         responsiblePerson:
-            document.getElementById(
-                "personResponsible"
-            ).value,
+            responsiblePerson,
+
+        personResponsible:
+            responsiblePerson,
+
+
+        /* =============================================
+           TARGET DATE
+        ============================================= */
 
         dueDate:
-            document.getElementById(
-                "dueDate"
-            ).value,
+            dueDate,
 
-        /* FIXED */
+        targetDate:
+            dueDate,
+
+
+        /* =============================================
+           VERIFICATION REMARKS
+           
+           Code.gs stores this in Remarks column.
+        ============================================= */
+
         remarks:
-            document.getElementById(
-                "verificationRemarks"
-            ).value,
+            verificationRemarks,
+
+        verificationRemarks:
+            verificationRemarks,
+
+
+        /* =============================================
+           ESH
+        ============================================= */
 
         eshInvestigator:
-            document.getElementById(
-                "eshInvestigator"
-            ).value,
+            eshInvestigator,
 
         eshRemarks:
-            document.getElementById(
-                "eshRemarks"
-            ).value,
+            eshRemarks,
+
+
+        /* =============================================
+           CLOSED DATE
+        ============================================= */
 
         closedDate:
-            document.getElementById(
-                "closedDate"
-            ).value
+            closedDate,
+
+        completionDate:
+            closedDate
 
     };
 
@@ -9374,29 +9680,27 @@ async function autoSaveDateField(fieldType){
 
 
         data.rootCause =
-            document.getElementById(
-                "rootCause"
-            ).value;
+            rootCause;
 
 
         data.correctiveAction =
-            document.getElementById(
-                "correctiveAction"
-            ).value;
+            correctiveAction;
 
 
-        /* FIXED */
         data.responsiblePerson =
-            document.getElementById(
-                "personResponsible"
-            ).value;
+            responsiblePerson;
 
 
-        /* FIXED */
+        data.personResponsible =
+            responsiblePerson;
+
+
         data.remarks =
-            document.getElementById(
-                "verificationRemarks"
-            ).value;
+            verificationRemarks;
+
+
+        data.verificationRemarks =
+            verificationRemarks;
 
 
         data.eshInvestigator =
@@ -9420,29 +9724,27 @@ async function autoSaveDateField(fieldType){
 
 
         data.rootCause =
-            document.getElementById(
-                "rootCause"
-            ).value;
+            rootCause;
 
 
         data.correctiveAction =
-            document.getElementById(
-                "correctiveAction"
-            ).value;
+            correctiveAction;
 
 
-        /* FIXED */
         data.responsiblePerson =
-            document.getElementById(
-                "personResponsible"
-            ).value;
+            responsiblePerson;
 
 
-        /* FIXED */
+        data.personResponsible =
+            responsiblePerson;
+
+
         data.remarks =
-            document.getElementById(
-                "verificationRemarks"
-            ).value;
+            verificationRemarks;
+
+
+        data.verificationRemarks =
+            verificationRemarks;
 
 
         data.eshInvestigator =
@@ -9456,20 +9758,64 @@ async function autoSaveDateField(fieldType){
 
 
     /* =====================================================
-       DATE FIELD VALUES
-       MATCH BACKEND NAMES
+       DEBUG
     ===================================================== */
 
-    data.targetDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
+    console.log(
+        "========================================"
+    );
 
 
-    data.completionDate =
-        document.getElementById(
-            "closedDate"
-        ).value;
+    console.log(
+        "AUTO SAVE DATE"
+    );
+
+
+    console.log(
+        "Report Number:",
+        reportNumber
+    );
+
+
+    console.log(
+        "Field:",
+        fieldType
+    );
+
+
+    console.log(
+        "Responsible Person:",
+        responsiblePerson
+    );
+
+
+    console.log(
+        "Verification Remarks:",
+        verificationRemarks
+    );
+
+
+    console.log(
+        "Target Date:",
+        dueDate
+    );
+
+
+    console.log(
+        "Closed Date:",
+        closedDate
+    );
+
+
+    console.log(
+        "UPDATE PAYLOAD:",
+        data
+    );
+
+
+    console.log(
+        "========================================"
+    );
 
 
     /* =====================================================
@@ -9504,6 +9850,12 @@ async function autoSaveDateField(fieldType){
             await response.json();
 
 
+        console.log(
+            "DATE UPDATE RESPONSE:",
+            result
+        );
+
+
         /* =================================================
            SUCCESS
         ================================================= */
@@ -9513,17 +9865,53 @@ async function autoSaveDateField(fieldType){
             result.success === true
         ){
 
+            /* =============================================
+               UPDATE LOCAL VALUES
+            ============================================= */
+
             selectedReport.dueDate =
-                data.dueDate;
+                dueDate;
+
+
+            selectedReport.targetDate =
+                dueDate;
 
 
             selectedReport.closedDate =
-                data.closedDate;
+                closedDate;
 
+
+            selectedReport.completionDate =
+                closedDate;
+
+
+            selectedReport.responsiblePerson =
+                responsiblePerson;
+
+
+            selectedReport.personResponsible =
+                responsiblePerson;
+
+
+            selectedReport.remarks =
+                verificationRemarks;
+
+
+            selectedReport.verificationRemarks =
+                verificationRemarks;
+
+
+            /* =============================================
+               REMEMBER CURRENT ROW
+            ============================================= */
 
             const oldRowNumber =
                 selectedReport.rowNumber;
 
+
+            /* =============================================
+               RELOAD REPORTS
+            ============================================= */
 
             await loadReports();
 
@@ -9540,7 +9928,9 @@ async function autoSaveDateField(fieldType){
                             report.reportNumber ||
                             ""
                         ).trim() ===
-                        reportNumber;
+                        String(
+                            reportNumber
+                        ).trim();
 
                     }
                 ) ||
@@ -9560,27 +9950,69 @@ async function autoSaveDateField(fieldType){
                 );
 
 
+            /* =============================================
+               UPDATE MODAL WITH REFRESHED DATA
+            ============================================= */
+
             if(refreshed){
 
                 selectedReport =
                     refreshed;
 
 
+                /* =========================================
+                   TARGET DATE
+                ========================================= */
+
                 document.getElementById(
                     "dueDate"
                 ).value =
                     formatDateInput(
+                        refreshed.targetDate ||
                         refreshed.dueDate
                     );
 
+
+                /* =========================================
+                   CLOSED DATE
+                ========================================= */
 
                 document.getElementById(
                     "closedDate"
                 ).value =
                     formatDateInput(
+                        refreshed.completionDate ||
                         refreshed.closedDate
                     );
 
+
+                /* =========================================
+                   PERSON RESPONSIBLE
+                ========================================= */
+
+                document.getElementById(
+                    "personResponsible"
+                ).value =
+                    refreshed.personResponsible ||
+                    refreshed.responsiblePerson ||
+                    "";
+
+
+                /* =========================================
+                   VERIFICATION REMARKS
+                ========================================= */
+
+                document.getElementById(
+                    "verificationRemarks"
+                ).value =
+                    refreshed.verificationRemarks ||
+                    refreshed.remarks ||
+                    "";
+
+
+                /* =========================================
+                   OVERDUE
+                ========================================= */
 
                 updateCaseOverdue(
                     refreshed
@@ -9588,6 +10020,10 @@ async function autoSaveDateField(fieldType){
 
             }
 
+
+            /* =============================================
+               SUCCESS MESSAGE
+            ============================================= */
 
             showToast(
                 fieldType === "dueDate"
@@ -9601,7 +10037,7 @@ async function autoSaveDateField(fieldType){
 
 
         /* =================================================
-           ERROR
+           ERROR FROM APPS SCRIPT
         ================================================= */
 
         else{
