@@ -10,12 +10,6 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<link
-    rel="icon"
-    type="image/svg+xml"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23071a36'/%3E%3Ctext x='50' y='70' text-anchor='middle' font-size='58' fill='%23ffffff'%3E%E2%9A%A0%3C/text%3E%3C/svg%3E"
->
-
 <title>ESH Management System</title>
 
 <style>
@@ -3709,7 +3703,7 @@ let departmentChart = [];
     const validRoles = [
         "ESH",
         "HOD",
-        "ENGINEERING"
+        "MAINTENANCE"
     ];
 
     if(
@@ -3777,9 +3771,9 @@ function isHOD(){
 }
 
 
-function isEngineering(){
+function isMaintenance(){
 
-    return CURRENT_ROLE === "ENGINEERING";
+    return CURRENT_ROLE === "MAINTENANCE";
 
 }
 
@@ -3801,15 +3795,30 @@ function getVisibleReports(){
 
     }
 
-    if(isEngineering()){
+    if(isMaintenance()){
 
-    return reports;
+        return reports.filter(
+            function(report){
+
+                const status =
+                    normalizeStatus(
+                        report.status
+                    );
+
+                return (
+                    status === "Corrective Action" ||
+                    status === "Verification"
+                );
+
+            }
+        );
 
     }
 
     return [];
 
 }
+
 
 /* =========================================================
    ROLE DISPLAY
@@ -3880,27 +3889,24 @@ function setupRoleDisplay(){
     }
 
 
-if(isEngineering()){
+    if(isMaintenance()){
 
-    if(display){
-        display.textContent =
-            "ENGINEERING • " +
-            CURRENT_DEPARTMENT;
+        if(display){
+            display.textContent =
+                "MAINTENANCE • ENGINEERING";
+        }
+
+        if(hero){
+            hero.textContent =
+                "Corrective action and repair completion management.";
+        }
+
+        if(reportsSubtitle){
+            reportsSubtitle.textContent =
+                "Corrective action reports • Repair update access";
+        }
+
     }
-
-    if(hero){
-        hero.textContent =
-            "Department near miss monitoring and corrective action verification.";
-    }
-
-    if(reportsSubtitle){
-        reportsSubtitle.textContent =
-            "Reports for " +
-            CURRENT_DEPARTMENT +
-            " • Verification access";
-    }
-
-    return;
 
 }
 
@@ -5589,11 +5595,11 @@ function createReportCard(report){
                     ?
                     "Open case for ESH management"
                     :
-(isHOD() || isEngineering())
-?
-"Open case for verification"
-:
-"Open case for corrective action update"
+                    isHOD()
+                    ?
+                    "Open case for verification"
+                    :
+                    "Open case for corrective action update"
                 }
 
             </div>
@@ -6421,13 +6427,13 @@ function openArchiveReport(index){
 
 
     /* =====================================================
-       HOD / ENGINEERING
+       HOD / MAINTENANCE
        ARCHIVE = VIEW ONLY
     ===================================================== */
 
     if(
         isHOD() ||
-        isEngineering()
+        isMaintenance()
     ){
 
         const saveButton =
@@ -6452,6 +6458,7 @@ function openArchiveReport(index){
         return;
 
     }
+
 
     /* =====================================================
        ESH
@@ -6523,11 +6530,11 @@ function getModalSubtitle(){
 
     }
 
-    if(isEngineering()){
+    if(isMaintenance()){
 
         return (
-            "Engineering Verification • " +
-            CURRENT_DEPARTMENT
+            "Maintenance / Engineering • " +
+            "Corrective Action Update"
         );
 
     }
@@ -6535,6 +6542,7 @@ function getModalSubtitle(){
     return "ESH Case Management";
 
 }
+
 
 /* =========================================================
    STATUS OPTIONS
@@ -6577,7 +6585,7 @@ function setupCaseStatusOptions(currentStatus){
     }
 
 
-    if(isHOD() || isEngineering()){
+    if(isHOD()){
 
         if(currentStatus === "Closed"){
 
@@ -6624,6 +6632,55 @@ function setupCaseStatusOptions(currentStatus){
         }
 
         return;
+
+    }
+
+
+    if(isMaintenance()){
+
+        if(currentStatus === "Closed"){
+
+            select.innerHTML = `
+
+                <option value="Closed">
+                    Closed
+                </option>
+
+            `;
+
+        }
+
+        else if(currentStatus === "Verification"){
+
+            select.innerHTML = `
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
+
+        else{
+
+            select.innerHTML = `
+
+                <option value="${escapeAttribute(
+                    currentStatus
+                )}">
+                    ${escapeHtml(
+                        currentStatus
+                    )}
+                </option>
+
+                <option value="Verification">
+                    Verification
+                </option>
+
+            `;
+
+        }
 
     }
 
@@ -6760,79 +6817,162 @@ function applyRolePermissions(status){
     }
 
 
-/* =====================================================
-   HOD / ENGINEERING
-   ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
-===================================================== */
+    /* =====================================================
+       HOD
+       ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
 
-if(isHOD() || isEngineering()){
+    if(isHOD()){
 
-    investigationFields.forEach(
-        function(id){
+        investigationFields.forEach(
+            function(id){
 
-            document.getElementById(
-                id
-            ).disabled =
-                id !== "rootCause";
+                document.getElementById(
+                    id
+                ).disabled =
+                    id !== "rootCause";
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
+        );
+
+
+        verificationField.disabled =
+            status === "Closed";
+
+
+        targetDate.disabled =
+            true;
+
+
+        closedDate.disabled =
+            true;
+
+
+        caseStatus.disabled =
+            true;
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        if(status === "Closed"){
+
+            saveButton.style.display =
+                "none";
 
         }
-    );
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
 
 
-    correctiveFields.forEach(
-        function(id){
+            saveButton.disabled =
+                false;
 
-            document.getElementById(
-                id
-            ).disabled =
-                status === "Closed";
+
+            saveButton.textContent =
+                "Save Verification";
 
         }
-    );
 
 
-    verificationField.disabled =
-        status === "Closed";
-
-
-    targetDate.disabled =
-        true;
-
-
-    closedDate.disabled =
-        true;
-
-
-    caseStatus.disabled =
-        status === "Closed";
-
-
-    verificationLabel.textContent =
-        "Verification Remarks";
-
-
-    if(status === "Closed"){
-
-        saveButton.style.display =
-            "none";
+        return;
 
     }
 
-    else{
 
-        saveButton.style.display =
-            "inline-flex";
+    /* =====================================================
+       MAINTENANCE
+       ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
+    ===================================================== */
 
-        saveButton.disabled =
-            false;
+    if(isMaintenance()){
 
-        saveButton.textContent =
-            "Save Verification";
+        investigationFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    id !== "rootCause";
+
+            }
+        );
+
+
+        correctiveFields.forEach(
+            function(id){
+
+                document.getElementById(
+                    id
+                ).disabled =
+                    status === "Closed";
+
+            }
+        );
+
+
+        verificationField.disabled =
+            status === "Closed";
+
+
+        targetDate.disabled =
+            true;
+
+
+        closedDate.disabled =
+            true;
+
+
+        caseStatus.disabled =
+            true;
+
+
+        verificationLabel.textContent =
+            "Verification Remarks";
+
+
+        if(status === "Closed"){
+
+            saveButton.style.display =
+                "none";
+
+        }
+
+        else{
+
+            saveButton.style.display =
+                "inline-flex";
+
+
+            saveButton.disabled =
+                false;
+
+
+            saveButton.textContent =
+                "Save Repair Update";
+
+        }
+
+
+        return;
 
     }
-
-
-    return;
 
 }
 
@@ -8650,11 +8790,7 @@ async function saveReport(){
         ).value;
 
 
-    /* =====================================================
-       HOD / ENGINEERING VALIDATION
-    ===================================================== */
-
-    if(isHOD() || isEngineering()){
+    if(isHOD()){
 
         if(currentStatus === "Closed"){
 
@@ -8688,6 +8824,35 @@ async function saveReport(){
 
             showToast(
                 "HOD can only verify the solution."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    if(isMaintenance()){
+
+        if(currentStatus === "Closed"){
+
+            showToast(
+                "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus !== "Verification" &&
+            selectedStatus !== currentStatus
+        ){
+
+            showToast(
+                "Maintenance can update corrective action and move the case to Verification."
             );
 
             return;
@@ -8758,12 +8923,7 @@ async function saveReport(){
     };
 
 
-    /* =====================================================
-       HOD / ENGINEERING
-       PRESERVE ESH-ONLY INFORMATION
-    ===================================================== */
-
-    if(isHOD() || isEngineering()){
+    if(isHOD()){
 
         data.status =
             selectedStatus;
@@ -8790,6 +8950,36 @@ async function saveReport(){
 
         data.eshRemarks =
             selectedReport.eshRemarks || "";
+
+        data.closedDate =
+            document.getElementById(
+                "closedDate"
+            ).value;
+
+    }
+
+
+    if(isMaintenance()){
+
+        data.status =
+            selectedStatus;
+
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
+
+        data.rootCause =
+            selectedReport.rootCause || "";
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator || "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks || "";
+
+        data.dueDate =
+            document.getElementById(
+                "dueDate"
+            ).value;
 
         data.closedDate =
             document.getElementById(
@@ -8843,9 +9033,13 @@ async function saveReport(){
             closeModal();
 
             showToast(
-                (isHOD() || isEngineering())
+                isHOD()
                 ?
                 "Solution verification updated successfully."
+                :
+                isMaintenance()
+                ?
+                "Repair update saved successfully."
                 :
                 "Case updated successfully."
             );
@@ -8888,6 +9082,7 @@ async function saveReport(){
     }
 
 }
+
 
 /* =========================================================
    AUTO SAVE DATE FIELD
@@ -9052,12 +9247,7 @@ async function autoSaveDateField(fieldType){
     };
 
 
-    /* =====================================================
-       HOD / ENGINEERING
-       PRESERVE ESH-ONLY INFORMATION
-    ===================================================== */
-
-    if(isHOD() || isEngineering()){
+    if(isHOD()){
 
         data.investigationFindings =
             selectedReport.investigationFindings || "";
@@ -9080,16 +9270,33 @@ async function autoSaveDateField(fieldType){
     }
 
 
-    data.targetDate =
-        document.getElementById(
-            "dueDate"
-        ).value;
+    if(isMaintenance()){
+
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
+
+        data.rootCause =
+            selectedReport.rootCause || "";
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator || "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks || "";
+
+    }
 
 
-    data.completionDate =
-        document.getElementById(
-            "closedDate"
-        ).value;
+data.targetDate =
+    document.getElementById(
+        "dueDate"
+    ).value;
+
+
+data.completionDate =
+    document.getElementById(
+        "closedDate"
+    ).value;
 
 
     try{
@@ -9241,6 +9448,7 @@ async function autoSaveDateField(fieldType){
     }
 
 }
+
 
 /* =========================================================
    DATE EVENTS
