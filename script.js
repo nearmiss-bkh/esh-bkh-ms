@@ -735,10 +735,6 @@ function compressPhoto(file) {
 
                                 // =================================
                                 // WHITE BACKGROUND
-                                //
-                                // Helps prevent transparent PNGs
-                                // becoming black when converted
-                                // to JPEG.
                                 // =================================
 
                                 context.fillStyle =
@@ -1726,6 +1722,11 @@ else {
                 );
 
 
+                // =================================================
+                // KEEP THESE LOGS FOR ADMIN/DEVELOPER DEBUGGING
+                // They are NOT shown to the worker.
+                // =================================================
+
                 console.log(
                     "SERVER SAVED PHOTOS:",
                     result.photos
@@ -1742,6 +1743,14 @@ else {
                 // =========================================
                 // SUCCESS
                 // =========================================
+                //
+                // IMPORTANT:
+                // The worker will NOT see photo count
+                // or video status here.
+                //
+                // Photos and video are still uploaded.
+                //
+                // =========================================
 
                 showStatus(
 
@@ -1751,22 +1760,6 @@ else {
 
                     "Report No: <strong>" +
                     assignedReportNumber +
-                    "</strong>" +
-
-                    "<br><br>" +
-
-                    "📷 Photos uploaded: <strong>" +
-                    photos.length +
-                    "</strong>" +
-
-                    "<br><br>" +
-
-                    "🎥 Video uploaded: <strong>" +
-                    (
-                        video
-                            ? "Yes"
-                            : "No"
-                    ) +
                     "</strong>" +
 
                     "<br><br>" +
