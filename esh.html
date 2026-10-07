@@ -3797,21 +3797,8 @@ function getVisibleReports(){
 
     if(isEngineering()){
 
-        return reports.filter(
-            function(report){
-
-                const status =
-                    normalizeStatus(
-                        report.status
-                    );
-
-                return (
-                    status === "Corrective Action" ||
-                    status === "Verification"
-                );
-
-            }
-        );
+        // ENGINEERING has the same report visibility as HOD.
+        return reports;
 
     }
 
@@ -3893,17 +3880,20 @@ function setupRoleDisplay(){
 
         if(display){
             display.textContent =
-                "ENGINEERING • CORRECTIVE ACTION";
+                "ENGINEERING • " +
+                CURRENT_DEPARTMENT;
         }
 
         if(hero){
             hero.textContent =
-                "Corrective action and repair completion management.";
+                "Department near miss monitoring and corrective action verification.";
         }
 
         if(reportsSubtitle){
             reportsSubtitle.textContent =
-                "Corrective action reports • Repair update access";
+                "Reports for " +
+                CURRENT_DEPARTMENT +
+                " • Verification access";
         }
 
     }
@@ -6533,8 +6523,8 @@ function getModalSubtitle(){
     if(isEngineering()){
 
         return (
-            "Engineering • " +
-            "Corrective Action Update"
+            "ENGINEERING Verification • " +
+            CURRENT_DEPARTMENT
         );
 
     }
@@ -6638,6 +6628,7 @@ function setupCaseStatusOptions(currentStatus){
 
     if(isEngineering()){
 
+        // ENGINEERING uses the exact same status choices as HOD.
         if(currentStatus === "Closed"){
 
             select.innerHTML = `
@@ -6681,6 +6672,8 @@ function setupCaseStatusOptions(currentStatus){
             `;
 
         }
+
+        return;
 
     }
 
@@ -6965,7 +6958,7 @@ function applyRolePermissions(status){
 
 
             saveButton.textContent =
-                "Save Engineering Update";
+                "Save Verification";
 
         }
 
@@ -8835,10 +8828,25 @@ async function saveReport(){
 
     if(isEngineering()){
 
+        // ENGINEERING follows the exact same save restrictions as HOD.
         if(currentStatus === "Closed"){
 
             showToast(
                 "Closed cases cannot be modified."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            selectedStatus === "Closed" &&
+            currentStatus !== "Closed"
+        ){
+
+            showToast(
+                "HOD cannot close the report. ESH must close the case."
             );
 
             return;
@@ -8852,7 +8860,7 @@ async function saveReport(){
         ){
 
             showToast(
-                "Engineering can update corrective action and move the case to Verification."
+                "HOD can only verify the solution."
             );
 
             return;
@@ -8961,6 +8969,7 @@ async function saveReport(){
 
     if(isEngineering()){
 
+        // ENGINEERING sends the same editable/preserved fields as HOD.
         data.status =
             selectedStatus;
 
@@ -8970,16 +8979,22 @@ async function saveReport(){
         data.rootCause =
             selectedReport.rootCause || "";
 
-        data.eshInvestigator =
-            selectedReport.eshInvestigator || "";
+        data.correctiveAction =
+            selectedReport.correctiveAction || "";
 
-        data.eshRemarks =
-            selectedReport.eshRemarks || "";
+        data.personResponsible =
+            selectedReport.personResponsible || "";
 
         data.dueDate =
             document.getElementById(
                 "dueDate"
             ).value;
+
+        data.eshInvestigator =
+            selectedReport.eshInvestigator || "";
+
+        data.eshRemarks =
+            selectedReport.eshRemarks || "";
 
         data.closedDate =
             document.getElementById(
@@ -9033,13 +9048,9 @@ async function saveReport(){
             closeModal();
 
             showToast(
-                isHOD()
+                isHOD() || isEngineering()
                 ?
                 "Solution verification updated successfully."
-                :
-                isEngineering()
-                ?
-                "Engineering update saved successfully."
                 :
                 "Case updated successfully."
             );
@@ -9272,11 +9283,18 @@ async function autoSaveDateField(fieldType){
 
     if(isEngineering()){
 
+        // ENGINEERING auto-save payload matches HOD.
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
         data.rootCause =
             selectedReport.rootCause || "";
+
+        data.correctiveAction =
+            selectedReport.correctiveAction || "";
+
+        data.personResponsible =
+            selectedReport.personResponsible || "";
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
