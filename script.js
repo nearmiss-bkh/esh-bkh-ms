@@ -1,6 +1,22 @@
 // =====================================================
-// NEAR MISS REPORTING SYSTEM
+// BKH ESH SAFETY REPORTING PORTAL
 // =====================================================
+// Worker Safety Reporting Form
+//
+// Supports:
+// - Near Miss
+// - Unsafe Act
+// - Unsafe Condition
+// - Accident
+// - Property Damage
+//
+// Google Apps Script Backend:
+// saveReport
+//
+// Also supports:
+// uploadCorrectivePhoto
+// =====================================================
+
 
 
 // =====================================================
@@ -8,25 +24,55 @@
 // =====================================================
 
 const form =
-    document.getElementById("nearMissForm");
+    document.getElementById(
+        "nearMissForm"
+    );
 
 const successMessage =
-    document.getElementById("successMessage");
+    document.getElementById(
+        "successMessage"
+    );
 
 const dateTime =
-    document.getElementById("dateTime");
+    document.getElementById(
+        "dateTime"
+    );
 
 const photoInput =
-    document.getElementById("photo");
+    document.getElementById(
+        "photo"
+    );
 
 const photoCount =
-    document.getElementById("photoCount");
+    document.getElementById(
+        "photoCount"
+    );
 
 const videoInput =
-    document.getElementById("video");
+    document.getElementById(
+        "video"
+    );
 
 const videoInfo =
-    document.getElementById("videoInfo");
+    document.getElementById(
+        "videoInfo"
+    );
+
+const videoPreview =
+    document.getElementById(
+        "videoPreview"
+    );
+
+const videoPlayer =
+    document.getElementById(
+        "videoPlayer"
+    );
+
+const photoPreview =
+    document.getElementById(
+        "photoPreview"
+    );
+
 
 
 // =====================================================
@@ -37,11 +83,13 @@ const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
 
 
+
 // =====================================================
 // SETTINGS
 // =====================================================
 
-const MAX_PHOTOS = 10;
+const MAX_PHOTOS =
+    10;
 
 const MAX_PHOTO_SIZE =
     10 * 1024 * 1024;
@@ -49,13 +97,72 @@ const MAX_PHOTO_SIZE =
 const MAX_VIDEO_SIZE =
     20 * 1024 * 1024;
 
-const MAX_LOCATION_LENGTH = 500;
+const MAX_LOCATION_LENGTH =
+    500;
 
-const MAX_WIDTH = 1200;
+const MAX_DESCRIPTION_LENGTH =
+    5000;
 
-const MAX_HEIGHT = 1200;
+const MAX_REPORTER_NAME_LENGTH =
+    150;
 
-const JPEG_QUALITY = 0.75;
+const MAX_WIDTH =
+    1200;
+
+const MAX_HEIGHT =
+    1200;
+
+const JPEG_QUALITY =
+    0.75;
+
+
+
+// =====================================================
+// APPROVED DEPARTMENTS
+// =====================================================
+
+const VALID_DEPARTMENTS = [
+
+    "Office",
+
+    "Old Production",
+
+    "New Production",
+
+    "QA/QC",
+
+    "RMS/FGS/WIP",
+
+    "Engineering",
+
+    "Security",
+
+    "Contractor",
+
+    "Visitor"
+
+];
+
+
+
+// =====================================================
+// APPROVED HAZARD CATEGORIES
+// =====================================================
+
+const VALID_HAZARD_CATEGORIES = [
+
+    "Near Miss",
+
+    "Unsafe Act",
+
+    "Unsafe Condition",
+
+    "Accident",
+
+    "Property Damage"
+
+];
+
 
 
 // =====================================================
@@ -63,160 +170,9 @@ const JPEG_QUALITY = 0.75;
 // =====================================================
 
 console.log(
-    "NEAR MISS script.js loaded successfully"
+    "BKH ESH Safety Reporting Portal script.js loaded successfully."
 );
 
-
-// =====================================================
-// PHOTO COUNTER
-// =====================================================
-
-if (photoInput) {
-
-    photoInput.addEventListener(
-        "change",
-        function () {
-
-            const count =
-                photoInput.files.length;
-
-
-            if (count === 0) {
-
-                if (photoCount) {
-
-                    photoCount.textContent =
-                        "No photos selected";
-
-                }
-
-                return;
-
-            }
-
-
-            if (count > MAX_PHOTOS) {
-
-                if (photoCount) {
-
-                    photoCount.textContent =
-                        "❌ Maximum 10 photos allowed";
-
-                }
-
-                return;
-
-            }
-
-
-            if (photoCount) {
-
-                photoCount.textContent =
-                    "📷 " +
-                    count +
-                    " photo(s) selected";
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================================
-// VIDEO INFORMATION
-// =====================================================
-
-if (videoInput) {
-
-    videoInput.addEventListener(
-        "change",
-        function () {
-
-            const file =
-                videoInput.files[0];
-
-
-            if (!file) {
-
-                if (videoInfo) {
-
-                    videoInfo.textContent =
-                        "No video selected";
-
-                }
-
-                return;
-
-            }
-
-
-            if (
-                !file.type.startsWith("video/")
-            ) {
-
-                videoInput.value = "";
-
-                if (videoInfo) {
-
-                    videoInfo.textContent =
-                        "❌ Please select a video file.";
-
-                }
-
-                return;
-
-            }
-
-
-            const sizeMB =
-                file.size /
-                (1024 * 1024);
-
-
-            if (
-                file.size >
-                MAX_VIDEO_SIZE
-            ) {
-
-                videoInput.value = "";
-
-                if (videoInfo) {
-
-                    videoInfo.textContent =
-                        "❌ Video is larger than 20 MB.";
-
-                }
-
-                return;
-
-            }
-
-
-            if (videoInfo) {
-
-                videoInfo.textContent =
-                    "🎥 " +
-                    file.name +
-                    " (" +
-                    sizeMB.toFixed(1) +
-                    " MB)";
-
-            }
-
-
-            console.log(
-                "Video selected:",
-                file.name,
-                file.size,
-                file.type
-            );
-
-        }
-    );
-
-}
 
 
 // =====================================================
@@ -232,74 +188,89 @@ function setMalaysiaDateTime() {
     }
 
 
-    const now =
-        new Date();
+    try {
+
+        const now =
+            new Date();
 
 
-    const malaysiaTime =
-        new Date(
-            now.toLocaleString(
-                "en-US",
-                {
-                    timeZone:
-                        "Asia/Kuala_Lumpur"
-                }
-            )
+        const malaysiaTime =
+            new Date(
+                now.toLocaleString(
+                    "en-US",
+                    {
+                        timeZone:
+                            "Asia/Kuala_Lumpur"
+                    }
+                )
+            );
+
+
+        const year =
+            malaysiaTime.getFullYear();
+
+
+        const month =
+            String(
+                malaysiaTime.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const day =
+            String(
+                malaysiaTime.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const hours =
+            String(
+                malaysiaTime.getHours()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const minutes =
+            String(
+                malaysiaTime.getMinutes()
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        dateTime.value =
+            year +
+            "-" +
+            month +
+            "-" +
+            day +
+            "T" +
+            hours +
+            ":" +
+            minutes;
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Unable to set Malaysia date/time:",
+            error
         );
 
-
-    const year =
-        malaysiaTime.getFullYear();
-
-
-    const month =
-        String(
-            malaysiaTime.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            malaysiaTime.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const hours =
-        String(
-            malaysiaTime.getHours()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const minutes =
-        String(
-            malaysiaTime.getMinutes()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    dateTime.value =
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        "T" +
-        hours +
-        ":" +
-        minutes;
+    }
 
 }
+
 
 
 // =====================================================
@@ -307,6 +278,7 @@ function setMalaysiaDateTime() {
 // =====================================================
 
 setMalaysiaDateTime();
+
 
 
 // =====================================================
@@ -319,6 +291,310 @@ setInterval(
 );
 
 
+
+// =====================================================
+// GET FORM VALUE SAFELY
+// =====================================================
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (!element) {
+
+        console.error(
+            "Missing form element:",
+            id
+        );
+
+        return "";
+
+    }
+
+
+    return String(
+        element.value || ""
+    ).trim();
+
+}
+
+
+
+// =====================================================
+// SHOW STATUS MESSAGE
+// =====================================================
+
+function showStatus(
+    message,
+    type = "info"
+) {
+
+    if (!successMessage) {
+
+        return;
+
+    }
+
+
+    successMessage.style.display =
+        "block";
+
+
+    successMessage.innerHTML =
+        message;
+
+
+    if (type === "error") {
+
+        successMessage.style.background =
+            "#fff1f2";
+
+        successMessage.style.borderColor =
+            "#fecdd3";
+
+        successMessage.style.color =
+            "#b42318";
+
+    }
+
+    else if (type === "success") {
+
+        successMessage.style.background =
+            "#ecfdf5";
+
+        successMessage.style.borderColor =
+            "#b7ebd2";
+
+        successMessage.style.color =
+            "#087443";
+
+    }
+
+    else {
+
+        successMessage.style.background =
+            "#f5f8fc";
+
+        successMessage.style.borderColor =
+            "#e1e7ef";
+
+        successMessage.style.color =
+            "#52627a";
+
+    }
+
+}
+
+
+
+// =====================================================
+// VALIDATE FORM VALUES
+// =====================================================
+
+function validateFormValues() {
+
+    const location =
+        getValue(
+            "location"
+        );
+
+    const department =
+        getValue(
+            "department"
+        );
+
+    const hazardCategory =
+        getValue(
+            "hazardCategory"
+        );
+
+    const whatHappened =
+        getValue(
+            "whatHappened"
+        );
+
+    const reporterName =
+        getValue(
+            "reporterName"
+        );
+
+
+    // =================================================
+    // DATE/TIME
+    // =================================================
+
+    if (
+        !getValue(
+            "dateTime"
+        )
+    ) {
+
+        throw new Error(
+            "Date and time are required."
+        );
+
+    }
+
+
+    // =================================================
+    // LOCATION
+    // =================================================
+
+    if (!location) {
+
+        throw new Error(
+            "Please enter the location."
+        );
+
+    }
+
+
+    if (
+        location.length >
+        MAX_LOCATION_LENGTH
+    ) {
+
+        throw new Error(
+            "Location is too long. Please keep it within 500 characters."
+        );
+
+    }
+
+
+    // =================================================
+    // DEPARTMENT
+    // =================================================
+
+    if (!department) {
+
+        throw new Error(
+            "Please select a department."
+        );
+
+    }
+
+
+    if (
+        !VALID_DEPARTMENTS.includes(
+            department
+        )
+    ) {
+
+        throw new Error(
+            "Invalid department selected."
+        );
+
+    }
+
+
+    // =================================================
+    // HAZARD CATEGORY
+    // =================================================
+
+    if (!hazardCategory) {
+
+        throw new Error(
+            "Please select a hazard category."
+        );
+
+    }
+
+
+    if (
+        !VALID_HAZARD_CATEGORIES.includes(
+            hazardCategory
+        )
+    ) {
+
+        throw new Error(
+            "Invalid hazard category selected."
+        );
+
+    }
+
+
+    // =================================================
+    // DESCRIPTION
+    // =================================================
+
+    if (!whatHappened) {
+
+        throw new Error(
+            "Please describe what happened."
+        );
+
+    }
+
+
+    if (
+        whatHappened.length >
+        MAX_DESCRIPTION_LENGTH
+    ) {
+
+        throw new Error(
+            "Description is too long. Please keep it within 5,000 characters."
+        );
+
+    }
+
+
+    // =================================================
+    // REPORTER NAME
+    // =================================================
+
+    if (!reporterName) {
+
+        throw new Error(
+            "Please enter the reporter name."
+        );
+
+    }
+
+
+    if (
+        reporterName.length >
+        MAX_REPORTER_NAME_LENGTH
+    ) {
+
+        throw new Error(
+            "Reporter name is too long."
+        );
+
+    }
+
+
+    return {
+
+        dateTime:
+            getValue(
+                "dateTime"
+            ),
+
+        location:
+            location,
+
+        department:
+            department,
+
+        hazardCategory:
+            hazardCategory,
+
+        whatHappened:
+            whatHappened,
+
+        reporterName:
+            reporterName
+
+    };
+
+}
+
+
+
 // =====================================================
 // COMPRESS PHOTO
 // =====================================================
@@ -326,14 +602,50 @@ setInterval(
 function compressPhoto(file) {
 
     return new Promise(
-        function (resolve, reject) {
+        function (
+            resolve,
+            reject
+        ) {
+
+            if (!file) {
+
+                reject(
+                    new Error(
+                        "Photo file is missing."
+                    )
+                );
+
+                return;
+
+            }
+
+
+            if (
+                !file.type ||
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
+
+                reject(
+                    new Error(
+                        "Selected file is not a valid image."
+                    )
+                );
+
+                return;
+
+            }
+
 
             const reader =
                 new FileReader();
 
 
             reader.onload =
-                function (event) {
+                function (
+                    event
+                ) {
 
                     const img =
                         new Image();
@@ -342,120 +654,208 @@ function compressPhoto(file) {
                     img.onload =
                         function () {
 
-                            let width =
-                                img.width;
+                            try {
 
-                            let height =
-                                img.height;
+                                let width =
+                                    img.width;
+
+                                let height =
+                                    img.height;
 
 
-                            // =================================
-                            // RESIZE LARGE IMAGE
-                            // =================================
+                                // =================================
+                                // RESIZE LARGE IMAGE
+                                // =================================
 
-                            if (
-                                width >
-                                    MAX_WIDTH ||
-                                height >
-                                    MAX_HEIGHT
-                            ) {
+                                if (
+                                    width >
+                                        MAX_WIDTH ||
+                                    height >
+                                        MAX_HEIGHT
+                                ) {
 
-                                const ratio =
-                                    Math.min(
-                                        MAX_WIDTH /
-                                            width,
-                                        MAX_HEIGHT /
-                                            height
+                                    const ratio =
+                                        Math.min(
+                                            MAX_WIDTH /
+                                                width,
+
+                                            MAX_HEIGHT /
+                                                height
+                                        );
+
+
+                                    width =
+                                        Math.round(
+                                            width *
+                                            ratio
+                                        );
+
+
+                                    height =
+                                        Math.round(
+                                            height *
+                                            ratio
+                                        );
+
+                                }
+
+
+                                // =================================
+                                // CREATE CANVAS
+                                // =================================
+
+                                const canvas =
+                                    document.createElement(
+                                        "canvas"
                                     );
 
 
-                                width =
-                                    Math.round(
-                                        width *
-                                        ratio
+                                canvas.width =
+                                    width;
+
+
+                                canvas.height =
+                                    height;
+
+
+                                const context =
+                                    canvas.getContext(
+                                        "2d"
                                     );
 
 
-                                height =
-                                    Math.round(
-                                        height *
-                                        ratio
+                                if (!context) {
+
+                                    throw new Error(
+                                        "Unable to create image processing canvas."
                                     );
 
-                            }
+                                }
 
 
-                            // =================================
-                            // CREATE CANVAS
-                            // =================================
+                                // =================================
+                                // WHITE BACKGROUND
+                                //
+                                // Helps prevent transparent PNGs
+                                // becoming black when converted
+                                // to JPEG.
+                                // =================================
 
-                            const canvas =
-                                document.createElement(
-                                    "canvas"
+                                context.fillStyle =
+                                    "#ffffff";
+
+
+                                context.fillRect(
+                                    0,
+                                    0,
+                                    width,
+                                    height
                                 );
 
 
-                            canvas.width =
-                                width;
+                                // =================================
+                                // DRAW IMAGE
+                                // =================================
 
-
-                            canvas.height =
-                                height;
-
-
-                            const context =
-                                canvas.getContext(
-                                    "2d"
+                                context.drawImage(
+                                    img,
+                                    0,
+                                    0,
+                                    width,
+                                    height
                                 );
 
 
-                            context.drawImage(
-                                img,
-                                0,
-                                0,
-                                width,
-                                height
-                            );
+                                // =================================
+                                // COMPRESS TO JPEG
+                                // =================================
+
+                                const compressed =
+                                    canvas.toDataURL(
+                                        "image/jpeg",
+                                        JPEG_QUALITY
+                                    );
 
 
-                            // =================================
-                            // COMPRESS TO JPEG
-                            // =================================
+                                if (
+                                    !compressed ||
+                                    compressed.indexOf(
+                                        ","
+                                    ) === -1
+                                ) {
 
-                            const compressed =
-                                canvas.toDataURL(
-                                    "image/jpeg",
-                                    JPEG_QUALITY
-                                );
+                                    throw new Error(
+                                        "Unable to compress image."
+                                    );
+
+                                }
 
 
-                            // =================================
-                            // RETURN PHOTO DATA
-                            // =================================
-
-                            resolve({
-
-                                data:
+                                const base64 =
                                     compressed.split(
                                         ","
-                                    )[1],
+                                    )[1];
 
-                                type:
-                                    "image/jpeg",
 
-                                name:
-                                    "NearMiss_" +
+                                // =================================
+                                // CREATE SAFE FILE NAME
+                                // =================================
+
+                                const originalName =
+                                    String(
+                                        file.name ||
+                                        "Photo"
+                                    )
+                                    .replace(
+                                        /\.[^/.]+$/,
+                                        ""
+                                    )
+                                    .replace(
+                                        /[^a-zA-Z0-9_-]/g,
+                                        "_"
+                                    );
+
+
+                                const newName =
+                                    "BKH_ESH_" +
+                                    originalName +
+                                    "_" +
                                     Date.now() +
                                     "_" +
                                     Math.random()
-                                        .toString(36)
+                                        .toString(
+                                            36
+                                        )
                                         .substring(
                                             2,
                                             8
                                         ) +
-                                    ".jpg"
+                                    ".jpg";
 
-                            });
+
+                                resolve({
+
+                                    data:
+                                        base64,
+
+                                    type:
+                                        "image/jpeg",
+
+                                    name:
+                                        newName
+
+                                });
+
+                            }
+
+
+                            catch (error) {
+
+                                reject(
+                                    error
+                                );
+
+                            }
 
                         };
 
@@ -490,12 +890,15 @@ function compressPhoto(file) {
                 };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
 
 }
+
 
 
 // =====================================================
@@ -505,19 +908,31 @@ function compressPhoto(file) {
 function readVideo(file) {
 
     return new Promise(
-        function (resolve, reject) {
+        function (
+            resolve,
+            reject
+        ) {
 
             if (!file) {
 
-                resolve(null);
+                resolve(
+                    null
+                );
 
                 return;
 
             }
 
 
+            // =============================================
+            // VIDEO TYPE
+            // =============================================
+
             if (
-                !file.type.startsWith("video/")
+                !file.type ||
+                !file.type.startsWith(
+                    "video/"
+                )
             ) {
 
                 reject(
@@ -530,6 +945,10 @@ function readVideo(file) {
 
             }
 
+
+            // =============================================
+            // VIDEO SIZE
+            // =============================================
 
             if (
                 file.size >
@@ -547,60 +966,99 @@ function readVideo(file) {
             }
 
 
+            // =============================================
+            // FILE READER
+            // =============================================
+
             const reader =
                 new FileReader();
 
 
             reader.onload =
-                function (event) {
+                function (
+                    event
+                ) {
 
-                    const result =
-                        event.target.result;
+                    try {
+
+                        const result =
+                            event.target.result;
 
 
-                    const commaIndex =
-                        result.indexOf(",");
+                        if (
+                            !result ||
+                            typeof result !==
+                                "string"
+                        ) {
 
-
-                    if (
-                        commaIndex === -1
-                    ) {
-
-                        reject(
-                            new Error(
+                            throw new Error(
                                 "Unable to process video."
-                            )
-                        );
+                            );
 
-                        return;
+                        }
+
+
+                        const commaIndex =
+                            result.indexOf(
+                                ","
+                            );
+
+
+                        if (
+                            commaIndex === -1
+                        ) {
+
+                            throw new Error(
+                                "Unable to process video data."
+                            );
+
+                        }
+
+
+                        const base64 =
+                            result.substring(
+                                commaIndex + 1
+                            );
+
+
+                        if (!base64) {
+
+                            throw new Error(
+                                "Video data is empty."
+                            );
+
+                        }
+
+
+                        resolve({
+
+                            base64:
+                                base64,
+
+                            type:
+                                file.type ||
+                                "video/mp4",
+
+                            name:
+                                file.name ||
+                                (
+                                    "BKH_ESH_Video_" +
+                                    Date.now() +
+                                    ".mp4"
+                                )
+
+                        });
 
                     }
 
 
-                    const base64 =
-                        result.substring(
-                            commaIndex + 1
+                    catch (error) {
+
+                        reject(
+                            error
                         );
 
-
-                    resolve({
-
-                        base64:
-                            base64,
-
-                        type:
-                            file.type ||
-                            "video/mp4",
-
-                        name:
-                            file.name ||
-                            (
-                                "NearMiss_Video_" +
-                                Date.now() +
-                                ".mp4"
-                            )
-
-                    });
+                    }
 
                 };
 
@@ -617,7 +1075,9 @@ function readVideo(file) {
                 };
 
 
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(
+                file
+            );
 
         }
     );
@@ -625,31 +1085,116 @@ function readVideo(file) {
 }
 
 
+
 // =====================================================
-// GET FORM VALUE SAFELY
+// CLEAN FILE PREVIEWS
 // =====================================================
 
-function getValue(id) {
+function clearFilePreviews() {
 
-    const element =
-        document.getElementById(id);
+    // =================================================
+    // PHOTO COUNT
+    // =================================================
 
+    if (photoCount) {
 
-    if (!element) {
-
-        console.error(
-            "Missing form element:",
-            id
-        );
-
-        return "";
+        photoCount.textContent =
+            "No photos selected";
 
     }
 
 
-    return element.value.trim();
+    // =================================================
+    // PHOTO PREVIEW
+    // =================================================
+
+    if (photoPreview) {
+
+        photoPreview.innerHTML =
+            "";
+
+    }
+
+
+    // =================================================
+    // VIDEO INFO
+    // =================================================
+
+    if (videoInfo) {
+
+        videoInfo.textContent =
+            "No video selected";
+
+    }
+
+
+    // =================================================
+    // VIDEO PLAYER
+    // =================================================
+
+    if (videoPlayer) {
+
+        try {
+
+            videoPlayer.pause();
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "Video pause warning:",
+                error
+            );
+
+        }
+
+
+        videoPlayer.removeAttribute(
+            "src"
+        );
+
+        videoPlayer.load();
+
+    }
+
+
+    // =================================================
+    // VIDEO PREVIEW
+    // =================================================
+
+    if (videoPreview) {
+
+        videoPreview.style.display =
+            "none";
+
+    }
 
 }
+
+
+
+// =====================================================
+// CLEAR SUCCESS MESSAGE
+// =====================================================
+
+function hideStatus() {
+
+    if (!successMessage) {
+
+        return;
+
+    }
+
+
+    successMessage.style.display =
+        "none";
+
+    successMessage.innerHTML =
+        "";
+
+}
+
 
 
 // =====================================================
@@ -664,11 +1209,14 @@ if (!form) {
 
 }
 
+
 else {
 
     form.addEventListener(
         "submit",
-        async function (event) {
+        async function (
+            event
+        ) {
 
             event.preventDefault();
 
@@ -678,7 +1226,15 @@ else {
 
 
             console.log(
-                "SUBMIT EVENT DETECTED"
+                "=========================================="
+            );
+
+            console.log(
+                "BKH ESH SAFETY REPORT SUBMISSION START"
+            );
+
+            console.log(
+                "=========================================="
             );
 
 
@@ -687,6 +1243,10 @@ else {
                     ".submit-button"
                 );
 
+
+            // =============================================
+            // DISABLE BUTTON
+            // =============================================
 
             if (submitButton) {
 
@@ -699,18 +1259,20 @@ else {
             }
 
 
-            if (successMessage) {
-
-                successMessage.style.display =
-                    "block";
-
-                successMessage.innerHTML =
-                    "<strong>⏳ Preparing report...</strong>";
-
-            }
-
-
             try {
+
+                // =========================================
+                // VALIDATE FORM
+                // =========================================
+
+                const formData =
+                    validateFormValues();
+
+
+                console.log(
+                    "Form validation passed."
+                );
+
 
                 // =========================================
                 // GET PHOTOS
@@ -720,7 +1282,8 @@ else {
 
 
                 const selectedFiles =
-                    photoInput
+                    photoInput &&
+                    photoInput.files
                         ? photoInput.files
                         : [];
 
@@ -731,13 +1294,17 @@ else {
                 );
 
 
+                // =========================================
+                // PHOTO COUNT
+                // =========================================
+
                 if (
                     selectedFiles.length >
                     MAX_PHOTOS
                 ) {
 
                     throw new Error(
-                        "Maximum 10 photos allowed."
+                        "Maximum 10 photos are allowed."
                     );
 
                 }
@@ -766,6 +1333,30 @@ else {
                     );
 
 
+                    // =====================================
+                    // CHECK IMAGE TYPE
+                    // =====================================
+
+                    if (
+                        !photo.type ||
+                        !photo.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+
+                        throw new Error(
+                            "Photo " +
+                            (i + 1) +
+                            " is not a valid image."
+                        );
+
+                    }
+
+
+                    // =====================================
+                    // CHECK ORIGINAL FILE SIZE
+                    // =====================================
+
                     if (
                         photo.size >
                         MAX_PHOTO_SIZE
@@ -780,17 +1371,23 @@ else {
                     }
 
 
-                    if (successMessage) {
+                    // =====================================
+                    // SHOW PROGRESS
+                    // =====================================
 
-                        successMessage.innerHTML =
-                            "<strong>📷 Processing photo " +
-                            (i + 1) +
-                            " of " +
-                            selectedFiles.length +
-                            "...</strong>";
+                    showStatus(
+                        "<strong>📷 Processing photo " +
+                        (i + 1) +
+                        " of " +
+                        selectedFiles.length +
+                        "...</strong>",
+                        "info"
+                    );
 
-                    }
 
+                    // =====================================
+                    // COMPRESS
+                    // =====================================
 
                     const compressed =
                         await compressPhoto(
@@ -813,10 +1410,8 @@ else {
 
 
                     console.log(
-                        "Photo processed:",
-                        i + 1,
-                        "Base64 length:",
-                        compressed.data.length
+                        "Photo processed successfully:",
+                        i + 1
                     );
 
                 }
@@ -828,17 +1423,20 @@ else {
                 );
 
 
+
                 // =========================================
                 // PROCESS VIDEO
                 // =========================================
 
-                let video = null;
+                let video =
+                    null;
 
 
                 if (
                     videoInput &&
                     videoInput.files &&
-                    videoInput.files.length > 0
+                    videoInput.files.length >
+                        0
                 ) {
 
                     const selectedVideo =
@@ -853,18 +1451,27 @@ else {
                     );
 
 
+                    // =====================================
+                    // CHECK VIDEO TYPE
+                    // =====================================
+
                     if (
+                        !selectedVideo.type ||
                         !selectedVideo.type.startsWith(
                             "video/"
                         )
                     ) {
 
                         throw new Error(
-                            "Selected file is not a video."
+                            "Selected file is not a valid video."
                         );
 
                     }
 
+
+                    // =====================================
+                    // CHECK VIDEO SIZE
+                    // =====================================
 
                     if (
                         selectedVideo.size >
@@ -878,12 +1485,10 @@ else {
                     }
 
 
-                    if (successMessage) {
-
-                        successMessage.innerHTML =
-                            "<strong>🎥 Processing video...</strong>";
-
-                    }
+                    showStatus(
+                        "<strong>🎥 Processing video...</strong>",
+                        "info"
+                    );
 
 
                     video =
@@ -893,18 +1498,11 @@ else {
 
 
                     console.log(
-                        "Video processed successfully"
-                    );
-
-
-                    console.log(
-                        "Video Base64 length:",
-                        video && video.base64
-                            ? video.base64.length
-                            : 0
+                        "Video processed successfully."
                     );
 
                 }
+
 
 
                 // =========================================
@@ -917,37 +1515,34 @@ else {
                         "saveReport",
 
                     dateTime:
-                        getValue(
-                            "dateTime"
-                        ),
+                        formData.dateTime,
 
                     location:
-                        getValue(
-                            "location"
-                        ).substring(
-                            0,
-                            MAX_LOCATION_LENGTH
-                        ),
+                        formData.location
+                            .substring(
+                                0,
+                                MAX_LOCATION_LENGTH
+                            ),
 
                     department:
-                        getValue(
-                            "department"
-                        ),
+                        formData.department,
 
                     hazardCategory:
-                        getValue(
-                            "hazardCategory"
-                        ),
+                        formData.hazardCategory,
 
                     whatHappened:
-                        getValue(
-                            "whatHappened"
-                        ),
+                        formData.whatHappened
+                            .substring(
+                                0,
+                                MAX_DESCRIPTION_LENGTH
+                            ),
 
                     reporterName:
-                        getValue(
-                            "reporterName"
-                        ),
+                        formData.reporterName
+                            .substring(
+                                0,
+                                MAX_REPORTER_NAME_LENGTH
+                            ),
 
                     photos:
                         photos,
@@ -965,23 +1560,43 @@ else {
 
 
                 console.log(
-                    "REPORT READY FULL:",
-                    JSON.stringify(
-                        report
-                    )
+                    "REPORT READY:",
+                    {
+
+                        action:
+                            report.action,
+
+                        dateTime:
+                            report.dateTime,
+
+                        location:
+                            report.location,
+
+                        department:
+                            report.department,
+
+                        hazardCategory:
+                            report.hazardCategory,
+
+                        photoCount:
+                            report.photos.length,
+
+                        hasVideo:
+                            !!report.video
+
+                    }
                 );
+
 
 
                 // =========================================
                 // SEND REPORT
                 // =========================================
 
-                if (successMessage) {
-
-                    successMessage.innerHTML =
-                        "<strong>☁️ Sending report...</strong>";
-
-                }
+                showStatus(
+                    "<strong>☁️ Sending report to BKH ESH system...</strong>",
+                    "info"
+                );
 
 
                 const response =
@@ -1017,6 +1632,10 @@ else {
                 );
 
 
+                // =========================================
+                // READ RESPONSE
+                // =========================================
+
                 const responseText =
                     await response.text();
 
@@ -1026,6 +1645,21 @@ else {
                     responseText
                 );
 
+
+                if (
+                    !responseText
+                ) {
+
+                    throw new Error(
+                        "The server returned an empty response."
+                    );
+
+                }
+
+
+                // =========================================
+                // PARSE JSON
+                // =========================================
 
                 let result;
 
@@ -1039,20 +1673,28 @@ else {
 
                 }
 
-                catch (jsonError) {
+
+                catch (
+                    jsonError
+                ) {
 
                     console.error(
-                        "JSON ERROR:",
+                        "JSON PARSE ERROR:",
                         jsonError
                     );
 
 
                     throw new Error(
-                        "Server did not return valid JSON."
+                        "Server did not return a valid response. Please try again."
                     );
 
                 }
 
+
+
+                // =========================================
+                // CHECK SERVER RESULT
+                // =========================================
 
                 if (
                     !result ||
@@ -1068,8 +1710,14 @@ else {
                 }
 
 
+
+                // =========================================
+                // REPORT NUMBER
+                // =========================================
+
                 const assignedReportNumber =
-                    result.reportNumber;
+                    result.reportNumber ||
+                    "Assigned by system";
 
 
                 console.log(
@@ -1090,89 +1738,137 @@ else {
                 );
 
 
-                if (successMessage) {
 
-                    successMessage.innerHTML =
-                        "<strong>✅ Report submitted successfully!</strong>" +
-                        "<br><br>" +
-                        "Report No: <strong>" +
-                        (
-                            assignedReportNumber ||
-                            "Assigned by system"
-                        ) +
-                        "</strong>" +
-                        "<br><br>" +
-                        "📷 Photos uploaded: <strong>" +
-                        photos.length +
-                        "</strong>" +
-                        "<br><br>" +
-                        "🎥 Video uploaded: <strong>" +
-                        (
-                            video
-                                ? "Yes"
-                                : "No"
-                        ) +
-                        "</strong>" +
-                        "<br><br>" +
-                        "Your report has been recorded.";
+                // =========================================
+                // SUCCESS
+                // =========================================
 
-                }
+                showStatus(
+
+                    "<strong>✅ Safety report submitted successfully!</strong>" +
+
+                    "<br><br>" +
+
+                    "Report No: <strong>" +
+                    assignedReportNumber +
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "📷 Photos uploaded: <strong>" +
+                    photos.length +
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "🎥 Video uploaded: <strong>" +
+                    (
+                        video
+                            ? "Yes"
+                            : "No"
+                    ) +
+                    "</strong>" +
+
+                    "<br><br>" +
+
+                    "Your report has been recorded and sent to the BKH ESH Department.",
+
+                    "success"
+
+                );
+
 
 
                 console.log(
-                    "REPORT SUBMITTED SUCCESSFULLY:",
+                    "=========================================="
+                );
+
+                console.log(
+                    "REPORT SUBMITTED SUCCESSFULLY"
+                );
+
+                console.log(
+                    "REPORT NUMBER:",
                     assignedReportNumber
                 );
 
+                console.log(
+                    "=========================================="
+                );
+
+
+
+                // =========================================
+                // RESET FORM
+                // =========================================
 
                 form.reset();
 
 
-                if (photoCount) {
+                // =========================================
+                // CLEAR PREVIEWS
+                // =========================================
 
-                    photoCount.textContent =
-                        "No photos selected";
-
-                }
+                clearFilePreviews();
 
 
-                if (videoInfo) {
-
-                    videoInfo.textContent =
-                        "No video selected";
-
-                }
-
+                // =========================================
+                // RESTORE MALAYSIA DATE/TIME
+                // =========================================
 
                 setMalaysiaDateTime();
 
             }
 
 
-            catch (error) {
+            catch (
+                error
+            ) {
+
+                console.error(
+                    "=========================================="
+                );
 
                 console.error(
                     "SUBMISSION ERROR:",
                     error
                 );
 
+                console.error(
+                    "=========================================="
+                );
 
-                if (successMessage) {
 
-                    successMessage.innerHTML =
-                        "<strong>❌ Unable to submit report.</strong>" +
-                        "<br><br>" +
-                        error.message +
-                        "<br><br>" +
-                        "Your information has NOT been cleared. " +
-                        "Please try again.";
+                showStatus(
 
-                }
+                    "<strong>❌ Unable to submit safety report.</strong>" +
+
+                    "<br><br>" +
+
+                    (
+                        error &&
+                        error.message
+                            ? error.message
+                            : "An unexpected error occurred."
+                    ) +
+
+                    "<br><br>" +
+
+                    "Your entered information has NOT been cleared. " +
+                    "Please correct the issue and try again.",
+
+                    "error"
+
+                );
 
             }
 
 
             finally {
+
+                // =========================================
+                // RE-ENABLE BUTTON
+                // =========================================
 
                 if (submitButton) {
 
@@ -1180,7 +1876,7 @@ else {
                         false;
 
                     submitButton.textContent =
-                        "SUBMIT NEAR MISS";
+                        "SUBMIT SAFETY REPORT";
 
                 }
 
@@ -1192,15 +1888,10 @@ else {
 }
 
 
+
 // =====================================================
 // CORRECTIVE ACTION PHOTO UPLOAD
 // =====================================================
-//
-// IMPORTANT
-//
-// This function matches the current Code.gs:
-//
-// uploadCorrectivePhoto(data)
 //
 // Backend expects:
 //
@@ -1246,7 +1937,9 @@ async function uploadCorrectiveActionPhoto(
 
     if (
         !reportNumber ||
-        String(reportNumber).trim() === ""
+        String(
+            reportNumber
+        ).trim() === ""
     ) {
 
         throw new Error(
@@ -1262,6 +1955,7 @@ async function uploadCorrectiveActionPhoto(
         ).trim();
 
 
+
     // =================================================
     // CHECK FILE
     // =================================================
@@ -1275,13 +1969,16 @@ async function uploadCorrectiveActionPhoto(
     }
 
 
+
     // =================================================
     // CHECK IMAGE TYPE
     // =================================================
 
     if (
         !file.type ||
-        !file.type.startsWith("image/")
+        !file.type.startsWith(
+            "image/"
+        )
     ) {
 
         throw new Error(
@@ -1289,6 +1986,7 @@ async function uploadCorrectiveActionPhoto(
         );
 
     }
+
 
 
     // =================================================
@@ -1313,6 +2011,7 @@ async function uploadCorrectiveActionPhoto(
         file.size,
         file.type
     );
+
 
 
     // =================================================
@@ -1343,17 +2042,9 @@ async function uploadCorrectiveActionPhoto(
     );
 
 
+
     // =================================================
-    // IMPORTANT
-    //
-    // Code.gs expects:
-    //
-    // data.photo.base64
-    //
-    // NOT:
-    //
-    // data.photo.data
-    //
+    // CREATE PAYLOAD
     // =================================================
 
     const payload = {
@@ -1380,6 +2071,24 @@ async function uploadCorrectiveActionPhoto(
     };
 
 
+
+    // =================================================
+    // VALIDATE PAYLOAD
+    // =================================================
+
+    if (
+        !payload.photo ||
+        !payload.photo.base64
+    ) {
+
+        throw new Error(
+            "Corrective photo Base64 data is empty."
+        );
+
+    }
+
+
+
     // =================================================
     // DEBUG
     // =================================================
@@ -1401,38 +2110,16 @@ async function uploadCorrectiveActionPhoto(
                 payload.photo.type,
 
             base64Length:
-                payload.photo.base64
-                    ? payload.photo.base64.length
-                    : 0
+                payload.photo.base64.length
 
         }
     );
 
 
-    // =================================================
-    // CHECK BASE64 BEFORE SENDING
-    // =================================================
-
-    if (
-        !payload.photo ||
-        !payload.photo.base64
-    ) {
-
-        throw new Error(
-            "Corrective photo Base64 data is empty."
-        );
-
-    }
-
 
     // =================================================
     // SEND TO GOOGLE APPS SCRIPT
     // =================================================
-
-    console.log(
-        "Sending corrective action photo..."
-    );
-
 
     const response =
         await fetch(
@@ -1467,6 +2154,7 @@ async function uploadCorrectiveActionPhoto(
     );
 
 
+
     // =================================================
     // READ RESPONSE
     // =================================================
@@ -1479,6 +2167,16 @@ async function uploadCorrectiveActionPhoto(
         "CORRECTIVE PHOTO SERVER RESPONSE:",
         responseText
     );
+
+
+    if (!responseText) {
+
+        throw new Error(
+            "Server returned an empty response."
+        );
+
+    }
+
 
 
     // =================================================
@@ -1497,7 +2195,10 @@ async function uploadCorrectiveActionPhoto(
 
     }
 
-    catch (error) {
+
+    catch (
+        error
+    ) {
 
         console.error(
             "Corrective photo JSON error:",
@@ -1510,6 +2211,7 @@ async function uploadCorrectiveActionPhoto(
         );
 
     }
+
 
 
     // =================================================
@@ -1528,6 +2230,7 @@ async function uploadCorrectiveActionPhoto(
         );
 
     }
+
 
 
     // =================================================
@@ -1567,14 +2270,14 @@ async function uploadCorrectiveActionPhoto(
 }
 
 
+
 // =====================================================
 // ALIAS
 // =====================================================
 //
-// This allows your Dashboard to call either:
+// Dashboard can call either:
 //
 // uploadCorrectiveActionPhoto()
-// or
 // uploadCorrectivePhoto()
 //
 // =====================================================
@@ -1592,8 +2295,8 @@ async function uploadCorrectivePhoto(
 }
 
 
+
 // =====================================================
-// HELPER:
 // UPLOAD CORRECTIVE PHOTO FROM INPUT
 // =====================================================
 //
@@ -1662,7 +2365,9 @@ async function uploadCorrectivePhotoFromInput(
     }
 
 
-    catch (error) {
+    catch (
+        error
+    ) {
 
         console.error(
             "CORRECTIVE PHOTO UPLOAD ERROR:",
@@ -1677,12 +2382,23 @@ async function uploadCorrectivePhotoFromInput(
 }
 
 
+
 // =====================================================
-// END OF SCRIPT
+// SYSTEM READY
 // =====================================================
 
 console.log(
-    "NEAR MISS REPORTING SYSTEM READY"
+    "BKH ESH SAFETY REPORTING PORTAL READY"
+);
+
+console.log(
+    "Approved departments:",
+    VALID_DEPARTMENTS
+);
+
+console.log(
+    "Approved hazard categories:",
+    VALID_HAZARD_CATEGORIES
 );
 
 console.log(
