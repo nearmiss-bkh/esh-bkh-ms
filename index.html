@@ -12,6 +12,17 @@
 
 <title>BKH ESH Safety Reporting Portal</title>
 
+<!-- =====================================================
+     FAVICON
+===================================================== -->
+
+<link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23071a36'/%3E%3Ctext x='50' y='68' text-anchor='middle' font-size='58' fill='%23ffffff'%3E%E2%9A%A0%3C/text%3E%3C/svg%3E"
+>
+
+
 <style>
 
 /* =========================================================
@@ -30,6 +41,7 @@ html{
 
 body{
     min-height:100vh;
+
     font-family:
         Inter,
         Arial,
@@ -65,7 +77,11 @@ body{
 .page{
     width:100%;
     min-height:100vh;
-    padding:28px 18px 50px;
+
+    padding:
+        28px
+        18px
+        50px;
 }
 
 
@@ -76,6 +92,7 @@ body{
 .container{
     width:100%;
     max-width:1100px;
+
     margin:0 auto;
 }
 
@@ -86,38 +103,51 @@ body{
 
 .brand-bar{
     display:flex;
+
     align-items:center;
     justify-content:space-between;
+
     gap:20px;
 
-    padding:15px 20px;
+    padding:
+        15px
+        20px;
 
     margin-bottom:20px;
 
-    border:1px solid rgba(255,255,255,.12);
+    border:
+        1px solid
+        rgba(255,255,255,.12);
 
     border-radius:16px;
 
     background:
         rgba(4,15,32,.82);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:
+        blur(14px);
 
     box-shadow:
-        0 15px 45px rgba(0,0,0,.25);
+        0 15px 45px
+        rgba(0,0,0,.25);
 }
+
 
 .brand-left{
     display:flex;
+
     align-items:center;
+
     gap:12px;
 }
+
 
 .brand-icon{
     width:42px;
     height:42px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -135,41 +165,57 @@ body{
     font-size:20px;
 
     box-shadow:
-        0 8px 22px rgba(230,57,70,.28);
+        0 8px 22px
+        rgba(230,57,70,.28);
 }
+
 
 .brand-name{
     color:#fff;
+
     font-size:14px;
+
     font-weight:800;
+
     letter-spacing:.6px;
 }
 
+
 .brand-sub{
     margin-top:3px;
+
     color:#9eb0c9;
+
     font-size:11px;
+
     letter-spacing:.4px;
 }
 
+
 .secure-badge{
     display:flex;
+
     align-items:center;
+
     gap:7px;
 
-    padding:8px 12px;
+    padding:
+        8px
+        12px;
 
     border-radius:999px;
 
     background:
         rgba(31,183,111,.10);
 
-    border:1px solid
+    border:
+        1px solid
         rgba(31,183,111,.25);
 
     color:#70e1ae;
 
     font-size:11px;
+
     font-weight:700;
 }
 
@@ -183,7 +229,10 @@ body{
 
     overflow:hidden;
 
-    padding:42px 42px 38px;
+    padding:
+        42px
+        42px
+        38px;
 
     border-radius:24px;
 
@@ -194,14 +243,17 @@ body{
             rgba(7,17,34,.97)
         );
 
-    border:1px solid
+    border:
+        1px solid
         rgba(255,255,255,.10);
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.35);
+        0 25px 70px
+        rgba(0,0,0,.35);
 
     margin-bottom:22px;
 }
+
 
 .hero::before{
     content:"";
@@ -222,6 +274,7 @@ body{
     filter:blur(5px);
 }
 
+
 .hero::after{
     content:"";
 
@@ -241,17 +294,24 @@ body{
     filter:blur(5px);
 }
 
+
 .hero-content{
     position:relative;
+
     z-index:2;
 }
 
+
 .hero-pill{
     display:inline-flex;
+
     align-items:center;
+
     gap:7px;
 
-    padding:7px 12px;
+    padding:
+        7px
+        12px;
 
     margin-bottom:17px;
 
@@ -260,16 +320,19 @@ body{
     background:
         rgba(230,57,70,.11);
 
-    border:1px solid
+    border:
+        1px solid
         rgba(230,57,70,.30);
 
     color:#ff7c86;
 
     font-size:11px;
+
     font-weight:800;
 
     letter-spacing:1px;
 }
+
 
 .hero h1{
     color:#fff;
@@ -290,6 +353,7 @@ body{
     max-width:850px;
 }
 
+
 .hero-description{
     max-width:790px;
 
@@ -309,6 +373,7 @@ body{
 
 .type-grid{
     position:relative;
+
     z-index:2;
 
     display:grid;
@@ -324,6 +389,7 @@ body{
     margin-top:27px;
 }
 
+
 .type-card{
     padding:15px;
 
@@ -332,14 +398,18 @@ body{
     background:
         rgba(255,255,255,.045);
 
-    border:1px solid
+    border:
+        1px solid
         rgba(255,255,255,.09);
 }
 
+
 .type-icon{
     font-size:19px;
+
     margin-bottom:7px;
 }
+
 
 .type-title{
     color:#fff;
@@ -348,6 +418,7 @@ body{
 
     font-weight:800;
 }
+
 
 .type-text{
     margin-top:4px;
@@ -372,7 +443,8 @@ body{
     overflow:hidden;
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.30);
+        0 25px 70px
+        rgba(0,0,0,.30);
 }
 
 
@@ -381,7 +453,9 @@ body{
 ========================================================= */
 
 .form-header{
-    padding:25px 30px;
+    padding:
+        25px
+        30px;
 
     background:
         linear-gradient(
@@ -390,15 +464,21 @@ body{
             #eef3f8
         );
 
-    border-bottom:1px solid #e3e8ef;
+    border-bottom:
+        1px solid
+        #e3e8ef;
 }
+
 
 .form-header-row{
     display:flex;
+
     align-items:center;
     justify-content:space-between;
+
     gap:15px;
 }
+
 
 .form-header h2{
     color:#152033;
@@ -408,6 +488,7 @@ body{
     font-weight:850;
 }
 
+
 .form-header p{
     margin-top:6px;
 
@@ -416,8 +497,11 @@ body{
     font-size:13px;
 }
 
+
 .required-note{
-    padding:7px 11px;
+    padding:
+        7px
+        11px;
 
     border-radius:8px;
 
@@ -450,17 +534,23 @@ body{
     margin-bottom:30px;
 }
 
+
 .section-heading{
     display:flex;
+
     align-items:center;
+
     gap:12px;
 
     margin-bottom:18px;
 
     padding-bottom:12px;
 
-    border-bottom:1px solid #e8edf3;
+    border-bottom:
+        1px solid
+        #e8edf3;
 }
+
 
 .section-number{
     width:32px;
@@ -469,6 +559,7 @@ body{
     flex-shrink:0;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -488,6 +579,7 @@ body{
     font-weight:900;
 }
 
+
 .section-title{
     color:#182337;
 
@@ -495,6 +587,7 @@ body{
 
     font-weight:850;
 }
+
 
 .section-description{
     margin-top:2px;
@@ -521,9 +614,11 @@ body{
     gap:18px;
 }
 
+
 .form-group{
     min-width:0;
 }
+
 
 .form-group.full{
     grid-column:1 / -1;
@@ -546,6 +641,7 @@ label{
     font-weight:800;
 }
 
+
 .required{
     color:#d92d41;
 }
@@ -560,7 +656,9 @@ select,
 textarea{
     width:100%;
 
-    border:1px solid #d8dee7;
+    border:
+        1px solid
+        #d8dee7;
 
     border-radius:10px;
 
@@ -580,12 +678,16 @@ textarea{
         background .2s ease;
 }
 
+
 input,
 select{
     height:46px;
 
-    padding:0 13px;
+    padding:
+        0
+        13px;
 }
+
 
 textarea{
     min-height:125px;
@@ -597,10 +699,12 @@ textarea{
     line-height:1.6;
 }
 
+
 input::placeholder,
 textarea::placeholder{
     color:#a4adba;
 }
+
 
 input:focus,
 select:focus,
@@ -614,8 +718,10 @@ textarea:focus{
     background:#fcfdff;
 }
 
+
 input[readonly]{
     background:#f6f8fa;
+
     color:#596579;
 }
 
@@ -627,7 +733,9 @@ input[readonly]{
 .file-box{
     position:relative;
 
-    border:1.5px dashed #cbd4df;
+    border:
+        1.5px dashed
+        #cbd4df;
 
     border-radius:13px;
 
@@ -638,10 +746,13 @@ input[readonly]{
     transition:.2s ease;
 }
 
+
 .file-box:hover{
     border-color:#5479a7;
+
     background:#f7faff;
 }
+
 
 .file-box input[type="file"]{
     height:auto;
@@ -658,6 +769,7 @@ input[readonly]{
 
     cursor:pointer;
 }
+
 
 .file-help{
     margin-top:8px;
@@ -684,6 +796,7 @@ input[readonly]{
     font-weight:700;
 }
 
+
 .photo-preview{
     display:grid;
 
@@ -698,6 +811,7 @@ input[readonly]{
     margin-top:12px;
 }
 
+
 .photo-thumb{
     position:relative;
 
@@ -707,10 +821,13 @@ input[readonly]{
 
     border-radius:9px;
 
-    border:1px solid #dfe4eb;
+    border:
+        1px solid
+        #dfe4eb;
 
     background:#f2f4f7;
 }
+
 
 .photo-thumb img{
     width:100%;
@@ -734,6 +851,7 @@ input[readonly]{
     font-weight:700;
 }
 
+
 .video-preview{
     display:none;
 
@@ -745,8 +863,11 @@ input[readonly]{
 
     background:#07111f;
 
-    border:1px solid #dce2ea;
+    border:
+        1px solid
+        #dce2ea;
 }
+
 
 .video-preview video{
     display:block;
@@ -765,11 +886,14 @@ input[readonly]{
 
 .submit-notice{
     display:flex;
+
     align-items:flex-start;
 
     gap:10px;
 
-    padding:14px 15px;
+    padding:
+        14px
+        15px;
 
     margin-top:5px;
 
@@ -777,14 +901,18 @@ input[readonly]{
 
     background:#f5f8fc;
 
-    border:1px solid #e1e7ef;
+    border:
+        1px solid
+        #e1e7ef;
 }
+
 
 .notice-icon{
     flex-shrink:0;
 
     font-size:16px;
 }
+
 
 .submit-notice p{
     color:#68768a;
@@ -802,6 +930,7 @@ input[readonly]{
 .submit-area{
     margin-top:20px;
 }
+
 
 .submit-button{
     width:100%;
@@ -841,6 +970,7 @@ input[readonly]{
         opacity .15s ease;
 }
 
+
 .submit-button:hover{
     transform:translateY(-1px);
 
@@ -849,9 +979,11 @@ input[readonly]{
         rgba(190,25,48,.30);
 }
 
+
 .submit-button:active{
     transform:translateY(0);
 }
+
 
 .submit-button:disabled{
     opacity:.65;
@@ -869,15 +1001,22 @@ input[readonly]{
 .success-message{
     display:none;
 
-    margin:0 30px 30px;
+    margin:
+        0
+        30px
+        30px;
 
-    padding:16px 18px;
+    padding:
+        16px
+        18px;
 
     border-radius:12px;
 
     background:#ecfdf5;
 
-    border:1px solid #b7ebd2;
+    border:
+        1px solid
+        #b7ebd2;
 
     color:#087443;
 
@@ -894,10 +1033,14 @@ input[readonly]{
 ========================================================= */
 
 .footer{
-    padding:25px 10px 0;
+    padding:
+        25px
+        10px
+        0;
 
     text-align:center;
 }
+
 
 .footer-company{
     color:#dce5f1;
@@ -909,6 +1052,7 @@ input[readonly]{
     letter-spacing:.5px;
 }
 
+
 .footer-dept{
     margin-top:5px;
 
@@ -918,6 +1062,7 @@ input[readonly]{
 
     letter-spacing:.3px;
 }
+
 
 .footer-portal{
     margin-top:8px;
@@ -941,13 +1086,18 @@ input[readonly]{
             35px;
     }
 
+
     .brand-bar{
-        padding:13px 14px;
+        padding:
+            13px
+            14px;
     }
+
 
     .secure-badge{
         display:none;
     }
+
 
     .hero{
         padding:
@@ -958,38 +1108,52 @@ input[readonly]{
         border-radius:20px;
     }
 
+
     .type-grid{
         grid-template-columns:1fr;
     }
+
 
     .type-card{
         padding:13px;
     }
 
+
     .form-header{
-        padding:21px 20px;
+        padding:
+            21px
+            20px;
     }
 
+
     .form-body{
-        padding:22px 20px;
+        padding:
+            22px
+            20px;
     }
+
 
     .form-header-row{
         align-items:flex-start;
+
         flex-direction:column;
     }
+
 
     .required-note{
         white-space:normal;
     }
 
+
     .form-grid{
         grid-template-columns:1fr;
     }
 
+
     .form-group.full{
         grid-column:auto;
     }
+
 
     .success-message{
         margin:
@@ -997,6 +1161,7 @@ input[readonly]{
             20px
             20px;
     }
+
 }
 
 
@@ -1006,40 +1171,52 @@ input[readonly]{
         font-size:12px;
     }
 
+
     .brand-sub{
         font-size:9px;
     }
+
 
     .brand-icon{
         width:37px;
         height:37px;
     }
 
+
     .hero h1{
         font-size:30px;
     }
 
+
     .hero-description{
         font-size:13px;
+
         line-height:1.65;
     }
+
 
     .form-header h2{
         font-size:19px;
     }
 
+
     .form-body{
-        padding:20px 16px;
+        padding:
+            20px
+            16px;
     }
+
 
     input,
     select{
         height:48px;
     }
 
+
     textarea{
         min-height:135px;
     }
+
 
     .submit-button{
         height:55px;
@@ -1059,10 +1236,12 @@ textarea{
     -webkit-tap-highlight-color:transparent;
 }
 
+
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible{
+
     outline:
         3px solid
         rgba(49,95,152,.25);
@@ -1296,8 +1475,13 @@ textarea:focus-visible{
 <div class="form-group">
 
 <label for="dateTime">
+
     Date &amp; Time
-    <span class="required">*</span>
+
+    <span class="required">
+        *
+    </span>
+
 </label>
 
 <input
@@ -1317,8 +1501,13 @@ textarea:focus-visible{
 <div class="form-group">
 
 <label for="location">
+
     Location
-    <span class="required">*</span>
+
+    <span class="required">
+        *
+    </span>
+
 </label>
 
 <input
@@ -1326,6 +1515,7 @@ textarea:focus-visible{
     id="location"
     name="location"
     placeholder="Enter exact location"
+    maxlength="500"
     required
 >
 
@@ -1338,8 +1528,13 @@ textarea:focus-visible{
 <div class="form-group">
 
 <label for="department">
+
     Department
-    <span class="required">*</span>
+
+    <span class="required">
+        *
+    </span>
+
 </label>
 
 <select
@@ -1399,8 +1594,13 @@ textarea:focus-visible{
 <div class="form-group">
 
 <label for="hazardCategory">
+
     Hazard Category
-    <span class="required">*</span>
+
+    <span class="required">
+        *
+    </span>
+
 </label>
 
 <select
@@ -1494,6 +1694,7 @@ textarea:focus-visible{
     id="whatHappened"
     name="whatHappened"
     rows="5"
+    maxlength="5000"
     placeholder="Describe what happened, what you observed, the hazard involved, or what could have gone wrong..."
     required
 ></textarea>
@@ -1520,6 +1721,7 @@ textarea:focus-visible{
     type="text"
     id="reporterName"
     name="reporterName"
+    maxlength="150"
     placeholder="Enter your name"
     required
 >
@@ -1884,13 +2086,17 @@ document.addEventListener(
                             "";
 
                         if(photoCount){
+
                             photoCount.textContent =
                                 "No photos selected";
+
                         }
 
                         if(photoPreview){
+
                             photoPreview.innerHTML =
                                 "";
+
                         }
 
                         return;
@@ -1921,7 +2127,9 @@ document.addEventListener(
                                         "image/"
                                     )
                                 ){
+
                                     return;
+
                                 }
 
 
@@ -2019,21 +2227,27 @@ document.addEventListener(
                     if(!file){
 
                         if(videoInfo){
+
                             videoInfo.textContent =
                                 "No video selected";
+
                         }
 
                         if(videoPreview){
+
                             videoPreview.style.display =
                                 "none";
+
                         }
 
                         if(videoPlayer){
+
                             videoPlayer.removeAttribute(
                                 "src"
                             );
 
                             videoPlayer.load();
+
                         }
 
                         return;
@@ -2085,6 +2299,7 @@ document.addEventListener(
 );
 
 </script>
+
 
 
 <!-- =====================================================
