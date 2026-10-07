@@ -8726,10 +8726,9 @@ function getSelectedReportNumber(){
 
 }
 
-
 /* =========================================================
    SAVE REPORT
-   UPDATED
+   FIXED - BACKEND FIELD NAMES MATCHED
 ========================================================= */
 
 async function saveReport(){
@@ -8783,6 +8782,10 @@ async function saveReport(){
         ).value;
 
 
+    /* =====================================================
+       HOD RESTRICTIONS
+    ===================================================== */
+
     if(isHOD()){
 
         if(currentStatus === "Closed"){
@@ -8826,9 +8829,12 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       ENGINEERING RESTRICTIONS
+    ===================================================== */
+
     if(isEngineering()){
 
-        // ENGINEERING follows the exact same save restrictions as HOD.
         if(currentStatus === "Closed"){
 
             showToast(
@@ -8870,9 +8876,16 @@ async function saveReport(){
     }
 
 
+    /* =====================================================
+       BUILD UPDATE DATA
+       IMPORTANT:
+       These property names MUST match Code.gs
+    ===================================================== */
+
     const data = {
 
-        action:"updateReport",
+        action:
+            "updateReport",
 
         reportNumber:
             reportNumber,
@@ -8898,7 +8911,8 @@ async function saveReport(){
                 "correctiveAction"
             ).value,
 
-        personResponsible:
+        /* FIXED */
+        responsiblePerson:
             document.getElementById(
                 "personResponsible"
             ).value,
@@ -8908,7 +8922,8 @@ async function saveReport(){
                 "dueDate"
             ).value,
 
-        verificationRemarks:
+        /* FIXED */
+        remarks:
             document.getElementById(
                 "verificationRemarks"
             ).value,
@@ -8931,80 +8946,136 @@ async function saveReport(){
     };
 
 
+    /* =====================================================
+       HOD DATA
+    ===================================================== */
+
     if(isHOD()){
 
         data.status =
             selectedStatus;
 
-        // HOD can edit corrective action, responsible person,
-        // and verification remarks. Keep the values entered in the form.
+
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
+
         data.rootCause =
-            document.getElementById("rootCause").value;
+            document.getElementById(
+                "rootCause"
+            ).value;
+
 
         data.correctiveAction =
-            document.getElementById("correctiveAction").value;
+            document.getElementById(
+                "correctiveAction"
+            ).value;
 
-        data.personResponsible =
-            document.getElementById("personResponsible").value;
 
-        data.verificationRemarks =
-            document.getElementById("verificationRemarks").value;
+        /* FIXED */
+        data.responsiblePerson =
+            document.getElementById(
+                "personResponsible"
+            ).value;
+
+
+        /* FIXED */
+        data.remarks =
+            document.getElementById(
+                "verificationRemarks"
+            ).value;
+
 
         data.dueDate =
-            document.getElementById("dueDate").value;
+            document.getElementById(
+                "dueDate"
+            ).value;
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
 
+
         data.eshRemarks =
             selectedReport.eshRemarks || "";
 
+
         data.closedDate =
-            document.getElementById("closedDate").value;
+            document.getElementById(
+                "closedDate"
+            ).value;
 
     }
 
+
+    /* =====================================================
+       ENGINEERING DATA
+    ===================================================== */
 
     if(isEngineering()){
 
-        // ENGINEERING has the same editable fields as HOD.
         data.status =
             selectedStatus;
+
 
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
+
         data.rootCause =
-            document.getElementById("rootCause").value;
+            document.getElementById(
+                "rootCause"
+            ).value;
+
 
         data.correctiveAction =
-            document.getElementById("correctiveAction").value;
+            document.getElementById(
+                "correctiveAction"
+            ).value;
 
-        data.personResponsible =
-            document.getElementById("personResponsible").value;
 
-        data.verificationRemarks =
-            document.getElementById("verificationRemarks").value;
+        /* FIXED */
+        data.responsiblePerson =
+            document.getElementById(
+                "personResponsible"
+            ).value;
+
+
+        /* FIXED */
+        data.remarks =
+            document.getElementById(
+                "verificationRemarks"
+            ).value;
+
 
         data.dueDate =
-            document.getElementById("dueDate").value;
+            document.getElementById(
+                "dueDate"
+            ).value;
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
 
+
         data.eshRemarks =
             selectedReport.eshRemarks || "";
 
+
         data.closedDate =
-            document.getElementById("closedDate").value;
+            document.getElementById(
+                "closedDate"
+            ).value;
 
     }
 
 
-    button.disabled = true;
+    /* =====================================================
+       SAVE BUTTON
+    ===================================================== */
+
+    button.disabled =
+        true;
 
 
     const originalText =
@@ -9015,6 +9086,10 @@ async function saveReport(){
         "Saving...";
 
 
+    /* =====================================================
+       SEND TO GOOGLE APPS SCRIPT
+    ===================================================== */
+
     try{
 
         const response =
@@ -9022,7 +9097,8 @@ async function saveReport(){
                 GOOGLE_SCRIPT_URL,
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -9030,7 +9106,9 @@ async function saveReport(){
                     },
 
                     body:
-                        JSON.stringify(data)
+                        JSON.stringify(
+                            data
+                        )
 
                 }
             );
@@ -9040,12 +9118,17 @@ async function saveReport(){
             await response.json();
 
 
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
         if(
             result.status === "success" ||
             result.success === true
         ){
 
             closeModal();
+
 
             showToast(
                 isHOD() || isEngineering()
@@ -9060,6 +9143,11 @@ async function saveReport(){
 
         }
 
+
+        /* =================================================
+           ERROR FROM APPS SCRIPT
+        ================================================= */
+
         else{
 
             throw new Error(
@@ -9071,9 +9159,14 @@ async function saveReport(){
 
     }
 
+
     catch(error){
 
-        console.error(error);
+        console.error(
+            "SAVE REPORT ERROR:",
+            error
+        );
+
 
         showToast(
             "Error: " +
@@ -9082,10 +9175,12 @@ async function saveReport(){
 
     }
 
+
     finally{
 
         button.disabled =
             false;
+
 
         button.textContent =
             originalText;
@@ -9095,9 +9190,10 @@ async function saveReport(){
 }
 
 
+
 /* =========================================================
    AUTO SAVE DATE FIELD
-   UPDATED
+   FIXED - BACKEND FIELD NAMES MATCHED
 ========================================================= */
 
 async function autoSaveDateField(fieldType){
@@ -9195,9 +9291,16 @@ async function autoSaveDateField(fieldType){
         "Updating Closed Date...";
 
 
+    /* =====================================================
+       BUILD UPDATE DATA
+       IMPORTANT:
+       Match Code.gs property names exactly
+    ===================================================== */
+
     const data = {
 
-        action:"updateReport",
+        action:
+            "updateReport",
 
         reportNumber:
             reportNumber,
@@ -9225,7 +9328,8 @@ async function autoSaveDateField(fieldType){
                 "correctiveAction"
             ).value,
 
-        personResponsible:
+        /* FIXED */
+        responsiblePerson:
             document.getElementById(
                 "personResponsible"
             ).value,
@@ -9235,7 +9339,8 @@ async function autoSaveDateField(fieldType){
                 "dueDate"
             ).value,
 
-        verificationRemarks:
+        /* FIXED */
+        remarks:
             document.getElementById(
                 "verificationRemarks"
             ).value,
@@ -9258,52 +9363,91 @@ async function autoSaveDateField(fieldType){
     };
 
 
+    /* =====================================================
+       HOD AUTO-SAVE DATA
+    ===================================================== */
+
     if(isHOD()){
 
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
+
         data.rootCause =
-            document.getElementById("rootCause").value;
+            document.getElementById(
+                "rootCause"
+            ).value;
+
 
         data.correctiveAction =
-            document.getElementById("correctiveAction").value;
+            document.getElementById(
+                "correctiveAction"
+            ).value;
 
-        data.personResponsible =
-            document.getElementById("personResponsible").value;
 
-        data.verificationRemarks =
-            document.getElementById("verificationRemarks").value;
+        /* FIXED */
+        data.responsiblePerson =
+            document.getElementById(
+                "personResponsible"
+            ).value;
+
+
+        /* FIXED */
+        data.remarks =
+            document.getElementById(
+                "verificationRemarks"
+            ).value;
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
+
 
         data.eshRemarks =
             selectedReport.eshRemarks || "";
 
     }
 
+
+    /* =====================================================
+       ENGINEERING AUTO-SAVE DATA
+    ===================================================== */
 
     if(isEngineering()){
 
-        // ENGINEERING auto-save payload matches HOD.
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
+
         data.rootCause =
-            document.getElementById("rootCause").value;
+            document.getElementById(
+                "rootCause"
+            ).value;
+
 
         data.correctiveAction =
-            document.getElementById("correctiveAction").value;
+            document.getElementById(
+                "correctiveAction"
+            ).value;
 
-        data.personResponsible =
-            document.getElementById("personResponsible").value;
 
-        data.verificationRemarks =
-            document.getElementById("verificationRemarks").value;
+        /* FIXED */
+        data.responsiblePerson =
+            document.getElementById(
+                "personResponsible"
+            ).value;
+
+
+        /* FIXED */
+        data.remarks =
+            document.getElementById(
+                "verificationRemarks"
+            ).value;
+
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
+
 
         data.eshRemarks =
             selectedReport.eshRemarks || "";
@@ -9311,17 +9455,26 @@ async function autoSaveDateField(fieldType){
     }
 
 
-data.targetDate =
-    document.getElementById(
-        "dueDate"
-    ).value;
+    /* =====================================================
+       DATE FIELD VALUES
+       MATCH BACKEND NAMES
+    ===================================================== */
+
+    data.targetDate =
+        document.getElementById(
+            "dueDate"
+        ).value;
 
 
-data.completionDate =
-    document.getElementById(
-        "closedDate"
-    ).value;
+    data.completionDate =
+        document.getElementById(
+            "closedDate"
+        ).value;
 
+
+    /* =====================================================
+       SEND UPDATE
+    ===================================================== */
 
     try{
 
@@ -9330,7 +9483,8 @@ data.completionDate =
                 GOOGLE_SCRIPT_URL,
                 {
 
-                    method:"POST",
+                    method:
+                        "POST",
 
                     headers:{
                         "Content-Type":
@@ -9338,7 +9492,9 @@ data.completionDate =
                     },
 
                     body:
-                        JSON.stringify(data)
+                        JSON.stringify(
+                            data
+                        )
 
                 }
             );
@@ -9348,6 +9504,10 @@ data.completionDate =
             await response.json();
 
 
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
         if(
             result.status === "success" ||
             result.success === true
@@ -9355,6 +9515,7 @@ data.completionDate =
 
             selectedReport.dueDate =
                 data.dueDate;
+
 
             selectedReport.closedDate =
                 data.closedDate;
@@ -9366,6 +9527,10 @@ data.completionDate =
 
             await loadReports();
 
+
+            /* =============================================
+               FIND REFRESHED REPORT
+            ============================================= */
 
             const refreshed =
                 reports.find(
@@ -9434,6 +9599,11 @@ data.completionDate =
 
         }
 
+
+        /* =================================================
+           ERROR
+        ================================================= */
+
         else{
 
             throw new Error(
@@ -9445,9 +9615,14 @@ data.completionDate =
 
     }
 
+
     catch(error){
 
-        console.error(error);
+        console.error(
+            "DATE UPDATE ERROR:",
+            error
+        );
+
 
         showToast(
             fieldType === "dueDate"
@@ -9461,10 +9636,12 @@ data.completionDate =
 
     }
 
+
     finally{
 
         button.disabled =
             false;
+
 
         button.textContent =
             originalText;
@@ -9472,7 +9649,6 @@ data.completionDate =
     }
 
 }
-
 
 /* =========================================================
    DATE EVENTS
