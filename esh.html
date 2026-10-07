@@ -3703,7 +3703,7 @@ let departmentChart = [];
     const validRoles = [
         "ESH",
         "HOD",
-        "MAINTENANCE"
+        "ENGINEERING"
     ];
 
     if(
@@ -3771,9 +3771,9 @@ function isHOD(){
 }
 
 
-function isMaintenance(){
+function isEngineering(){
 
-    return CURRENT_ROLE === "MAINTENANCE";
+    return CURRENT_ROLE === "ENGINEERING";
 
 }
 
@@ -3795,7 +3795,7 @@ function getVisibleReports(){
 
     }
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         return reports.filter(
             function(report){
@@ -3889,11 +3889,11 @@ function setupRoleDisplay(){
     }
 
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         if(display){
             display.textContent =
-                "MAINTENANCE • ENGINEERING";
+                "ENGINEERING • CORRECTIVE ACTION";
         }
 
         if(hero){
@@ -6427,13 +6427,13 @@ function openArchiveReport(index){
 
 
     /* =====================================================
-       HOD / MAINTENANCE
+       HOD / ENGINEERING
        ARCHIVE = VIEW ONLY
     ===================================================== */
 
     if(
         isHOD() ||
-        isMaintenance()
+        isEngineering()
     ){
 
         const saveButton =
@@ -6530,10 +6530,10 @@ function getModalSubtitle(){
 
     }
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         return (
-            "Maintenance / Engineering • " +
+            "Engineering • " +
             "Corrective Action Update"
         );
 
@@ -6636,7 +6636,7 @@ function setupCaseStatusOptions(currentStatus){
     }
 
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         if(currentStatus === "Closed"){
 
@@ -6897,11 +6897,11 @@ function applyRolePermissions(status){
 
 
     /* =====================================================
-       MAINTENANCE
+       ENGINEERING
        ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
     ===================================================== */
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         investigationFields.forEach(
             function(id){
@@ -6965,7 +6965,7 @@ function applyRolePermissions(status){
 
 
             saveButton.textContent =
-                "Save Repair Update";
+                "Save Engineering Update";
 
         }
 
@@ -8833,7 +8833,7 @@ async function saveReport(){
     }
 
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         if(currentStatus === "Closed"){
 
@@ -8852,7 +8852,7 @@ async function saveReport(){
         ){
 
             showToast(
-                "Maintenance can update corrective action and move the case to Verification."
+                "Engineering can update corrective action and move the case to Verification."
             );
 
             return;
@@ -8959,7 +8959,7 @@ async function saveReport(){
     }
 
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         data.status =
             selectedStatus;
@@ -9037,9 +9037,9 @@ async function saveReport(){
                 ?
                 "Solution verification updated successfully."
                 :
-                isMaintenance()
+                isEngineering()
                 ?
-                "Repair update saved successfully."
+                "Engineering update saved successfully."
                 :
                 "Case updated successfully."
             );
@@ -9270,7 +9270,7 @@ async function autoSaveDateField(fieldType){
     }
 
 
-    if(isMaintenance()){
+    if(isEngineering()){
 
         data.investigationFindings =
             selectedReport.investigationFindings || "";
