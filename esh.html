@@ -3803,7 +3803,7 @@ function getVisibleReports(){
 
     if(isEngineering()){
 
-        return reports;
+    return reports;
 
     }
 
@@ -6760,83 +6760,79 @@ function applyRolePermissions(status){
     }
 
 
-    /* =====================================================
-       HOD / ENGINEERING
-       ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
-    ===================================================== */
+/* =====================================================
+   HOD / ENGINEERING
+   ROOT CAUSE + CORRECTIVE ACTION + VERIFICATION
+===================================================== */
 
-    if(isHOD() || isEngineering()){
+if(isHOD() || isEngineering()){
 
-        investigationFields.forEach(
-            function(id){
+    investigationFields.forEach(
+        function(id){
 
-                document.getElementById(
-                    id
-                ).disabled =
-                    id !== "rootCause";
-
-            }
-        );
-
-
-        correctiveFields.forEach(
-            function(id){
-
-                document.getElementById(
-                    id
-                ).disabled =
-                    status === "Closed";
-
-            }
-        );
-
-
-        verificationField.disabled =
-            status === "Closed";
-
-
-        targetDate.disabled =
-            true;
-
-
-        closedDate.disabled =
-            true;
-
-
-        caseStatus.disabled =
-            true;
-
-
-        verificationLabel.textContent =
-            "Verification Remarks";
-
-
-        if(status === "Closed"){
-
-            saveButton.style.display =
-                "none";
+            document.getElementById(
+                id
+            ).disabled =
+                id !== "rootCause";
 
         }
-
-        else{
-
-            saveButton.style.display =
-                "inline-flex";
+    );
 
 
-            saveButton.disabled =
-                false;
+    correctiveFields.forEach(
+        function(id){
 
-
-            saveButton.textContent =
-                "Save Verification";
+            document.getElementById(
+                id
+            ).disabled =
+                status === "Closed";
 
         }
+    );
 
 
-        return;
+    verificationField.disabled =
+        status === "Closed";
+
+
+    targetDate.disabled =
+        true;
+
+
+    closedDate.disabled =
+        true;
+
+
+    caseStatus.disabled =
+        status === "Closed";
+
+
+    verificationLabel.textContent =
+        "Verification Remarks";
+
+
+    if(status === "Closed"){
+
+        saveButton.style.display =
+            "none";
 
     }
+
+    else{
+
+        saveButton.style.display =
+            "inline-flex";
+
+        saveButton.disabled =
+            false;
+
+        saveButton.textContent =
+            "Save Verification";
+
+    }
+
+
+    return;
 
 }
 
