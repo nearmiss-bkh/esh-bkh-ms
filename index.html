@@ -3,1313 +3,1168 @@
 
 <head>
 
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<meta
-    name="theme-color"
-    content="#082b4c"
->
-
-<meta
-    name="apple-mobile-web-app-capable"
-    content="yes"
->
-
-<title>
-    BKH ESH | Near Miss Reporting
-</title>
-
-
-<style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    min-height:100vh;
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    color:#172033;
-
-    background:
-        linear-gradient(
-            145deg,
-            #06182b 0%,
-            #082b4c 38%,
-            #0c416b 68%,
-            #071c31 100%
-        );
-}
-
-
-/* =========================================================
-   BACKGROUND
-========================================================= */
-
-body::before{
-    content:"";
-    position:fixed;
-    width:420px;
-    height:420px;
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,255,255,.08),
-            transparent 70%
-        );
-
-    top:-190px;
-    right:-150px;
-
-    pointer-events:none;
-}
-
-body::after{
-    content:"";
-    position:fixed;
-    width:400px;
-    height:400px;
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(239,68,68,.12),
-            transparent 70%
-        );
-
-    bottom:-200px;
-    left:-170px;
-
-    pointer-events:none;
-}
-
-
-/* =========================================================
-   PAGE
-========================================================= */
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#08213f"
+    >
+
+    <title>BKH ESH Safety Reporting Portal</title>
+
+
+    <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+
+        html{
+            scroll-behavior:smooth;
+        }
 
-.page{
-    position:relative;
-    z-index:1;
 
-    width:100%;
-    min-height:100vh;
+        body{
+            min-height:100vh;
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
 
-    padding:
-        18px
-        14px
-        45px;
-}
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(24,72,120,.55),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(120,10,25,.40),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #020817 0%,
+                    #071a36 50%,
+                    #08111f 100%
+                );
 
-.container{
-    width:100%;
-    max-width:760px;
-    margin:0 auto;
-}
+            color:#172033;
+            padding:30px 15px;
+        }
 
 
-/* =========================================================
-   HEADER
-========================================================= */
+        /* =========================================================
+           PAGE
+        ========================================================= */
 
-.header{
-    color:#ffffff;
-    margin-bottom:15px;
-}
+        .page{
+            width:100%;
+            max-width:1050px;
+            margin:0 auto;
+        }
 
-.header-row{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
-}
 
-.brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-}
+        /* =========================================================
+           TOP BRAND
+        ========================================================= */
 
-.brand-logo{
-    width:46px;
-    height:46px;
+        .brand-bar{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            color:#fff;
+            margin-bottom:22px;
+        }
 
-    border-radius:13px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #dbeafe
-        );
+        .brand-left{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
 
-    color:#082b4c;
 
-    font-size:14px;
-    font-weight:950;
+        .brand-icon{
+            width:52px;
+            height:52px;
 
-    box-shadow:
-        0 8px 24px rgba(0,0,0,.20);
-}
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-.company{
-    font-size:14px;
-    font-weight:850;
-    letter-spacing:.2px;
-}
+            border-radius:14px;
 
-.department{
-    margin-top:3px;
+            background:
+                linear-gradient(
+                    145deg,
+                    #e63946,
+                    #9b1220
+                );
 
-    color:#c7d9ea;
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.30);
 
-    font-size:9px;
-    font-weight:750;
-    letter-spacing:1px;
-}
+            font-size:25px;
+            font-weight:900;
+        }
 
-.secure{
-    display:flex;
-    align-items:center;
-    gap:6px;
 
-    padding:
-        7px
-        10px;
+        .brand-company{
+            font-size:14px;
+            font-weight:800;
+            letter-spacing:1px;
+        }
 
-    border:
-        1px solid
-        rgba(255,255,255,.16);
 
-    border-radius:30px;
+        .brand-system{
+            margin-top:3px;
+            color:#aebed3;
+            font-size:12px;
+        }
 
-    background:
-        rgba(255,255,255,.07);
 
-    color:#dcecff;
+        .secure-badge{
+            display:flex;
+            align-items:center;
+            gap:7px;
 
-    font-size:9px;
-    font-weight:750;
-}
+            padding:9px 14px;
 
+            border:1px solid rgba(255,255,255,.13);
+            border-radius:999px;
 
-/* =========================================================
-   HERO
-========================================================= */
+            background:rgba(255,255,255,.07);
 
-.hero{
-    position:relative;
-    overflow:hidden;
+            color:#dbe7f5;
+            font-size:12px;
+            font-weight:700;
 
-    margin-top:17px;
+            backdrop-filter:blur(10px);
+        }
 
-    padding:
-        25px
-        22px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.13);
+        /* =========================================================
+           HERO
+        ========================================================= */
 
-    border-radius:20px;
+        .hero{
+            position:relative;
+            overflow:hidden;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.13),
-            rgba(255,255,255,.045)
-        );
+            padding:38px 38px 35px;
 
-    backdrop-filter:blur(15px);
+            border-radius:24px;
 
-    box-shadow:
-        0 20px 55px rgba(0,0,0,.20);
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(9,36,68,.98),
+                    rgba(7,22,42,.98)
+                );
 
-.hero::after{
-    content:"";
+            border:1px solid rgba(255,255,255,.10);
 
-    position:absolute;
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.35);
 
-    width:180px;
-    height:180px;
+            color:#fff;
+        }
 
-    right:-75px;
-    top:-85px;
 
-    border-radius:50%;
+        .hero::before{
+            content:"";
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(239,68,68,.22),
-            transparent 70%
-        );
-}
+            position:absolute;
 
-.hero-label{
-    position:relative;
-    z-index:1;
+            width:260px;
+            height:260px;
 
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
+            right:-100px;
+            top:-130px;
 
-    color:#fca5a5;
+            border-radius:50%;
 
-    font-size:9px;
-    font-weight:900;
+            background:
+                rgba(230,57,70,.16);
 
-    letter-spacing:1.4px;
-}
+            filter:blur(10px);
+        }
 
-.hero h1{
-    position:relative;
-    z-index:1;
 
-    margin-top:8px;
+        .hero::after{
+            content:"";
 
-    color:#ffffff;
+            position:absolute;
 
-    font-size:
-        clamp(
-            27px,
-            7vw,
-            40px
-        );
+            width:180px;
+            height:180px;
 
-    line-height:1.08;
+            left:-90px;
+            bottom:-100px;
 
-    letter-spacing:-1px;
-}
+            border-radius:50%;
 
-.hero-text{
-    position:relative;
-    z-index:1;
+            background:
+                rgba(35,111,190,.18);
 
-    margin-top:10px;
+            filter:blur(10px);
+        }
 
-    max-width:620px;
 
-    color:#cbdbea;
+        .hero-content{
+            position:relative;
+            z-index:2;
+        }
 
-    font-size:12px;
 
-    line-height:1.65;
-}
+        .portal-label{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
 
+            padding:7px 12px;
 
-/* =========================================================
-   SAFETY NOTICE
-========================================================= */
+            border-radius:999px;
 
-.safety-notice{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
+            background:
+                rgba(230,57,70,.14);
 
-    margin-top:13px;
+            border:
+                1px solid rgba(230,57,70,.35);
 
-    padding:
-        13px
-        14px;
+            color:#ff8d97;
 
-    border:
-        1px solid
-        rgba(248,113,113,.28);
+            font-size:11px;
+            font-weight:900;
 
-    border-radius:12px;
+            letter-spacing:1.2px;
 
-    background:
-        rgba(127,29,29,.24);
+            margin-bottom:17px;
+        }
 
-    color:#fee2e2;
-}
 
-.notice-icon{
-    flex:none;
+        .portal-dot{
+            width:7px;
+            height:7px;
 
-    width:28px;
-    height:28px;
+            border-radius:50%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            background:#ff5260;
 
-    border-radius:8px;
+            box-shadow:
+                0 0 12px rgba(255,82,96,.8);
+        }
 
-    background:
-        rgba(239,68,68,.22);
 
-    font-size:14px;
-}
+        .hero h1{
+            font-size:
+                clamp(30px, 5vw, 48px);
 
-.notice-text{
-    font-size:10px;
-    line-height:1.55;
-}
+            line-height:1.08;
 
-.notice-text strong{
-    display:block;
+            letter-spacing:-1.5px;
 
-    margin-bottom:2px;
+            margin-bottom:15px;
+        }
 
-    color:#ffffff;
 
-    font-size:11px;
-}
+        .hero h1 span{
+            color:#ff6672;
+        }
 
 
-/* =========================================================
-   MAIN CARD
-========================================================= */
+        .hero-description{
+            max-width:780px;
 
-.form-card{
-    overflow:hidden;
+            color:#c2d0df;
 
-    margin-top:15px;
+            font-size:15px;
+            line-height:1.7;
+        }
 
-    background:#ffffff;
 
-    border-radius:20px;
+        /* =========================================================
+           REPORT TYPES
+        ========================================================= */
 
-    box-shadow:
-        0 25px 65px rgba(0,0,0,.23);
-}
+        .report-types{
+            display:grid;
 
+            grid-template-columns:
+                repeat(3,1fr);
 
-/* =========================================================
-   TOP STATUS
-========================================================= */
+            gap:12px;
 
-.form-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
+            margin-top:25px;
+        }
 
-    padding:
-        15px
-        19px;
 
-    border-bottom:
-        1px solid
-        #e7edf3;
+        .type-card{
+            padding:15px 16px;
 
-    background:
-        #f8fafc;
-}
+            border-radius:15px;
 
-.form-top-title{
-    display:flex;
-    align-items:center;
-    gap:8px;
+            background:
+                rgba(255,255,255,.055);
 
-    color:#16324b;
+            border:
+                1px solid rgba(255,255,255,.09);
+        }
 
-    font-size:10px;
-    font-weight:900;
 
-    letter-spacing:.6px;
-    text-transform:uppercase;
-}
+        .type-icon{
+            font-size:21px;
+            margin-bottom:7px;
+        }
 
-.status-dot{
-    width:8px;
-    height:8px;
 
-    border-radius:50%;
+        .type-title{
+            color:#fff;
 
-    background:#16a34a;
+            font-size:13px;
+            font-weight:800;
 
-    box-shadow:
-        0 0 0 4px
-        rgba(22,163,74,.10);
-}
+            margin-bottom:4px;
+        }
 
-.form-top-secure{
-    color:#64748b;
 
-    font-size:9px;
-    font-weight:700;
-}
+        .type-text{
+            color:#9eafc3;
 
+            font-size:11px;
+            line-height:1.5;
+        }
 
-/* =========================================================
-   FORM
-========================================================= */
 
-form{
-    width:100%;
-}
+        /* =========================================================
+           MAIN FORM CARD
+        ========================================================= */
 
-.form-body{
-    padding:22px;
-}
+        .form-card{
+            margin-top:22px;
 
+            background:#f8fafc;
 
-/* =========================================================
-   SECTION
-========================================================= */
+            border-radius:24px;
 
-.section{
-    margin-bottom:26px;
-}
+            overflow:hidden;
 
-.section:last-child{
-    margin-bottom:0;
-}
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.30);
+        }
 
-.section-head{
-    display:flex;
-    align-items:flex-start;
-    gap:11px;
 
-    margin-bottom:16px;
-}
+        /* =========================================================
+           FORM HEADER
+        ========================================================= */
 
-.section-number{
-    flex:none;
+        .form-header{
+            padding:24px 30px;
 
-    width:33px;
-    height:33px;
+            background:#fff;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+            border-bottom:
+                1px solid #e5eaf0;
 
-    border-radius:10px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+        }
 
-    background:
-        #eaf3fb;
 
-    color:#0b4f80;
+        .form-header-title{
+            font-size:20px;
+            font-weight:850;
+            color:#10233c;
+        }
 
-    font-size:10px;
-    font-weight:950;
-}
 
-.section-title{
-    color:#152f47;
+        .form-header-subtitle{
+            margin-top:5px;
 
-    font-size:15px;
-    font-weight:850;
-}
+            font-size:12px;
+            color:#718096;
+        }
 
-.section-description{
-    margin-top:3px;
 
-    color:#718096;
+        .required-note{
+            color:#7b8797;
+            font-size:11px;
+            white-space:nowrap;
+        }
 
-    font-size:10px;
-    line-height:1.45;
-}
 
+        .required-star{
+            color:#d9293d;
+            font-weight:900;
+        }
 
-/* =========================================================
-   FIELD GRID
-========================================================= */
 
-.field-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(2, minmax(0,1fr));
+        /* =========================================================
+           FORM BODY
+        ========================================================= */
 
-    gap:15px;
-}
+        form{
+            padding:28px 30px 32px;
+        }
 
-.field{
-    min-width:0;
-}
 
-.field.full{
-    grid-column:1 / -1;
-}
+        /* =========================================================
+           SECTION
+        ========================================================= */
 
-label.field-label{
-    display:flex;
-    align-items:center;
-    gap:5px;
+        .form-section{
+            background:#fff;
 
-    margin-bottom:7px;
+            border:
+                1px solid #e4e9ef;
 
-    color:#334155;
+            border-radius:18px;
 
-    font-size:10px;
-    font-weight:850;
-}
+            padding:23px;
 
-.required{
-    color:#dc2626;
-}
+            margin-bottom:18px;
 
+            box-shadow:
+                0 5px 18px rgba(16,35,60,.035);
+        }
 
-/* =========================================================
-   INPUTS
-========================================================= */
 
-.input,
-.select,
-.textarea{
-    width:100%;
+        .section-heading{
+            display:flex;
+            align-items:flex-start;
+            gap:13px;
 
-    border:
-        1px solid
-        #d4dce5;
+            margin-bottom:20px;
+        }
 
-    border-radius:10px;
 
-    background:#ffffff;
+        .section-number{
+            flex:0 0 auto;
 
-    color:#172033;
+            width:35px;
+            height:35px;
 
-    font-family:inherit;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-    font-size:13px;
+            border-radius:10px;
 
-    outline:none;
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b3563,
+                    #124d88
+                );
 
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-}
+            color:#fff;
 
-.input,
-.select{
-    min-height:47px;
+            font-size:13px;
+            font-weight:900;
+        }
 
-    padding:
-        11px
-        12px;
-}
 
-.textarea{
-    min-height:145px;
+        .section-title{
+            color:#10233c;
 
-    padding:
-        12px;
+            font-size:16px;
+            font-weight:850;
+        }
 
-    resize:vertical;
 
-    line-height:1.55;
-}
+        .section-description{
+            color:#7a8798;
 
-.input::placeholder,
-.textarea::placeholder{
-    color:#a0aec0;
-}
+            font-size:11px;
 
-.input:hover,
-.select:hover,
-.textarea:hover{
-    border-color:#9db2c6;
-}
+            margin-top:4px;
 
-.input:focus,
-.select:focus,
-.textarea:focus{
-    border-color:#1976b8;
+            line-height:1.5;
+        }
 
-    box-shadow:
-        0 0 0 3px
-        rgba(25,118,184,.10);
 
-    background:#fbfdff;
-}
+        /* =========================================================
+           GRID
+        ========================================================= */
 
+        .form-grid{
+            display:grid;
 
-/* =========================================================
-   DATE LOCK
-========================================================= */
+            grid-template-columns:
+                repeat(2, minmax(0,1fr));
 
-.date-wrapper{
-    position:relative;
-}
+            gap:18px;
+        }
 
-.date-badge{
-    position:absolute;
 
-    right:10px;
-    top:50%;
+        .field-full{
+            grid-column:1 / -1;
+        }
 
-    transform:translateY(-50%);
 
-    padding:
-        4px
-        7px;
+        /* =========================================================
+           FIELD
+        ========================================================= */
 
-    border-radius:6px;
+        .field{
+            min-width:0;
+        }
 
-    background:#edf7ff;
 
-    color:#0b4f80;
+        .field label{
+            display:block;
 
-    font-size:8px;
-    font-weight:800;
+            margin-bottom:8px;
 
-    pointer-events:none;
-}
+            color:#26364b;
 
+            font-size:12px;
 
-/* =========================================================
-   HELP
-========================================================= */
+            font-weight:800;
+        }
 
-.help{
-    margin-top:5px;
 
-    color:#94a3b8;
+        .label-icon{
+            margin-right:5px;
+        }
 
-    font-size:9px;
-    line-height:1.45;
-}
 
+        input,
+        select,
+        textarea{
+            width:100%;
 
-/* =========================================================
-   DESCRIPTION COUNTER
-========================================================= */
+            border:
+                1px solid #d8e0e9;
 
-.description-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-}
+            background:#fbfcfe;
 
-.character-count{
-    color:#94a3b8;
+            color:#1b293b;
 
-    font-size:9px;
-    font-weight:700;
-}
+            border-radius:11px;
 
+            padding:
+                12px 13px;
 
-/* =========================================================
-   HAZARD CARDS
-========================================================= */
+            font-family:inherit;
 
-.hazard-grid{
-    display:grid;
+            font-size:13px;
 
-    grid-template-columns:
-        repeat(3, minmax(0,1fr));
+            outline:none;
 
-    gap:9px;
+            transition:
+                border-color .2s ease,
+                box-shadow .2s ease,
+                background .2s ease;
+        }
 
-    margin-top:3px;
-}
 
-.hazard-option{
-    position:relative;
-}
+        input,
+        select{
+            height:45px;
+        }
 
-.hazard-option input{
-    position:absolute;
 
-    opacity:0;
+        textarea{
+            min-height:130px;
 
-    pointer-events:none;
-}
+            resize:vertical;
 
-.hazard-option label{
-    min-height:74px;
+            line-height:1.6;
+        }
 
-    display:flex;
-    flex-direction:column;
 
-    align-items:center;
-    justify-content:center;
+        input:focus,
+        select:focus,
+        textarea:focus{
+            border-color:#2872b9;
 
-    gap:5px;
+            background:#fff;
 
-    padding:8px;
+            box-shadow:
+                0 0 0 4px
+                rgba(40,114,185,.10);
+        }
 
-    border:
-        1px solid
-        #d9e2ea;
 
-    border-radius:10px;
+        input[readonly]{
+            background:#f2f5f8;
+            color:#566579;
+        }
 
-    background:#ffffff;
 
-    text-align:center;
+        select{
+            cursor:pointer;
+        }
 
-    cursor:pointer;
 
-    transition:
-        .2s ease;
-}
+        .field-help{
+            margin-top:6px;
 
-.hazard-option label:hover{
-    border-color:#9bb7cf;
+            color:#8793a3;
 
-    background:#f8fbfd;
+            font-size:10px;
 
-    transform:translateY(-1px);
-}
+            line-height:1.4;
+        }
 
-.hazard-option input:checked + label{
-    border-color:#1976b8;
 
-    background:#edf7ff;
+        /* =========================================================
+           DESCRIPTION
+        ========================================================= */
 
-    box-shadow:
-        0 0 0 2px
-        rgba(25,118,184,.08);
-}
+        .description-box{
+            position:relative;
+        }
 
-.hazard-icon{
-    font-size:20px;
-}
 
-.hazard-name{
-    color:#334155;
+        .description-tip{
+            margin-top:9px;
 
-    font-size:9px;
-    font-weight:850;
-}
+            padding:10px 12px;
 
-.hazard-select{
-    display:none;
-}
+            border-radius:9px;
 
+            background:#f3f7fb;
 
-/* =========================================================
-   REPORTER
-========================================================= */
+            color:#64748b;
 
-.reporter-box{
-    margin-top:15px;
+            font-size:10px;
 
-    padding:14px;
+            line-height:1.5;
+        }
 
-    border:
-        1px solid
-        #e2e8f0;
 
-    border-radius:12px;
+        /* =========================================================
+           UPLOAD CARDS
+        ========================================================= */
 
-    background:#f8fafc;
-}
+        .upload-card{
+            border:
+                1.5px dashed #cbd6e2;
 
-.reporter-header{
-    display:flex;
-    align-items:center;
-    gap:8px;
+            border-radius:14px;
 
-    margin-bottom:10px;
+            padding:18px;
 
-    color:#334155;
+            background:#fafcfe;
 
-    font-size:10px;
-    font-weight:850;
-}
+            transition:
+                border-color .2s ease,
+                background .2s ease;
+        }
 
 
-/* =========================================================
-   EVIDENCE
-========================================================= */
+        .upload-card:hover{
+            border-color:#397bb8;
 
-.evidence-box{
-    padding:16px;
+            background:#f5f9fd;
+        }
 
-    border:
-        1px solid
-        #dce5ec;
 
-    border-radius:13px;
+        .upload-top{
+            display:flex;
 
-    background:
-        linear-gradient(
-            135deg,
-            #f8fafc,
-            #f4f8fb
-        );
-}
+            align-items:center;
 
-.evidence-box + .evidence-box{
-    margin-top:12px;
-}
+            gap:13px;
 
-.evidence-icon{
-    width:42px;
-    height:42px;
+            margin-bottom:13px;
+        }
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
 
-    margin-bottom:10px;
+        .upload-icon{
+            width:42px;
+            height:42px;
 
-    border-radius:11px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
 
-    background:#eaf3fb;
+            border-radius:11px;
 
-    color:#0b4f80;
+            background:#eaf2fa;
 
-    font-size:19px;
-}
+            font-size:21px;
+        }
 
-.evidence-title{
-    color:#243b53;
 
-    font-size:11px;
-    font-weight:850;
-}
+        .upload-title{
+            color:#1c2d42;
 
-.evidence-description{
-    margin-top:3px;
+            font-size:13px;
 
-    color:#718096;
+            font-weight:850;
+        }
 
-    font-size:9px;
 
-    line-height:1.5;
-}
+        .upload-subtitle{
+            color:#7b8999;
 
-.file-button{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
+            font-size:10px;
 
-    min-height:42px;
+            margin-top:3px;
+        }
 
-    margin-top:11px;
 
-    padding:
-        9px
-        15px;
+        .upload-card input[type="file"]{
+            height:auto;
 
-    border:0;
+            padding:9px;
 
-    border-radius:9px;
+            background:#fff;
 
-    background:#0b4f80;
+            font-size:11px;
 
-    color:#ffffff;
+            cursor:pointer;
+        }
 
-    font-family:inherit;
 
-    font-size:10px;
-    font-weight:850;
+        .upload-card input[type="file"]::file-selector-button{
+            border:0;
 
-    cursor:pointer;
+            border-radius:8px;
 
-    transition:.2s ease;
-}
+            padding:8px 12px;
 
-.file-button:hover{
-    background:#083b60;
+            margin-right:9px;
 
-    transform:translateY(-1px);
-}
+            background:#0c3765;
 
-.file-input{
-    display:none;
-}
+            color:#fff;
 
+            font-size:11px;
 
-/* =========================================================
-   FILE INFORMATION
-========================================================= */
+            font-weight:700;
 
-.file-info{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+            cursor:pointer;
+        }
 
-    gap:10px;
 
-    margin-top:9px;
+        .file-status{
+            margin-top:9px;
 
-    color:#64748b;
+            min-height:16px;
 
-    font-size:9px;
-}
+            color:#68778a;
 
-.file-info strong{
-    color:#17324d;
-}
+            font-size:10px;
 
+            font-weight:600;
+        }
 
-/* =========================================================
-   PHOTO PREVIEW
-========================================================= */
 
-.photo-preview{
-    display:grid;
+        /* =========================================================
+           PHOTO PREVIEW
+        ========================================================= */
 
-    grid-template-columns:
-        repeat(4,1fr);
+        #photoPreview{
+            display:grid;
 
-    gap:8px;
+            grid-template-columns:
+                repeat(auto-fill,minmax(90px,1fr));
 
-    margin-top:12px;
-}
+            gap:8px;
 
-.photo-preview-item{
-    position:relative;
+            margin-top:12px;
+        }
 
-    overflow:hidden;
 
-    aspect-ratio:1;
+        #photoPreview img{
+            width:100%;
+            height:80px;
 
-    border:
-        1px solid
-        #dce4eb;
+            object-fit:cover;
 
-    border-radius:9px;
+            border-radius:9px;
 
-    background:#f1f5f9;
-}
+            border:
+                1px solid #dbe3ec;
+        }
 
-.photo-preview-item img{
-    width:100%;
-    height:100%;
 
-    display:block;
+        /* =========================================================
+           VIDEO PREVIEW
+        ========================================================= */
 
-    object-fit:cover;
-}
+        #videoPreview{
+            margin-top:14px;
 
+            padding:10px;
 
-/* =========================================================
-   VIDEO
-========================================================= */
+            background:#101a29;
 
-#videoPreview{
-    margin-top:12px;
+            border-radius:12px;
+        }
 
-    padding:9px;
 
-    border:
-        1px solid
-        #dce4eb;
+        #videoPlayer{
+            display:block;
 
-    border-radius:11px;
+            width:100%;
 
-    background:#f1f5f9;
-}
+            max-height:330px;
 
-#videoPlayer{
-    display:block;
+            border-radius:8px;
 
-    width:100%;
-    max-height:280px;
+            background:#000;
+        }
 
-    border-radius:8px;
 
-    background:#020617;
-}
+        /* =========================================================
+           SUBMIT AREA
+        ========================================================= */
 
+        .submit-area{
+            padding-top:5px;
+        }
 
-/* =========================================================
-   SUBMIT BOX
-========================================================= */
 
-.submit-box{
-    margin-top:24px;
+        .submit-notice{
+            display:flex;
 
-    padding:17px;
+            align-items:flex-start;
 
-    border:
-        1px solid
-        #d8e5ef;
+            gap:10px;
 
-    border-radius:14px;
+            margin-bottom:15px;
 
-    background:
-        linear-gradient(
-            135deg,
-            #f5f9fc,
-            #edf5fa
-        );
-}
+            padding:13px 15px;
 
-.submit-message{
-    display:flex;
-    align-items:flex-start;
+            border-radius:11px;
 
-    gap:8px;
+            background:#eef5fb;
 
-    margin-bottom:13px;
+            border:
+                1px solid #d6e6f4;
 
-    color:#64748b;
+            color:#53677d;
 
-    font-size:9px;
+            font-size:10px;
 
-    line-height:1.5;
-}
+            line-height:1.5;
+        }
 
-.submit-button{
-    width:100%;
 
-    min-height:54px;
+        .submit-notice-icon{
+            font-size:16px;
+        }
 
-    border:0;
 
-    border-radius:11px;
+        .submit-button{
+            width:100%;
 
-    background:
-        linear-gradient(
-            135deg,
-            #0b4f80,
-            #12689d
-        );
+            min-height:54px;
 
-    color:#ffffff;
+            border:0;
 
-    font-family:inherit;
+            border-radius:13px;
 
-    font-size:13px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #d52237,
+                    #a70e20
+                );
 
-    font-weight:950;
+            color:#fff;
 
-    letter-spacing:.2px;
+            font-family:inherit;
 
-    cursor:pointer;
+            font-size:14px;
 
-    box-shadow:
-        0 8px 20px
-        rgba(11,79,128,.20);
+            font-weight:900;
 
-    transition:.2s ease;
-}
+            letter-spacing:.5px;
 
-.submit-button:hover{
-    transform:translateY(-1px);
+            cursor:pointer;
 
-    box-shadow:
-        0 12px 26px
-        rgba(11,79,128,.25);
-}
+            box-shadow:
+                0 10px 24px
+                rgba(180,20,40,.22);
 
-.submit-button:active{
-    transform:translateY(0);
-}
+            transition:
+                transform .15s ease,
+                box-shadow .15s ease,
+                filter .15s ease;
+        }
 
-.submit-button:disabled{
-    opacity:.60;
 
-    cursor:not-allowed;
+        .submit-button:hover{
+            transform:translateY(-1px);
 
-    transform:none;
-}
+            filter:brightness(1.06);
 
+            box-shadow:
+                0 14px 30px
+                rgba(180,20,40,.28);
+        }
 
-/* =========================================================
-   SUCCESS / ERROR
-========================================================= */
 
-.success-message{
-    display:none;
+        .submit-button:active{
+            transform:translateY(0);
+        }
 
-    margin-top:15px;
 
-    padding:15px;
+        .submit-button:disabled{
+            opacity:.65;
 
-    border-radius:12px;
+            cursor:not-allowed;
 
-    font-size:11px;
+            transform:none;
+        }
 
-    line-height:1.5;
-}
 
-.success-message:not(:empty){
-    display:block;
-}
+        /* =========================================================
+           SUCCESS MESSAGE
+        ========================================================= */
 
+        .success-message{
+            display:none;
 
-/* =========================================================
-   FOOTER
-========================================================= */
+            margin:
+                0 30px 30px;
 
-.footer{
-    padding-top:15px;
+            padding:22px;
 
-    text-align:center;
+            border-radius:16px;
 
-    color:#a9bdcf;
+            background:
+                linear-gradient(
+                    135deg,
+                    #ecfdf3,
+                    #f7fffa
+                );
 
-    font-size:8px;
+            border:
+                1px solid #b8e8ca;
 
-    line-height:1.7;
-}
+            color:#155b34;
 
-.footer strong{
-    color:#dce9f4;
-}
+            text-align:center;
 
+            font-size:14px;
 
-/* =========================================================
-   MOBILE
-========================================================= */
+            line-height:1.6;
+        }
 
-@media(max-width:700px){
 
-    .page{
-        padding:
-            12px
-            10px
-            35px;
-    }
+        /* =========================================================
+           FOOTER
+        ========================================================= */
 
-    .secure{
-        display:none;
-    }
+        .footer{
+            padding:20px 10px 5px;
 
-    .brand-logo{
-        width:42px;
-        height:42px;
-    }
+            text-align:center;
 
-    .company{
-        font-size:12px;
-    }
+            color:#8193a8;
 
-    .department{
-        font-size:8px;
-    }
+            font-size:10px;
 
-    .hero{
-        padding:
-            22px
-            18px;
+            line-height:1.7;
+        }
 
-        border-radius:17px;
-    }
 
-    .hero h1{
-        font-size:28px;
-    }
+        .footer strong{
+            color:#aebed0;
+        }
 
-    .hero-text{
-        font-size:11px;
-    }
 
-    .form-card{
-        border-radius:17px;
-    }
+        /* =========================================================
+           MOBILE
+        ========================================================= */
 
-    .form-body{
-        padding:
-            19px
-            15px;
-    }
+        @media(max-width:760px){
 
-    .field-grid{
-        grid-template-columns:1fr;
+            body{
+                padding:
+                    15px 10px;
+            }
 
-        gap:14px;
-    }
 
-    .field.full{
-        grid-column:auto;
-    }
+            .brand-bar{
+                align-items:flex-start;
+            }
 
-    .hazard-grid{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
 
-    .photo-preview{
-        grid-template-columns:
-            repeat(3,1fr);
-    }
+            .brand-company{
+                font-size:12px;
+            }
 
-}
 
+            .secure-badge{
+                display:none;
+            }
 
-@media(max-width:430px){
 
-    .hero h1{
-        font-size:25px;
-    }
+            .hero{
+                padding:
+                    27px 22px 25px;
 
-    .section-title{
-        font-size:14px;
-    }
+                border-radius:19px;
+            }
 
-    .hazard-grid{
-        grid-template-columns:1fr;
-    }
 
-    .hazard-option label{
-        min-height:58px;
+            .hero h1{
+                font-size:30px;
+            }
 
-        flex-direction:row;
 
-        justify-content:flex-start;
+            .hero-description{
+                font-size:13px;
+            }
 
-        padding:
-            10px
-            13px;
 
-        text-align:left;
-    }
+            .report-types{
+                grid-template-columns:1fr;
 
-    .photo-preview{
-        grid-template-columns:
-            repeat(2,1fr);
-    }
+                gap:8px;
 
-}
+                margin-top:18px;
+            }
 
 
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
+            .type-card{
+                display:flex;
 
-button,
-input,
-select,
-textarea{
-    -webkit-tap-highlight-color:transparent;
-}
+                align-items:center;
 
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible{
-    outline:
-        3px solid
-        rgba(25,118,184,.22);
+                gap:11px;
 
-    outline-offset:2px;
-}
+                padding:11px 13px;
+            }
 
-</style>
+
+            .type-icon{
+                margin:0;
+            }
+
+
+            .type-title{
+                margin:0 0 2px;
+            }
+
+
+            .form-card{
+                border-radius:18px;
+            }
+
+
+            .form-header{
+                padding:
+                    20px 18px;
+            }
+
+
+            .required-note{
+                display:none;
+            }
+
+
+            form{
+                padding:
+                    18px 14px 22px;
+            }
+
+
+            .form-section{
+                padding:17px;
+
+                border-radius:15px;
+            }
+
+
+            .form-grid{
+                grid-template-columns:1fr;
+
+                gap:15px;
+            }
+
+
+            .field-full{
+                grid-column:auto;
+            }
+
+
+            .section-heading{
+                margin-bottom:17px;
+            }
+
+
+            .success-message{
+                margin:
+                    0 14px 22px;
+            }
+
+
+            .footer{
+                padding-bottom:0;
+            }
+
+        }
+
+
+        /* =========================================================
+           VERY SMALL MOBILE
+        ========================================================= */
+
+        @media(max-width:420px){
+
+            .brand-icon{
+                width:45px;
+                height:45px;
+
+                font-size:21px;
+            }
+
+
+            .hero h1{
+                font-size:27px;
+            }
+
+
+            .form-header-title{
+                font-size:17px;
+            }
+
+
+            .section-title{
+                font-size:14px;
+            }
+
+
+            input,
+            select{
+                height:44px;
+            }
+
+
+            textarea{
+                min-height:120px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -1319,685 +1174,711 @@ textarea:focus-visible{
 
 <div class="page">
 
-<div class="container">
 
+    <!-- =========================================================
+         BRAND BAR
+    ========================================================== -->
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+    <div class="brand-bar">
 
-<header class="header">
+        <div class="brand-left">
 
-<div class="header-row">
-
-    <div class="brand">
-
-        <div class="brand-logo">
-            ESH
-        </div>
-
-        <div>
-
-            <div class="company">
-                BIDOR KWONG HENG SDN. BHD.
+            <div class="brand-icon">
+                ⚠
             </div>
 
-            <div class="department">
-                ENVIRONMENT • SAFETY • HEALTH
+            <div>
+
+                <div class="brand-company">
+                    BIDOR KWONG HENG SDN BHD
+                </div>
+
+                <div class="brand-system">
+                    Environment • Safety • Health
+                </div>
+
             </div>
 
         </div>
 
-    </div>
 
-
-    <div class="secure">
-        🔒 Secure Reporting
-    </div>
-
-</div>
-
-
-<div class="hero">
-
-    <div class="hero-label">
-        ⚠ ESH REPORTING PORTAL
-    </div>
-
-    <h1>
-        Report a Near Miss
-    </h1>
-
-    <div class="hero-text">
-        Your observation can help prevent an incident before it happens.
-        Report unsafe acts, unsafe conditions and near misses so the ESH
-        team can investigate and take corrective action.
-    </div>
-
-</div>
-
-
-<div class="safety-notice">
-
-    <div class="notice-icon">
-        !
-    </div>
-
-    <div class="notice-text">
-
-        <strong>
-            See something unsafe? Report it.
-        </strong>
-
-        Provide accurate information and photographs where possible.
-        Every report helps us improve workplace safety.
-
-    </div>
-
-</div>
-
-</header>
-
-
-<!-- =====================================================
-     FORM CARD
-===================================================== -->
-
-<div class="form-card">
-
-
-<div class="form-top">
-
-    <div class="form-top-title">
-
-        <span class="status-dot"></span>
-
-        Near Miss Report
-
-    </div>
-
-    <div class="form-top-secure">
-        ESH Management System
-    </div>
-
-</div>
-
-
-<form
-    id="nearMissForm"
-    novalidate
->
-
-
-<div class="form-body">
-
-
-<!-- =====================================================
-     SECTION 01
-===================================================== -->
-
-<section class="section">
-
-<div class="section-head">
-
-    <div class="section-number">
-        01
-    </div>
-
-    <div>
-
-        <div class="section-title">
-            Observation Details
-        </div>
-
-        <div class="section-description">
-            Tell us when, where and which department was involved.
+        <div class="secure-badge">
+            🔒 Secure Safety Reporting
         </div>
 
     </div>
 
-</div>
 
 
-<div class="field-grid">
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="portal-label">
+
+                <span class="portal-dot"></span>
+
+                ESH REPORTING PORTAL
+
+            </div>
 
 
-<!-- DATE -->
-
-<div class="field">
-
-<label
-    class="field-label"
-    for="dateTime"
->
-    Date &amp; Time
-    <span class="required">*</span>
-</label>
-
-<div class="date-wrapper">
-
-<input
-    class="input"
-    type="datetime-local"
-    id="dateTime"
-    name="dateTime"
-    required
-    readonly
->
-
-<div class="date-badge">
-    AUTO
-</div>
-
-</div>
-
-<div class="help">
-    The current date and time will be recorded automatically.
-</div>
-
-</div>
+            <h1>
+                BKH ESH
+                <span>Safety Reporting Portal</span>
+            </h1>
 
 
-<!-- LOCATION -->
+            <p class="hero-description">
 
-<div class="field">
+                Your observation can help prevent an incident before it happens.
+                Report unsafe acts, unsafe conditions, near misses, incidents,
+                accidents, and property damage so the ESH team can investigate
+                and take appropriate corrective action.
 
-<label
-    class="field-label"
-    for="location"
->
-    Location
-    <span class="required">*</span>
-</label>
-
-<input
-    class="input"
-    type="text"
-    id="location"
-    name="location"
-    placeholder="e.g. Production Line 2"
-    maxlength="150"
-    required
->
-
-<div class="help">
-    Be specific so the location can be identified easily.
-</div>
-
-</div>
+            </p>
 
 
-<!-- DEPARTMENT -->
 
-<div class="field">
-
-<label
-    class="field-label"
-    for="department"
->
-    Department
-    <span class="required">*</span>
-</label>
-
-<select
-    class="select"
-    id="department"
-    name="department"
-    required
->
-
-<option value="">
-    Select Department
-</option>
-
-<option value="Production">
-    Production
-</option>
-
-<option value="Warehouse">
-    Warehouse
-</option>
-
-<option value="Maintenance">
-    Maintenance
-</option>
-
-<option value="Quality">
-    Quality
-</option>
-
-<option value="Engineering">
-    Engineering
-</option>
-
-<option value="ESH">
-    ESH
-</option>
-
-<option value="Other">
-    Other
-</option>
-
-</select>
-
-</div>
+            <div class="report-types">
 
 
-<!-- HAZARD -->
+                <div class="type-card">
 
-<div class="field">
+                    <div class="type-icon">
+                        ⚠️
+                    </div>
 
-<label
-    class="field-label"
-    for="hazardCategory"
->
-    Hazard Category
-    <span class="required">*</span>
-</label>
+                    <div>
 
-<select
-    class="select"
-    id="hazardCategory"
-    name="hazardCategory"
-    required
->
+                        <div class="type-title">
+                            Unsafe Act
+                        </div>
 
-<option value="">
-    Select Category
-</option>
+                        <div class="type-text">
+                            Unsafe behaviour or action that could cause harm.
+                        </div>
 
-<option value="Near Miss">
-    Near Miss
-</option>
+                    </div>
 
-<option value="Unsafe Act">
-    Unsafe Act
-</option>
-
-<option value="Unsafe Condition">
-    Unsafe Condition
-</option>
-
-<option value="Accident">
-    Accident
-</option>
-
-<option value="Property Damage">
-    Property Damage
-</option>
-
-<option value="Incident">
-    Incident
-</option>
-
-</select>
-
-</div>
+                </div>
 
 
-</div>
 
-</section>
+                <div class="type-card">
+
+                    <div class="type-icon">
+                        🚧
+                    </div>
+
+                    <div>
+
+                        <div class="type-title">
+                            Unsafe Condition
+                        </div>
+
+                        <div class="type-text">
+                            Hazardous workplace condition requiring attention.
+                        </div>
+
+                    </div>
+
+                </div>
 
 
-<!-- =====================================================
-     SECTION 02
-===================================================== -->
 
-<section class="section">
+                <div class="type-card">
 
-<div class="section-head">
+                    <div class="type-icon">
+                        🛡️
+                    </div>
 
-    <div class="section-number">
-        02
-    </div>
+                    <div>
 
-    <div>
+                        <div class="type-title">
+                            Near Miss / Incident
+                        </div>
 
-        <div class="section-title">
-            What Happened?
+                        <div class="type-text">
+                            An event that could have resulted in harm or loss.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
         </div>
 
-        <div class="section-description">
-            Describe the unsafe act, unsafe condition, near miss or potential consequence.
+    </section>
+
+
+
+    <!-- =========================================================
+         FORM CARD
+    ========================================================== -->
+
+    <div class="form-card">
+
+
+        <div class="form-header">
+
+            <div>
+
+                <div class="form-header-title">
+                    Safety Report Submission
+                </div>
+
+                <div class="form-header-subtitle">
+                    Please provide accurate information about the observation or event.
+                </div>
+
+            </div>
+
+
+            <div class="required-note">
+
+                <span class="required-star">*</span>
+                Required fields
+
+            </div>
+
         </div>
+
+
+
+        <form
+            id="nearMissForm"
+        >
+
+
+            <!-- =================================================
+                 SECTION 1
+            ================================================== -->
+
+            <section class="form-section">
+
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Report Information
+                        </div>
+
+                        <div class="section-description">
+                            Record when and where the safety observation or event occurred.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label for="dateTime">
+                            📅 Date &amp; Time
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="dateTime"
+                            name="dateTime"
+                            required
+                            readonly
+                        >
+
+                        <div class="field-help">
+                            The submission date and time will be recorded.
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="field">
+
+                        <label for="location">
+                            📍 Location
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="e.g. Production Area, Warehouse, Canteen"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <div class="field">
+
+                        <label for="department">
+                            🏢 Department
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="department"
+                            name="department"
+                            required
+                        >
+
+                            <option value="">
+                                Select Department
+                            </option>
+
+                            <option value="Production">
+                                Production
+                            </option>
+
+                            <option value="Warehouse">
+                                Warehouse
+                            </option>
+
+                            <option value="Maintenance">
+                                Maintenance
+                            </option>
+
+                            <option value="Quality">
+                                Quality
+                            </option>
+
+                            <option value="Engineering">
+                                Engineering
+                            </option>
+
+                            <option value="ESH">
+                                ESH
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="field">
+
+                        <label for="hazardCategory">
+                            ⚠️ Report Category
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="hazardCategory"
+                            name="hazardCategory"
+                            required
+                        >
+
+                            <option value="">
+                                Select Report Category
+                            </option>
+
+                            <option value="Near Miss">
+                                Near Miss
+                            </option>
+
+                            <option value="Unsafe Act">
+                                Unsafe Act
+                            </option>
+
+                            <option value="Unsafe Condition">
+                                Unsafe Condition
+                            </option>
+
+                            <option value="Accident">
+                                Accident
+                            </option>
+
+                            <option value="Property Damage">
+                                Property Damage
+                            </option>
+
+                            <option value="Incident">
+                                Incident
+                            </option>
+
+                        </select>
+
+                        <div class="field-help">
+                            Select the category that best describes your report.
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECTION 2
+            ================================================== -->
+
+            <section class="form-section">
+
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            What Happened?
+                        </div>
+
+                        <div class="section-description">
+                            Describe the observation, hazard, event or unsafe situation clearly.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="form-grid">
+
+
+                    <div class="field field-full">
+
+                        <label for="whatHappened">
+                            📝 Description
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="description-box">
+
+                            <textarea
+                                id="whatHappened"
+                                name="whatHappened"
+                                rows="6"
+                                placeholder="Describe what you observed or what happened. Include relevant details such as the activity, hazard, people involved, equipment, and immediate action taken."
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <div class="description-tip">
+
+                            💡 Tip: A good report should explain
+                            <strong>what happened, where it happened, what hazard was involved, and what immediate action was taken.</strong>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="field field-full">
+
+                        <label for="reporterName">
+                            👤 Reporter Name
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="reporterName"
+                            name="reporterName"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                        <div class="field-help">
+                            Your name allows the ESH team to clarify information if required.
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECTION 3
+            ================================================== -->
+
+            <section class="form-section">
+
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Photo Evidence
+                        </div>
+
+                        <div class="section-description">
+                            Photos can help the ESH team understand the actual condition.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="upload-card">
+
+
+                    <div class="upload-top">
+
+                        <div class="upload-icon">
+                            📷
+                        </div>
+
+                        <div>
+
+                            <div class="upload-title">
+                                Upload Photos
+                            </div>
+
+                            <div class="upload-subtitle">
+                                Up to 10 photos • JPG, PNG and other image formats
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <input
+                        type="file"
+                        id="photo"
+                        name="photo"
+                        accept="image/*"
+                        multiple
+                    >
+
+
+                    <div
+                        id="photoCount"
+                        class="file-status"
+                    >
+                        No photos selected
+                    </div>
+
+
+                    <div
+                        id="photoPreview"
+                    ></div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SECTION 4
+            ================================================== -->
+
+            <section class="form-section">
+
+
+                <div class="section-heading">
+
+                    <div class="section-number">
+                        04
+                    </div>
+
+                    <div>
+
+                        <div class="section-title">
+                            Video Evidence
+                        </div>
+
+                        <div class="section-description">
+                            Video evidence may be submitted when it helps explain the event or condition.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="upload-card">
+
+
+                    <div class="upload-top">
+
+                        <div class="upload-icon">
+                            🎥
+                        </div>
+
+                        <div>
+
+                            <div class="upload-title">
+                                Upload Video
+                            </div>
+
+                            <div class="upload-subtitle">
+                                Maximum 1 video • MP4, MOV or WebM
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <input
+                        type="file"
+                        id="video"
+                        name="video"
+                        accept="video/mp4,video/quicktime,video/webm"
+                    >
+
+
+                    <div
+                        id="videoInfo"
+                        class="file-status"
+                    >
+                        No video selected
+                    </div>
+
+
+                    <div
+                        id="videoPreview"
+                        style="display:none;"
+                    >
+
+                        <video
+                            id="videoPlayer"
+                            controls
+                            playsinline
+                        ></video>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 SUBMIT
+            ================================================== -->
+
+            <div class="submit-area">
+
+
+                <div class="submit-notice">
+
+                    <div class="submit-notice-icon">
+                        🔒
+                    </div>
+
+                    <div>
+                        Please ensure the information provided is accurate before submitting.
+                        Your report will be received by the BKH ESH team for review and follow-up action.
+                    </div>
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    SUBMIT SAFETY REPORT
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+
+        <!-- =====================================================
+             SUCCESS MESSAGE
+        ====================================================== -->
+
+        <div
+            id="successMessage"
+            class="success-message"
+        ></div>
+
 
     </div>
 
-</div>
 
 
-<div class="field full">
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
 
-<div class="description-header">
+    <div class="footer">
 
-<label
-    class="field-label"
-    for="whatHappened"
->
-    Description
-    <span class="required">*</span>
-</label>
+        <strong>BIDOR KWONG HENG SDN BHD</strong>
+        <br>
 
-<span
-    class="character-count"
-    id="descriptionCount"
->
-    0 / 2000
-</span>
+        ESH Department • Environment • Safety • Health
 
-</div>
+        <br>
 
-
-<textarea
-    class="textarea"
-    id="whatHappened"
-    name="whatHappened"
-    rows="6"
-    maxlength="2000"
-    placeholder="Example: A worker was observed walking through an area where materials were temporarily stored, creating a potential trip hazard..."
-    required
-></textarea>
-
-
-<div class="help">
-    Include what you observed, what could have happened and any immediate action taken.
-</div>
-
-</div>
-
-
-<!-- REPORTER -->
-
-<div class="reporter-box">
-
-<div class="reporter-header">
-    👤 Reporter Information
-</div>
-
-
-<label
-    class="field-label"
-    for="reporterName"
->
-    Reporter Name
-    <span class="required">*</span>
-</label>
-
-
-<input
-    class="input"
-    type="text"
-    id="reporterName"
-    name="reporterName"
-    placeholder="Enter your name"
-    maxlength="100"
-    required
->
-
-
-<div class="help">
-    The ESH team may contact you if further information is required.
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     SECTION 03
-===================================================== -->
-
-<section class="section">
-
-<div class="section-head">
-
-    <div class="section-number">
-        03
-    </div>
-
-    <div>
-
-        <div class="section-title">
-            Photo Evidence
-        </div>
-
-        <div class="section-description">
-            Photos help the ESH team understand the actual condition.
-        </div>
+        BKH ESH Safety Reporting Portal
 
     </div>
 
-</div>
-
-
-<div class="evidence-box">
-
-<div class="evidence-icon">
-    📷
-</div>
-
-<div class="evidence-title">
-    Add Photo Evidence
-</div>
-
-<div class="evidence-description">
-    Take or select up to 10 photos showing the hazard, location or condition.
-</div>
-
-
-<label
-    class="file-button"
-    for="photo"
->
-    📷 Choose / Take Photos
-</label>
-
-
-<input
-    type="file"
-    id="photo"
-    name="photo"
-    accept="image/*"
-    capture="environment"
-    multiple
-    class="file-input"
->
-
-
-<div class="file-info">
-
-<span>
-    Selected photos
-</span>
-
-<strong id="photoCount">
-    No photos selected
-</strong>
 
 </div>
 
 
-<div
-    id="photoPreview"
-    class="photo-preview"
-></div>
 
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     SECTION 04
-===================================================== -->
-
-<section class="section">
-
-<div class="section-head">
-
-    <div class="section-number">
-        04
-    </div>
-
-    <div>
-
-        <div class="section-title">
-            Video Evidence
-        </div>
-
-        <div class="section-description">
-            Optional. Add one short video if it helps explain the situation.
-        </div>
-
-    </div>
-
-</div>
-
-
-<div class="evidence-box">
-
-<div class="evidence-icon">
-    🎥
-</div>
-
-<div class="evidence-title">
-    Add Video Evidence
-</div>
-
-<div class="evidence-description">
-    Select or record one video from your device.
-</div>
-
-
-<label
-    class="file-button"
-    for="video"
->
-    🎥 Choose / Record Video
-</label>
-
-
-<input
-    type="file"
-    id="video"
-    name="video"
-    accept="video/mp4,video/quicktime,video/webm"
-    capture="environment"
-    class="file-input"
->
-
-
-<div class="file-info">
-
-<span>
-    Selected video
-</span>
-
-<strong id="videoInfo">
-    No video selected
-</strong>
-
-</div>
-
-
-<div
-    id="videoPreview"
-    style="display:none;"
->
-
-<video
-    id="videoPlayer"
-    controls
-    playsinline
-></video>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- =====================================================
-     SUBMIT
-===================================================== -->
-
-<div class="submit-box">
-
-<div class="submit-message">
-
-<span>
-    🔒
-</span>
-
-<span>
-    By submitting this report, the information and evidence will be
-    sent to the Bidor Kwong Heng ESH Management System for review
-    and follow-up action.
-</span>
-
-</div>
-
-
-<button
-    type="submit"
-    class="submit-button"
->
-    SUBMIT NEAR MISS REPORT
-</button>
-
-</div>
-
-
-</div>
-
-</form>
-
-
-<!-- =====================================================
-     SUCCESS / ERROR
-===================================================== -->
-
-<div
-    id="successMessage"
-    class="success-message"
-></div>
-
-
-</div>
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<div class="footer">
-
-<strong>
-    BIDOR KWONG HENG SDN. BHD.
-</strong>
-
-<br>
-
-Environment • Safety • Health Department
-
-<br>
-
-Near Miss / Unsafe Act / Unsafe Condition Reporting System
-
-</div>
-
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     CHARACTER COUNTER
-===================================================== -->
+<!-- =========================================================
+     PHOTO PREVIEW ENHANCEMENT
+     Does not replace or interfere with script.js
+========================================================= -->
 
 <script>
 
@@ -2005,38 +1886,230 @@ document.addEventListener(
     "DOMContentLoaded",
     function(){
 
-        const description =
-            document.getElementById(
-                "whatHappened"
-            );
+        /* =====================================================
+           AUTO DATE/TIME
+        ===================================================== */
 
-        const counter =
-            document.getElementById(
-                "descriptionCount"
-            );
+        const dateTime =
+            document.getElementById("dateTime");
+
+        if(
+            dateTime &&
+            !dateTime.value
+        ){
+
+            const now =
+                new Date();
+
+            const local =
+                new Date(
+                    now.getTime()
+                    -
+                    now.getTimezoneOffset()
+                    * 60000
+                )
+                .toISOString()
+                .slice(0,16);
+
+            dateTime.value =
+                local;
+
+        }
+
+
+
+        /* =====================================================
+           PHOTO PREVIEW
+        ===================================================== */
+
+        const photoInput =
+            document.getElementById("photo");
+
+        const photoPreview =
+            document.getElementById("photoPreview");
+
+        const photoCount =
+            document.getElementById("photoCount");
 
 
         if(
-            description &&
-            counter
+            photoInput &&
+            photoPreview
         ){
 
-            function updateCounter(){
+            photoInput.addEventListener(
+                "change",
+                function(){
 
-                counter.textContent =
-                    description.value.length +
-                    " / 2000";
+                    const files =
+                        Array.from(
+                            photoInput.files || []
+                        );
 
-            }
+
+                    photoPreview.innerHTML =
+                        "";
 
 
-            description.addEventListener(
-                "input",
-                updateCounter
+                    if(
+                        !files.length
+                    ){
+
+                        return;
+
+                    }
+
+
+                    if(
+                        files.length > 10
+                    ){
+
+                        photoCount.textContent =
+                            "Maximum 10 photos allowed.";
+
+                        return;
+
+                    }
+
+
+                    files.forEach(
+                        function(file){
+
+                            if(
+                                !file.type.startsWith(
+                                    "image/"
+                                )
+                            ){
+
+                                return;
+
+                            }
+
+
+                            const reader =
+                                new FileReader();
+
+
+                            reader.onload =
+                                function(event){
+
+                                    const img =
+                                        document.createElement(
+                                            "img"
+                                        );
+
+                                    img.src =
+                                        event.target.result;
+
+                                    img.alt =
+                                        "Photo preview";
+
+                                    photoPreview.appendChild(
+                                        img
+                                    );
+
+                                };
+
+
+                            reader.readAsDataURL(
+                                file
+                            );
+
+                        }
+                    );
+
+                }
             );
 
+        }
 
-            updateCounter();
+
+
+        /* =====================================================
+           VIDEO FALLBACK PREVIEW
+           Works together with existing script.js
+        ===================================================== */
+
+        const videoInput =
+            document.getElementById("video");
+
+        const videoPreview =
+            document.getElementById("videoPreview");
+
+        const videoPlayer =
+            document.getElementById("videoPlayer");
+
+        const videoInfo =
+            document.getElementById("videoInfo");
+
+
+        if(
+            videoInput &&
+            videoPreview &&
+            videoPlayer
+        ){
+
+            videoInput.addEventListener(
+                "change",
+                function(){
+
+                    const file =
+                        videoInput.files &&
+                        videoInput.files[0];
+
+
+                    if(!file){
+
+                        videoPreview.style.display =
+                            "none";
+
+                        videoPlayer.removeAttribute(
+                            "src"
+                        );
+
+                        if(videoInfo){
+
+                            videoInfo.textContent =
+                                "No video selected";
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    if(videoInfo){
+
+                        videoInfo.textContent =
+                            file.name;
+
+                    }
+
+
+                    try{
+
+                        const url =
+                            URL.createObjectURL(
+                                file
+                            );
+
+                        videoPlayer.src =
+                            url;
+
+                        videoPreview.style.display =
+                            "block";
+
+                    }
+                    catch(error){
+
+                        videoPreview.style.display =
+                            "none";
+
+                    }
+
+                }
+            );
 
         }
 
@@ -2046,9 +2119,10 @@ document.addEventListener(
 </script>
 
 
-<!-- =====================================================
-     EXISTING SYSTEM JAVASCRIPT
-===================================================== -->
+
+<!-- =========================================================
+     EXISTING SCRIPT
+========================================================= -->
 
 <script src="script.js"></script>
 
