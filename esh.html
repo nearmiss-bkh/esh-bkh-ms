@@ -8936,22 +8936,25 @@ async function saveReport(){
         data.status =
             selectedStatus;
 
+        // HOD can edit corrective action, responsible person,
+        // and verification remarks. Keep the values entered in the form.
         data.investigationFindings =
             selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            document.getElementById("rootCause").value;
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            document.getElementById("correctiveAction").value;
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            document.getElementById("personResponsible").value;
+
+        data.verificationRemarks =
+            document.getElementById("verificationRemarks").value;
 
         data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+            document.getElementById("dueDate").value;
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
@@ -8960,16 +8963,14 @@ async function saveReport(){
             selectedReport.eshRemarks || "";
 
         data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+            document.getElementById("closedDate").value;
 
     }
 
 
     if(isEngineering()){
 
-        // ENGINEERING sends the same editable/preserved fields as HOD.
+        // ENGINEERING has the same editable fields as HOD.
         data.status =
             selectedStatus;
 
@@ -8977,18 +8978,19 @@ async function saveReport(){
             selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            document.getElementById("rootCause").value;
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            document.getElementById("correctiveAction").value;
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            document.getElementById("personResponsible").value;
+
+        data.verificationRemarks =
+            document.getElementById("verificationRemarks").value;
 
         data.dueDate =
-            document.getElementById(
-                "dueDate"
-            ).value;
+            document.getElementById("dueDate").value;
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
@@ -8997,9 +8999,7 @@ async function saveReport(){
             selectedReport.eshRemarks || "";
 
         data.closedDate =
-            document.getElementById(
-                "closedDate"
-            ).value;
+            document.getElementById("closedDate").value;
 
     }
 
@@ -9264,13 +9264,16 @@ async function autoSaveDateField(fieldType){
             selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            document.getElementById("rootCause").value;
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            document.getElementById("correctiveAction").value;
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            document.getElementById("personResponsible").value;
+
+        data.verificationRemarks =
+            document.getElementById("verificationRemarks").value;
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
@@ -9288,13 +9291,16 @@ async function autoSaveDateField(fieldType){
             selectedReport.investigationFindings || "";
 
         data.rootCause =
-            selectedReport.rootCause || "";
+            document.getElementById("rootCause").value;
 
         data.correctiveAction =
-            selectedReport.correctiveAction || "";
+            document.getElementById("correctiveAction").value;
 
         data.personResponsible =
-            selectedReport.personResponsible || "";
+            document.getElementById("personResponsible").value;
+
+        data.verificationRemarks =
+            document.getElementById("verificationRemarks").value;
 
         data.eshInvestigator =
             selectedReport.eshInvestigator || "";
