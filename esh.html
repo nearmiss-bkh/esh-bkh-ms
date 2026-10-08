@@ -13178,11 +13178,6 @@ function printCompleteReport(report){
         "No observation / incident details provided.";
 
 
-    const investigationFindings =
-        report.investigationFindings ||
-        "No investigation findings recorded.";
-
-
     const rootCause =
         report.rootCause ||
         "No root cause recorded.";
@@ -13398,6 +13393,7 @@ function printCompleteReport(report){
             correctivePhotos,
             "No corrective-action photos attached."
         );
+
 
     /* -----------------------------------------------------
        OPEN PRINT WINDOW
@@ -14106,7 +14102,7 @@ function printCompleteReport(report){
                 </div>
 
 
-                 <div class="section avoid-break">
+                <div class="section avoid-break">
 
                     <div class="section-title">
 
@@ -14146,25 +14142,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        4. Investigation
-
-                    </div>
-
-
-                    <div class="text-box">
-
-                        ${escapeHtml(investigationFindings)}
-
-                    </div>
-
-                </div>
-
-
-                <div class="section avoid-break">
-
-                    <div class="section-title">
-
-                        5. Corrective Action
+                        4. Corrective Action
 
                     </div>
 
@@ -14223,7 +14201,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        6. Verification & Closure
+                        5. Verification & Closure
 
                     </div>
 
@@ -14282,7 +14260,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        7. ESH Remarks
+                        6. ESH Remarks
 
                     </div>
 
@@ -14300,7 +14278,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        8. Original Photo Evidence
+                        7. Original Photo Evidence
 
                     </div>
 
@@ -14318,7 +14296,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        9. Corrective Photo Evidence
+                        8. Corrective Photo Evidence
 
                     </div>
 
@@ -14332,44 +14310,42 @@ function printCompleteReport(report){
                 </div>
 
 
-                    <div class="signature-grid">
+                <div class="signature-grid">
 
-                        <div class="signature-box">
+                    <div class="signature-box">
 
-                            <div class="signature-label">
+                        <div class="signature-label">
 
-                                ESH / Investigator
-
-                            </div>
-
-                            <div class="signature-value">
-
-                                ${escapeHtml(
-                                    report.eshInvestigator ||
-                                    "N/A"
-                                )}
-
-                            </div>
+                            ESH / Investigator
 
                         </div>
 
+                        <div class="signature-value">
 
-                        <div class="signature-box">
+                            ${escapeHtml(
+                                report.eshInvestigator ||
+                                "N/A"
+                            )}
 
-                            <div class="signature-label">
+                        </div>
 
-                                Verification / Closure
+                    </div>
 
-                            </div>
 
-                            <div class="signature-value">
+                    <div class="signature-box">
 
-                                ${escapeHtml(
-                                    closedBy ||
-                                    "N/A"
-                                )}
+                        <div class="signature-label">
 
-                            </div>
+                            Verification / Closure
+
+                        </div>
+
+                        <div class="signature-value">
+
+                            ${escapeHtml(
+                                closedBy ||
+                                "N/A"
+                            )}
 
                         </div>
 
@@ -14440,7 +14416,7 @@ function printCompleteReport(report){
     );
 
 }
-
+    
 </script>
 
 </body>
