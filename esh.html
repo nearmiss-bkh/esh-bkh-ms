@@ -3449,6 +3449,19 @@ input[type="date"]:disabled{
     <div class="form-group">
 
         <label>
+            Investigation Findings
+        </label>
+
+        <textarea
+            id="investigationFindings"
+        ></textarea>
+
+    </div>
+
+
+    <div class="form-group">
+
+        <label>
             Root Cause
         </label>
 
@@ -4046,6 +4059,11 @@ async function loadReports(){
                         report.status ||
                         "New",
 
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
+
                     rootCause:
                         report.rootCause ||
                         "",
@@ -4100,6 +4118,7 @@ async function loadReports(){
 
                     eshAction:
                         report.eshAction ||
+                        report.investigationFindings ||
                         "",
 
                     responsiblePerson:
@@ -4125,7 +4144,8 @@ async function loadReports(){
                 };
 
             });
-        
+
+
         /* =====================================================
            GET ARCHIVE REPORT ARRAY
         ===================================================== */
@@ -4143,7 +4163,7 @@ async function loadReports(){
         }
 
 
-         /* =====================================================
+        /* =====================================================
            NORMALIZE ARCHIVE REPORTS
         ===================================================== */
 
@@ -4198,6 +4218,11 @@ async function loadReports(){
                         report.status ||
                         "Closed",
 
+                    investigationFindings:
+                        report.investigationFindings ||
+                        report.eshAction ||
+                        "",
+
                     rootCause:
                         report.rootCause ||
                         "",
@@ -4252,6 +4277,7 @@ async function loadReports(){
 
                     eshAction:
                         report.eshAction ||
+                        report.investigationFindings ||
                         "",
 
                     responsiblePerson:
@@ -5870,8 +5896,15 @@ async function openReport(index){
 
 
         /* =================================================
-           ROOT CAUSE / ESH
+           INVESTIGATION
         ================================================= */
+
+        document.getElementById(
+            "investigationFindings"
+        ).value =
+            latestReport.investigationFindings ||
+            "";
+
 
         document.getElementById(
             "rootCause"
@@ -6079,6 +6112,12 @@ async function openReport(index){
 
 
         console.log(
+            "Investigation Findings:",
+            latestReport.investigationFindings
+        );
+
+
+        console.log(
             "Root Cause:",
             latestReport.rootCause
         );
@@ -6159,6 +6198,8 @@ async function openReport(index){
         );
 
     }
+
+}
 
 /* =========================================================
    OPEN ARCHIVED REPORT
@@ -6283,6 +6324,13 @@ function openArchiveReport(index){
     /* =====================================================
        INVESTIGATION
     ===================================================== */
+
+    document.getElementById(
+        "investigationFindings"
+    ).value =
+        report.investigationFindings ||
+        "";
+
 
     document.getElementById(
         "rootCause"
@@ -6700,6 +6748,8 @@ function setupCaseStatusOptions(currentStatus){
 function applyRolePermissions(status){
 
     const investigationFields = [
+
+        "investigationFindings",
 
         "rootCause",
 
@@ -8903,6 +8953,12 @@ async function saveReport(){
         ).value.trim();
 
 
+    const investigationFindings =
+        document.getElementById(
+            "investigationFindings"
+        ).value;
+
+
     const rootCause =
         document.getElementById(
             "rootCause"
@@ -8958,6 +9014,10 @@ async function saveReport(){
 
         status:
             selectedStatus,
+
+
+        investigationFindings:
+            investigationFindings,
 
 
         rootCause:
@@ -9035,6 +9095,10 @@ async function saveReport(){
             selectedStatus;
 
 
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
+
+
         data.rootCause =
             rootCause;
 
@@ -9093,6 +9157,10 @@ async function saveReport(){
 
         data.status =
             selectedStatus;
+
+
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
 
 
         data.rootCause =
@@ -9334,6 +9402,7 @@ async function saveReport(){
 
 }
 
+
 /* =========================================================
    AUTO SAVE DATE FIELD
    FIXED - BACKEND FIELD NAMES MATCHED
@@ -9450,6 +9519,12 @@ async function autoSaveDateField(fieldType){
         ).value.trim();
 
 
+    const investigationFindings =
+        document.getElementById(
+            "investigationFindings"
+        ).value;
+
+
     const rootCause =
         document.getElementById(
             "rootCause"
@@ -9513,8 +9588,12 @@ async function autoSaveDateField(fieldType){
 
 
         /* =============================================
-           ROOT CAUSE
+           INVESTIGATION
         ============================================= */
+
+        investigationFindings:
+            investigationFindings,
+
 
         rootCause:
             rootCause,
@@ -9596,6 +9675,10 @@ async function autoSaveDateField(fieldType){
 
     if(isHOD()){
 
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
+
+
         data.rootCause =
             rootCause;
 
@@ -9635,6 +9718,10 @@ async function autoSaveDateField(fieldType){
     ===================================================== */
 
     if(isEngineering()){
+
+        data.investigationFindings =
+            selectedReport.investigationFindings || "";
+
 
         data.rootCause =
             rootCause;
@@ -13091,6 +13178,11 @@ function printCompleteReport(report){
         "No observation / incident details provided.";
 
 
+    const investigationFindings =
+        report.investigationFindings ||
+        "No investigation findings recorded.";
+
+
     const rootCause =
         report.rootCause ||
         "No root cause recorded.";
@@ -13306,7 +13398,6 @@ function printCompleteReport(report){
             correctivePhotos,
             "No corrective-action photos attached."
         );
-
 
     /* -----------------------------------------------------
        OPEN PRINT WINDOW
@@ -14015,7 +14106,7 @@ function printCompleteReport(report){
                 </div>
 
 
-                <div class="section avoid-break">
+                 <div class="section avoid-break">
 
                     <div class="section-title">
 
@@ -14055,7 +14146,25 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        4. Corrective Action
+                        4. Investigation
+
+                    </div>
+
+
+                    <div class="text-box">
+
+                        ${escapeHtml(investigationFindings)}
+
+                    </div>
+
+                </div>
+
+
+                <div class="section avoid-break">
+
+                    <div class="section-title">
+
+                        5. Corrective Action
 
                     </div>
 
@@ -14114,7 +14223,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        5. Verification & Closure
+                        6. Verification & Closure
 
                     </div>
 
@@ -14173,7 +14282,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        6. ESH Remarks
+                        7. ESH Remarks
 
                     </div>
 
@@ -14191,7 +14300,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        7. Original Photo Evidence
+                        8. Original Photo Evidence
 
                     </div>
 
@@ -14209,7 +14318,7 @@ function printCompleteReport(report){
 
                     <div class="section-title">
 
-                        8. Corrective Photo Evidence
+                        9. Corrective Photo Evidence
 
                     </div>
 
@@ -14223,42 +14332,44 @@ function printCompleteReport(report){
                 </div>
 
 
-                <div class="signature-grid">
+                    <div class="signature-grid">
 
-                    <div class="signature-box">
+                        <div class="signature-box">
 
-                        <div class="signature-label">
+                            <div class="signature-label">
 
-                            ESH / Investigator
+                                ESH / Investigator
 
-                        </div>
+                            </div>
 
-                        <div class="signature-value">
+                            <div class="signature-value">
 
-                            ${escapeHtml(
-                                report.eshInvestigator ||
-                                "N/A"
-                            )}
+                                ${escapeHtml(
+                                    report.eshInvestigator ||
+                                    "N/A"
+                                )}
 
-                        </div>
-
-                    </div>
-
-
-                    <div class="signature-box">
-
-                        <div class="signature-label">
-
-                            Verification / Closure
+                            </div>
 
                         </div>
 
-                        <div class="signature-value">
 
-                            ${escapeHtml(
-                                closedBy ||
-                                "N/A"
-                            )}
+                        <div class="signature-box">
+
+                            <div class="signature-label">
+
+                                Verification / Closure
+
+                            </div>
+
+                            <div class="signature-value">
+
+                                ${escapeHtml(
+                                    closedBy ||
+                                    "N/A"
+                                )}
+
+                            </div>
 
                         </div>
 
