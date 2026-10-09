@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BKH ESH | SDS Library</title>
+<meta name="theme-color" content="#12345a">
+
+<style>
+:root {
+    --navy: #12345a;
+    --blue: #1769aa;
+    --bg: #f2f5f9;
+    --border: #dce4ed;
+    --text: #192b3e;
+    --muted: #66778a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    background: linear-gradient(120deg, #102947, #1769aa);
+    color: white;
+    padding: 28px 18px;
+}
+
+.header-inner,
+main,
+footer {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.brand {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    opacity: .9;
+}
+
+h1 {
+    margin: 12px 0 8px;
+    font-size: clamp(25px, 5vw, 36px);
+}
+
+header p {
+    margin: 0;
+    color: #e1ebf7;
+    line-height: 1.6;
+}
+
+main {
+    padding: 22px 16px 40px;
+}
+
+.notice {
+    background: #fff8e6;
+    border: 1px solid #ead69d;
+    border-radius: 10px;
+    padding: 13px 15px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(20, 45, 75, .04);
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.stats strong {
+    font-size: 25px;
+    color: var(--navy);
+}
+
+.stats span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.search-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+input,
+select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #cbd6e2;
+    border-radius: 9px;
+    padding: 12px;
+    background: white;
+    font-size: 15px;
+    color: var(--text);
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #9bc8f4;
+    border-color: var(--blue);
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+h2 {
+    font-size: 19px;
+    margin: 0;
+}
+
+.results {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.sds-list {
+    display: grid;
+    gap: 12px;
+}
+
+.sds-card {
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.sds-card h3 {
+    font-size: 15px;
+    margin: 0 0 7px;
+    overflow-wrap: anywhere;
+}
+
+.sds-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.tag {
+    display: inline-block;
+    margin-top: 8px;
+    background: #eaf2fb;
+    color: #214f7e;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+.open-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--blue);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 11px 13px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.open-button:hover {
+    background: var(--navy);
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px 10px;
+    line-height: 1.6;
+}
+
+footer {
+    padding: 20px 16px 28px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+@media (min-width: 650px) {
+    .search-row {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="brand">BIDOR KWONG HENG SDN BHD</div>
+        <h1>Safety Data Sheet Library</h1>
+        <p>
+            ESH Department · Chemical Safety Information<br>
+            Search and access approved chemical SDS documents.
+        </p>
+    </div>
+</header>
+
+<main>
+
+    <div class="notice">
+        <strong>Important:</strong>
+        Verify the chemical product name and supplier before using an SDS.
+        Follow the approved SDS and site chemical safety procedures.
+    </div>
+
+    <section class="panel stats">
+        <div>
+            <strong id="totalCount">0</strong><br>
+            <span>SDS records listed</span>
+        </div>
+        <div>
+            <strong id="shownCount">0</strong><br>
+            <span>Search results</span>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Find a Chemical SDS</h2>
+        </div>
+
+        <div class="search-row">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search chemical or product name..."
+                aria-label="Search SDS documents"
+            >
+
+            <select id="categoryFilter" aria-label="Filter by category">
+                <option value="">All categories</option>
+                <option value="Cleaning">Cleaning Chemicals</option>
+                <option value="Production">Production Chemicals</option>
+                <option value="Maintenance">Maintenance Chemicals</option>
+                <option value="Other">Other Chemicals</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <h2>Available SDS Documents</h2>
+            <span class="results" id="resultLabel">Loading...</span>
+        </div>
+
+        <div class="sds-list" id="sdsList"></div>
+    </section>
+
+</main>
+
+<footer>
+    BIDOR KWONG HENG SDN BHD · ESH DEPARTMENT<br>
+    Environment · Safety · Health<br>
+    Confirm the SDS revision and product identity before use.
+</footer>
+
+<script>
+"use strict";
+
+/*
+ * SDS LIBRARY DATA
+ *
+ * Replace these demonstration records with the real 94 SDS records.
+ * Each pdfUrl must point to an uploaded PDF accessible to the intended
+ * users without requiring a login.
+ */
+
+const SDS_DOCUMENTS = [
+    {
+        id: "DEMO-001",
+        name: "Example Cleaning Chemical",
+        category: "Cleaning",
+        supplier: "Replace with actual supplier",
+        revision: "Verify current revision",
+        pdfUrl: ""
+    },
+    {
+        id: "DEMO-002",
+        name: "Example Production Chemical",
+        category: "Production",
+        supplier: "Replace with actual supplier",
+        revision: "Verify current revision",
+        pdfUrl: ""
+    },
+    {
+        id: "DEMO-003",
+        name: "Example Maintenance Chemical",
+        category: "Maintenance",
+        supplier: "Replace with actual supplier",
+        revision: "Verify current revision",
+        pdfUrl: ""
+    }
+];
+
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const sdsList = document.getElementById("sdsList");
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function(char) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[char];
+    });
+}
+
+function renderSDS() {
+    const query = searchInput.value.trim().toLowerCase();
+    const category = categoryFilter.value;
+
+    const filtered = SDS_DOCUMENTS.filter(function(item) {
+        const searchable = [
+            item.id,
+            item.name,
+            item.category,
+            item.supplier
+        ].join(" ").toLowerCase();
+
+        return searchable.includes(query) &&
+            (!category || item.category === category);
+    });
+
+    document.getElementById("totalCount").textContent =
+        SDS_DOCUMENTS.length;
+
+    document.getElementById("shownCount").textContent =
+        filtered.length;
+
+    document.getElementById("resultLabel").textContent =
+        filtered.length + " result(s)";
+
+    if (filtered.length === 0) {
+        sdsList.innerHTML =
+            '<div class="empty">No matching SDS documents found. ' +
+            'Check your spelling or choose another category.</div>';
+        return;
+    }
+
+    sdsList.innerHTML = filtered.map(function(item) {
+        const safeName = escapeHTML(item.name);
+        const safeCategory = escapeHTML(item.category);
+        const safeId = escapeHTML(item.id);
+        const safeSupplier = escapeHTML(item.supplier);
+        const safeRevision = escapeHTML(item.revision);
+
+        const validUrl = /^https:\/\/\S+$/i.test(item.pdfUrl || "");
+
+        const button = validUrl
+            ? '<a class="open-button" href="' +
+                escapeHTML(item.pdfUrl) +
+                '" target="_blank" rel="noopener noreferrer">' +
+                'Open SDS PDF</a>'
+            : '<span class="results">PDF not linked yet</span>';
+
+        return `
+            <article class="sds-card">
+                <div>
+                    <h3>${safeName}</h3>
+                    <p>
+                        SDS ID: ${safeId}<br>
+                        Supplier: ${safeSupplier}<br>
+                        Revision: ${safeRevision}
+                    </p>
+                    <span class="tag">${safeCategory}</span>
+                </div>
+                ${button}
+            </article>
+        `;
+    }).join("");
+}
+
+searchInput.addEventListener("input", renderSDS);
+categoryFilter.addEventListener("change", renderSDS);
+
+renderSDS();
+</script>
+
+</body>
+</html>
