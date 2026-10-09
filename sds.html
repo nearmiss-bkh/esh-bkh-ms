@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -166,7 +165,7 @@ h2 { font-size: 19px; margin: 0; }
     font-size: 11px;
 }
 
-.open-button, .folder-button {
+.open-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -180,10 +179,7 @@ h2 { font-size: 19px; margin: 0; }
     font-weight: bold;
 }
 
-.folder-button { background: #ffffff; color: var(--navy); }
-
 .open-button:hover { background: var(--navy); }
-.folder-button:hover { background: #eaf2fb; }
 
 .empty {
     text-align: center;
@@ -224,14 +220,6 @@ footer {
         <p>
             ESH Department · Chemical Safety Information<br>
             Search and access approved chemical SDS documents.
-        </p>
-        <p style="margin-top:16px">
-            <a class="folder-button"
-               href="https://drive.google.com/drive/folders/1r5eyqf8YTL4PM6HlKZ8D9KT681xTGSHt?usp=drive_link"
-               target="_blank"
-               rel="noopener noreferrer">
-                Open Complete SDS Folder
-            </a>
         </p>
     </div>
 </header>
@@ -297,17 +285,6 @@ footer {
 
 <script>
 "use strict";
-
-const SDS_FOLDER_URL =
-    "https://drive.google.com/drive/folders/1r5eyqf8YTL4PM6HlKZ8D9KT681xTGSHt?usp=drive_link";
-
-/*
-  Each record contains:
-  [original filename, Google Drive file ID, category]
-
-  Categories are for browsing convenience only.
-  Confirm the correct classification against the actual SDS.
-*/
 
 const SDS_DATA = [
 ["94. Alcohol 95_ CP.pdf","1gFSJ8ob4ITCY6L0t1-nUIsbtAJqxHgLA","Other"],
@@ -399,8 +376,6 @@ const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
         id: fileName.match(/^\d+/)?.[0] || fileId,
         name: fileName,
         category: row[2],
-        supplier: "Refer to SDS document",
-        revision: "Check PDF for current revision",
         pdfUrl: "https://drive.google.com/file/d/" + fileId + "/view"
     };
 });
@@ -429,8 +404,7 @@ function renderSDS() {
         const searchable = [
             item.id,
             item.name,
-            item.category,
-            item.supplier
+            item.category
         ].join(" ").toLowerCase();
 
         return searchable.includes(query) &&
