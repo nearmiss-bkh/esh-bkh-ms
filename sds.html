@@ -126,6 +126,28 @@ input:focus, select:focus {
 
 h2 { font-size: 19px; margin: 0; }
 
+.clear-button {
+    border: 1px solid #cbd6e2;
+    background: #ffffff;
+    color: var(--navy);
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    background: #eaf2fb;
+}
+
+.search-help {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 12px 0 0;
+}
+
 .sds-list {
     display: grid;
     gap: 12px;
@@ -247,13 +269,16 @@ footer {
     <section class="panel">
         <div class="section-heading">
             <h2>Find a Chemical SDS</h2>
+            <button type="button" id="clearSearch" class="clear-button">
+                Clear Search
+            </button>
         </div>
 
         <div class="search-row">
             <input
                 id="searchInput"
                 type="search"
-                placeholder="Search chemical, product or SDS number..."
+                placeholder="Search chemical name, product or SDS number..."
                 aria-label="Search SDS documents"
             >
 
@@ -265,6 +290,11 @@ footer {
                 <option value="Other">Other Chemicals</option>
             </select>
         </div>
+
+        <p class="search-help">
+            Search by product name, chemical name or SDS number.
+            Search is not case-sensitive. You can combine a keyword with a category filter.
+        </p>
     </section>
 
     <section class="panel">
@@ -285,6 +315,14 @@ footer {
 
 <script>
 "use strict";
+
+/*
+  Each record contains:
+  [original filename, Google Drive file ID, category]
+
+  Categories are for browsing convenience only.
+  Confirm the correct classification against the actual SDS.
+*/
 
 const SDS_DATA = [
 ["94. Alcohol 95_ CP.pdf","1gFSJ8ob4ITCY6L0t1-nUIsbtAJqxHgLA","Other"],
@@ -396,19 +434,40 @@ function escapeHTML(value) {
     });
 }
 
+function normalizeSearch(value) {
+    return String(value ?? "")
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+}
+
 function renderSDS() {
-    const query = searchInput.value.trim().toLowerCase();
+    const query = normalizeSearch(searchInput.value);
     const category = categoryFilter.value;
 
+    const searchTerms = query
+        ? query.split(/\s+/).filter(Boolean)
+        : [];
+
     const filtered = SDS_DOCUMENTS.filter(function(item) {
-        const searchable = [
+        const searchable = normalizeSearch([
             item.id,
             item.name,
-            item.category
-        ].join(" ").toLowerCase();
+            item.category,
+            item.name.replace(/\.pdf$/i, ""),
+            item.name.replace(/^\d+[\s.,_-]*/, "")
+        ].join(" "));
 
-        return searchable.includes(query) &&
-            (!category || item.category === category);
+        const matchesSearch = searchTerms.every(function(term) {
+            return searchable.includes(term);
+        });
+
+        const matchesCategory =
+            !category || item.category === category;
+
+        return matchesSearch && matchesCategory;
     });
 
     document.getElementById("totalCount").textContent =
@@ -418,12 +477,15 @@ function renderSDS() {
         filtered.length;
 
     document.getElementById("resultLabel").textContent =
-        filtered.length + " result(s)";
+        "Showing " + filtered.length + " of " +
+        SDS_DOCUMENTS.length + " SDS records";
 
     if (filtered.length === 0) {
         sdsList.innerHTML =
-            '<div class="empty">No matching SDS documents found. ' +
-            'Check your spelling or choose another category.</div>';
+            '<div class="empty">' +
+            '<strong>No matching SDS documents found.</strong><br>' +
+            'Try a shorter keyword or select All categories.' +
+            '</div>';
         return;
     }
 
@@ -439,6 +501,7 @@ function renderSDS() {
                     </p>
                     <span class="tag">${escapeHTML(item.category)}</span>
                 </div>
+
                 <a class="open-button"
                    href="${escapeHTML(item.pdfUrl)}"
                    target="_blank"
@@ -452,6 +515,13 @@ function renderSDS() {
 
 searchInput.addEventListener("input", renderSDS);
 categoryFilter.addEventListener("change", renderSDS);
+
+document.getElementById("clearSearch").addEventListener("click", function() {
+    searchInput.value = "";
+    categoryFilter.value = "";
+    renderSDS();
+    searchInput.focus();
+});
 
 renderSDS();
 </script>
