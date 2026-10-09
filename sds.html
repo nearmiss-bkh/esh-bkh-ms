@@ -17,9 +17,7 @@
     --muted: #66778a;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -34,9 +32,7 @@ header {
     padding: 28px 18px;
 }
 
-.header-inner,
-main,
-footer {
+.header-inner, main, footer {
     max-width: 1100px;
     margin: auto;
 }
@@ -59,9 +55,7 @@ header p {
     line-height: 1.6;
 }
 
-main {
-    padding: 22px 16px 40px;
-}
+main { padding: 22px 16px 40px; }
 
 .notice {
     background: #fff8e6;
@@ -95,7 +89,7 @@ main {
     color: var(--navy);
 }
 
-.stats span {
+.stats span, .results {
     color: var(--muted);
     font-size: 13px;
 }
@@ -106,8 +100,7 @@ main {
     gap: 12px;
 }
 
-input,
-select {
+input, select {
     width: 100%;
     min-height: 46px;
     border: 1px solid #cbd6e2;
@@ -118,8 +111,7 @@ select {
     color: var(--text);
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
     outline: 2px solid #9bc8f4;
     border-color: var(--blue);
 }
@@ -133,15 +125,7 @@ select:focus {
     margin-bottom: 14px;
 }
 
-h2 {
-    font-size: 19px;
-    margin: 0;
-}
-
-.results {
-    color: var(--muted);
-    font-size: 13px;
-}
+h2 { font-size: 19px; margin: 0; }
 
 .sds-list {
     display: grid;
@@ -167,8 +151,9 @@ h2 {
 .sds-card p {
     color: var(--muted);
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.6;
     margin: 0;
+    overflow-wrap: anywhere;
 }
 
 .tag {
@@ -181,7 +166,7 @@ h2 {
     font-size: 11px;
 }
 
-.open-button {
+.open-button, .folder-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -195,9 +180,10 @@ h2 {
     font-weight: bold;
 }
 
-.open-button:hover {
-    background: var(--navy);
-}
+.folder-button { background: #ffffff; color: var(--navy); }
+
+.open-button:hover { background: var(--navy); }
+.folder-button:hover { background: #eaf2fb; }
 
 .empty {
     text-align: center;
@@ -215,9 +201,16 @@ footer {
 }
 
 @media (min-width: 650px) {
-    .search-row {
-        grid-template-columns: 2fr 1fr;
+    .search-row { grid-template-columns: 2fr 1fr; }
+}
+
+@media (max-width: 520px) {
+    .sds-card {
+        align-items: flex-start;
+        flex-direction: column;
     }
+
+    .open-button { width: 100%; }
 }
 </style>
 </head>
@@ -232,6 +225,14 @@ footer {
             ESH Department · Chemical Safety Information<br>
             Search and access approved chemical SDS documents.
         </p>
+        <p style="margin-top:16px">
+            <a class="folder-button"
+               href="https://drive.google.com/drive/folders/1r5eyqf8YTL4PM6HlKZ8D9KT681xTGSHt?usp=drive_link"
+               target="_blank"
+               rel="noopener noreferrer">
+                Open Complete SDS Folder
+            </a>
+        </p>
     </div>
 </header>
 
@@ -239,8 +240,9 @@ footer {
 
     <div class="notice">
         <strong>Important:</strong>
-        Verify the chemical product name and supplier before using an SDS.
+        Verify the chemical product name, supplier and SDS revision before use.
         Follow the approved SDS and site chemical safety procedures.
+        If a PDF requests access, contact the ESH Department to check its sharing permissions.
     </div>
 
     <section class="panel stats">
@@ -263,15 +265,15 @@ footer {
             <input
                 id="searchInput"
                 type="search"
-                placeholder="Search chemical or product name..."
+                placeholder="Search chemical, product or SDS number..."
                 aria-label="Search SDS documents"
             >
 
             <select id="categoryFilter" aria-label="Filter by category">
                 <option value="">All categories</option>
                 <option value="Cleaning">Cleaning Chemicals</option>
-                <option value="Production">Production Chemicals</option>
-                <option value="Maintenance">Maintenance Chemicals</option>
+                <option value="Production">Production / Laboratory</option>
+                <option value="Maintenance">Maintenance / Lubricants</option>
                 <option value="Other">Other Chemicals</option>
             </select>
         </div>
@@ -282,7 +284,6 @@ footer {
             <h2>Available SDS Documents</h2>
             <span class="results" id="resultLabel">Loading...</span>
         </div>
-
         <div class="sds-list" id="sdsList"></div>
     </section>
 
@@ -297,40 +298,112 @@ footer {
 <script>
 "use strict";
 
-/*
- * SDS LIBRARY DATA
- *
- * Replace these demonstration records with the real 94 SDS records.
- * Each pdfUrl must point to an uploaded PDF accessible to the intended
- * users without requiring a login.
- */
+const SDS_FOLDER_URL =
+    "https://drive.google.com/drive/folders/1r5eyqf8YTL4PM6HlKZ8D9KT681xTGSHt?usp=drive_link";
 
-const SDS_DOCUMENTS = [
-    {
-        id: "DEMO-001",
-        name: "Example Cleaning Chemical",
-        category: "Cleaning",
-        supplier: "Replace with actual supplier",
-        revision: "Verify current revision",
-        pdfUrl: ""
-    },
-    {
-        id: "DEMO-002",
-        name: "Example Production Chemical",
-        category: "Production",
-        supplier: "Replace with actual supplier",
-        revision: "Verify current revision",
-        pdfUrl: ""
-    },
-    {
-        id: "DEMO-003",
-        name: "Example Maintenance Chemical",
-        category: "Maintenance",
-        supplier: "Replace with actual supplier",
-        revision: "Verify current revision",
-        pdfUrl: ""
-    }
+/*
+  Each record contains:
+  [original filename, Google Drive file ID, category]
+
+  Categories are for browsing convenience only.
+  Confirm the correct classification against the actual SDS.
+*/
+
+const SDS_DATA = [
+["94. Alcohol 95_ CP.pdf","1gFSJ8ob4ITCY6L0t1-nUIsbtAJqxHgLA","Other"],
+["90. SDS Fuel Oils.pdf","1SUXYgeN-DnHTFKBPTawPFxwCNBBsbC1q","Maintenance"],
+["89. TOPAX 686.pdf","1Uk96OmCaV6Sxyy_coCW6Szjz81rtxakJ","Cleaning"],
+["81. WD-40.pdf","1hMe6hjzTh03RmXXoeFjhkn945GVOyD0v","Maintenance"],
+["76. Ferron.pdf","1N-t855-goj2DAb5j8JBvcJJaZRbbNde2","Other"],
+["75. Carbon_and_Low_Alloy_Steel_Electrodes.pdf","1iBLryj3XSIYCHJ8Da5aCCr3BVSXLtJHL","Maintenance"],
+["73. GSAP_msds_02922687.PDF","16SswDzGLBXAWUoLSUmPNM1hygyDH9Zyj","Other"],
+["60. SSP40.pdf","12_N7Ln-lnOPXigJmpoPfT3OLHoNfOl6g","Maintenance"],
+["72. Castrol Ep 140.pdf","1LwbpDBgI8nOc-f5ge7SOnM9KM8yDaDOp","Maintenance"],
+["71. VT-151, VT-151SE, VT-158, VT-159, VT-176 Vital Red RTV_SDS_MY_EN_1.2.pdf","1vua17oY9__fapZpVmEIPj0fB_6CbOkkM","Maintenance"],
+["70. MOBIL VACUUM PUMP OIL.pdf","1b4DYOkhm3OOFisVLSngkbz6kUMRY7wOm","Maintenance"],
+["69. CASSIDA_FLUID_GL_220.pdf","1b77uO2EEvOMNZD7IkO26rfnRe4IfOvsF","Maintenance"],
+["68. Castrol ATF Dex II.pdf","1V19iM5vX9WRM-jGJ0_fs_mVwBDAkUr2U","Maintenance"],
+["67. Autosol.pdf","146JoBsNsZeAX5l1xJA7zQskrgaOgxju8","Maintenance"],
+["66. BS-500-PVC-SOLVENT-CEMENT.pdf","1TfqlGer3g0zt3V-iAieTpM-Qw2Dva3AW","Maintenance"],
+["59. GP-Thinners.pdf","1FGmpRf_WX6xAg_dNdVFBD02d2OuMNHi3","Maintenance"],
+["58. Omega58.pdf","17iiNorcE4HiTmHTvvXel8ahjoVnyQe9P","Maintenance"],
+["57. Diesel E5 B7 (E).pdf","1l72hiUC5NSGkarTuyBzzhLExfUec6uMz","Maintenance"],
+["56. 1311Y.pdf","1U_U9us2lqpBWdQ8PxTJFgQ2dMfH3PFWw","Other"],
+["55. Interflon Food Grease MP2.pdf","1CkDk4wSisH7I-5i6c0ndwDrBExgEhpqQ","Maintenance"],
+["54. OXOFOAM VF5.pdf","1EtXCSU0RUL1Hkit7YsGo6jBo6mdGyUlH","Cleaning"],
+["53. SHURECLEAN PLUS.pdf","13BC_uj_rblbqf_n0VCXFDAiwwA7Gg0tg","Cleaning"],
+["51. WD-40.pdf","1JDfR_aRBR9_wbGIV6r4O5kjnuBlijl0g","Maintenance"],
+["50. K1000.pdf","1_7F_g0F676FkdiEDcsyVkIKyN6LCo98R","Cleaning"],
+["49. Mr Muscle.pdf","19I8LAoywpTbM9Na1scaTw-wlA_ZtQU71","Cleaning"],
+["48. LUBODRIVE ZF.pdf","1w8Lz0VOQJM1YvUikmekHz8hOg0Ynds6f","Maintenance"],
+["47. TH-18, S1018.pdf","1F1FBRSdWgzaGCCVYozKGlSa27pq6cPuE","Maintenance"],
+["46. CLEANING SOLUTION-R08.pdf","1gaf9oGfFXEoiogWByaE8nniH1BhhCMwX","Cleaning"],
+["45. JP-K72, 1072K.pdf","1lSi-jmUau9OEcc6Xx6pLYd22Zb0DU7X_","Maintenance"],
+["44. P-100 Battery Water.pdf","1vHaROTqXbUfNcup_P2UH0A4YIh0X2wnb","Maintenance"],
+["43. V411-D.pdf","1aVhvk6RBiIKd3n1fQfjzutJt3HSaBos6","Other"],
+["42. v901-Q.pdf","1nZiqvYPvkg5qSydVZE0hgwPeKCwUaEdo","Other"],
+["41. V706-D.pdf","1Kale56mc6NUztd44-qvIH35NmXxTlWov","Other"],
+["38. Henkel as Aquence GL 700.PDF","1iIQ0CvBh_ELBSZcqAioLWnSwUnMsqVml","Production"],
+["37. Lactic Acid.pdf","1AjG6Z1bzEHRFL2wSPsqcRSTfQfVwlKXH","Production"],
+["36. acetic-acid.pdf","1ciGWFEowT4NlfhItsKy19nL_2xqj3yVE","Production"],
+["35. WHISPER V.pdf","1Syz7NEu3gSPrml_w-D9V-HJE5SvKpSh6","Cleaning"],
+["34. OXONIA ACTIVE.pdf","1npB3AQDPnrgW67l9UcXbmDV2dw1b9PvD","Cleaning"],
+["33. ESTEEM.pdf","17_BN-zOPMyb4d6MNGlyc5oAFcS2BFtPY","Cleaning"],
+["29. 352 Cocorex (Rev 7).pdf","1yGNE7ngOnucyey7DTE_AXZQ6pH_Spaib","Cleaning"],
+["28. Sucrose.pdf","1S4c0qnE5T4n4JtV_WNYlBKT8p9Om8md4","Production"],
+["27. SUPER-GLUE.pdf","1Adgx-dzVw5scBJaZvyuVHnB5del3QBqR","Maintenance"],
+["26. Steam ACTIVATED CARBON.pdf","1_v1cQkzZTO-SzAr55amc4ayRrhHwZ0zT","Production"],
+["25. 6.00 Sodium Chloride.pdf","17XS6wPJ5zlpEqV4u3dRtQf75UU5o_0KT","Production"],
+["24. pH 7.01 Buffer.pdf","1JbqhkXQPH1ZbmPczRQYGW2wKNeC2PXV7","Production"],
+["23. Buffer 4.01.pdf","1REFxEXlkl50S6b4q_zhjtMZfMSwFimJ5","Production"],
+["22. Storage Solution.pdf","1epzP7M4F1Tn6a4sJ2oC_vbpgwoabUvZq","Production"],
+["21, Silver nitrate.pdf","1Tg9mLtqB6tvyimvCTM46pvdANXvB9S5L","Production"],
+["20. Phenolphthalein.pdf","1CTk3rnjw0-ek0C-oyTKWoNWFLz8YgLz-","Production"],
+["19. Potassium_chromate.pdf","1Q3jqcd2HPzWLfd9aopZPISQwByeHuBXa","Production"],
+["18. Sodium hydroxide.pdf","1RBpkD3t6AuNf7vHBkXH8UUCk819a31I7","Production"],
+["17. Electrode Cleaning.pdf","1ffk6Jf9ojf480qQjF_Pm0X509JQFJ3uU","Production"],
+["14. Sodium-Chloride.pdf","1PS-COmPSLYnzHH7INDOkn07_tRHrDqIn","Production"],
+["13. Nitric Acid 65%.pdf","1Wf6e4mm7gaGruIen4ozRtFOwMh77lK8M","Production"],
+["12. Copper(II_MTR_CLP1_EE.pdf","15NNz7_6Ut8ak4HafY2F6jSgq3lThZC2d","Production"],
+["11. Buffered Peptone Water SDS.pdf","12DNsOZNbxX2LTCwDkpy99KPY-L9KuYvy","Production"],
+["10, ReadyPlate 55 KIT Plate Count Agar SDS.pdf","1JSTdsQYfPcM7MiArgunkaP0Mgmxh7zFT","Production"],
+["9. Reveal® 3-D for Peanut Allergen.pdf","1Q4lxrwDOCQ--t6T1_ENrbvBpViBijK9d","Production"],
+["8. Reveal 3D Gluten.pdf","1OA0gha5wlhPChzUeiVMsClUph-fQsti8","Production"],
+["7. Reveal® 3-D for Soy Allergen.pdf","1zvvRWxdqym1yTdVsQsPoVfphC7sudy_s","Production"],
+["6. Reveal® 3-D for Crustacea Allergen.pdf","1C6sCSjrqik9P1O33LHkGL1k-bI8z74aO","Production"],
+["4. Potato dextrose agar SDS.pdf","1TLivtKGDrlQwijDwbb_l8C1erVxM3yrR","Production"],
+["3. PAWA 70 SDS 2025 BM.pdf","1igbP6AzWhP2NBWKIDUieCs4M401spnun","Cleaning"],
+["1. Ajax SDS.pdf","1--StXrPF5nm-51C-j1CTMhrxFgzkk3P8","Cleaning"],
+["93. AMERTROL 1123 AP.pdf","1A1Myz8-q7gHABy8RfvWFCtKBVLlL-NsY","Other"],
+["92. AMERSITE 200.pdf","14U1RBRQIYivgfLNuMQ9TZooQBVOwYud_","Other"],
+["91. ADJUNCT H LIQUID.pdf","16-4LPGlVBxF9aVUclqrUnVvZ5h4IRSsw","Production"],
+["88. AC-101.pdf","1FGIkDNkXULW2JSDQ2x4QUXg64-Gr7LKK","Cleaning"],
+["87. AC-300.pdf","1uKXkHc44G1Ln26Q7TgKqwe6OAcm358jb","Cleaning"],
+["86. HOROLITH FL.pdf","1xLEw53CFdT7KNGKV-fTfAuj0S3Z3kyHR","Cleaning"],
+["77. Interflon_Food_Lube_Aerosol.pdf","1aGQM0svcZ7B-BmfJkDstE5YwFzS_KpQs","Maintenance"],
+["79. Interflon_Clean_Special.pdf","11Q9ikGzsDDZfqSek7sKiEUWtxRPbC0Hc","Cleaning"],
+["78. Interflon_Fin_Clean_All2.pdf","1vPduF-hfeeNXUb--ly5GonomPE__BdNK","Cleaning"],
+["65. VT-151, VT-151SE, VT-158, VT-159, VT-176 Vital Red RTV_SDS_MY_EN_1.2.pdf","1cw_wVrBlRTsLxZDBmpTp4rxJLZ_mduaa","Maintenance"],
+["64. EP BEARING GREASE.pdf","10gO7nifnRbxUrL0zBUqxHpF-4W61ZlK8","Maintenance"],
+["63. S-weld Clean.pdf","1OVc9h2i9iD46jA8q7SY72ZvOu2rbJiVp","Maintenance"],
+["61. PENNZOIL_DEXRON-III_Rev.04.pdf","15rVRp-39StxDQGEZEti-IA37CG_uY4d3","Maintenance"],
+["52. SL77W.pdf","1sCbTOD5Ti1kfudsp0NqqsdnMyQbWfGWa","Maintenance"],
+["2. SUNLIGHT PRO FLOOR CLEANER 4X3.8L_EN200000271333EN.pdf","1nb3ofCvnI33K4d4l-kZRQfe3AgOaC5ko","Cleaning"]
 ];
+
+const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
+    const fileName = row[0];
+    const fileId = row[1];
+
+    return {
+        id: fileName.match(/^\d+/)?.[0] || fileId,
+        name: fileName,
+        category: row[2],
+        supplier: "Refer to SDS document",
+        revision: "Check PDF for current revision",
+        pdfUrl: "https://drive.google.com/file/d/" + fileId + "/view"
+    };
+});
 
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
@@ -381,33 +454,23 @@ function renderSDS() {
     }
 
     sdsList.innerHTML = filtered.map(function(item) {
-        const safeName = escapeHTML(item.name);
-        const safeCategory = escapeHTML(item.category);
-        const safeId = escapeHTML(item.id);
-        const safeSupplier = escapeHTML(item.supplier);
-        const safeRevision = escapeHTML(item.revision);
-
-        const validUrl = /^https:\/\/\S+$/i.test(item.pdfUrl || "");
-
-        const button = validUrl
-            ? '<a class="open-button" href="' +
-                escapeHTML(item.pdfUrl) +
-                '" target="_blank" rel="noopener noreferrer">' +
-                'Open SDS PDF</a>'
-            : '<span class="results">PDF not linked yet</span>';
-
         return `
             <article class="sds-card">
                 <div>
-                    <h3>${safeName}</h3>
+                    <h3>${escapeHTML(item.name)}</h3>
                     <p>
-                        SDS ID: ${safeId}<br>
-                        Supplier: ${safeSupplier}<br>
-                        Revision: ${safeRevision}
+                        SDS ID: ${escapeHTML(item.id)}<br>
+                        Supplier: Refer to PDF<br>
+                        Revision: Check PDF for current revision
                     </p>
-                    <span class="tag">${safeCategory}</span>
+                    <span class="tag">${escapeHTML(item.category)}</span>
                 </div>
-                ${button}
+                <a class="open-button"
+                   href="${escapeHTML(item.pdfUrl)}"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Open SDS PDF
+                </a>
             </article>
         `;
     }).join("");
