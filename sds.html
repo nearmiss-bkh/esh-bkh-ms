@@ -26,6 +26,7 @@
 }
 
 * { box-sizing: border-box; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -43,6 +44,7 @@ body {
 }
 
 button, input, select { font: inherit; }
+
 button, a, input, select { -webkit-tap-highlight-color: transparent; }
 
 a:focus-visible,
@@ -183,7 +185,9 @@ h1 {
 
 /* MAIN LAYOUT */
 
-main { padding: 25px 20px 35px; }
+main {
+    padding: 25px 20px 35px;
+}
 
 .panel {
     margin-bottom: 19px;
@@ -377,7 +381,7 @@ input:focus, select:focus {
     color: #fff;
 }
 
-/* SDS GRID: FOUR SMALL BOXES PER ROW */
+/* COMPACT SDS DOCUMENT GRID */
 
 .results {
     padding: 6px 10px;
@@ -389,10 +393,11 @@ input:focus, select:focus {
     font-weight: 750;
 }
 
+/* Two SDS boxes per row */
 .sds-list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
     align-items: stretch;
 }
 
@@ -402,7 +407,7 @@ input:focus, select:focus {
     justify-content: space-between;
     min-width: 0;
     gap: 9px;
-    padding: 11px;
+    padding: 11px 12px;
     border: 1px solid var(--border);
     border-radius: 9px;
     background: #fff;
@@ -420,16 +425,16 @@ input:focus, select:focus {
 .document-topline {
     display: flex;
     align-items: flex-start;
-    gap: 7px;
+    gap: 8px;
     min-width: 0;
 }
 
 .pdf-icon {
     display: grid;
     place-items: center;
-    width: 29px;
-    height: 33px;
-    flex: 0 0 29px;
+    width: 32px;
+    height: 36px;
+    flex: 0 0 32px;
     border: 1px solid #f1cfd5;
     border-radius: 6px;
     background: #fff5f6;
@@ -441,26 +446,30 @@ input:focus, select:focus {
 
 .document-copy { min-width: 0; }
 
+/* Keep document name on one line */
 .sds-card h3 {
     margin: 0 0 5px;
     color: #183b60;
     font-size: 12px;
     font-weight: 750;
     line-height: 1.45;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .document-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 2px 7px;
+    gap: 2px 9px;
     color: var(--muted);
     font-size: 10px;
     line-height: 1.5;
 }
 
-.document-meta span { overflow-wrap: anywhere; }
+.document-meta span {
+    overflow-wrap: anywhere;
+}
 
 .meta-label {
     color: #43566a;
@@ -482,7 +491,6 @@ input:focus, select:focus {
     font-weight: 800;
     letter-spacing: .1px;
     line-height: 1.5;
-    overflow-wrap: anywhere;
 }
 
 .tag::before {
@@ -518,26 +526,25 @@ input:focus, select:focus {
     color: #6d4799;
 }
 
+/* Compact full-width open button */
 .open-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 6px;
     width: 100%;
     min-width: 0;
-    min-height: 32px;
-    padding: 6px 7px;
+    min-height: 31px;
+    padding: 6px 9px;
     border: 1px solid transparent;
     border-radius: 6px;
     background: linear-gradient(120deg, #1769aa 0%, #12345a 100%);
     color: #fff;
     text-align: center;
     text-decoration: none;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 800;
-    line-height: 1.4;
-    white-space: normal;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
     transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
@@ -639,21 +646,17 @@ footer {
 
 .footer-note { color: #d1ddec; }
 
-/* TABLET */
-
-@media (max-width: 900px) {
-    .sds-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
 /* TABLET AND MOBILE */
 
 @media (max-width: 700px) {
     .header-inner { padding: 29px 19px; }
+
     main { padding: 19px 13px 32px; }
+
     .panel { padding: 18px; }
+
     .search-row { grid-template-columns: 1fr; }
+
     .sds-notes { grid-template-columns: 1fr; }
 }
 
@@ -677,8 +680,11 @@ footer {
     }
 
     .brand-subtitle { font-size: 10px; }
+
     h1 { font-size: 28px; }
+
     .header-description { font-size: 13px; }
+
     main { padding: 15px 10px 25px; }
 
     .panel {
@@ -714,6 +720,7 @@ footer {
     }
 
     h2 { font-size: 17px; }
+
     .section-subtitle { font-size: 11px; }
 
     .clear-button {
@@ -724,15 +731,17 @@ footer {
 
     .results { font-size: 10px; }
 
+    /* One compact card per row on small screens */
     .sds-list {
         grid-template-columns: 1fr;
         gap: 8px;
     }
 
     .sds-card {
-        display: flex;
-        flex-direction: column;
-        gap: 9px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
         padding: 10px;
     }
 
@@ -757,28 +766,27 @@ footer {
     }
 
     .open-button {
-        width: 100%;
-        min-height: 35px;
-        padding: 7px 9px;
-        font-size: 11px;
+        width: auto;
+        min-height: 34px;
+        padding: 6px 9px;
+        font-size: 10px;
     }
 
     .sds-notes { gap: 12px; }
+
     .note-card { padding: 15px; }
+
     footer { padding-inline: 14px; }
 }
 
+/* EXTRA NARROW SCREENS */
 @media (max-width: 360px) {
-    .sds-card { padding: 9px; }
-    .document-topline { gap: 6px; }
-    .pdf-icon {
-        width: 27px;
-        height: 31px;
-        flex-basis: 27px;
+    .sds-card {
+        grid-template-columns: 1fr;
     }
-}
 
-/* REDUCED MOTION */
+    .open-button { width: 100%; }
+}
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
