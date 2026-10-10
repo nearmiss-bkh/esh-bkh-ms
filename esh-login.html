@@ -1,1825 +1,451 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ESH Management System | Bidor Kwong Heng</title>
 
-
 <style>
-
 /* =========================================================
    RESET
 ========================================================= */
+*{margin:0;padding:0;box-sizing:border-box;}
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-html,
-body{
-    width:100%;
-    min-height:100%;
-}
+html,body{width:100%;min-height:100%;}
 
 body{
-
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Arial,
-        Helvetica,
-        sans-serif;
-
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,Helvetica,sans-serif;
     min-height:100vh;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     padding:30px;
-
     color:#17212b;
-
     overflow-x:hidden;
-
     background:
-
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(180,20,35,.40),
-            transparent 28%
-        ),
-
-        radial-gradient(
-            circle at 85% 75%,
-            rgba(120,10,25,.35),
-            transparent 30%
-        ),
-
-        linear-gradient(
-            135deg,
-            #020817 0%,
-            #071a36 35%,
-            #101b38 55%,
-            #4a0712 100%
-        );
-
+        radial-gradient(circle at 15% 20%,rgba(180,20,35,.40),transparent 28%),
+        radial-gradient(circle at 85% 75%,rgba(120,10,25,.35),transparent 30%),
+        linear-gradient(135deg,#020817 0%,#071a36 35%,#101b38 55%,#4a0712 100%);
 }
-
 
 /* =========================================================
    SAFETY BACKGROUND
 ========================================================= */
-
 .safety-background{
-
     position:fixed;
-
     inset:0;
-
     z-index:0;
-
     overflow:hidden;
-
     pointer-events:none;
-
     background:
-
-        radial-gradient(
-            circle at 12% 25%,
-            rgba(220,30,45,.28),
-            transparent 24%
-        ),
-
-        radial-gradient(
-            circle at 88% 18%,
-            rgba(40,90,180,.28),
-            transparent 25%
-        ),
-
-        radial-gradient(
-            circle at 55% 80%,
-            rgba(180,15,35,.20),
-            transparent 32%
-        ),
-
-        linear-gradient(
-            120deg,
-            #020817 0%,
-            #071a36 40%,
-            #111a35 65%,
-            #3c0712 100%
-        );
-
+        radial-gradient(circle at 12% 25%,rgba(220,30,45,.28),transparent 24%),
+        radial-gradient(circle at 88% 18%,rgba(40,90,180,.28),transparent 25%),
+        radial-gradient(circle at 55% 80%,rgba(180,15,35,.20),transparent 32%),
+        linear-gradient(120deg,#020817 0%,#071a36 40%,#111a35 65%,#3c0712 100%);
 }
-
-
-/* =========================================================
-   INDUSTRIAL ROOF STRUCTURE
-========================================================= */
 
 .safety-background::before{
-
     content:"";
-
     position:absolute;
-
     width:160%;
-
     height:180px;
-
     top:0;
-
     left:-20%;
-
-    background:
-
-        repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 95px,
-            rgba(255,255,255,.055) 96px,
-            rgba(255,255,255,.055) 102px
-        );
-
-    transform:
-        perspective(600px)
-        rotateX(58deg);
-
+    background:repeating-linear-gradient(
+        90deg,transparent 0,transparent 95px,
+        rgba(255,255,255,.055) 96px,rgba(255,255,255,.055) 102px
+    );
+    transform:perspective(600px) rotateX(58deg);
     transform-origin:top;
-
     opacity:.8;
-
 }
-
-
-/* =========================================================
-   INDUSTRIAL FLOOR
-========================================================= */
 
 .safety-background::after{
-
     content:"";
-
     position:absolute;
-
     left:-10%;
-
     right:-10%;
-
     bottom:-5%;
-
     height:48%;
-
     background:
-
         repeating-linear-gradient(
-            90deg,
-            rgba(255,255,255,.035) 0,
-            rgba(255,255,255,.035) 2px,
-            transparent 2px,
-            transparent 100px
+            90deg,rgba(255,255,255,.035) 0,
+            rgba(255,255,255,.035) 2px,transparent 2px,transparent 100px
         ),
-
-        linear-gradient(
-            180deg,
-            rgba(10,30,55,.10),
-            rgba(2,5,12,.96)
-        );
-
-    transform:
-        perspective(500px)
-        rotateX(55deg);
-
+        linear-gradient(180deg,rgba(10,30,55,.10),rgba(2,5,12,.96));
+    transform:perspective(500px) rotateX(55deg);
     transform-origin:bottom;
-
 }
-
 
 /* =========================================================
    SAFETY BARRICADES
 ========================================================= */
-
 .barricade{
-
     position:absolute;
-
     height:18px;
-
-    background:
-
-        repeating-linear-gradient(
-            135deg,
-            #ffd400 0,
-            #ffd400 28px,
-            #111820 28px,
-            #111820 56px
-        );
-
-    box-shadow:
-        0 8px 18px
-        rgba(0,0,0,.55);
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
+    background:repeating-linear-gradient(
+        135deg,#ffd400 0,#ffd400 28px,#111820 28px,#111820 56px
+    );
+    box-shadow:0 8px 18px rgba(0,0,0,.55);
+    border:1px solid rgba(255,255,255,.15);
 }
-
 
 .barricade.one{
-
-    width:430px;
-
-    left:-50px;
-
-    bottom:150px;
-
-    transform:rotate(-4deg);
-
+    width:430px;left:-50px;bottom:150px;transform:rotate(-4deg);
 }
-
-
 .barricade.two{
-
-    width:350px;
-
-    right:-70px;
-
-    bottom:105px;
-
-    transform:rotate(5deg);
-
+    width:350px;right:-70px;bottom:105px;transform:rotate(5deg);
 }
-
-
 .barricade.three{
-
-    width:280px;
-
-    left:8%;
-
-    top:130px;
-
-    transform:rotate(3deg);
-
-    opacity:.75;
-
+    width:280px;left:8%;top:130px;transform:rotate(3deg);opacity:.75;
 }
-
-
-/* =========================================================
-   BARRICADE LEGS
-========================================================= */
 
 .barricade-leg{
-
-    position:absolute;
-
-    width:9px;
-
-    height:90px;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            #20282d,
-            #5c666b,
-            #161c20
-        );
-
-    box-shadow:
-        0 6px 10px
-        rgba(0,0,0,.45);
-
+    position:absolute;width:9px;height:90px;
+    background:linear-gradient(90deg,#20282d,#5c666b,#161c20);
+    box-shadow:0 6px 10px rgba(0,0,0,.45);
 }
-
-
-.leg1{
-
-    left:100px;
-
-    bottom:85px;
-
-    transform:rotate(8deg);
-
-}
-
-
-.leg2{
-
-    left:310px;
-
-    bottom:78px;
-
-    transform:rotate(8deg);
-
-}
-
-
-.leg3{
-
-    right:230px;
-
-    bottom:45px;
-
-    transform:rotate(-8deg);
-
-}
-
-
-/* =========================================================
-   HAZARD FLOOR
-========================================================= */
+.leg1{left:100px;bottom:85px;transform:rotate(8deg);}
+.leg2{left:310px;bottom:78px;transform:rotate(8deg);}
+.leg3{right:230px;bottom:45px;transform:rotate(-8deg);}
 
 .hazard-floor{
-
-    position:absolute;
-
-    height:34px;
-
-    width:100%;
-
-    bottom:0;
-
-    left:0;
-
-    background:
-
-        repeating-linear-gradient(
-            135deg,
-            #ffd400 0,
-            #ffd400 30px,
-            #15191c 30px,
-            #15191c 60px
-        );
-
+    position:absolute;height:34px;width:100%;bottom:0;left:0;
+    background:repeating-linear-gradient(
+        135deg,#ffd400 0,#ffd400 30px,#15191c 30px,#15191c 60px
+    );
     opacity:.85;
-
-    box-shadow:
-        0 -5px 25px
-        rgba(0,0,0,.65);
-
+    box-shadow:0 -5px 25px rgba(0,0,0,.65);
 }
-
 
 /* =========================================================
    WARNING SIGNS
 ========================================================= */
-
 .warning-sign{
-
-    position:absolute;
-
-    width:92px;
-
-    height:92px;
-
-    background:#ffd400;
-
-    border:
-        7px solid
-        #111820;
-
-    clip-path:
-        polygon(
-            50% 0,
-            100% 100%,
-            0 100%
-        );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    filter:
-        drop-shadow(
-            0 8px 12px
-            rgba(0,0,0,.55)
-        );
-
+    position:absolute;width:92px;height:92px;
+    background:#ffd400;border:7px solid #111820;
+    clip-path:polygon(50% 0,100% 100%,0 100%);
+    display:flex;align-items:center;justify-content:center;
+    filter:drop-shadow(0 8px 12px rgba(0,0,0,.55));
 }
-
-
 .warning-sign span{
-
-    color:#111;
-
-    font-size:35px;
-
-    font-weight:900;
-
-    transform:
-        translateY(15px);
-
+    color:#111;font-size:35px;font-weight:900;transform:translateY(15px);
 }
-
-
-.warning-one{
-
-    left:7%;
-
-    top:16%;
-
-    transform:rotate(-7deg);
-
-}
-
-
-.warning-two{
-
-    right:7%;
-
-    top:26%;
-
-    transform:rotate(8deg);
-
-}
-
+.warning-one{left:7%;top:16%;transform:rotate(-7deg);}
+.warning-two{right:7%;top:26%;transform:rotate(8deg);}
 
 /* =========================================================
    WORKER SILHOUETTES
 ========================================================= */
-
 .worker{
-
-    position:absolute;
-
-    bottom:30px;
-
-    width:110px;
-
-    height:230px;
-
-    opacity:.45;
-
-    filter:
-        drop-shadow(
-            0 10px 20px
-            rgba(0,0,0,.65)
-        );
-
+    position:absolute;bottom:30px;width:110px;height:230px;
+    opacity:.45;filter:drop-shadow(0 10px 20px rgba(0,0,0,.65));
 }
-
-
 .worker-head{
-
-    position:absolute;
-
-    width:42px;
-
-    height:42px;
-
-    border-radius:50%;
-
-    background:#05090e;
-
-    top:0;
-
-    left:34px;
-
+    position:absolute;width:42px;height:42px;border-radius:50%;
+    background:#05090e;top:0;left:34px;
 }
-
-
 .worker-helmet{
-
-    position:absolute;
-
-    width:58px;
-
-    height:20px;
-
-    border-radius:
-        35px 35px 10px 10px;
-
-    background:#f5c400;
-
-    top:-5px;
-
-    left:26px;
-
+    position:absolute;width:58px;height:20px;
+    border-radius:35px 35px 10px 10px;
+    background:#f5c400;top:-5px;left:26px;
 }
-
-
 .worker-body{
-
-    position:absolute;
-
-    width:70px;
-
-    height:110px;
-
-    border-radius:
-        15px 15px 8px 8px;
-
-    background:#080f16;
-
-    top:43px;
-
-    left:20px;
-
+    position:absolute;width:70px;height:110px;
+    border-radius:15px 15px 8px 8px;
+    background:#080f16;top:43px;left:20px;
 }
-
-
 .worker-vest{
-
-    position:absolute;
-
-    width:58px;
-
-    height:105px;
-
-    top:48px;
-
-    left:26px;
-
-    border-left:
-        9px solid
-        #f5c400;
-
-    border-right:
-        9px solid
-        #f5c400;
-
+    position:absolute;width:58px;height:105px;top:48px;left:26px;
+    border-left:9px solid #f5c400;border-right:9px solid #f5c400;
 }
-
-
-.worker-leg-left,
-.worker-leg-right{
-
-    position:absolute;
-
-    width:20px;
-
-    height:85px;
-
-    background:#05090e;
-
-    top:145px;
-
-    border-radius:8px;
-
+.worker-leg-left,.worker-leg-right{
+    position:absolute;width:20px;height:85px;
+    background:#05090e;top:145px;border-radius:8px;
 }
-
-
-.worker-leg-left{
-
-    left:28px;
-
+.worker-leg-left{left:28px;}
+.worker-leg-right{right:28px;}
+.worker-arm-left,.worker-arm-right{
+    position:absolute;width:18px;height:85px;
+    background:#05090e;top:55px;border-radius:10px;
 }
-
-
-.worker-leg-right{
-
-    right:28px;
-
-}
-
-
-.worker-arm-left,
-.worker-arm-right{
-
-    position:absolute;
-
-    width:18px;
-
-    height:85px;
-
-    background:#05090e;
-
-    top:55px;
-
-    border-radius:10px;
-
-}
-
-
-.worker-arm-left{
-
-    left:5px;
-
-    transform:rotate(15deg);
-
-}
-
-
-.worker-arm-right{
-
-    right:5px;
-
-    transform:rotate(-15deg);
-
-}
-
-
-.worker-one{
-
-    left:4%;
-
-}
-
-
-.worker-two{
-
-    right:3%;
-
-    transform:
-        scale(.82);
-
-    bottom:15px;
-
-}
-
+.worker-arm-left{left:5px;transform:rotate(15deg);}
+.worker-arm-right{right:5px;transform:rotate(-15deg);}
+.worker-one{left:4%;}
+.worker-two{right:3%;transform:scale(.82);bottom:15px;}
 
 /* =========================================================
    FORKLIFT
 ========================================================= */
-
 .forklift{
-
-    position:absolute;
-
-    right:12%;
-
-    bottom:95px;
-
-    width:190px;
-
-    height:100px;
-
-    opacity:.38;
-
+    position:absolute;right:12%;bottom:95px;width:190px;height:100px;opacity:.38;
 }
-
-
 .forklift-body{
-
-    position:absolute;
-
-    left:35px;
-
-    bottom:10px;
-
-    width:115px;
-
-    height:65px;
-
-    background:#101a27;
-
-    border:
-        2px solid
-        rgba(255,210,0,.75);
-
-    border-radius:8px;
-
+    position:absolute;left:35px;bottom:10px;width:115px;height:65px;
+    background:#101a27;border:2px solid rgba(255,210,0,.75);border-radius:8px;
 }
-
-
 .forklift-roof{
-
-    position:absolute;
-
-    left:55px;
-
-    bottom:75px;
-
-    width:90px;
-
-    height:12px;
-
-    background:#111923;
-
+    position:absolute;left:55px;bottom:75px;width:90px;height:12px;background:#111923;
 }
-
-
 .forklift-pillar{
-
-    position:absolute;
-
-    left:63px;
-
-    bottom:25px;
-
-    width:7px;
-
-    height:65px;
-
-    background:#2b3740;
-
+    position:absolute;left:63px;bottom:25px;width:7px;height:65px;background:#2b3740;
 }
-
-
 .forklift-wheel{
-
-    position:absolute;
-
-    width:27px;
-
-    height:27px;
-
-    border-radius:50%;
-
-    background:#05080c;
-
-    border:
-        4px solid
-        #3d4b50;
-
-    bottom:0;
-
+    position:absolute;width:27px;height:27px;border-radius:50%;
+    background:#05080c;border:4px solid #3d4b50;bottom:0;
 }
-
-
-.wheel-one{
-
-    left:45px;
-
-}
-
-
-.wheel-two{
-
-    right:20px;
-
-}
-
-
+.wheel-one{left:45px;}
+.wheel-two{right:20px;}
 .fork{
-
-    position:absolute;
-
-    left:-5px;
-
-    bottom:17px;
-
-    width:60px;
-
-    height:7px;
-
-    background:#b6c0c3;
-
+    position:absolute;left:-5px;bottom:17px;width:60px;height:7px;background:#b6c0c3;
 }
-
-
 .fork::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:60px;
-
-    height:7px;
-
-    background:#b6c0c3;
-
-    top:15px;
-
+    content:"";position:absolute;width:60px;height:7px;background:#b6c0c3;top:15px;
 }
-
-
-/* =========================================================
-   SAFETY GLOW
-========================================================= */
 
 .esh-glow{
-
-    position:absolute;
-
-    width:500px;
-
-    height:500px;
-
-    left:50%;
-
-    top:50%;
-
-    transform:
-        translate(-50%,-50%);
-
-    border-radius:50%;
-
-    background:
-
-        radial-gradient(
-            circle,
-            rgba(30,70,150,.16),
-            rgba(150,10,30,.08),
-            transparent 68%
-        );
-
+    position:absolute;width:500px;height:500px;left:50%;top:50%;
+    transform:translate(-50%,-50%);border-radius:50%;
+    background:radial-gradient(circle,rgba(30,70,150,.16),rgba(150,10,30,.08),transparent 68%);
 }
-
-
-/* =========================================================
-   DARK OVERLAY
-========================================================= */
 
 .background-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:1;
-
+    position:fixed;inset:0;z-index:1;
     background:
-
-        linear-gradient(
-            90deg,
-            rgba(2,8,22,.64),
-            rgba(3,12,28,.28) 45%,
-            rgba(15,2,9,.68)
-        ),
-
-        radial-gradient(
-            ellipse at center,
-            transparent 20%,
-            rgba(0,0,0,.60) 100%
-        );
-
+        linear-gradient(90deg,rgba(2,8,22,.64),rgba(3,12,28,.28) 45%,rgba(15,2,9,.68)),
+        radial-gradient(ellipse at center,transparent 20%,rgba(0,0,0,.60) 100%);
 }
-
 
 /* =========================================================
    LOGIN CONTAINER
 ========================================================= */
-
 .login-container{
-
-    position:relative;
-
-    z-index:5;
-
-    width:100%;
-
-    max-width:1120px;
-
-    min-height:650px;
-
-    display:grid;
-
-    grid-template-columns:
-        46% 54%;
-
-    background:#fff;
-
-    border-radius:24px;
-
+    position:relative;z-index:5;width:100%;max-width:1120px;min-height:650px;
+    display:grid;grid-template-columns:46% 54%;background:#fff;border-radius:24px;
     overflow:hidden;
-
-    box-shadow:
-
-        0 35px 90px
-        rgba(0,0,0,.55),
-
-        0 10px 30px
-        rgba(0,0,0,.35);
-
-    border:
-        1px solid
-        rgba(255,255,255,.35);
-
+    box-shadow:0 35px 90px rgba(0,0,0,.55),0 10px 30px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.35);
 }
-
 
 /* =========================================================
    LEFT PANEL
 ========================================================= */
-
 .left-panel{
-
-    position:relative;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    text-align:center;
-
-    padding:60px 50px;
-
-    color:#fff;
-
-    overflow:hidden;
-
+    position:relative;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:60px 50px;color:#fff;overflow:hidden;
     background:
-
-        radial-gradient(
-            circle at 20% 25%,
-            rgba(20,80,180,.32),
-            transparent 32%
-        ),
-
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(200,20,40,.30),
-            transparent 35%
-        ),
-
-        linear-gradient(
-            145deg,
-            #020b1c 0%,
-            #092653 45%,
-            #101b38 65%,
-            #680b18 100%
-        );
-
+        radial-gradient(circle at 20% 25%,rgba(20,80,180,.32),transparent 32%),
+        radial-gradient(circle at 85% 80%,rgba(200,20,40,.30),transparent 35%),
+        linear-gradient(145deg,#020b1c 0%,#092653 45%,#101b38 65%,#680b18 100%);
 }
-
-
 .left-panel::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:150%;
-
-    height:120px;
-
-    left:-25%;
-
-    bottom:70px;
-
-    background:
-
-        repeating-linear-gradient(
-            135deg,
-            rgba(255,209,0,.90) 0,
-            rgba(255,209,0,.90) 28px,
-            rgba(10,20,24,.90) 28px,
-            rgba(10,20,24,.90) 56px
-        );
-
-    transform:
-        rotate(-7deg);
-
-    opacity:.13;
-
+    content:"";position:absolute;width:150%;height:120px;left:-25%;bottom:70px;
+    background:repeating-linear-gradient(
+        135deg,rgba(255,209,0,.90) 0,rgba(255,209,0,.90) 28px,
+        rgba(10,20,24,.90) 28px,rgba(10,20,24,.90) 56px
+    );
+    transform:rotate(-7deg);opacity:.13;
 }
-
-
 .left-panel::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:390px;
-
-    height:390px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
-    border-radius:50%;
-
-    top:-170px;
-
-    right:-170px;
-
-    box-shadow:
-
-        0 0 0 60px
-        rgba(255,255,255,.02),
-
-        0 0 0 120px
-        rgba(255,255,255,.015);
-
+    content:"";position:absolute;width:390px;height:390px;
+    border:1px solid rgba(255,255,255,.12);border-radius:50%;
+    top:-170px;right:-170px;
+    box-shadow:0 0 0 60px rgba(255,255,255,.02),0 0 0 120px rgba(255,255,255,.015);
 }
-
-
-.left-content{
-
-    position:relative;
-
-    z-index:3;
-
-    width:100%;
-
-    max-width:430px;
-
-}
-
-
+.left-content{position:relative;z-index:3;width:100%;max-width:430px;}
 .company-logo{
-
-    width:110px;
-
-    height:110px;
-
-    object-fit:contain;
-
-    display:block;
-
-    margin:
-        0 auto 24px;
-
-    filter:
-
-        drop-shadow(
-            0 8px 18px
-            rgba(0,0,0,.35)
-        );
-
+    width:110px;height:110px;object-fit:contain;display:block;
+    margin:0 auto 24px;
+    filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
 }
-
-
 .company-name{
-
-    font-size:24px;
-
-    font-weight:800;
-
-    letter-spacing:1.5px;
-
-    line-height:1.35;
-
-    margin-bottom:15px;
-
-    text-transform:uppercase;
-
+    font-size:24px;font-weight:800;letter-spacing:1.5px;line-height:1.35;
+    margin-bottom:15px;text-transform:uppercase;
 }
-
-
 .system-name{
-
-    font-size:34px;
-
-    font-weight:750;
-
-    letter-spacing:.8px;
-
-    line-height:1.2;
-
+    font-size:34px;font-weight:750;letter-spacing:.8px;line-height:1.2;
     text-transform:uppercase;
-
 }
-
-
 .left-divider{
-
-    width:80px;
-
-    height:4px;
-
-    border-radius:10px;
-
-    background:
-
-        linear-gradient(
-            90deg,
-            #1d5bd1,
-            #e3223b
-        );
-
-    margin:
-        28px auto 30px;
-
-    box-shadow:
-        0 0 15px
-        rgba(225,30,55,.30);
-
+    width:80px;height:4px;border-radius:10px;
+    background:linear-gradient(90deg,#1d5bd1,#e3223b);
+    margin:28px auto 30px;
+    box-shadow:0 0 15px rgba(225,30,55,.30);
 }
-
-
 .safety-quote{
-
-    font-size:18px;
-
-    font-weight:500;
-
-    line-height:1.7;
-
-    color:
-        rgba(255,255,255,.93);
-
-    max-width:350px;
-
-    margin:0 auto;
-
+    font-size:18px;font-weight:500;line-height:1.7;
+    color:rgba(255,255,255,.93);max-width:350px;margin:0 auto;
 }
 
+/* =========================================================
+   LIVE DATE AND TIME - ADDED
+========================================================= */
+.live-datetime{
+    margin-top:18px;
+    text-align:center;
+    color:#fff;
+}
+.live-date{
+    font-size:13px;
+    line-height:1.8;
+    color:rgba(255,255,255,.85);
+}
+.live-time{
+    font-size:26px;
+    font-weight:750;
+    letter-spacing:2px;
+    font-variant-numeric:tabular-nums;
+}
 
 /* =========================================================
    RIGHT PANEL
 ========================================================= */
-
 .right-panel{
-
-    background:#fff;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
+    background:#fff;display:flex;align-items:center;justify-content:center;
     padding:60px 70px;
-
 }
-
-
-.login-content{
-
-    width:100%;
-
-    max-width:430px;
-
-}
-
-
+.login-content{width:100%;max-width:430px;}
 .login-title{
-
-    font-size:31px;
-
-    font-weight:750;
-
-    color:#152330;
-
-    line-height:1.2;
-
-    margin-bottom:10px;
-
+    font-size:31px;font-weight:750;color:#152330;line-height:1.2;margin-bottom:10px;
 }
-
-
 .login-subtitle{
-
-    font-size:14px;
-
-    font-weight:650;
-
-    color:#b21d32;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    margin-bottom:38px;
-
+    font-size:14px;font-weight:650;color:#b21d32;
+    display:flex;align-items:center;gap:9px;margin-bottom:38px;
 }
-
-
 .login-subtitle::before{
-
-    content:"";
-
-    width:9px;
-
-    height:9px;
-
-    border-radius:50%;
-
-    background:#c82038;
-
-    box-shadow:
-        0 0 0 5px
-        rgba(200,32,56,.10);
-
+    content:"";width:9px;height:9px;border-radius:50%;
+    background:#c82038;box-shadow:0 0 0 5px rgba(200,32,56,.10);
 }
-
-
-.form-group{
-
-    margin-bottom:22px;
-
-}
-
-
+.form-group{margin-bottom:22px;}
 .form-label{
-
-    display:block;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    color:#344454;
-
-    margin-bottom:9px;
-
-    letter-spacing:.2px;
-
+    display:block;font-size:13px;font-weight:700;color:#344454;
+    margin-bottom:9px;letter-spacing:.2px;
 }
-
-
-.input-wrapper{
-
-    position:relative;
-
-    width:100%;
-
-}
-
-
+.input-wrapper{position:relative;width:100%;}
 .form-input{
-
-    width:100%;
-
-    height:54px;
-
-    border:
-        1px solid
-        #d8e1e7;
-
-    border-radius:12px;
-
-    background:#f9fbfc;
-
-    color:#17212b;
-
-    font-size:15px;
-
-    padding:
-        0 16px;
-
-    outline:none;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
-
+    width:100%;height:54px;border:1px solid #d8e1e7;border-radius:12px;
+    background:#f9fbfc;color:#17212b;font-size:15px;padding:0 16px;outline:none;
+    transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
 }
-
-
-.form-input::placeholder{
-
-    color:#9aa8b4;
-
-}
-
-
-.form-input:hover{
-
-    border-color:#b9c9d3;
-
-}
-
-
+.form-input::placeholder{color:#9aa8b4;}
+.form-input:hover{border-color:#b9c9d3;}
 .form-input:focus{
-
-    background:#fff;
-
-    border-color:#b21d32;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(178,29,50,.10);
-
+    background:#fff;border-color:#b21d32;box-shadow:0 0 0 4px rgba(178,29,50,.10);
 }
-
-
 .password-toggle{
-
-    position:absolute;
-
-    right:14px;
-
-    top:50%;
-
-    transform:
-        translateY(-50%);
-
-    border:none;
-
-    background:transparent;
-
-    cursor:pointer;
-
-    font-size:13px;
-
-    font-weight:700;
-
-    color:#71808d;
-
-    padding:6px;
-
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    border:none;background:transparent;cursor:pointer;font-size:13px;
+    font-weight:700;color:#71808d;padding:6px;
 }
-
-
-.password-toggle:hover{
-
-    color:#b21d32;
-
-}
-
-
+.password-toggle:hover{color:#b21d32;}
 .login-button{
-
-    width:100%;
-
-    height:56px;
-
-    border:none;
-
-    border-radius:12px;
-
-    margin-top:7px;
-
-    background:
-
-        linear-gradient(
-            135deg,
-            #071d46,
-            #123d82 52%,
-            #9e1429
-        );
-
-    color:#fff;
-
-    font-size:15px;
-
-    font-weight:750;
-
-    letter-spacing:.2px;
-
-    cursor:pointer;
-
-    box-shadow:
-
-        0 9px 24px
-        rgba(20,42,90,.25),
-
-        0 4px 12px
-        rgba(150,20,40,.12);
-
-    transition:
-        transform .2s ease,
-        box-shadow .2s ease,
-        filter .2s ease;
-
+    width:100%;height:56px;border:none;border-radius:12px;margin-top:7px;
+    background:linear-gradient(135deg,#071d46,#123d82 52%,#9e1429);
+    color:#fff;font-size:15px;font-weight:750;letter-spacing:.2px;cursor:pointer;
+    box-shadow:0 9px 24px rgba(20,42,90,.25),0 4px 12px rgba(150,20,40,.12);
+    transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
 }
-
-
 .login-button:hover{
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-
-        0 13px 28px
-        rgba(20,42,90,.30),
-
-        0 7px 18px
-        rgba(150,20,40,.18);
-
+    transform:translateY(-1px);
+    box-shadow:0 13px 28px rgba(20,42,90,.30),0 7px 18px rgba(150,20,40,.18);
     filter:brightness(1.05);
-
 }
-
-
-.login-button:active{
-
-    transform:
-        translateY(0);
-
-}
-
-
-.login-button:disabled{
-
-    cursor:not-allowed;
-
-    opacity:.7;
-
-    transform:none;
-
-}
-
-
-.security-box{
-
-    margin-top:30px;
-
-    padding-top:25px;
-
-    border-top:
-        1px solid
-        #e5ebef;
-
-}
-
-
+.login-button:active{transform:translateY(0);}
+.login-button:disabled{cursor:not-allowed;opacity:.7;transform:none;}
+.security-box{margin-top:30px;padding-top:25px;border-top:1px solid #e5ebef;}
 .authorized{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    color:#263746;
-
-    font-size:13px;
-
-    line-height:1.5;
-
-    margin-bottom:10px;
-
+    display:flex;align-items:center;gap:9px;color:#263746;
+    font-size:13px;line-height:1.5;margin-bottom:10px;
 }
-
-
 .authorized-icon{
-
-    width:30px;
-
-    height:30px;
-
-    border-radius:9px;
-
-    background:#fdf0f2;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:15px;
-
-    flex-shrink:0;
-
+    width:30px;height:30px;border-radius:9px;background:#fdf0f2;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
 }
-
-
-.authorized strong{
-
-    font-weight:750;
-
-}
-
-
+.authorized strong{font-weight:750;}
 .security-description{
-
-    color:#71808d;
-
-    font-size:12.5px;
-
-    line-height:1.65;
-
-    margin-bottom:22px;
-
+    color:#71808d;font-size:12.5px;line-height:1.65;margin-bottom:22px;
 }
-
-
-.login-footer{
-
-    text-align:left;
-
-    font-size:11.5px;
-
-    line-height:1.6;
-
-    color:#687986;
-
-}
-
-
-.login-footer strong{
-
-    color:#344454;
-
-    font-weight:750;
-
-}
-
-
-.footer-separator{
-
-    margin:
-        0 4px;
-
-    color:#a4b0b8;
-
-}
-
+.login-footer{text-align:left;font-size:11.5px;line-height:1.6;color:#687986;}
+.login-footer strong{color:#344454;font-weight:750;}
+.footer-separator{margin:0 4px;color:#a4b0b8;}
 
 /* =========================================================
-   ERROR
+   ERROR AND SUCCESS
 ========================================================= */
-
+.error-message,.success-message{
+    display:none;margin-top:15px;padding:12px 14px;border-radius:10px;
+    font-size:13px;line-height:1.5;
+}
 .error-message{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:12px 14px;
-
-    border-radius:10px;
-
-    background:#fff2f2;
-
-    border:
-        1px solid
-        #f3cccc;
-
-    color:#b42318;
-
-    font-size:13px;
-
-    line-height:1.5;
-
+    background:#fff2f2;border:1px solid #f3cccc;color:#b42318;
 }
-
-
-.error-message.show{
-
-    display:block;
-
-}
-
-
-/* =========================================================
-   SUCCESS
-========================================================= */
-
 .success-message{
-
-    display:none;
-
-    margin-top:15px;
-
-    padding:12px 14px;
-
-    border-radius:10px;
-
-    background:#effbf5;
-
-    border:
-        1px solid
-        #bcebd0;
-
-    color:#087443;
-
-    font-size:13px;
-
-    line-height:1.5;
-
+    background:#effbf5;border:1px solid #bcebd0;color:#087443;
 }
-
-
-.success-message.show{
-
-    display:block;
-
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.login-button.loading{
-
-    opacity:.75;
-
-    cursor:wait;
-
-    pointer-events:none;
-
-}
-
+.error-message.show,.success-message.show{display:block;}
+.login-button.loading{opacity:.75;cursor:wait;pointer-events:none;}
 
 /* =========================================================
    RESPONSIVE
 ========================================================= */
-
 @media(max-width:850px){
-
-    body{
-        padding:18px;
-    }
-
+    body{padding:18px;}
     .login-container{
-
-        grid-template-columns:1fr;
-
-        min-height:auto;
-
-        max-width:560px;
-
-        border-radius:22px;
-
+        grid-template-columns:1fr;min-height:auto;max-width:560px;border-radius:22px;
     }
-
-    .left-panel{
-
-        padding:45px 30px;
-
-        min-height:350px;
-
-    }
-
-    .company-logo{
-
-        width:95px;
-
-        height:95px;
-
-        margin-bottom:20px;
-
-    }
-
-    .company-name{
-
-        font-size:19px;
-
-    }
-
-    .system-name{
-
-        font-size:28px;
-
-    }
-
-    .safety-quote{
-
-        font-size:16px;
-
-    }
-
-    .right-panel{
-
-        padding:45px 30px;
-
-    }
-
-    .login-title{
-
-        font-size:27px;
-
-    }
-
+    .left-panel{padding:45px 30px;min-height:350px;}
+    .company-logo{width:95px;height:95px;margin-bottom:20px;}
+    .company-name{font-size:19px;}
+    .system-name{font-size:28px;}
+    .safety-quote{font-size:16px;}
+    .right-panel{padding:45px 30px;}
+    .login-title{font-size:27px;}
 }
-
 
 @media(max-width:480px){
-
-    body{
-
-        padding:10px;
-
-    }
-
-    .login-container{
-
-        border-radius:18px;
-
-    }
-
-    .left-panel{
-
-        padding:38px 20px;
-
-        min-height:310px;
-
-    }
-
-    .company-logo{
-
-        width:80px;
-
-        height:80px;
-
-        margin-bottom:17px;
-
-    }
-
-    .company-name{
-
-        font-size:17px;
-
-        letter-spacing:1px;
-
-    }
-
-    .system-name{
-
-        font-size:24px;
-
-    }
-
-    .left-divider{
-
-        margin:
-            22px auto;
-
-    }
-
-    .safety-quote{
-
-        font-size:15px;
-
-    }
-
-    .right-panel{
-
-        padding:35px 22px;
-
-    }
-
-    .login-title{
-
-        font-size:24px;
-
-    }
-
-    .login-subtitle{
-
-        margin-bottom:30px;
-
-    }
-
-    .form-input{
-
-        height:52px;
-
-    }
-
-    .login-button{
-
-        height:54px;
-
-    }
-
+    body{padding:10px;}
+    .login-container{border-radius:18px;}
+    .left-panel{padding:38px 20px;min-height:310px;}
+    .company-logo{width:80px;height:80px;margin-bottom:17px;}
+    .company-name{font-size:17px;letter-spacing:1px;}
+    .system-name{font-size:24px;}
+    .left-divider{margin:22px auto;}
+    .safety-quote{font-size:15px;}
+    .live-date{font-size:12px;}
+    .live-time{font-size:24px;}
+    .right-panel{padding:35px 22px;}
+    .login-title{font-size:24px;}
+    .login-subtitle{margin-bottom:30px;}
+    .form-input{height:52px;}
+    .login-button{height:54px;}
 }
-
 
 @media(prefers-reduced-motion:reduce){
-
-    *{
-
-        animation:none !important;
-
-        transition:none !important;
-
-    }
-
+    *{animation:none !important;transition:none !important;}
 }
-
 </style>
-
 </head>
 
-
 <body>
-
 
 <!-- =======================================================
      SAFETY BACKGROUND
 ======================================================= -->
-
 <div class="safety-background">
-
     <div class="esh-glow"></div>
-
     <div class="barricade one"></div>
-
     <div class="barricade two"></div>
-
     <div class="barricade three"></div>
-
     <div class="barricade-leg leg1"></div>
-
     <div class="barricade-leg leg2"></div>
-
     <div class="barricade-leg leg3"></div>
 
-    <div class="warning-sign warning-one">
-        <span>!</span>
-    </div>
-
-    <div class="warning-sign warning-two">
-        <span>!</span>
-    </div>
+    <div class="warning-sign warning-one"><span>!</span></div>
+    <div class="warning-sign warning-two"><span>!</span></div>
 
     <div class="worker worker-one">
-
         <div class="worker-helmet"></div>
         <div class="worker-head"></div>
         <div class="worker-body"></div>
@@ -1828,11 +454,9 @@ body{
         <div class="worker-arm-right"></div>
         <div class="worker-leg-left"></div>
         <div class="worker-leg-right"></div>
-
     </div>
 
     <div class="worker worker-two">
-
         <div class="worker-helmet"></div>
         <div class="worker-head"></div>
         <div class="worker-body"></div>
@@ -1841,41 +465,29 @@ body{
         <div class="worker-arm-right"></div>
         <div class="worker-leg-left"></div>
         <div class="worker-leg-right"></div>
-
     </div>
 
     <div class="forklift">
-
         <div class="forklift-roof"></div>
         <div class="forklift-pillar"></div>
         <div class="forklift-body"></div>
         <div class="forklift-wheel wheel-one"></div>
         <div class="forklift-wheel wheel-two"></div>
         <div class="fork"></div>
-
     </div>
 
     <div class="hazard-floor"></div>
-
 </div>
 
-
 <div class="background-overlay"></div>
-
 
 <!-- =======================================================
      LOGIN CONTAINER
 ======================================================= -->
-
 <div class="login-container">
 
-
-    <!-- ===================================================
-         LEFT PANEL
-    =================================================== -->
-
+    <!-- LEFT PANEL -->
     <section class="left-panel">
-
         <div class="left-content">
 
             <img
@@ -1898,17 +510,17 @@ body{
                 Safety starts with me, but protects us all.
             </div>
 
-        </div>
+            <!-- LIVE DATE AND TIME -->
+            <div class="live-datetime">
+                <div id="liveDate" class="live-date" aria-live="off"></div>
+                <div id="liveTime" class="live-time" aria-live="off"></div>
+            </div>
 
+        </div>
     </section>
 
-
-    <!-- ===================================================
-         RIGHT PANEL
-    =================================================== -->
-
+    <!-- RIGHT PANEL -->
     <section class="right-panel">
-
         <div class="login-content">
 
             <h1 class="login-title">
@@ -1919,26 +531,15 @@ body{
                 Secure Connection
             </div>
 
-
-            <form
-                id="loginForm"
-                onsubmit="handleLogin(event)"
-            >
-
+            <form id="loginForm" onsubmit="handleLogin(event)">
 
                 <!-- USERNAME -->
-
                 <div class="form-group">
-
-                    <label
-                        class="form-label"
-                        for="username"
-                    >
+                    <label class="form-label" for="username">
                         Username
                     </label>
 
                     <div class="input-wrapper">
-
                         <input
                             type="text"
                             id="username"
@@ -1948,25 +549,16 @@ body{
                             autocomplete="username"
                             required
                         >
-
                     </div>
-
                 </div>
 
-
                 <!-- PASSWORD -->
-
                 <div class="form-group">
-
-                    <label
-                        class="form-label"
-                        for="password"
-                    >
+                    <label class="form-label" for="password">
                         Password
                     </label>
 
                     <div class="input-wrapper">
-
                         <input
                             type="password"
                             id="password"
@@ -1986,14 +578,10 @@ body{
                         >
                             Show
                         </button>
-
                     </div>
-
                 </div>
 
-
                 <!-- LOGIN BUTTON -->
-
                 <button
                     type="submit"
                     class="login-button"
@@ -2002,95 +590,48 @@ body{
                     Login
                 </button>
 
-
                 <!-- ERROR -->
-
-                <div
-                    class="error-message"
-                    id="loginError"
-                ></div>
-
+                <div class="error-message" id="loginError"></div>
 
                 <!-- SUCCESS -->
-
-                <div
-                    class="success-message"
-                    id="loginSuccess"
-                >
+                <div class="success-message" id="loginSuccess">
                     Login successful. Opening ESH system...
                 </div>
 
-
             </form>
 
-
             <!-- SECURITY INFORMATION -->
-
             <div class="security-box">
 
                 <div class="authorized">
-
-                    <div class="authorized-icon">
-                        🔒
-                    </div>
-
+                    <div class="authorized-icon">🔒</div>
                     <div>
-                        <strong>
-                            Authorized personnel only
-                        </strong>
+                        <strong>Authorized personnel only</strong>
                     </div>
-
                 </div>
-
 
                 <div class="security-description">
-
                     Access is monitored and protected by
                     the ESH Management System.
-
                 </div>
 
-
                 <div class="login-footer">
-
-                    <strong>
-                        BIDOR KWONG HENG
-                    </strong>
-
-                    <span class="footer-separator">
-                        •
-                    </span>
-
-                    <strong>
-                        ESH DEPARTMENT
-                    </strong>
-
+                    <strong>BIDOR KWONG HENG</strong>
+                    <span class="footer-separator">•</span>
+                    <strong>ESH DEPARTMENT</strong>
                     <br>
-
                     Environment
-
-                    <span class="footer-separator">
-                        •
-                    </span>
-
+                    <span class="footer-separator">•</span>
                     Safety
-
-                    <span class="footer-separator">
-                        •
-                    </span>
-
+                    <span class="footer-separator">•</span>
                     Health.
-
                 </div>
 
             </div>
-
         </div>
-
     </section>
 
 </div>
-
 
 <script>
 
@@ -2098,14 +639,50 @@ body{
    GOOGLE APPS SCRIPT API
 ========================================================= */
 
-/*
-   IMPORTANT:
-   This is your existing Google Apps Script endpoint.
-   Do NOT put Markdown [ ] or ( ) around the URL.
-*/
-
 const GOOGLE_SCRIPT_URL =
     "https://script.google.com/macros/s/AKfycbyvYdD4VfoUM-vD5yS2AdJ_vCSNOU3TE6qY1J9ZIqFHqndGF-a_LXbX0GDmmU3A5VRrIw/exec";
+
+
+/* =========================================================
+   LIVE MALAYSIA DATE AND TIME
+========================================================= */
+
+function updateLiveDateTime(){
+
+    const now = new Date();
+
+    const dateElement =
+        document.getElementById("liveDate");
+
+    const timeElement =
+        document.getElementById("liveTime");
+
+    if(!dateElement || !timeElement){
+        return;
+    }
+
+    dateElement.textContent =
+        new Intl.DateTimeFormat("en-MY",{
+            timeZone:"Asia/Kuala_Lumpur",
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
+        }).format(now);
+
+    timeElement.textContent =
+        new Intl.DateTimeFormat("en-GB",{
+            timeZone:"Asia/Kuala_Lumpur",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:false
+        }).format(now);
+}
+
+updateLiveDateTime();
+
+setInterval(updateLiveDateTime,1000);
 
 
 /* =========================================================
@@ -2115,38 +692,25 @@ const GOOGLE_SCRIPT_URL =
 function togglePassword(){
 
     const password =
-        document.getElementById(
-            "password"
-        );
+        document.getElementById("password");
 
     const toggle =
-        document.getElementById(
-            "passwordToggle"
-        );
+        document.getElementById("passwordToggle");
 
-
-    if(
-        password.type === "password"
-    ){
+    if(password.type === "password"){
 
         password.type = "text";
-
-        toggle.textContent =
-            "Hide";
+        toggle.textContent = "Hide";
 
         toggle.setAttribute(
             "aria-label",
             "Hide password"
         );
 
-    }
-    else{
+    }else{
 
-        password.type =
-            "password";
-
-        toggle.textContent =
-            "Show";
+        password.type = "password";
+        toggle.textContent = "Show";
 
         toggle.setAttribute(
             "aria-label",
@@ -2154,7 +718,6 @@ function togglePassword(){
         );
 
     }
-
 }
 
 
@@ -2165,26 +728,15 @@ function togglePassword(){
 function showLoginError(message){
 
     const error =
-        document.getElementById(
-            "loginError"
-        );
+        document.getElementById("loginError");
 
     const success =
-        document.getElementById(
-            "loginSuccess"
-        );
+        document.getElementById("loginSuccess");
 
-    success.classList.remove(
-        "show"
-    );
+    success.classList.remove("show");
 
-    error.textContent =
-        message;
-
-    error.classList.add(
-        "show"
-    );
-
+    error.textContent = message;
+    error.classList.add("show");
 }
 
 
@@ -2195,26 +747,15 @@ function showLoginError(message){
 function showLoginSuccess(message){
 
     const error =
-        document.getElementById(
-            "loginError"
-        );
+        document.getElementById("loginError");
 
     const success =
-        document.getElementById(
-            "loginSuccess"
-        );
+        document.getElementById("loginSuccess");
 
-    error.classList.remove(
-        "show"
-    );
+    error.classList.remove("show");
 
-    success.textContent =
-        message;
-
-    success.classList.add(
-        "show"
-    );
-
+    success.textContent = message;
+    success.classList.add("show");
 }
 
 
@@ -2225,25 +766,14 @@ function showLoginSuccess(message){
 function clearLoginMessages(){
 
     const error =
-        document.getElementById(
-            "loginError"
-        );
+        document.getElementById("loginError");
 
     const success =
-        document.getElementById(
-            "loginSuccess"
-        );
+        document.getElementById("loginSuccess");
 
     error.textContent = "";
-
-    error.classList.remove(
-        "show"
-    );
-
-    success.classList.remove(
-        "show"
-    );
-
+    error.classList.remove("show");
+    success.classList.remove("show");
 }
 
 
@@ -2255,155 +785,68 @@ async function handleLogin(event){
 
     event.preventDefault();
 
-
     const username =
-        document
-            .getElementById("username")
-            .value
-            .trim()
-            .toLowerCase();
-
+        document.getElementById("username")
+            .value.trim().toLowerCase();
 
     const password =
-        document
-            .getElementById("password")
-            .value;
-
+        document.getElementById("password").value;
 
     const loginButton =
-        document.getElementById(
-            "loginButton"
-        );
-
-
-    /* -------------------------------------------------------
-       VALIDATION
-    ------------------------------------------------------- */
+        document.getElementById("loginButton");
 
     clearLoginMessages();
 
-
     if(!username){
-
-        showLoginError(
-            "Please enter your username."
-        );
-
+        showLoginError("Please enter your username.");
         return;
-
     }
-
 
     if(!password){
-
-        showLoginError(
-            "Please enter your password."
-        );
-
+        showLoginError("Please enter your password.");
         return;
-
     }
-
-
-    /* -------------------------------------------------------
-       API URL CHECK
-    ------------------------------------------------------- */
 
     if(
         !GOOGLE_SCRIPT_URL ||
-        GOOGLE_SCRIPT_URL.indexOf(
-            "/exec"
-        ) === -1
+        GOOGLE_SCRIPT_URL.indexOf("/exec") === -1
     ){
-
         showLoginError(
             "Google Apps Script API URL is not configured."
         );
-
         return;
-
     }
 
-
-    /* -------------------------------------------------------
-       LOADING
-    ------------------------------------------------------- */
-
-    loginButton.classList.add(
-        "loading"
-    );
-
+    loginButton.classList.add("loading");
     loginButton.disabled = true;
-
-    loginButton.textContent =
-        "AUTHENTICATING...";
-
+    loginButton.textContent = "AUTHENTICATING...";
 
     try{
 
-        /* ---------------------------------------------------
-           SEND LOGIN TO GOOGLE APPS SCRIPT
-        --------------------------------------------------- */
-
-        const response =
-            await fetch(
-                GOOGLE_SCRIPT_URL,
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "text/plain;charset=utf-8"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            action:
-                                "login",
-
-                            username:
-                                username,
-
-                            password:
-                                password
-
-                        })
-                }
-            );
-
-
-        /* ---------------------------------------------------
-           CHECK HTTP RESPONSE
-        --------------------------------------------------- */
-
-        if(!response.ok){
-
-            throw new Error(
-                "Server returned HTTP " +
-                response.status
-            );
-
-        }
-
-
-        /* ---------------------------------------------------
-           READ JSON RESPONSE
-        --------------------------------------------------- */
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "LOGIN RESPONSE:",
-            data
+        const response = await fetch(
+            GOOGLE_SCRIPT_URL,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"text/plain;charset=utf-8"
+                },
+                body:JSON.stringify({
+                    action:"login",
+                    username:username,
+                    password:password
+                })
+            }
         );
 
+        if(!response.ok){
+            throw new Error(
+                "Server returned HTTP " + response.status
+            );
+        }
 
-        /* ---------------------------------------------------
-           LOGIN FAILED
-        --------------------------------------------------- */
+        const data = await response.json();
+
+        console.log("LOGIN RESPONSE:",data);
 
         if(!data.success){
 
@@ -2412,124 +855,58 @@ async function handleLogin(event){
                 "Invalid username or password."
             );
 
-
-            loginButton.classList.remove(
-                "loading"
-            );
-
+            loginButton.classList.remove("loading");
             loginButton.disabled = false;
-
-            loginButton.textContent =
-                "Login";
+            loginButton.textContent = "Login";
 
             return;
-
         }
-
-
-        /* ---------------------------------------------------
-           LOGIN SUCCESS
-        --------------------------------------------------- */
 
         sessionStorage.clear();
 
-
-        sessionStorage.setItem(
-            "loggedIn",
-            "true"
-        );
-
+        sessionStorage.setItem("loggedIn","true");
 
         sessionStorage.setItem(
             "username",
-            data.username ||
-            username
+            data.username || username
         );
-
 
         sessionStorage.setItem(
             "userRole",
-            data.role ||
-            ""
+            data.role || ""
         );
-
 
         sessionStorage.setItem(
             "department",
-            data.department ||
-            ""
+            data.department || ""
         );
 
-
-        /* ---------------------------------------------------
-           COMPATIBILITY WITH EXISTING DASHBOARD
-        --------------------------------------------------- */
-
-        if(
-            data.role === "ESH"
-        ){
-
-            sessionStorage.setItem(
-                "eshLoggedIn",
-                "true"
-            );
-
+        if(data.role === "ESH"){
+            sessionStorage.setItem("eshLoggedIn","true");
         }
-
-
-        /* ---------------------------------------------------
-           SUCCESS MESSAGE
-        --------------------------------------------------- */
 
         showLoginSuccess(
             "Login successful. Opening ESH system..."
         );
 
+        loginButton.textContent = "ACCESS GRANTED";
 
-        loginButton.textContent =
-            "ACCESS GRANTED";
+        setTimeout(function(){
+            window.location.href = "esh.html";
+        },700);
 
+    }catch(error){
 
-        /* ---------------------------------------------------
-           OPEN DASHBOARD
-        --------------------------------------------------- */
-
-        setTimeout(
-            function(){
-
-                window.location.href =
-                    "esh.html";
-
-            },
-            700
-        );
-
-
-    }
-    catch(error){
-
-        console.error(
-            "LOGIN ERROR:",
-            error
-        );
-
+        console.error("LOGIN ERROR:",error);
 
         showLoginError(
             "Unable to connect to the ESH server. Please try again."
         );
 
-
-        loginButton.classList.remove(
-            "loading"
-        );
-
+        loginButton.classList.remove("loading");
         loginButton.disabled = false;
-
-        loginButton.textContent =
-            "Login";
-
+        loginButton.textContent = "Login";
     }
-
 }
 
 
@@ -2539,18 +916,11 @@ async function handleLogin(event){
 
 document
     .getElementById("username")
-    .addEventListener(
-        "input",
-        clearLoginMessages
-    );
-
+    .addEventListener("input",clearLoginMessages);
 
 document
     .getElementById("password")
-    .addEventListener(
-        "input",
-        clearLoginMessages
-    );
+    .addEventListener("input",clearLoginMessages);
 
 
 /* =========================================================
@@ -2559,27 +929,18 @@ document
 
 document
     .getElementById("loginForm")
-    .addEventListener(
-        "keydown",
-        function(event){
+    .addEventListener("keydown",function(event){
 
-            if(
-                event.key === "Enter"
-            ){
-
-                /*
-                   Allow the normal form submit
-                   to handle authentication.
-                */
-
-            }
-
+        if(event.key === "Enter"){
+            /*
+             Allow the normal form submit
+             to handle authentication.
+            */
         }
-    );
+
+    });
 
 </script>
 
-
 </body>
-
 </html>
