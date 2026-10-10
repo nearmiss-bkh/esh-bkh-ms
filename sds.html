@@ -1,19 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BKH ESH | SDS Library</title>
 <meta name="theme-color" content="#12345a">
+<meta name="description" content="Bidor Kwong Heng Sdn Bhd ESH Chemical Safety Data Sheet Library">
+<title>BKH ESH | SDS Management Library</title>
 
 <style>
 :root {
     --navy: #12345a;
+    --navy-dark: #07182b;
     --blue: #1769aa;
+    --blue-light: #eaf3fc;
     --red: #8b1e32;
+    --red-light: #fff0f2;
     --border: #dce4ed;
     --text: #192b3e;
     --muted: #66778a;
+    --surface: #ffffff;
+    --page-width: 1120px;
+    --radius: 14px;
+    --shadow: 0 8px 24px rgba(6, 20, 38, 0.12);
 }
 
 * {
@@ -28,374 +37,833 @@ body {
     margin: 0;
     min-height: 100vh;
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
-
-    /* NAVY BLUE + BLUE + RED GRADIENT BACKGROUND */
-    background: linear-gradient(
-        135deg,
-        #061426 0%,
-        #12345a 28%,
-        #1769aa 55%,
-        #7f1d2d 80%,
-        #450a16 100%
-    );
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    background:
+        radial-gradient(ellipse at 10% 5%, rgba(23,105,170,.35), transparent 35%),
+        radial-gradient(ellipse at 95% 90%, rgba(139,30,50,.27), transparent 36%),
+        linear-gradient(135deg, #061426 0%, #12345a 38%, #1769aa 67%, #450a16 100%);
     background-attachment: fixed;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
+button,
+input,
+select {
+    font: inherit;
+}
+
+button,
+a,
+input,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #8fc7ff;
+    outline-offset: 3px;
+}
+
+/* HEADER */
 
 header {
     position: relative;
     overflow: hidden;
+    color: #fff;
     background: linear-gradient(
-        115deg,
+        112deg,
         #061426 0%,
-        #12345a 38%,
-        #174f82 65%,
+        #12345a 43%,
+        #174f82 72%,
         #8b1e32 100%
     );
-    color: white;
-    padding: 32px 18px;
     border-bottom: 4px solid #c12d45;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 7px 24px rgba(0,0,0,.23);
 }
 
-header::before {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    top: -150px;
-    left: -70px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
+header::before,
 header::after {
     content: "";
     position: absolute;
-    width: 220px;
-    height: 220px;
-    bottom: -150px;
-    right: -45px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255,255,255,.10);
     border-radius: 50%;
     pointer-events: none;
+}
+
+header::before {
+    width: 310px;
+    height: 310px;
+    top: -205px;
+    right: 10%;
+}
+
+header::after {
+    width: 230px;
+    height: 230px;
+    bottom: -175px;
+    right: -30px;
 }
 
 .header-inner,
 main,
 footer {
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
+    width: min(var(--page-width), 100%);
+    margin-inline: auto;
 }
 
 .header-inner {
     position: relative;
     z-index: 1;
+    padding: 36px 24px 34px;
 }
 
-.brand {
+.brand-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 21px;
+}
+
+.brand-mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 12px;
+    background: rgba(255,255,255,.10);
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.brand-name {
     font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1.8px;
-    color: #dbeafe;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    line-height: 1.5;
+}
+
+.brand-subtitle {
+    color: #d9e8f7;
+    font-size: 11px;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+}
+
+.header-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 11px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 5px;
+    background: rgba(255,255,255,.09);
+    color: #edf5ff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+}
+
+.header-label::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #e74d62;
+    box-shadow: 0 0 0 3px rgba(231,77,98,.16);
 }
 
 h1 {
-    margin: 12px 0 8px;
-    font-size: clamp(25px, 5vw, 36px);
+    margin: 15px 0 8px;
+    font-size: clamp(28px, 4vw, 39px);
+    font-weight: 750;
+    letter-spacing: -.7px;
     line-height: 1.2;
 }
 
-header p {
+.header-description {
+    max-width: 650px;
     margin: 0;
-    color: #e1ebf7;
-    line-height: 1.7;
+    color: #dce9f7;
     font-size: 14px;
+    line-height: 1.8;
 }
 
-/* =====================================================
-   MAIN CONTENT
-===================================================== */
+.header-rule {
+    width: 66px;
+    height: 4px;
+    margin-top: 22px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #fff, #ed6678);
+}
+
+/* MAIN LAYOUT */
 
 main {
-    padding: 22px 16px 40px;
+    padding: 25px 20px 42px;
 }
-
-/* =====================================================
-   IMPORTANT NOTICE
-===================================================== */
-
-.notice {
-    background: #ffffff;
-    border: 1px solid #e5c6cb;
-    border-left: 5px solid #b72c42;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 18px;
-    font-size: 13px;
-    line-height: 1.7;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.10);
-}
-
-.notice strong {
-    color: #8b1e32;
-}
-
-/* =====================================================
-   WHITE CONTENT PANELS
-===================================================== */
 
 .panel {
-    background: white;
-    border: 1px solid rgba(220, 228, 237, 0.95);
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 18px;
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.10);
+    margin-bottom: 19px;
+    padding: 23px;
+    border: 1px solid rgba(220,228,237,.95);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
 }
 
-/* =====================================================
-   STATISTICS
-===================================================== */
+/* NOTICE */
+
+.notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 19px;
+    padding: 18px 20px;
+    border: 1px solid #efcbd1;
+    border-left: 5px solid var(--red);
+    border-radius: 11px;
+    background: linear-gradient(110deg, #fff 0%, #fffafb 100%);
+    box-shadow: 0 5px 17px rgba(0,0,0,.09);
+}
+
+.notice-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 37px;
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+    background: var(--red-light);
+    color: var(--red);
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.notice-title {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--red);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.notice p {
+    margin: 0;
+    color: #4d5c6b;
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+/* STATISTICS */
 
 .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 17px;
+}
+
+.stat-card {
     display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: linear-gradient(135deg, #fff 0%, #f7faff 100%);
+}
+
+.stat-icon {
+    display: grid;
+    place-items: center;
+    width: 47px;
+    height: 47px;
+    flex: 0 0 47px;
+    border-radius: 12px;
+    background: var(--blue-light);
+    color: var(--navy);
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.stat-icon.red {
+    background: var(--red-light);
+    color: var(--red);
+}
+
+.stat-number {
+    display: block;
+    color: var(--navy);
+    font-size: 29px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+    line-height: 1.2;
+}
+
+.stat-label {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* SECTION HEADINGS */
+
+.section-heading {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.heading-group {
+    display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
 }
 
-.stats strong {
-    font-size: 25px;
+.heading-accent {
+    width: 4px;
+    height: 31px;
+    flex: 0 0 4px;
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--blue), var(--red));
+}
+
+h2 {
+    margin: 0;
     color: var(--navy);
+    font-size: 19px;
+    font-weight: 750;
+    letter-spacing: -.2px;
+    line-height: 1.4;
 }
 
-.stats span,
-.results {
+.section-subtitle {
+    margin: 4px 0 0;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 12px;
 }
 
-/* =====================================================
-   SEARCH
-===================================================== */
+/* SEARCH */
+
+.search-panel {
+    padding-bottom: 20px;
+}
 
 .search-row {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: minmax(0, 1.8fr) minmax(220px, 1fr);
+    gap: 13px;
+}
+
+.field-wrap {
+    position: relative;
+    min-width: 0;
+}
+
+.field-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    z-index: 1;
+    transform: translateY(-50%);
+    color: #708399;
+    font-size: 17px;
+    pointer-events: none;
 }
 
 input,
 select {
     width: 100%;
-    min-height: 46px;
+    min-width: 0;
+    min-height: 49px;
+    padding: 12px 14px;
     border: 1px solid #cbd6e2;
     border-radius: 9px;
-    padding: 12px;
-    background: white;
-    font-size: 15px;
+    background: #fff;
     color: var(--text);
+    font-size: 14px;
+    transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+input[type="search"] {
+    padding-left: 43px;
+}
+
+input::placeholder {
+    color: #8a98a8;
 }
 
 input:focus,
 select:focus {
-    outline: 2px solid #9bc8f4;
     border-color: var(--blue);
-}
-
-.section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-}
-
-h2 {
-    font-size: 19px;
-    margin: 0;
-    color: var(--navy);
-}
-
-/* =====================================================
-   CLEAR SEARCH BUTTON
-===================================================== */
-
-.clear-button {
-    border: 1px solid #cbd6e2;
-    background: #ffffff;
-    color: var(--navy);
-    border-radius: 8px;
-    padding: 10px 13px;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.clear-button:hover {
-    background: var(--navy);
-    color: white;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(23,105,170,.13);
 }
 
 .search-help {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin: 13px 0 0;
     color: var(--muted);
     font-size: 12px;
-    line-height: 1.6;
-    margin: 12px 0 0;
+    line-height: 1.7;
 }
 
-/* =====================================================
-   SDS LIST
-===================================================== */
+.help-dot {
+    color: var(--blue);
+    font-weight: 900;
+}
+
+/* BUTTONS */
+
+.clear-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 9px 13px;
+    border: 1px solid #cbd6e2;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--navy);
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.clear-button:hover {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: #fff;
+}
+
+/* DOCUMENT LIST */
+
+.results {
+    padding: 6px 10px;
+    border: 1px solid #dce9f8;
+    border-radius: 7px;
+    background: #f1f7fd;
+    color: #315c85;
+    font-size: 11px;
+    font-weight: 750;
+}
 
 .sds-list {
     display: grid;
-    gap: 12px;
+    gap: 11px;
 }
 
 .sds-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
     border: 1px solid var(--border);
     border-radius: 11px;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    background: #ffffff;
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+    background: #fff;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
 .sds-card:hover {
     border-color: #9bb9d8;
-    box-shadow: 0 5px 15px rgba(18, 52, 90, 0.08);
+    box-shadow: 0 5px 17px rgba(18,52,90,.09);
     transform: translateY(-1px);
 }
 
+.document-info {
+    min-width: 0;
+}
+
+.document-topline {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.pdf-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 47px;
+    flex: 0 0 42px;
+    border: 1px solid #f1cfd5;
+    border-radius: 8px;
+    background: #fff5f6;
+    color: var(--red);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .4px;
+}
+
+.document-copy {
+    min-width: 0;
+}
+
 .sds-card h3 {
-    font-size: 15px;
-    line-height: 1.5;
     margin: 0 0 7px;
-    overflow-wrap: anywhere;
     color: #183b60;
-}
-
-.sds-card p {
-    color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 750;
     line-height: 1.6;
-    margin: 0;
     overflow-wrap: anywhere;
 }
 
-/* =====================================================
-   CATEGORY TAG
-===================================================== */
+.document-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 14px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.document-meta span {
+    overflow-wrap: anywhere;
+}
+
+.meta-label {
+    color: #43566a;
+    font-weight: 700;
+}
 
 .tag {
-    display: inline-block;
-    margin-top: 8px;
-    background: #eaf2fb;
-    color: #214f7e;
-    padding: 5px 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 4px 9px;
+    border: 1px solid #d8e6f5;
     border-radius: 5px;
-    font-size: 11px;
-    font-weight: bold;
+    background: #edf5fd;
+    color: #214f7e;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .2px;
 }
 
-/* =====================================================
-   OPEN PDF BUTTON
-===================================================== */
+.tag::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.tag-cleaning {
+    border-color: #cce9df;
+    background: #effaf5;
+    color: #247453;
+}
+
+.tag-production {
+    border-color: #d7e2fa;
+    background: #f0f4ff;
+    color: #3656a1;
+}
+
+.tag-maintenance {
+    border-color: #f0dfba;
+    background: #fff8e9;
+    color: #8a641c;
+}
+
+.tag-other {
+    border-color: #e4d8f5;
+    background: #f7f1ff;
+    color: #6d4799;
+}
 
 .open-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    background: linear-gradient(120deg, #1769aa, #12345a);
-    color: white;
-    text-decoration: none;
+    gap: 8px;
+    min-width: 135px;
+    min-height: 42px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
     border-radius: 8px;
-    padding: 11px 13px;
-    font-size: 13px;
-    font-weight: bold;
-    transition: background 0.2s ease, transform 0.2s ease;
+    background: linear-gradient(120deg, #1769aa 0%, #12345a 100%);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
 .open-button:hover {
-    background: linear-gradient(120deg, #12345a, #8b1e32);
+    background: linear-gradient(120deg, #12345a 0%, #8b1e32 100%);
+    box-shadow: 0 4px 11px rgba(18,52,90,.18);
     transform: translateY(-1px);
 }
 
-/* =====================================================
-   NO RESULTS
-===================================================== */
+.open-button:active {
+    transform: translateY(0);
+}
+
+/* EMPTY RESULTS */
 
 .empty {
-    text-align: center;
+    padding: 42px 16px;
+    border: 1px dashed #cbd6e2;
+    border-radius: 10px;
+    background: #f8fafc;
     color: var(--muted);
-    padding: 30px 10px;
-    line-height: 1.7;
+    text-align: center;
+    line-height: 1.8;
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
+.empty-icon {
+    display: block;
+    margin-bottom: 10px;
+    color: #7890a8;
+    font-size: 30px;
+}
+
+.empty strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--navy);
+    font-size: 15px;
+}
+
+/* FOOTER */
 
 footer {
-    padding: 20px 16px 28px;
-    color: #ffffff;
-    font-size: 12px;
-    line-height: 1.8;
+    padding: 8px 20px 30px;
+    color: #e5edf7;
     text-align: center;
+    font-size: 11px;
+    line-height: 1.9;
 }
 
-/* =====================================================
-   RESPONSIVE LAYOUT
-===================================================== */
+.footer-company {
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
 
-@media (min-width: 650px) {
+.footer-line {
+    width: 42px;
+    height: 2px;
+    margin: 12px auto;
+    border-radius: 3px;
+    background: #c12d45;
+}
+
+.footer-note {
+    color: #d1ddec;
+}
+
+/* RESPONSIVE */
+
+@media (min-width: 760px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .header-inner {
+        padding: 29px 19px;
+    }
+
+    main {
+        padding: 19px 13px 32px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
     .search-row {
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    .sds-card {
+        gap: 14px;
+    }
+
+    .open-button {
+        min-width: 122px;
     }
 }
 
 @media (max-width: 520px) {
-    header {
-        padding: 26px 16px;
+    .header-inner {
+        padding: 24px 17px 27px;
+    }
+
+    .brand-row {
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .brand-mark {
+        width: 39px;
+        height: 39px;
+        flex-basis: 39px;
+        font-size: 17px;
+    }
+
+    .brand-name {
+        font-size: 10px;
+        letter-spacing: 1.1px;
+    }
+
+    .brand-subtitle {
+        font-size: 10px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .header-description {
+        font-size: 13px;
     }
 
     main {
-        padding: 18px 12px 30px;
+        padding: 15px 10px 25px;
     }
 
     .panel {
         padding: 15px;
+        margin-bottom: 14px;
+        border-radius: 11px;
+    }
+
+    .notice {
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .notice-icon {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+        font-size: 16px;
+    }
+
+    .notice p {
+        font-size: 12px;
+    }
+
+    .stats {
+        gap: 9px;
+        padding: 12px;
+    }
+
+    .stat-card {
+        gap: 9px;
+        padding: 11px;
+    }
+
+    .stat-icon {
+        width: 35px;
+        height: 35px;
+        flex-basis: 35px;
+        border-radius: 9px;
+        font-size: 16px;
+    }
+
+    .stat-number {
+        font-size: 24px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    h2 {
+        font-size: 17px;
+    }
+
+    .section-subtitle {
+        font-size: 11px;
+    }
+
+    .clear-button {
+        min-height: 36px;
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .results {
+        font-size: 10px;
     }
 
     .sds-card {
-        align-items: flex-start;
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .document-topline {
+        gap: 10px;
+    }
+
+    .pdf-icon {
+        width: 36px;
+        height: 42px;
+        flex-basis: 36px;
+    }
+
+    .sds-card h3 {
+        font-size: 13px;
+    }
+
+    .document-meta {
+        gap: 3px 10px;
+        font-size: 10px;
     }
 
     .open-button {
         width: 100%;
+        min-height: 43px;
     }
 
-    .stats {
-        align-items: flex-start;
+    footer {
+        padding-inline: 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
     }
 }
 </style>
@@ -405,62 +873,97 @@ footer {
 
 <header>
     <div class="header-inner">
-        <div class="brand">BIDOR KWONG HENG SDN BHD</div>
+        <div class="brand-row">
+            <div class="brand-mark" aria-hidden="true">BKH</div>
+            <div>
+                <div class="brand-name">BIDOR KWONG HENG SDN BHD</div>
+                <div class="brand-subtitle">Environment · Safety · Health</div>
+            </div>
+        </div>
+
+        <div class="header-label">ESH Document Management</div>
+
         <h1>Safety Data Sheet Library</h1>
-        <p>
-            ESH Department · Chemical Safety Information<br>
-            Search and access approved chemical SDS documents.
+
+        <p class="header-description">
+            Chemical Safety Information<br>
+            Search and access the available Safety Data Sheet (SDS)
+            documents for workplace chemical safety reference.
         </p>
+
+        <div class="header-rule"></div>
     </div>
 </header>
 
 <main>
 
-    <div class="notice">
-        <strong>Important:</strong>
-        Verify the chemical product name, supplier and SDS revision before use.
-        Follow the approved SDS and site chemical safety procedures.
-        If a PDF requests access, contact the ESH Department to check its sharing permissions.
-    </div>
-
-    <section class="panel stats">
+    <section class="notice" aria-label="Important chemical safety notice">
+        <div class="notice-icon" aria-hidden="true">!</div>
         <div>
-            <strong id="totalCount">0</strong><br>
-            <span>SDS records listed</span>
-        </div>
-
-        <div>
-            <strong id="shownCount">0</strong><br>
-            <span>Search results</span>
+            <span class="notice-title">Important Safety Notice</span>
+            <p>
+                Verify the chemical product name, supplier and SDS revision
+                before use. Follow the approved SDS and site chemical safety
+                procedures. If a PDF requests access, contact the ESH
+                Department to check its sharing permissions.
+            </p>
         </div>
     </section>
 
-    <section class="panel">
+    <section class="panel stats" aria-label="SDS library statistics">
+        <div class="stat-card">
+            <div class="stat-icon" aria-hidden="true">▤</div>
+            <div>
+                <span class="stat-number" id="totalCount">0</span>
+                <span class="stat-label">SDS Records Listed</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon red" aria-hidden="true">⌕</div>
+            <div>
+                <span class="stat-number" id="shownCount">0</span>
+                <span class="stat-label">Matching Search Results</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel search-panel">
         <div class="section-heading">
-            <h2>Find a Chemical SDS</h2>
+            <div class="heading-group">
+                <span class="heading-accent" aria-hidden="true"></span>
+                <div>
+                    <h2>Find a Chemical SDS</h2>
+                    <p class="section-subtitle">
+                        Search by document name, chemical name or SDS number.
+                    </p>
+                </div>
+            </div>
 
             <button
                 type="button"
                 id="clearSearch"
                 class="clear-button"
             >
-                Clear Search
+                <span aria-hidden="true">↻</span>
+                Clear Filters
             </button>
         </div>
 
         <div class="search-row">
-            <input
-                id="searchInput"
-                type="search"
-                placeholder="Search chemical name, product or SDS number..."
-                aria-label="Search SDS documents"
-            >
+            <div class="field-wrap">
+                <span class="field-icon" aria-hidden="true">⌕</span>
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search chemical name, product or SDS number..."
+                    aria-label="Search SDS documents"
+                    autocomplete="off"
+                >
+            </div>
 
-            <select
-                id="categoryFilter"
-                aria-label="Filter by category"
-            >
-                <option value="">All categories</option>
+            <select id="categoryFilter" aria-label="Filter SDS by category">
+                <option value="">All Categories</option>
                 <option value="Cleaning">Cleaning Chemicals</option>
                 <option value="Production">Production / Laboratory</option>
                 <option value="Maintenance">Maintenance / Lubricants</option>
@@ -469,15 +972,27 @@ footer {
         </div>
 
         <p class="search-help">
-            Search by product name, chemical name or SDS number.
-            Search is not case-sensitive. You can combine a keyword with a category filter.
+            <span class="help-dot" aria-hidden="true">●</span>
+            Search is not case-sensitive. Combine a keyword with a category
+            filter to narrow the results.
         </p>
     </section>
 
     <section class="panel">
         <div class="section-heading">
-            <h2>Available SDS Documents</h2>
-            <span class="results" id="resultLabel">Loading...</span>
+            <div class="heading-group">
+                <span class="heading-accent" aria-hidden="true"></span>
+                <div>
+                    <h2>Available SDS Documents</h2>
+                    <p class="section-subtitle">
+                        Select a document to open its PDF.
+                    </p>
+                </div>
+            </div>
+
+            <span class="results" id="resultLabel" aria-live="polite">
+                Loading...
+            </span>
         </div>
 
         <div class="sds-list" id="sdsList"></div>
@@ -486,9 +1001,12 @@ footer {
 </main>
 
 <footer>
-    BIDOR KWONG HENG SDN BHD · ESH DEPARTMENT<br>
-    Environment · Safety · Health<br>
-    Confirm the SDS revision and product identity before use.
+    <div class="footer-company">BIDOR KWONG HENG SDN BHD</div>
+    <div class="footer-line"></div>
+    <div>ESH DEPARTMENT · ENVIRONMENT · SAFETY · HEALTH</div>
+    <div class="footer-note">
+        Confirm the SDS revision and product identity before use.
+    </div>
 </footer>
 
 <script>
@@ -497,6 +1015,8 @@ footer {
 /*
     Each record contains:
     [original filename, Google Drive file ID, category]
+
+    Existing document records and file IDs are preserved.
 */
 
 const SDS_DATA = [
@@ -581,9 +1101,7 @@ const SDS_DATA = [
 ["2. SUNLIGHT PRO FLOOR CLEANER 4X3.8L_EN200000271333EN.pdf","1nb3ofCvnI33K4d4l-kZRQfe3AgOaC5ko","Cleaning"]
 ];
 
-/* =====================================================
-   PREPARE SDS RECORDS
-===================================================== */
+/* PREPARE DOCUMENT RECORDS */
 
 const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
     const fileName = row[0];
@@ -593,21 +1111,18 @@ const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
         id: fileName.match(/^\d+/)?.[0] || fileId,
         name: fileName,
         category: row[2],
-        pdfUrl: "https://drive.google.com/file/d/" + fileId + "/view"
+        pdfUrl: "https://drive.google.com/file/d/" +
+            encodeURIComponent(fileId) + "/view"
     };
 });
 
-/* =====================================================
-   PAGE ELEMENTS
-===================================================== */
+/* PAGE ELEMENTS */
 
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
 const sdsList = document.getElementById("sdsList");
 
-/* =====================================================
-   SAFE HTML OUTPUT
-===================================================== */
+/* SAFE HTML OUTPUT */
 
 function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, function(char) {
@@ -621,9 +1136,7 @@ function escapeHTML(value) {
     });
 }
 
-/* =====================================================
-   NORMALIZE SEARCH
-===================================================== */
+/* NORMALIZE SEARCH */
 
 function normalizeSearch(value) {
     return String(value ?? "")
@@ -634,9 +1147,31 @@ function normalizeSearch(value) {
         .trim();
 }
 
-/* =====================================================
-   RENDER SDS LIST
-===================================================== */
+/* CATEGORY DISPLAY */
+
+function categoryClass(category) {
+    const classes = {
+        Cleaning: "tag-cleaning",
+        Production: "tag-production",
+        Maintenance: "tag-maintenance",
+        Other: "tag-other"
+    };
+
+    return classes[category] || "";
+}
+
+function categoryLabel(category) {
+    const labels = {
+        Cleaning: "Cleaning Chemicals",
+        Production: "Production / Laboratory",
+        Maintenance: "Maintenance / Lubricants",
+        Other: "Other Chemicals"
+    };
+
+    return labels[category] || category;
+}
+
+/* RENDER SDS LIST */
 
 function renderSDS() {
     const query = normalizeSearch(searchInput.value);
@@ -673,33 +1208,52 @@ function renderSDS() {
 
     document.getElementById("resultLabel").textContent =
         "Showing " + filtered.length + " of " +
-        SDS_DOCUMENTS.length + " SDS records";
+        SDS_DOCUMENTS.length + " records";
 
     if (filtered.length === 0) {
-        sdsList.innerHTML =
-            '<div class="empty">' +
-            '<strong>No matching SDS documents found.</strong><br>' +
-            'Try a shorter keyword or select All categories.' +
-            '</div>';
-
+        sdsList.innerHTML = `
+            <div class="empty">
+                <span class="empty-icon" aria-hidden="true">⌕</span>
+                <strong>No matching SDS documents found</strong>
+                Try another keyword or select All Categories.
+            </div>
+        `;
         return;
     }
 
     sdsList.innerHTML = filtered.map(function(item) {
         return `
             <article class="sds-card">
-                <div>
-                    <h3>${escapeHTML(item.name)}</h3>
+                <div class="document-info">
+                    <div class="document-topline">
+                        <div class="pdf-icon" aria-hidden="true">PDF</div>
 
-                    <p>
-                        SDS ID: ${escapeHTML(item.id)}<br>
-                        Supplier: Refer to PDF<br>
-                        Revision: Check PDF for current revision
-                    </p>
+                        <div class="document-copy">
+                            <h3>${escapeHTML(item.name)}</h3>
 
-                    <span class="tag">
-                        ${escapeHTML(item.category)}
-                    </span>
+                            <div class="document-meta">
+                                <span>
+                                    <span class="meta-label">SDS ID:</span>
+                                    ${escapeHTML(item.id)}
+                                </span>
+                                <span>
+                                    <span class="meta-label">Supplier:</span>
+                                    Refer to PDF
+                                </span>
+                            </div>
+
+                            <div class="document-meta">
+                                <span>
+                                    <span class="meta-label">Revision:</span>
+                                    Check PDF for current revision
+                                </span>
+                            </div>
+
+                            <span class="tag ${categoryClass(item.category)}">
+                                ${escapeHTML(categoryLabel(item.category))}
+                            </span>
+                        </div>
+                    </div>
                 </div>
 
                 <a
@@ -707,38 +1261,30 @@ function renderSDS() {
                     href="${escapeHTML(item.pdfUrl)}"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Open SDS PDF: ${escapeHTML(item.name)}"
                 >
-                    Open SDS PDF
+                    Open SDS PDF <span aria-hidden="true">↗</span>
                 </a>
             </article>
         `;
     }).join("");
 }
 
-/* =====================================================
-   SEARCH EVENTS
-===================================================== */
+/* SEARCH EVENTS */
 
 searchInput.addEventListener("input", renderSDS);
-
 categoryFilter.addEventListener("change", renderSDS);
 
-/* =====================================================
-   CLEAR SEARCH
-===================================================== */
+/* CLEAR SEARCH */
 
 document.getElementById("clearSearch").addEventListener("click", function() {
     searchInput.value = "";
     categoryFilter.value = "";
-
     renderSDS();
-
     searchInput.focus();
 });
 
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
+/* INITIAL LOAD */
 
 renderSDS();
 </script>
