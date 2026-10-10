@@ -47,16 +47,11 @@ body {
     background-attachment: fixed;
 }
 
-button,
-input,
-select {
+button, input, select {
     font: inherit;
 }
 
-button,
-a,
-input,
-select {
+button, a, input, select {
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -118,28 +113,26 @@ footer {
 .header-inner {
     position: relative;
     z-index: 1;
-    padding: 36px 24px 34px;
+    padding: 32px 24px 34px;
 }
 
 .brand-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 21px;
 }
 
-.brand-mark {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    border: 1px solid rgba(255,255,255,.28);
-    border-radius: 12px;
-    background: rgba(255,255,255,.10);
-    font-size: 19px;
-    font-weight: 800;
-    letter-spacing: -1px;
+.company-logo {
+    display: block;
+    width: 76px;
+    height: 76px;
+    flex: 0 0 76px;
+    object-fit: contain;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 10px;
 }
 
 .brand-name {
@@ -207,7 +200,7 @@ h1 {
 /* MAIN LAYOUT */
 
 main {
-    padding: 25px 20px 42px;
+    padding: 25px 20px 35px;
 }
 
 .panel {
@@ -217,49 +210,6 @@ main {
     border-radius: var(--radius);
     background: var(--surface);
     box-shadow: var(--shadow);
-}
-
-/* NOTICE */
-
-.notice {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 19px;
-    padding: 18px 20px;
-    border: 1px solid #efcbd1;
-    border-left: 5px solid var(--red);
-    border-radius: 11px;
-    background: linear-gradient(110deg, #fff 0%, #fffafb 100%);
-    box-shadow: 0 5px 17px rgba(0,0,0,.09);
-}
-
-.notice-icon {
-    display: grid;
-    place-items: center;
-    flex: 0 0 37px;
-    width: 37px;
-    height: 37px;
-    border-radius: 10px;
-    background: var(--red-light);
-    color: var(--red);
-    font-size: 19px;
-    font-weight: 800;
-}
-
-.notice-title {
-    display: block;
-    margin-bottom: 3px;
-    color: var(--red);
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.notice p {
-    margin: 0;
-    color: #4d5c6b;
-    font-size: 13px;
-    line-height: 1.75;
 }
 
 /* STATISTICS */
@@ -385,8 +335,7 @@ h2 {
     pointer-events: none;
 }
 
-input,
-select {
+input, select {
     width: 100%;
     min-width: 0;
     min-height: 49px;
@@ -407,8 +356,7 @@ input::placeholder {
     color: #8a98a8;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
     border-color: var(--blue);
     outline: none;
     box-shadow: 0 0 0 3px rgba(23,105,170,.13);
@@ -648,6 +596,47 @@ select:focus {
     font-size: 15px;
 }
 
+/* BOTTOM NOTES */
+
+.sds-notes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 19px;
+}
+
+.note-card {
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--blue);
+    border-radius: 11px;
+    background: #fff;
+    box-shadow: var(--shadow);
+}
+
+.note-card.printing {
+    border-left-color: var(--red);
+}
+
+.note-title {
+    margin: 0 0 7px;
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .5px;
+}
+
+.note-card.printing .note-title {
+    color: var(--red);
+}
+
+.note-card p {
+    margin: 0;
+    color: #4d5c6b;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
 /* FOOTER */
 
 footer {
@@ -678,12 +667,6 @@ footer {
 
 /* RESPONSIVE */
 
-@media (min-width: 760px) {
-    .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
 @media (max-width: 700px) {
     .header-inner {
         padding: 29px 19px;
@@ -708,6 +691,10 @@ footer {
     .open-button {
         min-width: 122px;
     }
+
+    .sds-notes {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 520px) {
@@ -720,11 +707,10 @@ footer {
         margin-bottom: 18px;
     }
 
-    .brand-mark {
-        width: 39px;
-        height: 39px;
-        flex-basis: 39px;
-        font-size: 17px;
+    .company-logo {
+        width: 60px;
+        height: 60px;
+        flex-basis: 60px;
     }
 
     .brand-name {
@@ -752,22 +738,6 @@ footer {
         padding: 15px;
         margin-bottom: 14px;
         border-radius: 11px;
-    }
-
-    .notice {
-        gap: 10px;
-        padding: 14px;
-    }
-
-    .notice-icon {
-        width: 32px;
-        height: 32px;
-        flex-basis: 32px;
-        font-size: 16px;
-    }
-
-    .notice p {
-        font-size: 12px;
     }
 
     .stats {
@@ -849,6 +819,14 @@ footer {
         min-height: 43px;
     }
 
+    .sds-notes {
+        gap: 12px;
+    }
+
+    .note-card {
+        padding: 15px;
+    }
+
     footer {
         padding-inline: 14px;
     }
@@ -874,7 +852,13 @@ footer {
 <header>
     <div class="header-inner">
         <div class="brand-row">
-            <div class="brand-mark" aria-hidden="true">BKH</div>
+            <img
+                class="company-logo"
+                src="https://raw.githubusercontent.com/nearmiss-bkh/esh-bkh-ms/main/logo_BidorKwongHeng.png"
+                alt="Bidor Kwong Heng Sdn. Bhd. Logo"
+                onerror="this.style.display='none';"
+            >
+
             <div>
                 <div class="brand-name">BIDOR KWONG HENG SDN BHD</div>
                 <div class="brand-subtitle">Environment · Safety · Health</div>
@@ -897,19 +881,7 @@ footer {
 
 <main>
 
-    <section class="notice" aria-label="Important chemical safety notice">
-        <div class="notice-icon" aria-hidden="true">!</div>
-        <div>
-            <span class="notice-title">Important Safety Notice</span>
-            <p>
-                Verify the chemical product name, supplier and SDS revision
-                before use. Follow the approved SDS and site chemical safety
-                procedures. If a PDF requests access, contact the ESH
-                Department to check its sharing permissions.
-            </p>
-        </div>
-    </section>
-
+    <!-- SDS LIBRARY STATISTICS -->
     <section class="panel stats" aria-label="SDS library statistics">
         <div class="stat-card">
             <div class="stat-icon" aria-hidden="true">▤</div>
@@ -928,6 +900,7 @@ footer {
         </div>
     </section>
 
+    <!-- SEARCH AND FILTER -->
     <section class="panel search-panel">
         <div class="section-heading">
             <div class="heading-group">
@@ -978,6 +951,7 @@ footer {
         </p>
     </section>
 
+    <!-- SDS DOCUMENT LIST -->
     <section class="panel">
         <div class="section-heading">
             <div class="heading-group">
@@ -985,7 +959,7 @@ footer {
                 <div>
                     <h2>Available SDS Documents</h2>
                     <p class="section-subtitle">
-                        Select a document to open its PDF.
+                        Documents are arranged in numerical order. Select a document to open its PDF.
                     </p>
                 </div>
             </div>
@@ -996,6 +970,28 @@ footer {
         </div>
 
         <div class="sds-list" id="sdsList"></div>
+    </section>
+
+    <!-- PRINTING AND SDS REVISION NOTES -->
+    <section class="sds-notes" aria-label="SDS library notes">
+        <div class="note-card printing">
+            <h2 class="note-title">PRINTING NOTICE</h2>
+            <p>
+                If a printed copy of any Safety Data Sheet (SDS) is required,
+                please refer to the ESH Department.
+            </p>
+        </div>
+
+        <div class="note-card">
+            <h2 class="note-title">SDS SHELF LIFE</h2>
+            <p>
+                SDS documents should be reviewed and updated at least every
+                five years from their revision date, or earlier when required
+                by the supplier, changes to the product, or applicable
+                regulatory requirements. Always refer to the latest available
+                revision.
+            </p>
+        </div>
     </section>
 
 </main>
@@ -1016,7 +1012,8 @@ footer {
     Each record contains:
     [original filename, Google Drive file ID, category]
 
-    Existing document records and file IDs are preserved.
+    All SDS records and Google Drive file IDs supplied in the
+    previous version are preserved.
 */
 
 const SDS_DATA = [
@@ -1101,19 +1098,26 @@ const SDS_DATA = [
 ["2. SUNLIGHT PRO FLOOR CLEANER 4X3.8L_EN200000271333EN.pdf","1nb3ofCvnI33K4d4l-kZRQfe3AgOaC5ko","Cleaning"]
 ];
 
-/* PREPARE DOCUMENT RECORDS */
+/* PREPARE AND SORT DOCUMENT RECORDS NUMERICALLY */
 
 const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
     const fileName = row[0];
     const fileId = row[1];
 
+    const numberMatch = fileName.match(/^\s*(\d+)/);
+    const number = numberMatch ? Number(numberMatch[1]) : Number.MAX_SAFE_INTEGER;
+
     return {
-        id: fileName.match(/^\d+/)?.[0] || fileId,
+        id: numberMatch ? numberMatch[1] : fileId,
+        number: number,
         name: fileName,
         category: row[2],
         pdfUrl: "https://drive.google.com/file/d/" +
             encodeURIComponent(fileId) + "/view"
     };
+}).sort(function(a, b) {
+    return a.number - b.number ||
+        a.name.localeCompare(b.name, undefined, { numeric: true });
 });
 
 /* PAGE ELEMENTS */
