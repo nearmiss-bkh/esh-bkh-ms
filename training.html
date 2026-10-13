@@ -1,0 +1,1315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#12345a">
+<title>BKH ESH | Training & Refresher Dashboard</title>
+
+<style>
+:root {
+  --navy: #12345a;
+  --navy-dark: #0b2038;
+  --blue: #1769aa;
+  --blue-light: #eaf3fc;
+  --red: #c62828;
+  --green: #16805d;
+  --orange: #b76a10;
+  --bg: #f3f6fa;
+  --card: #ffffff;
+  --text: #1d2939;
+  --muted: #667085;
+  --border: #e2e8f0;
+  --shadow: 0 5px 18px rgba(16, 40, 72, .06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, select { font: inherit; }
+
+button { cursor: pointer; }
+
+.hidden { display: none !important; }
+
+.topbar {
+  background: linear-gradient(115deg, var(--navy-dark), var(--navy));
+  color: white;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.1);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 25px;
+}
+
+.brand h1 {
+  font-size: 17px;
+  margin: 0 0 5px;
+  letter-spacing: .4px;
+}
+
+.brand p {
+  margin: 0;
+  font-size: 12px;
+  color: #c9d8ea;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-pill {
+  font-size: 12px;
+  padding: 9px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.16);
+}
+
+.btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  transition: .15s ease;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+}
+
+.btn-primary:hover { background: #10578e; }
+
+.btn-light {
+  background: white;
+  color: var(--navy);
+}
+
+.btn-outline {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+}
+
+.btn-danger {
+  background: #fff0f0;
+  color: var(--red);
+}
+
+.page {
+  max-width: 1500px;
+  padding: 25px;
+  margin: auto;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.page-heading h2 {
+  font-size: 25px;
+  margin: 0 0 7px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.update-text {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 7px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+}
+
+.kpi {
+  padding: 19px;
+  min-height: 140px;
+}
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.kpi-label {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.kpi-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  background: var(--blue-light);
+}
+
+.kpi-value {
+  font-size: 30px;
+  font-weight: 800;
+  margin-top: 16px;
+  letter-spacing: -.6px;
+}
+
+.kpi-note {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.9fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.panel {
+  padding: 20px;
+  min-width: 0;
+}
+
+.panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.panel-heading h3 {
+  font-size: 15px;
+  margin: 0;
+}
+
+.panel-heading p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.progress-wrap { margin-bottom: 19px; }
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.progress-label span:first-child { color: var(--muted); }
+
+.progress-track {
+  height: 9px;
+  border-radius: 20px;
+  background: #edf0f4;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: var(--blue);
+  width: 0;
+  transition: width .3s;
+}
+
+.progress-fill.green { background: var(--green); }
+.progress-fill.red { background: var(--red); }
+
+.department-list {
+  display: grid;
+  gap: 15px;
+}
+
+.department-row {
+  border-bottom: 1px solid #f0f2f5;
+  padding-bottom: 13px;
+}
+
+.department-row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.department-name {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.department-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 7px;
+}
+
+.table-panel { overflow: hidden; }
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.field {
+  padding: 10px 11px;
+  min-width: 145px;
+  border: 1px solid #d6dee8;
+  background: white;
+  border-radius: 8px;
+  color: var(--text);
+  outline: none;
+  font-size: 12px;
+}
+
+.field:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(23,105,170,.1);
+}
+
+.search-field {
+  flex: 1;
+  min-width: 220px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 920px;
+}
+
+th {
+  background: #f7f9fc;
+  color: #5d6a7b;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  text-align: left;
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+td {
+  padding: 13px 12px;
+  border-bottom: 1px solid #edf0f4;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+tbody tr:hover { background: #f9fbfe; }
+
+.employee-name { font-weight: 700; }
+
+.sub-text {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.status-pass {
+  background: #e4f7ed;
+  color: #147548;
+}
+
+.status-fail {
+  background: #ffebeb;
+  color: #b42318;
+}
+
+.status-other {
+  background: #edf1f6;
+  color: #475467;
+}
+
+.empty-state {
+  padding: 35px 15px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.footer {
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.login-screen {
+  min-height: calc(100vh - 88px);
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  background:
+    radial-gradient(circle at 10% 10%, #e1edf9, transparent 38%),
+    var(--bg);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 18px 55px rgba(16,40,72,.1);
+}
+
+.login-emblem {
+  width: 58px;
+  height: 58px;
+  border-radius: 15px;
+  background: var(--navy);
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 29px;
+  margin-bottom: 20px;
+}
+
+.login-card h2 {
+  margin: 0 0 9px;
+  font-size: 23px;
+}
+
+.login-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d6dee8;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.login-input:focus {
+  outline: 2px solid #d4e7fa;
+  border-color: var(--blue);
+}
+
+.login-error {
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.login-security {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.loading-line {
+  color: var(--blue);
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.notice {
+  padding: 13px 15px;
+  border-radius: 9px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notice-error {
+  color: #8f1d18;
+  background: #fff0ef;
+  border: 1px solid #ffd4d0;
+}
+
+.notice-info {
+  color: #164b7a;
+  background: #eaf3fc;
+  border: 1px solid #d1e5fa;
+}
+
+@media (max-width: 1050px) {
+  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .topbar { padding: 17px; }
+  .brand h1 { font-size: 14px; }
+  .brand p { font-size: 11px; }
+  .brand-icon { width: 42px; height: 42px; }
+  .page { padding: 16px; }
+  .page-heading h2 { font-size: 21px; }
+  .kpi-grid { gap: 10px; }
+  .kpi { padding: 14px; min-height: 125px; }
+  .kpi-value { font-size: 25px; }
+  .kpi-label { font-size: 11px; }
+  .panel { padding: 15px; }
+  .login-card { padding: 25px; }
+  .search-field { min-width: 100%; }
+  .filters .field { flex: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🛡</div>
+    <div>
+      <h1>BIDOR KWONG HENG SDN BHD</h1>
+      <p>ESH Training &amp; Refresher Management System</p>
+    </div>
+  </div>
+
+  <div id="headerActions" class="top-actions hidden">
+    <span class="admin-pill">● ESH ADMIN</span>
+    <button id="refreshBtn" class="btn btn-light" type="button">
+      ↻ Refresh
+    </button>
+    <button id="logoutBtn" class="btn btn-light" type="button">
+      Log Out
+    </button>
+  </div>
+</header>
+
+<main id="loginScreen" class="login-screen">
+  <section class="login-card">
+    <div class="login-emblem">🛡</div>
+    <h2>Admin Login</h2>
+    <p>
+      Sign in to access the ESH Training &amp; Refresher dashboard,
+      employee training records and department performance.
+    </p>
+
+    <form id="loginForm">
+      <label class="form-label" for="adminPassword">
+        ESH Administrator Password
+      </label>
+      <input
+        id="adminPassword"
+        class="login-input"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Enter admin password"
+        required
+      >
+
+      <div id="loginError" class="login-error" role="alert"></div>
+
+      <button id="loginBtn" class="btn btn-primary"
+        style="width:100%;padding:13px" type="submit">
+        SECURE LOGIN
+      </button>
+      <div id="loginLoading" class="loading-line" aria-live="polite"></div>
+    </form>
+
+    <div class="login-security">
+      🔒 Authorised ESH Admin access only. Training records are retrieved
+      from the designated BKH Google Sheets database.
+    </div>
+  </section>
+</main>
+
+<main id="dashboardScreen" class="page hidden">
+  <div id="dashboardNotice"></div>
+
+  <section class="page-heading">
+    <div>
+      <h2>Training Dashboard</h2>
+      <p>
+        Monitor employee training results, refresher needs and
+        department-level performance.
+      </p>
+      <div id="lastUpdated" class="update-text">
+        Waiting for database connection…
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <button id="exportBtn" class="btn btn-primary" type="button">
+        ↓ Export CSV
+      </button>
+      <button id="printBtn" class="btn btn-outline" type="button">
+        Print Report
+      </button>
+    </div>
+  </section>
+
+  <section class="kpi-grid">
+    <article class="card kpi">
+      <div class="kpi-top">
+        <span class="kpi-label">UNIQUE EMPLOYEES</span>
+        <span class="kpi-icon">👥</span>
+      </div>
+      <div id="kpiEmployees" class="kpi-value">—</div>
+      <div class="kpi-note">Employees with training records</div>
+    </article>
+
+    <article class="card kpi">
+      <div class="kpi-top">
+        <span class="kpi-label">LATEST PASS RATE</span>
+        <span class="kpi-icon">✓</span>
+      </div>
+      <div id="kpiPassRate" class="kpi-value">—</div>
+      <div class="kpi-note">Based on each employee's latest topic attempt</div>
+    </article>
+
+    <article class="card kpi">
+      <div class="kpi-top">
+        <span class="kpi-label">TRAINING SUBMISSIONS</span>
+        <span class="kpi-icon">▤</span>
+      </div>
+      <div id="kpiSubmissions" class="kpi-value">—</div>
+      <div class="kpi-note">All recorded attempts</div>
+    </article>
+
+    <article class="card kpi">
+      <div class="kpi-top">
+        <span class="kpi-label">REFRESHER REQUIRED</span>
+        <span class="kpi-icon">↻</span>
+      </div>
+      <div id="kpiRefresher" class="kpi-value">—</div>
+      <div class="kpi-note">Latest result is FAIL</div>
+    </article>
+  </section>
+
+  <section class="content-grid">
+    <article class="card panel">
+      <div class="panel-heading">
+        <div>
+          <h3>Overall Result Summary</h3>
+          <p>Latest result for each employee and training topic</p>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Passed</span>
+          <strong id="passSummary">0</strong>
+        </div>
+        <div class="progress-track">
+          <div id="passBar" class="progress-fill green"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Failed</span>
+          <strong id="failSummary">0</strong>
+        </div>
+        <div class="progress-track">
+          <div id="failBar" class="progress-fill red"></div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Training topics recorded</span>
+          <strong id="topicSummary">0</strong>
+        </div>
+      </div>
+
+      <div class="notice notice-info" style="margin:18px 0 0">
+        Pass requirement for Safety Awareness Training: 80% (8 out of 10).
+        A failed latest attempt is counted as requiring refresher follow-up.
+      </div>
+    </article>
+
+    <article class="card panel">
+      <div class="panel-heading">
+        <div>
+          <h3>Department Performance</h3>
+          <p>Based on each employee's latest result per training topic</p>
+        </div>
+      </div>
+      <div id="departmentList" class="department-list">
+        <div class="empty-state">Loading department data…</div>
+      </div>
+    </article>
+  </section>
+
+  <section class="card panel table-panel">
+    <div class="panel-heading">
+      <div>
+        <h3>Employee Training Records</h3>
+        <p>Search records and filter by department or result</p>
+      </div>
+    </div>
+
+    <div class="filters">
+      <input
+        id="searchInput"
+        class="field search-field"
+        type="search"
+        placeholder="Search employee ID, name or training topic…"
+      >
+
+      <select id="departmentFilter" class="field">
+        <option value="">All departments</option>
+      </select>
+
+      <select id="resultFilter" class="field">
+        <option value="">All results</option>
+        <option value="PASS">Pass</option>
+        <option value="FAIL">Fail</option>
+      </select>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Training Topic</th>
+            <th>Date &amp; Time</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Result</th>
+            <th>Attempt</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody">
+          <tr>
+            <td colspan="8" class="empty-state">
+              Waiting for database connection…
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-footer">
+      <span id="recordCount">0 records</span>
+      <span>Newest submissions appear first</span>
+    </div>
+  </section>
+
+  <footer class="footer">
+    BIDOR KWONG HENG SDN BHD · ESH Training &amp; Refresher Management System
+  </footer>
+</main>
+
+<iframe
+  id="apiFrame"
+  name="bkhTrainingDashboardFrame"
+  title="Training API response"
+  style="display:none"
+  aria-hidden="true">
+</iframe>
+
+<script>
+"use strict";
+
+/* =========================================================
+   API CONFIGURATION
+========================================================= */
+
+const TRAINING_API_URL =
+  "https://script.google.com/macros/s/AKfycbx3lclVKl_nxJpmCmoln862U6_xwdTUB9SRSbMI2jCewvHtzd_yXyTEA08wGcMqAQ/exec";
+
+let adminPassword = "";
+let dashboardRecords = [];
+let departmentData = [];
+let latestEmployeeRecords = [];
+let currentRequestId = "";
+let requestTimer = null;
+let requestInProgress = false;
+
+
+/* =========================================================
+   DOM HELPERS
+========================================================= */
+
+const $ = function(id) {
+  return document.getElementById(id);
+};
+
+function escapeHtml(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, function(ch) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[ch];
+  });
+}
+
+function formatNumber(value) {
+  return (Number(value) || 0).toLocaleString();
+}
+
+function showNotice(message, type) {
+  $("dashboardNotice").innerHTML = message
+    ? '<div class="notice ' +
+      (type === "error" ? "notice-error" : "notice-info") +
+      '">' + escapeHtml(message) + '</div>'
+    : "";
+}
+
+
+/* =========================================================
+   CROSS-ORIGIN FORM REQUEST
+   GitHub Pages -> Apps Script Web App
+========================================================= */
+
+function sendApiRequest(payload) {
+  return new Promise(function(resolve, reject) {
+    if (requestInProgress) {
+      reject(new Error("A request is already in progress."));
+      return;
+    }
+
+    requestInProgress = true;
+
+    const requestId = Date.now().toString() + "-" +
+      Math.random().toString(36).slice(2);
+
+    currentRequestId = requestId;
+    payload.requestId = requestId;
+
+    const frame = $("apiFrame");
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = TRAINING_API_URL;
+    form.target = frame.name;
+    form.acceptCharset = "UTF-8";
+    form.style.display = "none";
+
+    const field = document.createElement("input");
+    field.type = "hidden";
+    field.name = "payload";
+    field.value = JSON.stringify(payload);
+
+    form.appendChild(field);
+    document.body.appendChild(form);
+
+    requestTimer = setTimeout(function() {
+      if (currentRequestId !== requestId) return;
+
+      currentRequestId = "";
+      requestInProgress = false;
+      form.remove();
+
+      reject(new Error(
+        "The server did not respond in time. Check your connection " +
+        "and whether the Web App deployment is accessible."
+      ));
+    }, 30000);
+
+    form.submit();
+    form.remove();
+
+    window.__bkhResolveTrainingRequest = function(response) {
+      if (!response || response.requestId !== requestId) return;
+
+      clearTimeout(requestTimer);
+      currentRequestId = "";
+      requestInProgress = false;
+      window.__bkhResolveTrainingRequest = null;
+      resolve(response);
+    };
+  });
+}
+
+
+/* Apps Script response message */
+window.addEventListener("message", function(event) {
+  const message = event.data;
+
+  if (!message || message.type !== "BKH_TRAINING_RESULT") return;
+  if (!message.payload) return;
+
+  if (typeof window.__bkhResolveTrainingRequest === "function") {
+    window.__bkhResolveTrainingRequest(message.payload);
+  }
+});
+
+
+/* =========================================================
+   ADMIN LOGIN / LOGOUT
+========================================================= */
+
+$("loginForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  if (requestInProgress) return;
+
+  const password = $("adminPassword").value;
+  $("loginError").textContent = "";
+  $("loginLoading").textContent = "Verifying administrator access…";
+  $("loginBtn").disabled = true;
+
+  try {
+    const response = await sendApiRequest({
+      action: "adminLogin",
+      adminPassword: password
+    });
+
+    if (!response.success) {
+      throw new Error(response.message || "Login failed.");
+    }
+
+    adminPassword = password;
+    $("adminPassword").value = "";
+    $("loginScreen").classList.add("hidden");
+    $("dashboardScreen").classList.remove("hidden");
+    $("headerActions").classList.remove("hidden");
+    $("loginLoading").textContent = "";
+
+    await loadDashboard();
+
+  } catch (error) {
+    $("loginError").textContent = error.message ||
+      "Unable to verify admin access.";
+  } finally {
+    $("loginBtn").disabled = false;
+    $("loginLoading").textContent = "";
+  }
+});
+
+
+$("logoutBtn").addEventListener("click", function() {
+  adminPassword = "";
+  dashboardRecords = [];
+  departmentData = [];
+  latestEmployeeRecords = [];
+
+  $("dashboardScreen").classList.add("hidden");
+  $("headerActions").classList.add("hidden");
+  $("loginScreen").classList.remove("hidden");
+  $("adminPassword").value = "";
+  $("loginError").textContent = "";
+  $("dashboardNotice").innerHTML = "";
+});
+
+
+/* =========================================================
+   LOAD LIVE DATA
+========================================================= */
+
+async function loadDashboard() {
+  if (!adminPassword || requestInProgress) return;
+
+  $("refreshBtn").disabled = true;
+  $("refreshBtn").textContent = "Loading…";
+  showNotice("", "");
+
+  try {
+    const response = await sendApiRequest({
+      action: "getDashboardData",
+      adminPassword: adminPassword
+    });
+
+    if (!response.success) {
+      if (
+        String(response.message || "").toLowerCase().includes("password")
+      ) {
+        adminPassword = "";
+        $("dashboardScreen").classList.add("hidden");
+        $("headerActions").classList.add("hidden");
+        $("loginScreen").classList.remove("hidden");
+        $("loginError").textContent =
+          "Your admin session could not be verified. Please log in again.";
+        return;
+      }
+
+      throw new Error(response.message || "Unable to load dashboard data.");
+    }
+
+    const summary = response.summary || {};
+
+    dashboardRecords = Array.isArray(response.records)
+      ? response.records : [];
+
+    departmentData = Array.isArray(response.departments)
+      ? response.departments : [];
+
+    latestEmployeeRecords = Array.isArray(response.latestEmployeeRecords)
+      ? response.latestEmployeeRecords : [];
+
+    renderSummary(summary);
+    renderDepartments(departmentData);
+    renderDepartmentOptions(dashboardRecords);
+    renderRecords();
+
+    $("lastUpdated").textContent =
+      "Last updated: " + (response.updatedAt || "Unknown") +
+      " · Connected to Google Sheets";
+
+  } catch (error) {
+    showNotice(error.message || "Failed to load training data.", "error");
+  } finally {
+    $("refreshBtn").disabled = false;
+    $("refreshBtn").textContent = "↻ Refresh";
+  }
+}
+
+
+function renderSummary(summary) {
+  $("kpiEmployees").textContent =
+    formatNumber(summary.uniqueEmployees);
+
+  $("kpiPassRate").textContent =
+    (Number(summary.passRate) || 0) + "%";
+
+  $("kpiSubmissions").textContent =
+    formatNumber(summary.totalSubmissions);
+
+  $("kpiRefresher").textContent =
+    formatNumber(summary.refresherRequired);
+
+  $("passSummary").textContent =
+    formatNumber(summary.passCount);
+
+  $("failSummary").textContent =
+    formatNumber(summary.failCount);
+
+  $("topicSummary").textContent =
+    formatNumber(summary.topicCount);
+
+  const total = Number(summary.latestEmployeeTopicRecords) || 0;
+  const pass = Number(summary.passCount) || 0;
+  const fail = Number(summary.failCount) || 0;
+
+  $("passBar").style.width =
+    (total ? (pass / total) * 100 : 0) + "%";
+
+  $("failBar").style.width =
+    (total ? (fail / total) * 100 : 0) + "%";
+}
+
+
+/* =========================================================
+   DEPARTMENT PERFORMANCE
+========================================================= */
+
+function renderDepartments(departments) {
+  const container = $("departmentList");
+
+  if (!departments.length) {
+    container.innerHTML =
+      '<div class="empty-state">No department training records yet.</div>';
+    return;
+  }
+
+  container.innerHTML = departments.map(function(item) {
+    const rate = Math.max(0, Math.min(100, Number(item.passRate) || 0));
+
+    return `
+      <div class="department-row">
+        <div class="department-name">
+          <span>${escapeHtml(item.department)}</span>
+          <span>${rate}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill ${rate >= 80 ? "green" : ""}"
+               style="width:${rate}%"></div>
+        </div>
+        <div class="department-meta">
+          <span>${formatNumber(item.employees)} employee-topic records</span>
+          <span>${formatNumber(item.passed)} passed · ${formatNumber(item.failed)} failed</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+
+/* =========================================================
+   SEARCH AND FILTERS
+========================================================= */
+
+function renderDepartmentOptions(records) {
+  const select = $("departmentFilter");
+  const previousValue = select.value;
+
+  const departments = Array.from(new Set(
+    records.map(function(record) {
+      return String(record.department || "").trim();
+    }).filter(Boolean)
+  )).sort();
+
+  select.innerHTML =
+    '<option value="">All departments</option>' +
+    departments.map(function(department) {
+      return '<option value="' + escapeHtml(department) + '">' +
+        escapeHtml(department) + '</option>';
+    }).join("");
+
+  if (departments.includes(previousValue)) {
+    select.value = previousValue;
+  }
+}
+
+
+function getFilteredRecords() {
+  const search = $("searchInput").value.trim().toLowerCase();
+  const department = $("departmentFilter").value;
+  const result = $("resultFilter").value;
+
+  return dashboardRecords.filter(function(record) {
+    const searchText = [
+      record.employeeId,
+      record.employeeName,
+      record.department,
+      record.topic
+    ].join(" ").toLowerCase();
+
+    if (search && !searchText.includes(search)) return false;
+    if (department && record.department !== department) return false;
+    if (result && record.result !== result) return false;
+
+    return true;
+  });
+}
+
+
+function renderRecords() {
+  const records = getFilteredRecords();
+  const body = $("recordsBody");
+
+  if (!records.length) {
+    body.innerHTML =
+      '<tr><td colspan="8" class="empty-state">' +
+      'No matching training records found.</td></tr>';
+    $("recordCount").textContent = "0 records";
+    return;
+  }
+
+  body.innerHTML = records.map(function(record) {
+    const result = String(record.result || "").toUpperCase();
+
+    const statusClass = result === "PASS"
+      ? "status-pass"
+      : result === "FAIL" ? "status-fail" : "status-other";
+
+    const statusText = result || "UNKNOWN";
+
+    return `
+      <tr>
+        <td>
+          <div class="employee-name">${escapeHtml(record.employeeName || "—")}</div>
+          <div class="sub-text">${escapeHtml(record.employeeId || "—")}</div>
+        </td>
+        <td>${escapeHtml(record.department || "—")}</td>
+        <td>${escapeHtml(record.topic || "—")}</td>
+        <td>${escapeHtml(record.submittedAt || "—")}</td>
+        <td>${formatNumber(record.score)} / ${formatNumber(record.totalMarks)}</td>
+        <td><strong>${formatNumber(record.percentage)}%</strong></td>
+        <td><span class="status ${statusClass}">${escapeHtml(statusText)}</span></td>
+        <td>${formatNumber(record.attemptNumber)}</td>
+      </tr>
+    `;
+  }).join("");
+
+  $("recordCount").textContent =
+    formatNumber(records.length) + " of " +
+    formatNumber(dashboardRecords.length) + " records";
+}
+
+
+$("searchInput").addEventListener("input", renderRecords);
+$("departmentFilter").addEventListener("change", renderRecords);
+$("resultFilter").addEventListener("change", renderRecords);
+
+$("refreshBtn").addEventListener("click", loadDashboard);
+
+
+/* =========================================================
+   CSV EXPORT
+========================================================= */
+
+function csvCell(value) {
+  const text = String(value == null ? "" : value);
+  return '"' + text.replace(/"/g, '""') + '"';
+}
+
+$("exportBtn").addEventListener("click", function() {
+  const records = getFilteredRecords();
+
+  const headings = [
+    "Employee ID",
+    "Employee Name",
+    "Department",
+    "Training Topic",
+    "Submission Date Time",
+    "Score",
+    "Total Marks",
+    "Percentage",
+    "Result",
+    "Attempt Number"
+  ];
+
+  const rows = records.map(function(record) {
+    return [
+      record.employeeId,
+      record.employeeName,
+      record.department,
+      record.topic,
+      record.submittedAt,
+      record.score,
+      record.totalMarks,
+      record.percentage,
+      record.result,
+      record.attemptNumber
+    ];
+  });
+
+  const csv = "\uFEFF" +
+    [headings].concat(rows)
+      .map(function(row) {
+        return row.map(csvCell).join(",");
+      })
+      .join("\r\n");
+
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "BKH_ESH_Training_Records.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+});
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+$("printBtn").addEventListener("click", function() {
+  window.print();
+});
+</script>
+
+<style>
+@media print {
+  body { background: white; }
+  .topbar { background: white !important; color: black; padding: 10px 0; }
+  .topbar p { color: #555 !important; }
+  .top-actions, .filters, .footer, #dashboardNotice { display: none !important; }
+  .page { max-width: none; padding: 0; }
+  .card { box-shadow: none; break-inside: avoid; }
+  .content-grid { grid-template-columns: 1fr 1fr; }
+  table { min-width: 0; }
+  th, td { font-size: 9px; padding: 6px; }
+}
+</style>
+
+</body>
+</html>
