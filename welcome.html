@@ -1,20 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#071a36">
-<title>Welcome | BKH ESH Management System</title>
+
+<title>BKH | ESH Management System</title>
+<meta name="theme-color" content="#102746">
 
 <style>
 :root {
-    --navy: #071a36;
-    --blue: #123d82;
-    --red: #b21d32;
-    --text: #172638;
-    --muted: #69798b;
-    --border: #e0e7ef;
-    --background: #f3f6fa;
+    --navy: #102746;
+    --navy-dark: #081629;
+    --blue: #1b4777;
+    --red: #d62832;
+    --white: #ffffff;
+    --muted: #c6d1df;
+    --background: #eef2f7;
 }
 
 * {
@@ -23,348 +25,637 @@
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
     min-height: 100vh;
-    font-family: Inter, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Arial, sans-serif;
-    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--white);
+    background: var(--navy-dark);
+    overflow-x: hidden;
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.page-background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+
     background:
-        radial-gradient(circle at 0% 0%, rgba(18,61,130,.10), transparent 32%),
-        radial-gradient(circle at 100% 100%, rgba(178,29,50,.08), transparent 30%),
-        var(--background);
+        linear-gradient(
+            115deg,
+            rgba(5, 16, 32, 0.97) 0%,
+            rgba(12, 37, 67, 0.94) 48%,
+            rgba(8, 22, 41, 0.97) 100%
+        );
+}
+
+.page-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            135deg,
+            transparent 47%,
+            rgba(255,255,255,0.035) 48%,
+            rgba(255,255,255,0.035) 49%,
+            transparent 50%
+        );
+
+    background-size: 70px 70px;
+    opacity: 0.65;
+}
+
+.page-background::after {
+    content: "";
+    position: absolute;
+    width: 650px;
+    height: 650px;
+    right: -180px;
+    top: -180px;
+    border: 90px solid rgba(214,40,50,0.12);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 70px rgba(255,255,255,0.025),
+        0 0 0 150px rgba(255,255,255,0.018);
+}
+
+/* Decorative safety stripes */
+
+.safety-stripe {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 12px;
+    z-index: 5;
+
+    background: repeating-linear-gradient(
+        135deg,
+        #f5bd32 0,
+        #f5bd32 24px,
+        #101820 24px,
+        #101820 48px
+    );
+}
+
+/* =====================================================
+   PAGE LAYOUT
+===================================================== */
+
+.page-wrapper {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding: 28px 6%;
 }
 
-button, a {
-    font: inherit;
-}
+/* =====================================================
+   HEADER
+===================================================== */
 
-.topbar {
-    min-height: 76px;
-    padding: 16px 5%;
-    background: var(--navy);
-    color: white;
+.top-header {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.12);
+    gap: 24px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.brand-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: grid;
-    place-items: center;
-    background: linear-gradient(135deg, #174c98, #b21d32);
-    font-size: 23px;
-}
-
-.brand-name {
-    font-size: 15px;
-    font-weight: 800;
-    letter-spacing: .6px;
-}
-
-.brand-subtitle {
-    margin-top: 4px;
-    color: #c5d2e5;
-    font-size: 12px;
-}
-
-.header-right {
+.company-brand {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-.user-info {
+.logo-box {
+    width: 78px;
+    height: 78px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 7px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.22);
+}
+
+.logo-box img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.brand-text h1 {
+    font-size: clamp(17px, 2vw, 25px);
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+}
+
+.brand-text p {
+    margin-top: 6px;
+    font-size: 12px;
+    letter-spacing: 2.2px;
+    color: #e8b8bd;
+    text-transform: uppercase;
+}
+
+.header-right {
     text-align: right;
 }
 
-.user-name {
-    font-size: 13px;
-    font-weight: 700;
-}
+.secure-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 13px;
+    border-radius: 30px;
 
-.user-role {
-    margin-top: 4px;
-    color: #c5d2e5;
-    font-size: 11px;
-}
+    border: 1px solid rgba(90,220,160,0.35);
+    background: rgba(40,180,115,0.10);
 
-.logout-button {
-    border: 1px solid rgba(255,255,255,.3);
-    background: transparent;
-    color: white;
-    border-radius: 9px;
-    padding: 10px 14px;
-    cursor: pointer;
+    color: #a8f0c9;
     font-size: 12px;
     font-weight: 700;
 }
 
-.logout-button:hover {
-    background: rgba(255,255,255,.1);
+.secure-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #48db91;
+    box-shadow: 0 0 9px rgba(72,219,145,0.65);
 }
 
-main {
-    width: min(1120px, 92%);
-    margin: auto;
-    padding: 58px 0 64px;
+#dateTime {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.main-content {
     flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding-top: 48px;
+    padding-bottom: 48px;
 }
 
 .welcome-heading {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 42px;
 }
 
 .eyebrow {
-    display: inline-block;
-    color: var(--red);
-    background: #fff0f2;
-    border: 1px solid #f5d4da;
-    padding: 7px 13px;
-    border-radius: 30px;
-    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #ff9ca2;
+    font-size: 12px;
     font-weight: 800;
-    letter-spacing: 1.2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+
     margin-bottom: 18px;
 }
 
-h1 {
-    color: var(--navy);
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 800;
-    letter-spacing: -.8px;
-    line-height: 1.2;
+.eyebrow::before,
+.eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 2px;
+    background: var(--red);
 }
 
-.welcome-description {
-    max-width: 600px;
-    margin: 14px auto 0;
-    color: var(--muted);
+.welcome-heading h2 {
+    font-size: clamp(30px, 4.2vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+}
+
+.welcome-heading h2 span {
+    color: #ff555e;
+}
+
+.welcome-heading p {
+    max-width: 650px;
+    margin: 17px auto 0;
+    color: #c8d4e3;
     font-size: 15px;
     line-height: 1.8;
 }
 
+/* =====================================================
+   SYSTEM CARDS
+===================================================== */
+
 .system-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
+    gap: 24px;
 }
 
 .system-card {
-    min-width: 0;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 19px;
-    padding: 28px 24px 24px;
+    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 300px;
-    box-shadow: 0 10px 28px rgba(17,38,67,.055);
-    transition: transform .2s ease, box-shadow .2s ease,
-        border-color .2s ease;
+    overflow: hidden;
+
+    padding: 30px 26px 26px;
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.13);
+    background: linear-gradient(
+        155deg,
+        rgba(255,255,255,0.105),
+        rgba(255,255,255,0.035)
+    );
+
+    box-shadow: 0 18px 45px rgba(0,0,0,0.18);
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.system-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--card-color, var(--red));
+}
+
+.system-card::after {
+    content: "";
+    position: absolute;
+    right: -48px;
+    top: -48px;
+    width: 125px;
+    height: 125px;
+    border: 24px solid rgba(255,255,255,0.035);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 .system-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 18px 36px rgba(17,38,67,.11);
-    border-color: #b8c9df;
+    transform: translateY(-7px);
+    border-color: rgba(255,255,255,0.32);
+    background: linear-gradient(
+        155deg,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.055)
+    );
 }
 
 .system-icon {
-    width: 62px;
-    height: 62px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 16px;
-    display: grid;
-    place-items: center;
-    font-size: 30px;
-    margin-bottom: 23px;
+    margin-bottom: 25px;
+
+    color: #ffffff;
+    background: var(--icon-background, #c92231);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.16);
 }
 
-.icon-report {
-    background: #e8f1ff;
+.system-icon svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-.icon-sds {
-    background: #e5f6ee;
+.system-card h3 {
+    font-size: 22px;
+    font-weight: 750;
+    margin-bottom: 12px;
 }
 
-.icon-training {
-    background: #fff0e5;
-}
-
-.system-card h2 {
-    font-size: 20px;
-    color: var(--navy);
-    margin-bottom: 11px;
-}
-
-.system-card p {
-    font-size: 13px;
+.system-card .description {
+    color: #c3cede;
+    font-size: 14px;
     line-height: 1.8;
-    color: var(--muted);
     flex: 1;
     margin-bottom: 25px;
 }
 
-.open-button {
+.system-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    gap: 12px;
+
     width: 100%;
-    padding: 14px 16px;
-    color: white;
-    background: var(--navy);
+    min-height: 49px;
+    padding: 13px 16px;
+
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 9px;
+
+    background: var(--button-background, #c92231);
+    color: #ffffff;
+
     text-decoration: none;
-    border: 0;
-    border-radius: 10px;
     font-size: 13px;
-    font-weight: 750;
-    cursor: pointer;
-    transition: background .2s ease;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+
+    transition: filter 0.2s ease, transform 0.2s ease;
 }
 
-.open-button:hover {
-    background: var(--blue);
+.system-button:hover {
+    filter: brightness(1.12);
 }
 
-.open-button .arrow {
-    font-size: 18px;
+.system-button:focus-visible,
+.logout-button:focus-visible {
+    outline: 3px solid #ffd45e;
+    outline-offset: 4px;
+}
+
+.arrow {
+    font-size: 21px;
+    line-height: 1;
+}
+
+/* Individual system themes */
+
+.esh-card {
+    --card-color: #e63843;
+    --icon-background: #c92231;
+    --button-background: #c92231;
+}
+
+.sds-card {
+    --card-color: #3e9ce8;
+    --icon-background: #1768a9;
+    --button-background: #1768a9;
 }
 
 .training-card {
-    border-top: 4px solid var(--red);
+    --card-color: #edb63b;
+    --icon-background: #a87912;
+    --button-background: #a87912;
 }
 
-.training-card .open-button {
-    background: linear-gradient(135deg, var(--blue), var(--red));
-}
+/* =====================================================
+   BOTTOM INFORMATION
+===================================================== */
 
-.training-card .open-button:hover {
-    filter: brightness(1.08);
-}
+.safety-message {
+    margin-top: 35px;
+    padding: 19px 24px;
 
-.notice {
-    margin-top: 30px;
-    padding: 17px 20px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,.75);
-    border-radius: 12px;
     display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
-}
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
 
-.notice-icon {
-    font-size: 19px;
-}
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.13);
 
-.notice strong {
-    color: var(--text);
-}
-
-footer {
     text-align: center;
-    padding: 20px;
-    border-top: 1px solid var(--border);
-    color: var(--muted);
+}
+
+.safety-message .quote-mark {
+    color: #ff656d;
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 800;
+}
+
+.safety-message p {
+    color: #e2e9f2;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.safety-message strong {
+    color: #ffffff;
+    font-style: normal;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 20px 0 15px;
+    border-top: 1px solid rgba(255,255,255,0.13);
+}
+
+.footer p {
+    color: #9faec1;
     font-size: 11px;
-    line-height: 1.8;
+    line-height: 1.6;
 }
 
-footer strong {
-    color: var(--navy);
+.footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
-@media (max-width: 850px) {
-    main {
-        padding-top: 42px;
+.footer-status {
+    color: #a8f0c9;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.logout-button {
+    padding: 9px 14px;
+    border: 1px solid rgba(255,255,255,0.24);
+    border-radius: 7px;
+
+    color: #ffffff;
+    background: rgba(255,255,255,0.06);
+
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background: rgba(255,255,255,0.13);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+    .page-wrapper {
+        padding-left: 4%;
+        padding-right: 4%;
     }
 
     .system-grid {
-        grid-template-columns: 1fr;
-        max-width: 520px;
-        margin: auto;
-        gap: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .system-card {
+    .training-card {
+        grid-column: 1 / -1;
         min-height: 260px;
     }
 }
 
-@media (max-width: 520px) {
-    .topbar {
-        padding: 13px 4%;
+@media (max-width: 600px) {
+    .page-wrapper {
+        padding: 18px 18px 24px;
+    }
+
+    .top-header {
         align-items: flex-start;
     }
 
-    .brand {
-        gap: 9px;
+    .company-brand {
+        gap: 11px;
     }
 
-    .brand-icon {
-        width: 38px;
-        height: 38px;
+    .logo-box {
+        width: 55px;
+        height: 55px;
+        border-radius: 9px;
+        padding: 5px;
     }
 
-    .brand-name {
-        font-size: 11px;
+    .brand-text h1 {
+        font-size: 15px;
     }
 
-    .brand-subtitle {
-        font-size: 10px;
+    .brand-text p {
+        font-size: 9px;
+        letter-spacing: 1px;
+        line-height: 1.6;
     }
 
     .header-right {
-        gap: 8px;
+        max-width: 125px;
     }
 
-    .user-info {
-        display: none;
+    .secure-label {
+        font-size: 9px;
+        padding: 7px 9px;
+        gap: 6px;
     }
 
-    .logout-button {
-        padding: 9px 10px;
-        font-size: 11px;
+    #dateTime {
+        font-size: 10px;
+        line-height: 1.6;
     }
 
-    main {
-        width: 90%;
-        padding: 38px 0;
+    .main-content {
+        padding-top: 40px;
+        padding-bottom: 35px;
     }
 
     .welcome-heading {
-        margin-bottom: 28px;
+        margin-bottom: 30px;
     }
 
-    .welcome-description {
+    .welcome-heading h2 {
+        font-size: 31px;
+    }
+
+    .welcome-heading p {
         font-size: 13px;
     }
 
-    .system-card {
-        padding: 23px 20px;
+    .eyebrow {
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    .system-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .system-card,
+    .training-card {
+        grid-column: auto;
+        min-height: 260px;
+        padding: 24px;
+    }
+
+    .system-icon {
+        width: 55px;
+        height: 55px;
+        margin-bottom: 20px;
+    }
+
+    .system-card h3 {
+        font-size: 20px;
+    }
+
+    .safety-message {
+        margin-top: 25px;
+        padding: 17px 12px;
+    }
+
+    .safety-message p {
+        font-size: 12px;
+    }
+
+    .footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .footer-actions {
+        width: 100%;
+        justify-content: space-between;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
         transition: none !important;
     }
 }
@@ -373,155 +664,271 @@ footer strong {
 
 <body>
 
-<header class="topbar">
-    <div class="brand">
-        <div class="brand-icon" aria-hidden="true">🛡️</div>
-        <div>
-            <div class="brand-name">BIDOR KWONG HENG SDN BHD</div>
-            <div class="brand-subtitle">ESH Management System</div>
-        </div>
-    </div>
+<div class="page-background"></div>
 
-    <div class="header-right">
-        <div class="user-info">
-            <div class="user-name" id="userName">Authorized User</div>
-            <div class="user-role" id="userRole">ESH System Access</div>
-        </div>
-        <button type="button" class="logout-button" id="logoutButton">
-            Log Out
-        </button>
-    </div>
-</header>
+<div class="page-wrapper">
 
-<main>
-    <section class="welcome-heading">
-        <div class="eyebrow">ENVIRONMENT · SAFETY · HEALTH</div>
-        <h1>Welcome to BKH ESH</h1>
-        <p class="welcome-description">
-            Select the system you need to access.
-            Please follow the relevant procedures and requirements
-            for your selected system.
+    <!-- HEADER -->
+
+    <header class="top-header">
+
+        <div class="company-brand">
+
+            <div class="logo-box">
+                <img
+                    src="logo_BidorKwongHeng.png"
+                    alt="Bidor Kwong Heng company logo"
+                    onerror="this.style.display='none';"
+                >
+            </div>
+
+            <div class="brand-text">
+                <h1>BIDOR KWONG HENG SDN BHD</h1>
+                <p>ESH Management System</p>
+            </div>
+
+        </div>
+
+        <div class="header-right">
+
+            <div class="secure-label">
+                <span class="secure-dot"></span>
+                SECURE CONNECTION
+            </div>
+
+            <div id="dateTime">Loading Malaysia time...</div>
+
+        </div>
+
+    </header>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <section class="welcome-heading">
+
+            <div class="eyebrow">
+                Welcome Back
+            </div>
+
+            <h2>
+                Welcome to <span>ESH Management</span>
+            </h2>
+
+            <p>
+                Select the system you need to access.
+                Work safely, follow procedures, and help us
+                maintain a safer and healthier workplace.
+            </p>
+
+        </section>
+
+
+        <!-- SYSTEM CARDS -->
+
+        <section class="system-grid" aria-label="Available systems">
+
+            <!-- ESH REPORT -->
+
+            <article class="system-card esh-card">
+
+                <div class="system-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3 21 7.5 12 12 3 7.5 12 3Z"/>
+                        <path d="M3 12l9 4.5 9-4.5"/>
+                        <path d="M3 16.5 12 21l9-4.5"/>
+                    </svg>
+                </div>
+
+                <h3>ESH Report</h3>
+
+                <p class="description">
+                    Report near misses, unsafe acts and unsafe
+                    conditions. Review cases and monitor
+                    corrective actions.
+                </p>
+
+                <a class="system-button" href="esh.html">
+                    <span>OPEN ESH REPORT</span>
+                    <span class="arrow" aria-hidden="true">→</span>
+                </a>
+
+            </article>
+
+
+            <!-- SDS LIBRARY -->
+
+            <article class="system-card sds-card">
+
+                <div class="system-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 3h8l5 5v13H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/>
+                        <path d="M14 3v5h5"/>
+                        <path d="M8 12h8"/>
+                        <path d="M8 16h8"/>
+                        <path d="M8 8h2"/>
+                    </svg>
+                </div>
+
+                <h3>SDS Library</h3>
+
+                <p class="description">
+                    Access Safety Data Sheets and important
+                    chemical safety information to support
+                    safe chemical handling.
+                </p>
+
+                <a class="system-button" href="sds.html">
+                    <span>OPEN SDS LIBRARY</span>
+                    <span class="arrow" aria-hidden="true">→</span>
+                </a>
+
+            </article>
+
+
+            <!-- TRAINING -->
+
+            <article class="system-card training-card">
+
+                <div class="system-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H20v16H5.5A2.5 2.5 0 0 0 3 21V5.5Z"/>
+                        <path d="M3 17a2.5 2.5 0 0 1 2.5-2.5H20"/>
+                        <path d="m9 8 2 2 4-4"/>
+                    </svg>
+                </div>
+
+                <h3>Training &amp; Refresher</h3>
+
+                <p class="description">
+                    Complete ESH safety training, take knowledge
+                    assessments and review training results
+                    and refresher requirements.
+                </p>
+
+                <a class="system-button" href="training.html">
+                    <span>OPEN TRAINING SYSTEM</span>
+                    <span class="arrow" aria-hidden="true">→</span>
+                </a>
+
+            </article>
+
+        </section>
+
+
+        <!-- SAFETY MESSAGE -->
+
+        <section class="safety-message">
+
+            <span class="quote-mark" aria-hidden="true">“</span>
+
+            <p>
+                Safety starts with me,
+                <strong>but protects us all.</strong>
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <p>
+            © <span id="year"></span> Bidor Kwong Heng Sdn Bhd.
+            All rights reserved.<br>
+            ESH Management System | Authorized Personnel Only
         </p>
-    </section>
 
-    <section class="system-grid" aria-label="Available systems">
+        <div class="footer-actions">
 
-        <!-- SYSTEM 1: ESH REPORT -->
-        <article class="system-card">
-            <div class="system-icon icon-report" aria-hidden="true">
-                📋
-            </div>
-            <h2>ESH Report</h2>
-            <p>
-                Access the existing ESH reporting system to review
-                reports, monitor corrective actions and manage
-                assigned ESH responsibilities.
-            </p>
-            <a class="open-button"
-               href="https://nearmiss-bkh.github.io/esh-bkh-ms/esh.html">
-                <span>Open ESH Report</span>
-                <span class="arrow" aria-hidden="true">→</span>
-            </a>
-        </article>
+            <span class="footer-status">
+                ● SYSTEM PORTAL
+            </span>
 
-        <!-- SYSTEM 2: SDS LIBRARY -->
-        <article class="system-card">
-            <div class="system-icon icon-sds" aria-hidden="true">
-                📚
-            </div>
-            <h2>SDS Library</h2>
-            <p>
-                Access the Safety Data Sheet library to find
-                chemical safety information and relevant
-                handling, storage and emergency precautions.
-            </p>
-            <a class="open-button"
-               href="https://nearmiss-bkh.github.io/esh-bkh-ms/sds.html">
-                <span>Open SDS Library</span>
-                <span class="arrow" aria-hidden="true">→</span>
-            </a>
-        </article>
+            <button
+                class="logout-button"
+                type="button"
+                onclick="logout()"
+            >
+                LOG OUT
+            </button>
 
-        <!-- SYSTEM 3: TRAINING & REFRESHER -->
-        <article class="system-card training-card">
-            <div class="system-icon icon-training" aria-hidden="true">
-                🎓
-            </div>
-            <h2>Training &amp; Refresher</h2>
-            <p>
-                Access safety training topics, complete knowledge
-                assessments and, for authorized ESH administrators,
-                review training records and refresher requirements.
-            </p>
-            <a class="open-button"
-               href="https://nearmiss-bkh.github.io/esh-bkh-ms/training.html">
-                <span>Open Training System</span>
-                <span class="arrow" aria-hidden="true">→</span>
-            </a>
-        </article>
-
-    </section>
-
-    <div class="notice">
-        <div class="notice-icon" aria-hidden="true">🔐</div>
-        <div>
-            <strong>Authorized access only.</strong>
-            Please protect your login credentials and log out
-            when you finish using the system. Access permissions
-            are determined by each system.
         </div>
-    </div>
-</main>
 
-<footer>
-    <strong>BIDOR KWONG HENG SDN BHD</strong> · ESH DEPARTMENT
-    <br>
-    Environment · Safety · Health
-</footer>
+    </footer>
+
+</div>
+
+<div class="safety-stripe"></div>
 
 <script>
-(function () {
-    "use strict";
+"use strict";
 
-    /*
-     * Require a successful login in this browser tab.
-     * The login and welcome pages must be hosted on the same origin.
-     */
-    const loggedIn = sessionStorage.getItem("loggedIn");
+/* =====================================================
+   LOGIN SESSION CHECK
+===================================================== */
 
-    if (loggedIn !== "true") {
-        window.location.replace("esh-login.html");
-        return;
-    }
+if (sessionStorage.getItem("loggedIn") !== "true") {
+    window.location.replace("esh-login.html");
+}
 
-    const username =
-        sessionStorage.getItem("username") || "Authorized User";
+/* =====================================================
+   MALAYSIA DATE AND TIME
+===================================================== */
 
-    const role =
-        sessionStorage.getItem("userRole") || "ESH System Access";
+function updateMalaysiaTime() {
 
-    const department =
-        sessionStorage.getItem("department") || "";
+    const dateTime =
+        document.getElementById("dateTime");
 
-    document.getElementById("userName").textContent = username;
+    const now = new Date();
 
-    document.getElementById("userRole").textContent =
-        department ? role + " · " + department : role;
+    const date = new Intl.DateTimeFormat("en-MY", {
+        timeZone: "Asia/Kuala_Lumpur",
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    }).format(now);
 
-    document.getElementById("logoutButton").addEventListener(
-        "click",
-        function () {
-            const confirmed = window.confirm(
-                "Are you sure you want to log out?"
-            );
+    const time = new Intl.DateTimeFormat("en-MY", {
+        timeZone: "Asia/Kuala_Lumpur",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true
+    }).format(now);
 
-            if (!confirmed) return;
+    dateTime.textContent = date + " | " + time + " MYT";
+}
 
-            sessionStorage.clear();
-            window.location.replace("esh-login.html");
-        }
-    );
-})();
+updateMalaysiaTime();
+setInterval(updateMalaysiaTime, 1000);
+
+/* =====================================================
+   FOOTER YEAR
+===================================================== */
+
+document.getElementById("year").textContent =
+    new Intl.DateTimeFormat("en", {
+        timeZone: "Asia/Kuala_Lumpur",
+        year: "numeric"
+    }).format(new Date());
+
+/* =====================================================
+   LOG OUT
+===================================================== */
+
+function logout() {
+
+    sessionStorage.clear();
+
+    window.location.replace("esh-login.html");
+}
 </script>
 
 </body>
