@@ -280,7 +280,7 @@ body{
 }
 
 /* =========================================================
-   LIVE DATE AND TIME - ADDED
+   LIVE DATE AND TIME
 ========================================================= */
 .live-datetime{
     margin-top:18px;
@@ -510,7 +510,6 @@ body{
                 Safety starts with me, but protects us all.
             </div>
 
-            <!-- LIVE DATE AND TIME -->
             <div class="live-datetime">
                 <div id="liveDate" class="live-date" aria-live="off"></div>
                 <div id="liveTime" class="live-time" aria-live="off"></div>
@@ -533,7 +532,6 @@ body{
 
             <form id="loginForm" onsubmit="handleLogin(event)">
 
-                <!-- USERNAME -->
                 <div class="form-group">
                     <label class="form-label" for="username">
                         Username
@@ -552,7 +550,6 @@ body{
                     </div>
                 </div>
 
-                <!-- PASSWORD -->
                 <div class="form-group">
                     <label class="form-label" for="password">
                         Password
@@ -581,7 +578,6 @@ body{
                     </div>
                 </div>
 
-                <!-- LOGIN BUTTON -->
                 <button
                     type="submit"
                     class="login-button"
@@ -590,17 +586,14 @@ body{
                     Login
                 </button>
 
-                <!-- ERROR -->
                 <div class="error-message" id="loginError"></div>
 
-                <!-- SUCCESS -->
                 <div class="success-message" id="loginSuccess">
-                    Login successful. Opening ESH system...
+                    Login successful. Opening ESH Management System...
                 </div>
 
             </form>
 
-            <!-- SECURITY INFORMATION -->
             <div class="security-box">
 
                 <div class="authorized">
@@ -681,7 +674,6 @@ function updateLiveDateTime(){
 }
 
 updateLiveDateTime();
-
 setInterval(updateLiveDateTime,1000);
 
 
@@ -862,8 +854,10 @@ async function handleLogin(event){
             return;
         }
 
+        /* CLEAR OLD SESSION DATA */
         sessionStorage.clear();
 
+        /* SAVE AUTHENTICATED SESSION */
         sessionStorage.setItem("loggedIn","true");
 
         sessionStorage.setItem(
@@ -885,14 +879,20 @@ async function handleLogin(event){
             sessionStorage.setItem("eshLoggedIn","true");
         }
 
+        /* SUCCESS MESSAGE */
         showLoginSuccess(
-            "Login successful. Opening ESH system..."
+            "Login successful. Opening ESH Management System..."
         );
 
         loginButton.textContent = "ACCESS GRANTED";
 
+        /* =====================================================
+           UPDATED REDIRECT
+           OPEN WELCOME PAGE INSTEAD OF ESH DASHBOARD
+        ===================================================== */
+
         setTimeout(function(){
-            window.location.href = "esh.html";
+            window.location.href = "welcome.html";
         },700);
 
     }catch(error){
@@ -932,10 +932,7 @@ document
     .addEventListener("keydown",function(event){
 
         if(event.key === "Enter"){
-            /*
-             Allow the normal form submit
-             to handle authentication.
-            */
+            /* Normal form submission handles authentication. */
         }
 
     });
