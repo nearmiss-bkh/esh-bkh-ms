@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,792 +9,736 @@
 
 <style>
 :root {
-    --navy: #12345a;
-    --navy-dark: #07182b;
-    --blue: #1769aa;
-    --blue-light: #eaf3fc;
-    --red: #8b1e32;
-    --red-light: #fff0f2;
-    --border: #dce4ed;
-    --text: #192b3e;
-    --muted: #66778a;
-    --surface: #ffffff;
-    --page-width: 1120px;
-    --radius: 14px;
-    --shadow: 0 8px 24px rgba(6, 20, 38, 0.12);
+    --navy:#12345a;
+    --navy-dark:#07182b;
+    --blue:#1769aa;
+    --blue-light:#eaf3fc;
+    --red:#8b1e32;
+    --red-light:#fff0f2;
+    --border:#dce4ed;
+    --text:#192b3e;
+    --muted:#66778a;
+    --surface:#fff;
+    --page-width:1120px;
+    --radius:14px;
+    --shadow:0 8px 24px rgba(6,20,38,.12);
 }
 
-* { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 
 body {
-    margin: 0;
-    min-height: 100vh;
-    color: var(--text);
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    line-height: 1.6;
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:"Segoe UI",Arial,Helvetica,sans-serif;
+    font-size:14px;
+    line-height:1.6;
     background:
-        radial-gradient(ellipse at 10% 5%, rgba(23,105,170,.35), transparent 35%),
-        radial-gradient(ellipse at 95% 90%, rgba(139,30,50,.27), transparent 36%),
-        linear-gradient(135deg, #061426 0%, #12345a 38%, #1769aa 67%, #450a16 100%);
-    background-attachment: fixed;
+        radial-gradient(ellipse at 10% 5%,rgba(23,105,170,.35),transparent 35%),
+        radial-gradient(ellipse at 95% 90%,rgba(139,30,50,.27),transparent 36%),
+        linear-gradient(135deg,#061426 0%,#12345a 38%,#1769aa 67%,#450a16 100%);
+    background-attachment:fixed;
 }
 
-button, input, select { font: inherit; }
+button,input,select { font:inherit; }
+button,a,input,select { -webkit-tap-highlight-color:transparent; }
 
-button, a, input, select { -webkit-tap-highlight-color: transparent; }
-
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible {
-    outline: 3px solid #8fc7ff;
-    outline-offset: 3px;
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible,summary:focus-visible {
+    outline:3px solid #8fc7ff;
+    outline-offset:3px;
 }
 
 /* HEADER */
 
 header {
-    position: relative;
-    overflow: hidden;
-    color: #fff;
-    background: linear-gradient(112deg, #061426 0%, #12345a 43%, #174f82 72%, #8b1e32 100%);
-    border-bottom: 4px solid #c12d45;
-    box-shadow: 0 7px 24px rgba(0,0,0,.23);
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+    background:linear-gradient(112deg,#061426 0%,#12345a 43%,#174f82 72%,#8b1e32 100%);
+    border-bottom:4px solid #c12d45;
+    box-shadow:0 7px 24px rgba(0,0,0,.23);
 }
 
-header::before,
-header::after {
-    content: "";
-    position: absolute;
-    border: 1px solid rgba(255,255,255,.10);
-    border-radius: 50%;
-    pointer-events: none;
+header::before,header::after {
+    content:"";
+    position:absolute;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:50%;
+    pointer-events:none;
 }
 
 header::before {
-    width: 310px;
-    height: 310px;
-    top: -205px;
-    right: 10%;
+    width:310px;height:310px;top:-205px;right:10%;
 }
 
 header::after {
-    width: 230px;
-    height: 230px;
-    bottom: -175px;
-    right: -30px;
+    width:230px;height:230px;bottom:-175px;right:-30px;
 }
 
-.header-inner,
-main,
-footer {
-    width: min(var(--page-width), 100%);
-    margin-inline: auto;
+.header-inner,main,footer {
+    width:min(var(--page-width),100%);
+    margin-inline:auto;
 }
 
 .header-inner {
-    position: relative;
-    z-index: 1;
-    padding: 32px 24px 34px;
+    position:relative;
+    z-index:1;
+    padding:32px 24px 34px;
 }
 
 .brand-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 21px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:21px;
 }
 
 .company-logo {
-    display: block;
-    width: 76px;
-    height: 76px;
-    flex: 0 0 76px;
-    object-fit: contain;
-    padding: 5px;
-    background: #fff;
-    border: 1px solid rgba(255,255,255,.4);
-    border-radius: 10px;
+    display:block;
+    width:76px;
+    height:76px;
+    flex:0 0 76px;
+    object-fit:contain;
+    padding:5px;
+    background:#fff;
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:10px;
 }
 
 .brand-name {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1.6px;
-    line-height: 1.5;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1.6px;
+    line-height:1.5;
 }
 
 .brand-subtitle {
-    color: #d9e8f7;
-    font-size: 11px;
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
+    color:#d9e8f7;
+    font-size:11px;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
 }
 
 .header-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 11px;
-    border: 1px solid rgba(255,255,255,.22);
-    border-radius: 5px;
-    background: rgba(255,255,255,.09);
-    color: #edf5ff;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:5px 11px;
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:5px;
+    background:rgba(255,255,255,.09);
+    color:#edf5ff;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
 }
 
 .header-label::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #e74d62;
-    box-shadow: 0 0 0 3px rgba(231,77,98,.16);
+    content:"";
+    width:7px;height:7px;
+    border-radius:50%;
+    background:#e74d62;
+    box-shadow:0 0 0 3px rgba(231,77,98,.16);
 }
 
 h1 {
-    margin: 15px 0 8px;
-    font-size: clamp(28px, 4vw, 39px);
-    font-weight: 750;
-    letter-spacing: -.7px;
-    line-height: 1.2;
+    margin:15px 0 8px;
+    font-size:clamp(28px,4vw,39px);
+    font-weight:750;
+    letter-spacing:-.7px;
+    line-height:1.2;
 }
 
 .header-description {
-    max-width: 650px;
-    margin: 0;
-    color: #dce9f7;
-    font-size: 14px;
-    line-height: 1.8;
+    max-width:650px;
+    margin:0;
+    color:#dce9f7;
+    font-size:14px;
+    line-height:1.8;
 }
 
 .header-rule {
-    width: 66px;
-    height: 4px;
-    margin-top: 22px;
-    border-radius: 5px;
-    background: linear-gradient(90deg, #fff, #ed6678);
+    width:66px;height:4px;
+    margin-top:22px;
+    border-radius:5px;
+    background:linear-gradient(90deg,#fff,#ed6678);
 }
 
 /* MAIN LAYOUT */
 
-main {
-    padding: 25px 20px 35px;
-}
+main { padding:25px 20px 35px; }
 
 .panel {
-    margin-bottom: 19px;
-    padding: 23px;
-    border: 1px solid rgba(220,228,237,.95);
-    border-radius: var(--radius);
-    background: var(--surface);
-    box-shadow: var(--shadow);
+    margin-bottom:19px;
+    padding:23px;
+    border:1px solid rgba(220,228,237,.95);
+    border-radius:var(--radius);
+    background:var(--surface);
+    box-shadow:var(--shadow);
 }
 
 /* STATISTICS */
 
 .stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    padding: 17px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+    padding:17px;
 }
 
 .stat-card {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    min-width: 0;
-    padding: 17px;
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    background: linear-gradient(135deg, #fff 0%, #f7faff 100%);
+    display:flex;
+    align-items:center;
+    gap:15px;
+    min-width:0;
+    padding:17px;
+    border:1px solid var(--border);
+    border-radius:11px;
+    background:linear-gradient(135deg,#fff 0%,#f7faff 100%);
 }
 
 .stat-icon {
-    display: grid;
-    place-items: center;
-    width: 47px;
-    height: 47px;
-    flex: 0 0 47px;
-    border-radius: 12px;
-    background: var(--blue-light);
-    color: var(--navy);
-    font-size: 21px;
-    font-weight: 800;
+    display:grid;
+    place-items:center;
+    width:47px;height:47px;
+    flex:0 0 47px;
+    border-radius:12px;
+    background:var(--blue-light);
+    color:var(--navy);
+    font-size:21px;
+    font-weight:800;
 }
 
 .stat-icon.red {
-    background: var(--red-light);
-    color: var(--red);
+    background:var(--red-light);
+    color:var(--red);
 }
 
 .stat-number {
-    display: block;
-    color: var(--navy);
-    font-size: 29px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    line-height: 1.2;
+    display:block;
+    color:var(--navy);
+    font-size:29px;
+    font-weight:800;
+    line-height:1.2;
 }
 
 .stat-label {
-    display: block;
-    margin-top: 4px;
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 600;
+    display:block;
+    margin-top:4px;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:600;
 }
 
 /* SECTION HEADINGS */
 
 .section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:18px;
 }
 
 .heading-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
 .heading-accent {
-    width: 4px;
-    height: 31px;
-    flex: 0 0 4px;
-    border-radius: 4px;
-    background: linear-gradient(180deg, var(--blue), var(--red));
+    width:4px;height:31px;
+    flex:0 0 4px;
+    border-radius:4px;
+    background:linear-gradient(180deg,var(--blue),var(--red));
 }
 
 h2 {
-    margin: 0;
-    color: var(--navy);
-    font-size: 19px;
-    font-weight: 750;
-    letter-spacing: -.2px;
-    line-height: 1.4;
+    margin:0;
+    color:var(--navy);
+    font-size:19px;
+    font-weight:750;
+    line-height:1.4;
 }
 
 .section-subtitle {
-    margin: 4px 0 0;
-    color: var(--muted);
-    font-size: 12px;
+    margin:4px 0 0;
+    color:var(--muted);
+    font-size:12px;
 }
 
 /* SEARCH */
 
-.search-panel { padding-bottom: 20px; }
+.search-panel { padding-bottom:20px; }
 
 .search-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1.8fr) minmax(220px, 1fr);
-    gap: 13px;
+    display:grid;
+    grid-template-columns:minmax(0,1.8fr) minmax(220px,1fr);
+    gap:13px;
 }
 
-.field-wrap {
-    position: relative;
-    min-width: 0;
-}
+.field-wrap { position:relative;min-width:0; }
 
 .field-icon {
-    position: absolute;
-    top: 50%;
-    left: 14px;
-    z-index: 1;
-    transform: translateY(-50%);
-    color: #708399;
-    font-size: 17px;
-    pointer-events: none;
+    position:absolute;
+    top:50%;left:14px;
+    z-index:1;
+    transform:translateY(-50%);
+    color:#708399;
+    font-size:17px;
+    pointer-events:none;
 }
 
-input, select {
-    width: 100%;
-    min-width: 0;
-    min-height: 49px;
-    padding: 12px 14px;
-    border: 1px solid #cbd6e2;
-    border-radius: 9px;
-    background: #fff;
-    color: var(--text);
-    font-size: 14px;
-    transition: border-color .18s ease, box-shadow .18s ease;
+input,select {
+    width:100%;
+    min-width:0;
+    min-height:49px;
+    padding:12px 14px;
+    border:1px solid #cbd6e2;
+    border-radius:9px;
+    background:#fff;
+    color:var(--text);
+    font-size:14px;
+    transition:border-color .18s ease,box-shadow .18s ease;
 }
 
-input[type="search"] { padding-left: 43px; }
-input::placeholder { color: #8a98a8; }
+input[type="search"] { padding-left:43px; }
+input::placeholder { color:#8a98a8; }
 
-input:focus, select:focus {
-    border-color: var(--blue);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(23,105,170,.13);
+input:focus,select:focus {
+    border-color:var(--blue);
+    outline:none;
+    box-shadow:0 0 0 3px rgba(23,105,170,.13);
 }
 
 .search-help {
-    display: flex;
-    align-items: flex-start;
-    gap: 7px;
-    margin: 13px 0 0;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
+    display:flex;
+    align-items:flex-start;
+    gap:7px;
+    margin:13px 0 0;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.7;
 }
 
-.help-dot {
-    color: var(--blue);
-    font-weight: 900;
-}
-
-/* BUTTONS */
+.help-dot { color:var(--blue);font-weight:900; }
 
 .clear-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 40px;
-    padding: 9px 13px;
-    border: 1px solid #cbd6e2;
-    border-radius: 8px;
-    background: #fff;
-    color: var(--navy);
-    font-size: 12px;
-    font-weight: 750;
-    cursor: pointer;
-    transition: background .18s ease, color .18s ease, border-color .18s ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    min-height:40px;
+    padding:9px 13px;
+    border:1px solid #cbd6e2;
+    border-radius:8px;
+    background:#fff;
+    color:var(--navy);
+    font-size:12px;
+    font-weight:750;
+    cursor:pointer;
 }
 
 .clear-button:hover {
-    border-color: var(--navy);
-    background: var(--navy);
-    color: #fff;
+    border-color:var(--navy);
+    background:var(--navy);
+    color:#fff;
 }
-
-/* COMPACT SDS DOCUMENT GRID */
 
 .results {
-    padding: 6px 10px;
-    border: 1px solid #dce9f8;
-    border-radius: 7px;
-    background: #f1f7fd;
-    color: #315c85;
-    font-size: 11px;
-    font-weight: 750;
+    padding:6px 10px;
+    border:1px solid #dce9f8;
+    border-radius:7px;
+    background:#f1f7fd;
+    color:#315c85;
+    font-size:11px;
+    font-weight:750;
 }
 
-/* Two SDS boxes per row */
+/* SDS RECORDS */
+
 .sds-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-    align-items: stretch;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    align-items:start;
 }
 
 .sds-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-width: 0;
-    gap: 9px;
-    padding: 11px 12px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    background: #fff;
-    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+    gap:10px;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#fff;
+    transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
 }
 
 .sds-card:hover {
-    border-color: #9bb9d8;
-    box-shadow: 0 4px 12px rgba(18,52,90,.08);
-    transform: translateY(-1px);
+    border-color:#9bb9d8;
+    box-shadow:0 4px 12px rgba(18,52,90,.08);
+    transform:translateY(-1px);
 }
 
-.document-info { min-width: 0; }
+.document-info { min-width:0; }
 
 .document-topline {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    min-width: 0;
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    min-width:0;
 }
 
 .pdf-icon {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 36px;
-    flex: 0 0 32px;
-    border: 1px solid #f1cfd5;
-    border-radius: 6px;
-    background: #fff5f6;
-    color: var(--red);
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: .3px;
+    display:grid;
+    place-items:center;
+    width:32px;height:36px;
+    flex:0 0 32px;
+    border:1px solid #f1cfd5;
+    border-radius:6px;
+    background:#fff5f6;
+    color:var(--red);
+    font-size:9px;
+    font-weight:900;
 }
 
-.document-copy { min-width: 0; }
+.document-copy { min-width:0; }
 
-/* Keep document name on one line */
 .sds-card h3 {
-    margin: 0 0 5px;
-    color: #183b60;
-    font-size: 12px;
-    font-weight: 750;
-    line-height: 1.45;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin:0 0 5px;
+    color:#183b60;
+    font-size:12px;
+    font-weight:750;
+    line-height:1.45;
+    overflow-wrap:anywhere;
 }
 
 .document-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px 9px;
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.5;
+    display:flex;
+    flex-wrap:wrap;
+    gap:2px 9px;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.5;
 }
 
-.document-meta span {
-    overflow-wrap: anywhere;
-}
-
-.meta-label {
-    color: #43566a;
-    font-weight: 700;
-}
+.document-meta span { overflow-wrap:anywhere; }
+.meta-label { color:#43566a;font-weight:700; }
 
 .tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    max-width: 100%;
-    margin-top: 6px;
-    padding: 2px 6px;
-    border: 1px solid #d8e6f5;
-    border-radius: 4px;
-    background: #edf5fd;
-    color: #214f7e;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .1px;
-    line-height: 1.5;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    max-width:100%;
+    margin-top:6px;
+    padding:2px 6px;
+    border:1px solid #d8e6f5;
+    border-radius:4px;
+    background:#edf5fd;
+    color:#214f7e;
+    font-size:9px;
+    font-weight:800;
+    line-height:1.5;
 }
 
 .tag::before {
-    content: "";
-    width: 4px;
-    height: 4px;
-    flex: 0 0 4px;
-    border-radius: 50%;
-    background: currentColor;
+    content:"";
+    width:4px;height:4px;
+    flex:0 0 4px;
+    border-radius:50%;
+    background:currentColor;
 }
 
-.tag-cleaning {
-    border-color: #cce9df;
-    background: #effaf5;
-    color: #247453;
-}
+.tag-cleaning { border-color:#cce9df;background:#effaf5;color:#247453; }
+.tag-production { border-color:#d7e2fa;background:#f0f4ff;color:#3656a1; }
+.tag-maintenance { border-color:#f0dfba;background:#fff8e9;color:#8a641c; }
+.tag-other { border-color:#e4d8f5;background:#f7f1ff;color:#6d4799; }
 
-.tag-production {
-    border-color: #d7e2fa;
-    background: #f0f4ff;
-    color: #3656a1;
-}
-
-.tag-maintenance {
-    border-color: #f0dfba;
-    background: #fff8e9;
-    color: #8a641c;
-}
-
-.tag-other {
-    border-color: #e4d8f5;
-    background: #f7f1ff;
-    color: #6d4799;
-}
-
-/* Compact full-width open button */
 .open-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    min-width: 0;
-    min-height: 31px;
-    padding: 6px 9px;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    background: linear-gradient(120deg, #1769aa 0%, #12345a 100%);
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 800;
-    white-space: nowrap;
-    transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    width:100%;
+    min-width:0;
+    min-height:34px;
+    padding:7px 9px;
+    border:1px solid transparent;
+    border-radius:6px;
+    background:linear-gradient(120deg,#1769aa 0%,#12345a 100%);
+    color:#fff;
+    text-align:center;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:800;
 }
 
 .open-button:hover {
-    background: linear-gradient(120deg, #12345a 0%, #8b1e32 100%);
-    box-shadow: 0 4px 11px rgba(18,52,90,.18);
-    transform: translateY(-1px);
+    background:linear-gradient(120deg,#12345a 0%,#8b1e32 100%);
+    box-shadow:0 4px 11px rgba(18,52,90,.18);
 }
 
-.open-button:active { transform: translateY(0); }
+/* NEW: HAZARD, PPE AND PREVENTIVE MEASURES */
+
+.safety-details {
+    min-width:0;
+    border:1px solid #dce4ed;
+    border-radius:8px;
+    background:#f8fafc;
+    overflow:hidden;
+}
+
+.safety-details summary {
+    padding:10px 12px;
+    background:#edf5fd;
+    color:#12345a;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.safety-details summary:hover { background:#e1eefb; }
+
+.safety-columns {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    padding:10px;
+}
+
+.safety-column {
+    min-width:0;
+    padding:10px;
+    border:1px solid #dce4ed;
+    border-radius:7px;
+    background:#fff;
+}
+
+.safety-column h4 {
+    margin:0 0 7px;
+    color:#12345a;
+    font-size:11px;
+    line-height:1.4;
+}
+
+.safety-column p {
+    margin:0;
+    color:#4d5c6b;
+    font-size:11px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+    white-space:pre-wrap;
+}
+
+.safety-status {
+    display:inline-block;
+    margin-top:8px;
+    padding:3px 6px;
+    border-radius:4px;
+    background:#fff4dc;
+    color:#795512;
+    font-size:10px;
+    font-weight:700;
+}
+
+.safety-status.verified {
+    background:#e8f7ee;
+    color:#21653c;
+}
+
+.safety-disclaimer {
+    margin:0 10px 10px;
+    padding:8px 10px;
+    border-left:3px solid #c12d45;
+    background:#fff0f2;
+    color:#6e2633;
+    font-size:10px;
+    line-height:1.6;
+}
 
 /* EMPTY RESULTS */
 
 .empty {
-    grid-column: 1 / -1;
-    padding: 42px 16px;
-    border: 1px dashed #cbd6e2;
-    border-radius: 10px;
-    background: #f8fafc;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.8;
+    grid-column:1/-1;
+    padding:42px 16px;
+    border:1px dashed #cbd6e2;
+    border-radius:10px;
+    background:#f8fafc;
+    color:var(--muted);
+    text-align:center;
+    line-height:1.8;
 }
 
 .empty-icon {
-    display: block;
-    margin-bottom: 10px;
-    color: #7890a8;
-    font-size: 30px;
+    display:block;
+    margin-bottom:10px;
+    color:#7890a8;
+    font-size:30px;
 }
 
 .empty strong {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--navy);
-    font-size: 15px;
+    display:block;
+    margin-bottom:4px;
+    color:var(--navy);
+    font-size:15px;
 }
 
-/* BOTTOM NOTES */
+/* NOTES */
 
 .sds-notes {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    margin-top: 19px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
+    margin-top:19px;
 }
 
 .note-card {
-    padding: 18px 20px;
-    border: 1px solid var(--border);
-    border-left: 5px solid var(--blue);
-    border-radius: 11px;
-    background: #fff;
-    box-shadow: var(--shadow);
+    padding:18px 20px;
+    border:1px solid var(--border);
+    border-left:5px solid var(--blue);
+    border-radius:11px;
+    background:#fff;
+    box-shadow:var(--shadow);
 }
 
-.note-card.printing { border-left-color: var(--red); }
+.note-card.printing { border-left-color:var(--red); }
 
 .note-title {
-    margin: 0 0 7px;
-    color: var(--navy);
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: .5px;
+    margin:0 0 7px;
+    color:var(--navy);
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:.5px;
 }
 
-.note-card.printing .note-title { color: var(--red); }
+.note-card.printing .note-title { color:var(--red); }
 
 .note-card p {
-    margin: 0;
-    color: #4d5c6b;
-    font-size: 12px;
-    line-height: 1.8;
+    margin:0;
+    color:#4d5c6b;
+    font-size:12px;
+    line-height:1.8;
 }
 
 /* FOOTER */
 
 footer {
-    padding: 8px 20px 30px;
-    color: #e5edf7;
-    text-align: center;
-    font-size: 11px;
-    line-height: 1.9;
+    padding:8px 20px 30px;
+    color:#e5edf7;
+    text-align:center;
+    font-size:11px;
+    line-height:1.9;
 }
 
 .footer-company {
-    color: #fff;
-    font-weight: 800;
-    letter-spacing: 1px;
+    color:#fff;
+    font-weight:800;
+    letter-spacing:1px;
 }
 
 .footer-line {
-    width: 42px;
-    height: 2px;
-    margin: 12px auto;
-    border-radius: 3px;
-    background: #c12d45;
+    width:42px;height:2px;
+    margin:12px auto;
+    border-radius:3px;
+    background:#c12d45;
 }
 
-.footer-note { color: #d1ddec; }
+.footer-note { color:#d1ddec; }
 
-/* TABLET AND MOBILE */
+/* RESPONSIVE */
 
-@media (max-width: 700px) {
-    .header-inner { padding: 29px 19px; }
-
-    main { padding: 19px 13px 32px; }
-
-    .panel { padding: 18px; }
-
-    .search-row { grid-template-columns: 1fr; }
-
-    .sds-notes { grid-template-columns: 1fr; }
+@media (max-width:700px) {
+    .header-inner { padding:29px 19px; }
+    main { padding:19px 13px 32px; }
+    .panel { padding:18px; }
+    .search-row { grid-template-columns:1fr; }
+    .sds-notes { grid-template-columns:1fr; }
+    .safety-columns { grid-template-columns:1fr; }
 }
 
-@media (max-width: 520px) {
-    .header-inner { padding: 24px 17px 27px; }
+@media (max-width:520px) {
+    .header-inner { padding:24px 17px 27px; }
 
-    .brand-row {
-        gap: 10px;
-        margin-bottom: 18px;
-    }
+    .brand-row { gap:10px;margin-bottom:18px; }
 
     .company-logo {
-        width: 60px;
-        height: 60px;
-        flex-basis: 60px;
+        width:60px;height:60px;flex-basis:60px;
     }
 
-    .brand-name {
-        font-size: 10px;
-        letter-spacing: 1.1px;
-    }
-
-    .brand-subtitle { font-size: 10px; }
-
-    h1 { font-size: 28px; }
-
-    .header-description { font-size: 13px; }
-
-    main { padding: 15px 10px 25px; }
+    .brand-name { font-size:10px;letter-spacing:1.1px; }
+    .brand-subtitle { font-size:10px; }
+    h1 { font-size:28px; }
+    .header-description { font-size:13px; }
+    main { padding:15px 10px 25px; }
 
     .panel {
-        padding: 15px;
-        margin-bottom: 14px;
-        border-radius: 11px;
+        padding:15px;
+        margin-bottom:14px;
+        border-radius:11px;
     }
 
-    .stats {
-        gap: 9px;
-        padding: 12px;
-    }
-
-    .stat-card {
-        gap: 9px;
-        padding: 11px;
-    }
+    .stats { gap:9px;padding:12px; }
+    .stat-card { gap:9px;padding:11px; }
 
     .stat-icon {
-        width: 35px;
-        height: 35px;
-        flex-basis: 35px;
-        border-radius: 9px;
-        font-size: 16px;
+        width:35px;height:35px;flex-basis:35px;
+        border-radius:9px;font-size:16px;
     }
 
-    .stat-number { font-size: 24px; }
-    .stat-label { font-size: 10px; }
-
-    .section-heading {
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    h2 { font-size: 17px; }
-
-    .section-subtitle { font-size: 11px; }
+    .stat-number { font-size:24px; }
+    .stat-label { font-size:10px; }
+    .section-heading { align-items:flex-start;gap:10px; }
+    h2 { font-size:17px; }
+    .section-subtitle { font-size:11px; }
 
     .clear-button {
-        min-height: 36px;
-        padding: 8px 10px;
-        font-size: 11px;
+        min-height:36px;
+        padding:8px 10px;
+        font-size:11px;
     }
 
-    .results { font-size: 10px; }
-
-    /* One compact card per row on small screens */
-    .sds-list {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
+    .results { font-size:10px; }
+    .sds-list { grid-template-columns:1fr;gap:8px; }
 
     .sds-card {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
-        gap: 10px;
-        padding: 10px;
+        display:flex;
+        gap:10px;
+        padding:10px;
     }
 
-    .document-topline { gap: 8px; }
-
-    .pdf-icon {
-        width: 30px;
-        height: 34px;
-        flex-basis: 30px;
-    }
-
-    .sds-card h3 { font-size: 12px; }
-
-    .document-meta {
-        gap: 2px 8px;
-        font-size: 9px;
-    }
-
-    .tag {
-        margin-top: 5px;
-        font-size: 9px;
-    }
+    .document-topline { gap:8px; }
+    .pdf-icon { width:30px;height:34px;flex-basis:30px; }
+    .sds-card h3 { font-size:12px; }
+    .document-meta { gap:2px 8px;font-size:9px; }
+    .tag { margin-top:5px;font-size:9px; }
 
     .open-button {
-        width: auto;
-        min-height: 34px;
-        padding: 6px 9px;
-        font-size: 10px;
+        width:100%;
+        min-height:34px;
+        padding:6px 9px;
+        font-size:10px;
     }
 
-    .sds-notes { gap: 12px; }
-
-    .note-card { padding: 15px; }
-
-    footer { padding-inline: 14px; }
+    .sds-notes { gap:12px; }
+    .note-card { padding:15px; }
+    footer { padding-inline:14px; }
 }
 
-/* EXTRA NARROW SCREENS */
-@media (max-width: 360px) {
-    .sds-card {
-        grid-template-columns: 1fr;
-    }
-
-    .open-button { width: 100%; }
+@media (max-width:360px) {
+    .stats { grid-template-columns:1fr; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-
-    *,
-    *::before,
-    *::after {
-        transition-duration: .01ms !important;
-        animation-duration: .01ms !important;
+@media (prefers-reduced-motion:reduce) {
+    html { scroll-behavior:auto; }
+    *,*::before,*::after {
+        transition-duration:.01ms!important;
+        animation-duration:.01ms!important;
     }
 }
 </style>
@@ -812,7 +755,6 @@ footer {
                 alt="Bidor Kwong Heng Sdn. Bhd. Logo"
                 onerror="this.style.display='none';"
             >
-
             <div>
                 <div class="brand-name">BIDOR KWONG HENG SDN BHD</div>
                 <div class="brand-subtitle">Environment · Safety · Health</div>
@@ -820,13 +762,12 @@ footer {
         </div>
 
         <div class="header-label">ESH Document Management</div>
-
         <h1>Safety Data Sheet Library</h1>
 
         <p class="header-description">
             Chemical Safety Information<br>
-            Search and access the available Safety Data Sheet (SDS)
-            documents for workplace chemical safety reference.
+            Search and access Safety Data Sheets (SDS), including
+            hazard information, required PPE and preventive measures.
         </p>
 
         <div class="header-rule"></div>
@@ -834,7 +775,6 @@ footer {
 </header>
 
 <main>
-
     <section class="panel stats" aria-label="SDS library statistics">
         <div class="stat-card">
             <div class="stat-icon" aria-hidden="true">▤</div>
@@ -906,7 +846,7 @@ footer {
                 <div>
                     <h2>Available SDS Documents</h2>
                     <p class="section-subtitle">
-                        Documents are arranged in numerical order. Select a document to open its PDF.
+                        Open each record to view its hazard, PPE and preventive measures.
                     </p>
                 </div>
             </div>
@@ -931,15 +871,13 @@ footer {
         <div class="note-card">
             <h2 class="note-title">SDS SHELF LIFE</h2>
             <p>
-                SDS documents should be reviewed and updated at least every
-                five years from their revision date, or earlier when required
-                by the supplier, changes to the product, or applicable
-                regulatory requirements. Always refer to the latest available
-                revision.
+                Review SDS documents at least every five years from their
+                revision date, or earlier when required by the supplier,
+                product changes or applicable regulatory requirements.
+                Always refer to the latest available revision.
             </p>
         </div>
     </section>
-
 </main>
 
 <footer>
@@ -955,9 +893,11 @@ footer {
 "use strict";
 
 /*
-    Each record contains:
-    [original filename, Google Drive file ID, category]
-*/
+ * SDS DATA FORMAT:
+ * [original filename, Google Drive file ID, category]
+ *
+ * Existing document records and categories are retained.
+ */
 
 const SDS_DATA = [
 ["94. Alcohol 95_ CP.pdf","1gFSJ8ob4ITCY6L0t1-nUIsbtAJqxHgLA","Other"],
@@ -1031,7 +971,7 @@ const SDS_DATA = [
 ["93. AMERTROL 1123 AP.pdf","1A1Myz8-q7gHABy8RfvWFCtKBVLlL-NsY","Other"],
 ["92. AMERSITE 200.pdf","14U1RBRQIYivgfLNuMQ9TZooQBVOwYud_","Other"],
 ["91. ADJUNCT H LIQUID.pdf","16-4LPGlVBxF9aVUclqrUnVvZ5h4IRSsw","Production"],
-["88. AC-101.pdf","1FGIkDNkXULW2JSDQ2x4QUXg64-Gr7LKK","Cleaning"],
+["88. AC-101.pdf","1FGmpRf_WX6xAg_dNdVFBD02d2OuMNHi3","Cleaning"],
 ["87. AC-300.pdf","1uKXkHc44G1Ln26Q7TgKqwe6OAcm358jb","Cleaning"],
 ["86. HOROLITH FL.pdf","1xLEw53CFdT7KNGKV-fTfAuj0S3Z3kyHR","Cleaning"],
 ["77. Interflon_Food_Lube_Aerosol.pdf","1aGQM0svcZ7B-BmfJkDstE5YwFzS_KpQs","Maintenance"],
@@ -1045,13 +985,39 @@ const SDS_DATA = [
 ["2. SUNLIGHT PRO FLOOR CLEANER 4X3.8L_EN200000271333EN.pdf","1nb3ofCvnI33K4d4l-kZRQfe3AgOaC5ko","Cleaning"]
 ];
 
-/* PREPARE AND SORT DOCUMENT RECORDS NUMERICALLY */
+/*
+ * CHEMICAL SAFETY INFORMATION
+ *
+ * Add verified information below, using the SDS ID as the key.
+ *
+ * hazard: SDS Section 2
+ * ppe: SDS Section 8
+ * preventiveMeasures: SDS Sections 7 and 8
+ *
+ * If a record is not entered, the website displays a pending notice.
+ * Do not enter guessed or unverified hazard information.
+ */
+
+const SDS_SAFETY = {
+    /*
+    "1": {
+        hazard: "Enter verified hazards from SDS Section 2.",
+        ppe: "Enter required PPE from SDS Section 8.",
+        preventiveMeasures:
+            "Enter verified handling and storage precautions from SDS Sections 7 and 8."
+    }
+    */
+};
+
+/* PREPARE AND SORT DOCUMENT RECORDS */
 
 const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
     const fileName = row[0];
     const fileId = row[1];
     const numberMatch = fileName.match(/^\s*(\d+)/);
-    const number = numberMatch ? Number(numberMatch[1]) : Number.MAX_SAFE_INTEGER;
+    const number = numberMatch
+        ? Number(numberMatch[1])
+        : Number.MAX_SAFE_INTEGER;
 
     return {
         id: numberMatch ? numberMatch[1] : fileId,
@@ -1061,9 +1027,9 @@ const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
         pdfUrl: "https://drive.google.com/file/d/" +
             encodeURIComponent(fileId) + "/view"
     };
-}).sort(function(a, b) {
-    return a.number - b.number ||
-        a.name.localeCompare(b.name, undefined, { numeric: true });
+}).sort(function(a,b) {
+    return a.number-b.number ||
+        a.name.localeCompare(b.name,undefined,{numeric:true});
 });
 
 /* PAGE ELEMENTS */
@@ -1075,25 +1041,25 @@ const sdsList = document.getElementById("sdsList");
 /* SAFE HTML OUTPUT */
 
 function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function(char) {
+    return String(value ?? "").replace(/[&<>"']/g,function(char) {
         return {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#39;"
         }[char];
     });
 }
 
-/* NORMALIZE SEARCH */
+/* SEARCH NORMALIZATION */
 
 function normalizeSearch(value) {
     return String(value ?? "")
         .toLowerCase()
         .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/[\u0300-\u036f]/g,"")
+        .replace(/[^a-z0-9]+/g," ")
         .trim();
 }
 
@@ -1101,10 +1067,10 @@ function normalizeSearch(value) {
 
 function categoryClass(category) {
     const classes = {
-        Cleaning: "tag-cleaning",
-        Production: "tag-production",
-        Maintenance: "tag-maintenance",
-        Other: "tag-other"
+        Cleaning:"tag-cleaning",
+        Production:"tag-production",
+        Maintenance:"tag-maintenance",
+        Other:"tag-other"
     };
 
     return classes[category] || "";
@@ -1112,13 +1078,56 @@ function categoryClass(category) {
 
 function categoryLabel(category) {
     const labels = {
-        Cleaning: "Cleaning Chemicals",
-        Production: "Production / Laboratory",
-        Maintenance: "Maintenance / Lubricants",
-        Other: "Other Chemicals"
+        Cleaning:"Cleaning Chemicals",
+        Production:"Production / Laboratory",
+        Maintenance:"Maintenance / Lubricants",
+        Other:"Other Chemicals"
     };
 
     return labels[category] || category;
+}
+
+/* SAFETY INFORMATION */
+
+function getSafetyValue(sdsId,field) {
+    const record = SDS_SAFETY[String(sdsId)];
+
+    if (record &&
+        typeof record[field] === "string" &&
+        record[field].trim() !== "") {
+        return record[field].trim();
+    }
+
+    return "Pending SDS verification. Refer to the original SDS.";
+}
+
+function hasVerifiedSafety(sdsId,field) {
+    const record = SDS_SAFETY[String(sdsId)];
+
+    return Boolean(
+        record &&
+        typeof record[field] === "string" &&
+        record[field].trim() !== ""
+    );
+}
+
+function renderSafetyColumn(title,value,verified,sectionReference) {
+    const statusText = verified
+        ? "Information entered"
+        : "Pending SDS verification";
+
+    return `
+        <section class="safety-column">
+            <h4>${escapeHTML(title)}</h4>
+            <p>${escapeHTML(value)}</p>
+            <span class="safety-status ${verified ? "verified" : ""}">
+                ${escapeHTML(statusText)}
+            </span>
+            <p style="margin-top:6px;font-size:10px;color:#66778a">
+                Reference: ${escapeHTML(sectionReference)}
+            </p>
+        </section>
+    `;
 }
 
 /* RENDER SDS LIST */
@@ -1136,15 +1145,16 @@ function renderSDS() {
             item.id,
             item.name,
             item.category,
-            item.name.replace(/\.pdf$/i, ""),
-            item.name.replace(/^\d+[\s.,_-]*/, "")
+            item.name.replace(/\.pdf$/i,""),
+            item.name.replace(/^\d+[\s.,_-]*/,"")
         ].join(" "));
 
         const matchesSearch = searchTerms.every(function(term) {
             return searchable.includes(term);
         });
 
-        const matchesCategory = !category || item.category === category;
+        const matchesCategory =
+            !category || item.category === category;
 
         return matchesSearch && matchesCategory;
     });
@@ -1171,6 +1181,16 @@ function renderSDS() {
     }
 
     sdsList.innerHTML = filtered.map(function(item) {
+        const hazard = getSafetyValue(item.id,"hazard");
+        const ppe = getSafetyValue(item.id,"ppe");
+        const preventiveMeasures =
+            getSafetyValue(item.id,"preventiveMeasures");
+
+        const hazardVerified = hasVerifiedSafety(item.id,"hazard");
+        const ppeVerified = hasVerifiedSafety(item.id,"ppe");
+        const measuresVerified =
+            hasVerifiedSafety(item.id,"preventiveMeasures");
+
         return `
             <article class="sds-card">
                 <div class="document-info">
@@ -1178,7 +1198,9 @@ function renderSDS() {
                         <div class="pdf-icon" aria-hidden="true">PDF</div>
 
                         <div class="document-copy">
-                            <h3 title="${escapeHTML(item.name)}">${escapeHTML(item.name)}</h3>
+                            <h3 title="${escapeHTML(item.name)}">
+                                ${escapeHTML(item.name)}
+                            </h3>
 
                             <div class="document-meta">
                                 <span>
@@ -1214,6 +1236,42 @@ function renderSDS() {
                 >
                     Open SDS PDF <span aria-hidden="true">↗</span>
                 </a>
+
+                <details class="safety-details">
+                    <summary>
+                        View Hazard, PPE &amp; Preventive Measures
+                    </summary>
+
+                    <div class="safety-columns">
+                        ${renderSafetyColumn(
+                            "Hazard",
+                            hazard,
+                            hazardVerified,
+                            "SDS Section 2"
+                        )}
+
+                        ${renderSafetyColumn(
+                            "PPE",
+                            ppe,
+                            ppeVerified,
+                            "SDS Section 8"
+                        )}
+
+                        ${renderSafetyColumn(
+                            "Preventive Measures",
+                            preventiveMeasures,
+                            measuresVerified,
+                            "SDS Sections 7 and 8"
+                        )}
+                    </div>
+
+                    <p class="safety-disclaimer">
+                        Always verify the information against the latest
+                        supplier SDS and the applicable workplace risk
+                        assessment. Do not treat a pending field as an
+                        assessment of the chemical's actual hazards.
+                    </p>
+                </details>
             </article>
         `;
     }).join("");
@@ -1221,12 +1279,12 @@ function renderSDS() {
 
 /* SEARCH EVENTS */
 
-searchInput.addEventListener("input", renderSDS);
-categoryFilter.addEventListener("change", renderSDS);
+searchInput.addEventListener("input",renderSDS);
+categoryFilter.addEventListener("change",renderSDS);
 
 /* CLEAR SEARCH */
 
-document.getElementById("clearSearch").addEventListener("click", function() {
+document.getElementById("clearSearch").addEventListener("click",function() {
     searchInput.value = "";
     categoryFilter.value = "";
     renderSDS();
