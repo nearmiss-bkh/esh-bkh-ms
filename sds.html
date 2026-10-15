@@ -1162,22 +1162,40 @@ function connectSdsApi() {
     const oldScript = document.getElementById("bkhSdsApiScript");
     if (oldScript) oldScript.remove();
 
+    let finished = false;
+    let timeoutId = null;
+
+    function cleanup() {
+        if (timeoutId !== null) clearTimeout(timeoutId);
+        const scriptElement = document.getElementById("bkhSdsApiScript");
+        if (scriptElement) scriptElement.remove();
+        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
+    }
+
     window[callbackName] = function(payload) {
+        if (finished) return;
+        finished = true;
+
         try {
             if (!payload || payload.success !== true || !Array.isArray(payload.records)) {
-                throw new Error("The endpoint did not return the expected records format.");
+                throw new Error("Unexpected response. The endpoint must return callback({success:true, records:[...]})");
             }
+
             extractedSdsRecords = payload.records;
             const existingKeys = new Set(SDS_DOCUMENTS.map(item => normalizeSdsKey(item.name)));
 
-            // Include successfully extracted PDFs even if the original static list missed them.
             payload.records.forEach(function(record) {
                 const recordName = record.chemicalName || record.fileName || "";
                 const key = normalizeSdsKey(recordName);
                 if (!key) return;
+
                 const match = SDS_DOCUMENTS.find(item => normalizeSdsKey(item.name) === key);
                 if (match) {
                     match.extracted = record;
+                    // Prefer the real PDF link returned by the API, if available.
+                    if (record.pdfUrl || record.sdsPdfUrl) {
+                        match.pdfUrl = record.pdfUrl || record.sdsPdfUrl;
+                    }
                 } else if (!existingKeys.has(key)) {
                     const numberMatch = String(recordName).match(/^\s*(\d+)/);
                     SDS_DOCUMENTS.push({
@@ -1185,8 +1203,12 @@ function connectSdsApi() {
                         number: numberMatch ? Number(numberMatch[1]) : Number.MAX_SAFE_INTEGER,
                         name: /\.pdf$/i.test(recordName) ? recordName : recordName + ".pdf",
                         category: "Other",
-                        revisionDate: "", lastReviewed: "", reviewDue: "", expiryDate: "",
-                        pdfUrl: record.sdsPdfUrl || record.pdfUrl || (record.fileId ? "https://drive.google.com/file/d/" + encodeURIComponent(record.fileId) + "/view" : "#"),
+                        revisionDate: "",
+                        lastReviewed: "",
+                        reviewDue: "",
+                        expiryDate: "",
+                        pdfUrl: record.pdfUrl || record.sdsPdfUrl ||
+                            (record.fileId ? "https://drive.google.com/file/d/" + encodeURIComponent(record.fileId) + "/view" : "#"),
                         extracted: record
                     });
                     existingKeys.add(key);
@@ -1196,22 +1218,46 @@ function connectSdsApi() {
             SDS_DOCUMENTS.sort(function(a, b) {
                 return a.number - b.number || a.name.localeCompare(b.name, undefined, { numeric: true });
             });
-            status.textContent = "Live extraction data connected · " + payload.records.length + " extracted record(s) available. Automatically extracted content must be checked against the original SDS.";
+
+            status.textContent = "Connected successfully · " + payload.records.length +
+                " extracted SDS record(s). Verify extracted information against the original SDS.";
             renderSDS();
         } catch (error) {
-            status.textContent = "SDS list loaded, but extracted details could not be read: " + error.message;
+            status.textContent = "SDS response received but could not be processed: " + error.message;
+        } finally {
+            cleanup();
         }
-        delete window[callbackName];
     };
 
     const script = document.createElement("script");
     script.id = "bkhSdsApiScript";
-    script.src = SDS_API_URL + "?callback=" + callbackName + "&t=" + Date.now();
+    script.async = true;
     script.onerror = function() {
-        status.textContent = "Could not connect to the SDS extraction endpoint. Check that the Web App deployment is accessible to anyone and returns JSONP.";
-        delete window[callbackName];
+        if (finished) return;
+        finished = true;
+        status.textContent = "Browser could not load the SDS API script. Confirm the Web App URL and access setting; if the direct callback test works, check browser extensions or network restrictions.";
+        cleanup();
     };
+    script.onload = function() {
+        // JSONP must call our callback. If it doesn't, show a more precise message.
+        setTimeout(function() {
+            if (finished) return;
+            finished = true;
+            status.textContent = "The endpoint loaded but did not call the expected JSONP callback. Check that doGet(e) uses the callback query parameter.";
+            cleanup();
+        }, 500);
+    };
+
+    status.textContent = "Connecting to the live SDS extraction service…";
+    script.src = SDS_API_URL + "?callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
     document.head.appendChild(script);
+
+    timeoutId = setTimeout(function() {
+        if (finished) return;
+        finished = true;
+        status.textContent = "SDS connection timed out after 15 seconds. Check the Web App deployment and reload the dashboard.";
+        cleanup();
+    }, 15000);
 }
 
 /* SAFE HTML OUTPUT */
