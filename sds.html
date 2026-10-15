@@ -556,64 +556,6 @@ input:focus, select:focus {
 
 .open-button:active { transform: translateY(0); }
 
-
-/* SDS REVIEW AND EXPIRY TRACKING */
-.review-details {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 5px 10px;
-    margin-top: 9px;
-    padding-top: 8px;
-    border-top: 1px dashed var(--border);
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.5;
-}
-.review-details span { min-width: 0; overflow-wrap: anywhere; }
-.review-details strong { color: #43566a; }
-.review-status {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    max-width: 100%;
-    margin-top: 7px;
-    padding: 3px 7px;
-    border: 1px solid #dce4ed;
-    border-radius: 5px;
-    background: #f3f6f9;
-    color: #526477;
-    font-size: 9px;
-    font-weight: 800;
-    line-height: 1.5;
-}
-.review-status::before {
-    content: "";
-    width: 5px;
-    height: 5px;
-    margin-right: 5px;
-    border-radius: 50%;
-    background: currentColor;
-}
-.review-status.status-current {
-    border-color: #cce9df;
-    background: #effaf5;
-    color: #247453;
-}
-.review-status.status-due {
-    border-color: #f0dfba;
-    background: #fff8e9;
-    color: #8a641c;
-}
-.review-status.status-overdue,
-.review-status.status-expired {
-    border-color: #f1cfd5;
-    background: #fff0f2;
-    color: #8b1e32;
-}
-@media (max-width: 520px) {
-    .review-details { grid-template-columns: 1fr; }
-}
-
 /* EMPTY RESULTS */
 
 .empty {
@@ -856,18 +798,6 @@ footer {
         animation-duration: .01ms !important;
     }
 }
-
-/* LIVE EXTRACTED SDS DETAILS */
-.api-status { margin: 10px 0 16px; color: var(--muted); font-size: 13px; }
-.extraction-details { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: #f7faff; }
-.extraction-details summary { cursor: pointer; color: var(--navy); font-weight: 700; }
-.extraction-warning { margin: 8px 0; color: #7b4b00; font-size: 12px; }
-.extraction-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
-.extraction-field { padding: 10px; border-left: 3px solid var(--blue); background: #fff; border-radius: 5px; }
-.extraction-field h4 { margin: 0 0 5px; color: var(--navy); font-size: 13px; }
-.extraction-field p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
-.extraction-empty { margin-top: 10px; color: var(--muted); font-size: 12px; }
-@media (min-width: 700px) { .extraction-grid { grid-template-columns: 1fr 1fr; } .extraction-field:first-child { grid-column: 1 / -1; } }
 </style>
 </head>
 
@@ -986,7 +916,6 @@ footer {
             </span>
         </div>
 
-        <p class="api-status" id="apiStatus" role="status">Connecting to live extracted SDS information…</p>
         <div class="sds-list" id="sdsList"></div>
     </section>
 
@@ -1027,10 +956,7 @@ footer {
 
 /*
     Each record contains:
-    [filename, Google Drive file ID, category, SDS revision date,
-     last reviewed date, next review due date, expiry date]
-    Dates must use YYYY-MM-DD. Leave a date as "" if it is not known
-    or does not apply. Do not assume an SDS expiry date if none is stated.
+    [original filename, Google Drive file ID, category]
 */
 
 const SDS_DATA = [
@@ -1038,6 +964,10 @@ const SDS_DATA = [
 ["90. SDS Fuel Oils.pdf","1SUXYgeN-DnHTFKBPTawPFxwCNBBsbC1q","Maintenance"],
 ["89. TOPAX 686.pdf","1Uk96OmCaV6Sxyy_coCW6Szjz81rtxakJ","Cleaning"],
 ["81. WD-40.pdf","1hMe6hjzTh03RmXXoeFjhkn945GVOyD0v","Maintenance"],
+["82. Hydrated Lime.pdf","1hMe6hjzTh03RmXXoeFjhkn945GVOyD0v","Other"],
+["83. Anionic Polymer Powder.pdf","1-YUop8bUkT3fC_CNw-6-Rzjhzvp9Jbbz","Other"],
+["84. Carbon (powder).pdf","1xicUsTIe1QR0Y5Af0aA4Z0JCq_W7tHpd","Other"],
+["85. PAC (powder).pdf","1qdU_nlUuJxFfMvugky_DutsvUy69ZDea","Other"],
 ["76. Ferron.pdf","1N-t855-goj2DAb5j8JBvcJJaZRbbNde2","Other"],
 ["75. Carbon_and_Low_Alloy_Steel_Electrodes.pdf","1iBLryj3XSIYCHJ8Da5aCCr3BVSXLtJHL","Maintenance"],
 ["73. GSAP_msds_02922687.PDF","16SswDzGLBXAWUoLSUmPNM1hygyDH9Zyj","Other"],
@@ -1128,10 +1058,6 @@ const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
         number: number,
         name: fileName,
         category: row[2],
-        revisionDate: row[3] || "",
-        lastReviewed: row[4] || "",
-        reviewDue: row[5] || "",
-        expiryDate: row[6] || "",
         pdfUrl: "https://drive.google.com/file/d/" +
             encodeURIComponent(fileId) + "/view"
     };
@@ -1145,120 +1071,6 @@ const SDS_DOCUMENTS = SDS_DATA.map(function(row) {
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
 const sdsList = document.getElementById("sdsList");
-
-/* GOOGLE APPS SCRIPT WEB APP CONNECTION */
-const SDS_API_URL = "https://script.google.com/macros/s/AKfycbzjHZmmh5C7yc8CVUn3ZJbBNGxxBZImKQClonx1fS2U3JNi1UpYZzdS3xlo_X55SUT1/exec";
-let extractedSdsRecords = [];
-
-function normalizeSdsKey(value) {
-    return normalizeSearch(String(value || "")
-        .replace(/\.pdf$/i, "")
-        .replace(/^\s*\d+\s*[.,_-]?\s*/, ""));
-}
-
-function connectSdsApi() {
-    const status = document.getElementById("apiStatus");
-    const callbackName = "bkhSdsApiCallback";
-    const oldScript = document.getElementById("bkhSdsApiScript");
-    if (oldScript) oldScript.remove();
-
-    let finished = false;
-    let timeoutId = null;
-
-    function cleanup() {
-        if (timeoutId !== null) clearTimeout(timeoutId);
-        const scriptElement = document.getElementById("bkhSdsApiScript");
-        if (scriptElement) scriptElement.remove();
-        try { delete window[callbackName]; } catch (_) { window[callbackName] = undefined; }
-    }
-
-    window[callbackName] = function(payload) {
-        if (finished) return;
-        finished = true;
-
-        try {
-            if (!payload || payload.success !== true || !Array.isArray(payload.records)) {
-                throw new Error("Unexpected response. The endpoint must return callback({success:true, records:[...]})");
-            }
-
-            extractedSdsRecords = payload.records;
-            const existingKeys = new Set(SDS_DOCUMENTS.map(item => normalizeSdsKey(item.name)));
-
-            payload.records.forEach(function(record) {
-                const recordName = record.chemicalName || record.fileName || "";
-                const key = normalizeSdsKey(recordName);
-                if (!key) return;
-
-                const match = SDS_DOCUMENTS.find(item => normalizeSdsKey(item.name) === key);
-                if (match) {
-                    match.extracted = record;
-                    // Prefer the real PDF link returned by the API, if available.
-                    if (record.pdfUrl || record.sdsPdfUrl) {
-                        match.pdfUrl = record.pdfUrl || record.sdsPdfUrl;
-                    }
-                } else if (!existingKeys.has(key)) {
-                    const numberMatch = String(recordName).match(/^\s*(\d+)/);
-                    SDS_DOCUMENTS.push({
-                        id: numberMatch ? numberMatch[1] : (record.fileId || key),
-                        number: numberMatch ? Number(numberMatch[1]) : Number.MAX_SAFE_INTEGER,
-                        name: /\.pdf$/i.test(recordName) ? recordName : recordName + ".pdf",
-                        category: "Other",
-                        revisionDate: "",
-                        lastReviewed: "",
-                        reviewDue: "",
-                        expiryDate: "",
-                        pdfUrl: record.pdfUrl || record.sdsPdfUrl ||
-                            (record.fileId ? "https://drive.google.com/file/d/" + encodeURIComponent(record.fileId) + "/view" : "#"),
-                        extracted: record
-                    });
-                    existingKeys.add(key);
-                }
-            });
-
-            SDS_DOCUMENTS.sort(function(a, b) {
-                return a.number - b.number || a.name.localeCompare(b.name, undefined, { numeric: true });
-            });
-
-            status.textContent = "Connected successfully · " + payload.records.length +
-                " extracted SDS record(s). Verify extracted information against the original SDS.";
-            renderSDS();
-        } catch (error) {
-            status.textContent = "SDS response received but could not be processed: " + error.message;
-        } finally {
-            cleanup();
-        }
-    };
-
-    const script = document.createElement("script");
-    script.id = "bkhSdsApiScript";
-    script.async = true;
-    script.onerror = function() {
-        if (finished) return;
-        finished = true;
-        status.textContent = "Browser could not load the SDS API script. Confirm the Web App URL and access setting; if the direct callback test works, check browser extensions or network restrictions.";
-        cleanup();
-    };
-    script.onload = function() {
-        // JSONP must call our callback. If it doesn't, show a more precise message.
-        setTimeout(function() {
-            if (finished) return;
-            finished = true;
-            status.textContent = "The endpoint loaded but did not call the expected JSONP callback. Check that doGet(e) uses the callback query parameter.";
-            cleanup();
-        }, 500);
-    };
-
-    status.textContent = "Connecting to the live SDS extraction service…";
-    script.src = SDS_API_URL + "?callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
-    document.head.appendChild(script);
-
-    timeoutId = setTimeout(function() {
-        if (finished) return;
-        finished = true;
-        status.textContent = "SDS connection timed out after 15 seconds. Check the Web App deployment and reload the dashboard.";
-        cleanup();
-    }, 15000);
-}
 
 /* SAFE HTML OUTPUT */
 
@@ -1307,48 +1119,6 @@ function categoryLabel(category) {
     };
 
     return labels[category] || category;
-}
-
-/* DATE DISPLAY AND SDS STATUS */
-function formatDate(value) {
-    if (!value) return "Not recorded";
-    const parts = value.split("-");
-    if (parts.length !== 3) return "Check date format";
-    const date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    if (Number.isNaN(date.getTime())) return "Check date format";
-    return date.toLocaleDateString("en-MY", {
-        day: "2-digit", month: "short", year: "numeric"
-    });
-}
-
-function getReviewStatus(item) {
-    // Compare calendar dates, avoiding time-zone effects.
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayKey = [
-        today.getFullYear(),
-        String(today.getMonth() + 1).padStart(2, "0"),
-        String(today.getDate()).padStart(2, "0")
-    ].join("-");
-
-    if (item.expiryDate && item.expiryDate < todayKey) {
-        return { label: "EXPIRED", className: "status-expired" };
-    }
-    if (item.reviewDue && item.reviewDue < todayKey) {
-        return { label: "REVIEW OVERDUE", className: "status-overdue" };
-    }
-    if (item.reviewDue) {
-        const due = new Date(item.reviewDue + "T00:00:00");
-        const days = Math.ceil((due.getTime() - today.getTime()) / 86400000);
-        if (days <= 30) {
-            return { label: "REVIEW DUE SOON", className: "status-due" };
-        }
-        return { label: "CURRENT", className: "status-current" };
-    }
-    if (item.expiryDate) {
-        return { label: "EXPIRY DATE RECORDED", className: "status-current" };
-    }
-    return { label: "REVIEW DATES NOT ENTERED", className: "" };
 }
 
 /* RENDER SDS LIST */
@@ -1421,15 +1191,12 @@ function renderSDS() {
                                 </span>
                             </div>
 
-                            <div class="review-details" aria-label="SDS review and expiry dates">
-                                <span><strong>SDS Revision:</strong> ${escapeHTML(formatDate(item.revisionDate))}</span>
-                                <span><strong>Last Reviewed:</strong> ${escapeHTML(formatDate(item.lastReviewed))}</span>
-                                <span><strong>Next Review Due:</strong> ${escapeHTML(formatDate(item.reviewDue))}</span>
-                                <span><strong>Expiry Date:</strong> ${escapeHTML(formatDate(item.expiryDate))}</span>
+                            <div class="document-meta">
+                                <span>
+                                    <span class="meta-label">Revision:</span>
+                                    Check PDF for current revision
+                                </span>
                             </div>
-                            <span class="review-status ${getReviewStatus(item).className}">
-                                ${escapeHTML(getReviewStatus(item).label)}
-                            </span>
 
                             <span class="tag ${categoryClass(item.category)}">
                                 ${escapeHTML(categoryLabel(item.category))}
@@ -1447,18 +1214,6 @@ function renderSDS() {
                 >
                     Open SDS PDF <span aria-hidden="true">↗</span>
                 </a>
-                ${item.extracted ? `
-                    <details class="extraction-details">
-                        <summary>View Extracted Hazard / PPE / Preventive Measures</summary>
-                        <p class="extraction-warning">Automatically extracted from the SDS PDF. Verify every detail against the original supplier SDS before using it for risk assessment or PPE selection.</p>
-                        <div class="extraction-grid">
-                            <div class="extraction-field"><h4>Hazard Information</h4><p>${escapeHTML(item.extracted.hazardInformation || "Not extracted")}</p></div>
-                            <div class="extraction-field"><h4>PPE</h4><p>${escapeHTML(item.extracted.ppe || "Not extracted")}</p></div>
-                            <div class="extraction-field"><h4>Preventive Measures</h4><p>${escapeHTML(item.extracted.preventiveMeasures || "Not extracted")}</p></div>
-                        </div>
-                        <p class="extraction-empty">Extraction status: ${escapeHTML(item.extracted.status || "Unknown")} · Last updated: ${escapeHTML(item.extracted.lastUpdated || "Not recorded")}</p>
-                    </details>
-                ` : `<p class="extraction-empty">Hazard / PPE / preventive-measure details are not yet available from the extraction sheet.</p>`}
             </article>
         `;
     }).join("");
@@ -1481,7 +1236,6 @@ document.getElementById("clearSearch").addEventListener("click", function() {
 /* INITIAL LOAD */
 
 renderSDS();
-connectSdsApi();
 </script>
 
 </body>
